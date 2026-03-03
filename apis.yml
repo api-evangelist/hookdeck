@@ -27,6 +27,8 @@ access: 3rd-Party
 created: '2025-08-19'
 modified: '2026-01-02'
 position: Consumer
+segments:
+  - Gateways
 description: >-
   Hookdeck is a powerful tool that helps businesses streamline their webhook
   workflows. With Hookdeck, users can easily manage, monitor, and debug all of
