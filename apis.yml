@@ -59,14 +59,11 @@ position: Consumer
 segments:
   - Gateways
 description: >-
-  Hookdeck is a powerful tool that helps businesses streamline their webhook
-  workflows. With Hookdeck, users can easily manage, monitor, and debug all of
-  their webhooks in one centralized platform. By providing real-time
-  notifications, detailed logs, and error handling capabilities, Hookdeck
-  simplifies the process of integrating and testing webhooks. This innovative
-  solution empowers businesses to ensure the reliability and efficiency of their
-  webhook connections, ultimately improving their overall performance and
-  productivity.
+  Hookdeck is a powerful tool that helps businesses streamline their webhook workflows.
+  With Hookdeck, users can easily manage, monitor, and debug all of their webhooks
+  in one centralized platform. By providing real-time notifications, detailed logs,
+  and error handling capabilities, Hookdeck simplifies the process of integrating
+  and testing webhooks.
 common:
   - url: https://hookdeck.com/docs
     type: Documentation
@@ -126,7 +123,8 @@ common:
     type: X
   - url: https://www.linkedin.com/company/hookdeck
     type: LinkedIn
-  - url: https://join.slack.com/t/hookdeckdevelopers/shared_invite/zt-yw7hlyzp-EQuO3QvdiBlH9Tz2KZg5MQ
+  - url: 
+      https://join.slack.com/t/hookdeckdevelopers/shared_invite/zt-yw7hlyzp-EQuO3QvdiBlH9Tz2KZg5MQ
     type: Slack
   - url: https://hookdeck.com/event-gateway
     type: Documentation
