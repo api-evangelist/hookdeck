@@ -5,15 +5,15 @@ apis:
   - aid: hookdeck:hookdeck-api
     name: Hookdeck API
     tags:
-      - Event Gateways
-      - Gateways
-      - Webhooks
-      - Events
       - Connections
-      - Sources
       - Destinations
-      - Transformations
+      - Event Gateways
+      - Events
+      - Gateways
       - Metrics
+      - Sources
+      - Transformations
+      - Webhooks
     baseURL: https://api.hookdeck.com
     humanURL: https://hookdeck.com/docs/api
     properties:
@@ -123,8 +123,7 @@ common:
     type: X
   - url: https://www.linkedin.com/company/hookdeck
     type: LinkedIn
-  - url: 
-      https://join.slack.com/t/hookdeckdevelopers/shared_invite/zt-yw7hlyzp-EQuO3QvdiBlH9Tz2KZg5MQ
+  - url: https://join.slack.com/t/hookdeckdevelopers/shared_invite/zt-yw7hlyzp-EQuO3QvdiBlH9Tz2KZg5MQ
     type: Slack
   - url: https://hookdeck.com/event-gateway
     type: Documentation
