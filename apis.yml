@@ -54,7 +54,7 @@ type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 access: 3rd-Party
 created: '2025-08-19'
-modified: '2026-04-28'
+modified: '2026-05-19'
 position: Consumer
 segments:
   - Gateways
@@ -131,6 +131,9 @@ common:
     type: Documentation
   - url: https://hookdeck.com/careers
     type: Careers
+  - name: Agent Skills
+    url: https://github.com/hookdeck/webhook-skills
+    type: AgentSkill
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
