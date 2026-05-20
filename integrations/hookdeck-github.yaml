@@ -1,0 +1,139 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Trigger GitHub Actions workflows from Hookdeck events
+  description: Use Hookdeck as the durable entrypoint for inbound webhooks (vendor events, partner callbacks, IoT pings) and route them to a GitHub Actions repository-dispatch destination so workflows fire reliably with full retry and replay history.
+  tags:
+  - Hookdeck
+  - Integration
+  - CI / Workflows
+  - github
+  created: '2026-05-20'
+  modified: '2026-05-20'
+binds:
+- namespace: env
+  keys:
+    HOOKDECK_API_KEY: HOOKDECK_API_KEY
+    GITHUB_API_KEY: GITHUB_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: hookdeck
+    baseUri: https://api.hookdeck.com/2025-07-01
+    description: Hookdeck API operations consumed by this integration.
+    resources:
+    - name: destinations
+      path: /destinations
+      operations:
+      - name: createdestination
+        method: POST
+        description: Create a destination pointing at the GitHub repository-dispatch endpoint.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: connections
+      path: /connections
+      operations:
+      - name: createconnection
+        method: POST
+        description: Connect the inbound source to the GitHub destination.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: transformations
+      path: /transformations
+      operations:
+      - name: createtransformation
+        method: POST
+        description: Transform the incoming event into a repository-dispatch payload.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  - type: http
+    namespace: github
+    baseUri: https://api.github.com
+    description: GitHub REST API operations consumed by this integration.
+    resources:
+    - name: repos-owner-repo-dispatches
+      path: /repos/{owner}/{repo}/dispatches
+      operations:
+      - name: createrepositorydispatch
+        method: POST
+        description: 'GitHub REST API: createRepositoryDispatch'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: owner
+          in: path
+          type: string
+          description: Path parameter owner.
+          required: true
+        - name: repo
+          in: path
+          type: string
+          description: Path parameter repo.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: mcp
+    namespace: hookdeck-github-mcp
+    description: MCP adapter for the hookdeck-github integration.
+    tools:
+    - name: hookdeck_github
+      description: Execute the hookdeck github integration end-to-end.
+      inputSchema:
+        type: object
+        properties:
+          trigger_event:
+            type: object
+            description: Triggering event payload.
+        required:
+        - trigger_event
+  - type: rest
+    namespace: hookdeck-github-rest
+    port: 8080
+    description: REST adapter for the hookdeck-github integration.
+    resources:
+    - path: /hookdeck-github
+      name: hookdeck-github
+      description: REST surface for the hookdeck-github integration.
+      operations:
+      - method: POST
+        name: trigger
+        description: Trigger the hookdeck-github integration.
+        call: hookdeck_github
+        with:
+          trigger_event: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.

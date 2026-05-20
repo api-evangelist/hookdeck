@@ -1,0 +1,129 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Fan Hookdeck events into AWS SQS for downstream workers
+  description: For high-throughput sources, point a Hookdeck destination at an AWS SQS-backed HTTPS endpoint so internal workers can consume events at their own pace with native SQS replay, DLQ, and visibility-timeout semantics.
+  tags:
+  - Hookdeck
+  - Integration
+  - Queueing
+  - aws-sqs
+  created: '2026-05-20'
+  modified: '2026-05-20'
+binds:
+- namespace: env
+  keys:
+    HOOKDECK_API_KEY: HOOKDECK_API_KEY
+    AWS_SQS_API_KEY: AWS_SQS_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: hookdeck
+    baseUri: https://api.hookdeck.com/2025-07-01
+    description: Hookdeck API operations consumed by this integration.
+    resources:
+    - name: destinations
+      path: /destinations
+      operations:
+      - name: createdestination
+        method: POST
+        description: Create the SQS-facing Hookdeck destination.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: connections
+      path: /connections
+      operations:
+      - name: createconnection
+        method: POST
+        description: Connect a source to the SQS destination.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: transformations
+      path: /transformations
+      operations:
+      - name: createtransformation
+        method: POST
+        description: Create a transformation that maps the raw event into the SQS message shape.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  - type: http
+    namespace: aws-sqs
+    baseUri: https://sqs.us-east-1.amazonaws.com
+    description: AWS SQS API operations consumed by this integration.
+    resources:
+    - name: aws-sqs
+      path: /
+      operations:
+      - name: sendmessage
+        method: POST
+        description: 'AWS SQS API: sendMessage'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: mcp
+    namespace: hookdeck-aws-sqs-mcp
+    description: MCP adapter for the hookdeck-aws-sqs integration.
+    tools:
+    - name: hookdeck_aws_sqs
+      description: Execute the hookdeck aws sqs integration end-to-end.
+      inputSchema:
+        type: object
+        properties:
+          trigger_event:
+            type: object
+            description: Triggering event payload.
+        required:
+        - trigger_event
+  - type: rest
+    namespace: hookdeck-aws-sqs-rest
+    port: 8080
+    description: REST adapter for the hookdeck-aws-sqs integration.
+    resources:
+    - path: /hookdeck-aws-sqs
+      name: hookdeck-aws-sqs
+      description: REST surface for the hookdeck-aws-sqs integration.
+      operations:
+      - method: POST
+        name: trigger
+        description: Trigger the hookdeck-aws-sqs integration.
+        call: hookdeck_aws_sqs
+        with:
+          trigger_event: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.

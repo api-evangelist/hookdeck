@@ -1,0 +1,134 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Triage Hookdeck delivery issues with Claude
+  description: When a Hookdeck issue surfaces a recurring delivery failure, feed the failing event payload and recent attempt history to Claude for root-cause classification and a suggested fix, then attach the suggestion to the issue.
+  tags:
+  - Hookdeck
+  - Integration
+  - AI
+  - anthropic
+  created: '2026-05-20'
+  modified: '2026-05-20'
+binds:
+- namespace: env
+  keys:
+    HOOKDECK_API_KEY: HOOKDECK_API_KEY
+    ANTHROPIC_API_KEY: ANTHROPIC_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: hookdeck
+    baseUri: https://api.hookdeck.com/2025-07-01
+    description: Hookdeck API operations consumed by this integration.
+    resources:
+    - name: issues-id
+      path: /issues/{id}
+      operations:
+      - name: getissue
+        method: GET
+        description: Get the delivery issue and failing attempts as context.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Path parameter id.
+          required: true
+    - name: events-id-raw-body
+      path: /events/{id}/raw_body
+      operations:
+      - name: geteventrawbody
+        method: GET
+        description: Pull the raw event body for the model to inspect.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Path parameter id.
+          required: true
+    - name: issues-id
+      path: /issues/{id}
+      operations:
+      - name: updateissue
+        method: PUT
+        description: Write the suggested fix back onto the Hookdeck issue.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Path parameter id.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  - type: http
+    namespace: anthropic
+    baseUri: https://api.anthropic.com
+    description: Anthropic Messages API operations consumed by this integration.
+    resources:
+    - name: v1-messages
+      path: /v1/messages
+      operations:
+      - name: createmessage
+        method: POST
+        description: 'Anthropic Messages API: createMessage'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: mcp
+    namespace: hookdeck-anthropic-mcp
+    description: MCP adapter for the hookdeck-anthropic integration.
+    tools:
+    - name: hookdeck_anthropic
+      description: Execute the hookdeck anthropic integration end-to-end.
+      inputSchema:
+        type: object
+        properties:
+          trigger_event:
+            type: object
+            description: Triggering event payload.
+        required:
+        - trigger_event
+  - type: rest
+    namespace: hookdeck-anthropic-rest
+    port: 8080
+    description: REST adapter for the hookdeck-anthropic integration.
+    resources:
+    - path: /hookdeck-anthropic
+      name: hookdeck-anthropic
+      description: REST surface for the hookdeck-anthropic integration.
+      operations:
+      - method: POST
+        name: trigger
+        description: Trigger the hookdeck-anthropic integration.
+        call: hookdeck_anthropic
+        with:
+          trigger_event: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.

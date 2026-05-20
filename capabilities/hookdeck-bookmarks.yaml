@@ -1,0 +1,378 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Hookdeck Admin REST API — Bookmarks
+  description: 'Hookdeck Admin REST API — Bookmarks. 7 operations. Lead operation: Retrieve bookmarks. Self-contained Naftiko capability covering one business surface.'
+  tags:
+  - Hookdeck
+  - Bookmarks
+  created: '2026-05-20'
+  modified: '2026-05-20'
+binds:
+- namespace: env
+  keys:
+    HOOKDECK_API_KEY: HOOKDECK_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: hookdeck-bookmarks
+    baseUri: https://api.hookdeck.com/2025-07-01
+    description: Hookdeck Admin REST API — Bookmarks business capability. Self-contained, no shared references.
+    resources:
+    - name: bookmarks
+      path: /bookmarks
+      operations:
+      - name: getbookmarks
+        method: GET
+        description: Retrieve bookmarks
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: query
+          type: string
+          description: query parameter id.
+        - name: name
+          in: query
+          type: string
+          description: query parameter name.
+        - name: webhook_id
+          in: query
+          type: string
+          description: query parameter webhook_id.
+        - name: event_data_id
+          in: query
+          type: string
+          description: query parameter event_data_id.
+        - name: label
+          in: query
+          type: string
+          description: query parameter label.
+        - name: last_used_at
+          in: query
+          type: string
+          description: query parameter last_used_at.
+        - name: order_by
+          in: query
+          type: string
+          description: query parameter order_by.
+        - name: dir
+          in: query
+          type: string
+          description: query parameter dir.
+        - name: limit
+          in: query
+          type: integer
+          description: query parameter limit.
+        - name: next
+          in: query
+          type: string
+          description: query parameter next.
+        - name: prev
+          in: query
+          type: string
+          description: query parameter prev.
+      - name: createbookmark
+        method: POST
+        description: Create a bookmark
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: bookmarks-id
+      path: /bookmarks/{id}
+      operations:
+      - name: getbookmark
+        method: GET
+        description: Retrieve a bookmark
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: path parameter id.
+          required: true
+      - name: updatebookmark
+        method: PUT
+        description: Update a bookmark
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: path parameter id.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deletebookmark
+        method: DELETE
+        description: Delete a bookmark
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: path parameter id.
+          required: true
+    - name: bookmarks-id-raw-body
+      path: /bookmarks/{id}/raw_body
+      operations:
+      - name: getbookmarkrawbody
+        method: GET
+        description: Get a bookmark raw body data
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: path parameter id.
+          required: true
+    - name: bookmarks-id-trigger
+      path: /bookmarks/{id}/trigger
+      operations:
+      - name: triggerbookmark
+        method: POST
+        description: Trigger a bookmark
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: path parameter id.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: hookdeck-bookmarks-rest
+    port: 8080
+    description: REST adapter for Hookdeck Admin REST API — Bookmarks. One resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/bookmarks
+      name: bookmarks
+      description: REST surface for bookmarks.
+      operations:
+      - method: GET
+        name: getbookmarks
+        description: Retrieve bookmarks
+        call: hookdeck-bookmarks.getbookmarks
+        with:
+          id: rest.id
+          name: rest.name
+          webhook_id: rest.webhook_id
+          event_data_id: rest.event_data_id
+          label: rest.label
+          last_used_at: rest.last_used_at
+          order_by: rest.order_by
+          dir: rest.dir
+          limit: rest.limit
+          next: rest.next
+          prev: rest.prev
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createbookmark
+        description: Create a bookmark
+        call: hookdeck-bookmarks.createbookmark
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/bookmarks/{id}
+      name: bookmarks-id
+      description: REST surface for bookmarks-id.
+      operations:
+      - method: GET
+        name: getbookmark
+        description: Retrieve a bookmark
+        call: hookdeck-bookmarks.getbookmark
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updatebookmark
+        description: Update a bookmark
+        call: hookdeck-bookmarks.updatebookmark
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletebookmark
+        description: Delete a bookmark
+        call: hookdeck-bookmarks.deletebookmark
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/bookmarks/{id}/raw_body
+      name: bookmarks-id-raw-body
+      description: REST surface for bookmarks-id-raw-body.
+      operations:
+      - method: GET
+        name: getbookmarkrawbody
+        description: Get a bookmark raw body data
+        call: hookdeck-bookmarks.getbookmarkrawbody
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/bookmarks/{id}/trigger
+      name: bookmarks-id-trigger
+      description: REST surface for bookmarks-id-trigger.
+      operations:
+      - method: POST
+        name: triggerbookmark
+        description: Trigger a bookmark
+        call: hookdeck-bookmarks.triggerbookmark
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: hookdeck-bookmarks-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Hookdeck Admin REST API — Bookmarks. One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: hookdeck-getbookmarks
+      description: Retrieve bookmarks
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hookdeck-bookmarks.getbookmarks
+      with:
+        id: tools.id
+        name: tools.name
+        webhook_id: tools.webhook_id
+        event_data_id: tools.event_data_id
+        label: tools.label
+        last_used_at: tools.last_used_at
+        order_by: tools.order_by
+        dir: tools.dir
+        limit: tools.limit
+        next: tools.next
+        prev: tools.prev
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-createbookmark
+      description: Create a bookmark
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hookdeck-bookmarks.createbookmark
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-getbookmark
+      description: Retrieve a bookmark
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hookdeck-bookmarks.getbookmark
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-updatebookmark
+      description: Update a bookmark
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: hookdeck-bookmarks.updatebookmark
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-deletebookmark
+      description: Delete a bookmark
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: hookdeck-bookmarks.deletebookmark
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-getbookmarkrawbody
+      description: Get a bookmark raw body data
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hookdeck-bookmarks.getbookmarkrawbody
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-triggerbookmark
+      description: Trigger a bookmark
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hookdeck-bookmarks.triggerbookmark
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

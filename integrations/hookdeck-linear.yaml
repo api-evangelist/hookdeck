@@ -1,0 +1,129 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Turn Hookdeck delivery issues into Linear tickets
+  description: When Hookdeck flags a persistent delivery problem, create a Linear issue in the right team with the failing connection, destination, event sample, and a deep link back to Hookdeck so the fix has a tracked owner.
+  tags:
+  - Hookdeck
+  - Integration
+  - Issue tracking
+  - linear
+  created: '2026-05-20'
+  modified: '2026-05-20'
+binds:
+- namespace: env
+  keys:
+    HOOKDECK_API_KEY: HOOKDECK_API_KEY
+    LINEAR_API_KEY: LINEAR_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: hookdeck
+    baseUri: https://api.hookdeck.com/2025-07-01
+    description: Hookdeck API operations consumed by this integration.
+    resources:
+    - name: issues
+      path: /issues
+      operations:
+      - name: getissues
+        method: GET
+        description: List open Hookdeck delivery issues to sync.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters: []
+    - name: issues-id
+      path: /issues/{id}
+      operations:
+      - name: getissue
+        method: GET
+        description: Get full issue context including the failing connection.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Path parameter id.
+          required: true
+    - name: issues-id
+      path: /issues/{id}
+      operations:
+      - name: updateissue
+        method: PUT
+        description: Mark the Hookdeck issue as tracked once the Linear ticket is filed.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Path parameter id.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  - type: http
+    namespace: linear
+    baseUri: https://api.linear.app
+    description: Linear GraphQL API operations consumed by this integration.
+    resources:
+    - name: graphql
+      path: /graphql
+      operations:
+      - name: createissue
+        method: POST
+        description: 'Linear GraphQL API: createIssue'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: mcp
+    namespace: hookdeck-linear-mcp
+    description: MCP adapter for the hookdeck-linear integration.
+    tools:
+    - name: hookdeck_linear
+      description: Execute the hookdeck linear integration end-to-end.
+      inputSchema:
+        type: object
+        properties:
+          trigger_event:
+            type: object
+            description: Triggering event payload.
+        required:
+        - trigger_event
+  - type: rest
+    namespace: hookdeck-linear-rest
+    port: 8080
+    description: REST adapter for the hookdeck-linear integration.
+    resources:
+    - path: /hookdeck-linear
+      name: hookdeck-linear
+      description: REST surface for the hookdeck-linear integration.
+      operations:
+      - method: POST
+        name: trigger
+        description: Trigger the hookdeck-linear integration.
+        call: hookdeck_linear
+        with:
+          trigger_event: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.

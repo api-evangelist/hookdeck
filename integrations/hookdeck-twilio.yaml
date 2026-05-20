@@ -1,0 +1,134 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Route Twilio status callbacks through Hookdeck
+  description: Use Hookdeck as the public ingress for Twilio SMS / voice status callbacks, then fan out to the messaging service plus an analytics destination, with automatic retry on 5xx so delivery state never gets lost.
+  tags:
+  - Hookdeck
+  - Integration
+  - Communications
+  - twilio
+  created: '2026-05-20'
+  modified: '2026-05-20'
+binds:
+- namespace: env
+  keys:
+    HOOKDECK_API_KEY: HOOKDECK_API_KEY
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: hookdeck
+    baseUri: https://api.hookdeck.com/2025-07-01
+    description: Hookdeck API operations consumed by this integration.
+    resources:
+    - name: sources
+      path: /sources
+      operations:
+      - name: createsource
+        method: POST
+        description: Create a Hookdeck source URL for Twilio status callbacks.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: destinations
+      path: /destinations
+      operations:
+      - name: createdestination
+        method: POST
+        description: Create the destination handler for delivery receipts.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: connections
+      path: /connections
+      operations:
+      - name: createconnection
+        method: POST
+        description: Connect the Twilio source to the destination.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  - type: http
+    namespace: twilio
+    baseUri: https://api.twilio.com
+    description: Twilio REST API operations consumed by this integration.
+    resources:
+    - name: 2010-04-01-accounts-accountsid-messages-json
+      path: /2010-04-01/Accounts/{AccountSid}/Messages.json
+      operations:
+      - name: createmessage
+        method: POST
+        description: 'Twilio REST API: createMessage'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: AccountSid
+          in: path
+          type: string
+          description: Path parameter AccountSid.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: mcp
+    namespace: hookdeck-twilio-mcp
+    description: MCP adapter for the hookdeck-twilio integration.
+    tools:
+    - name: hookdeck_twilio
+      description: Execute the hookdeck twilio integration end-to-end.
+      inputSchema:
+        type: object
+        properties:
+          trigger_event:
+            type: object
+            description: Triggering event payload.
+        required:
+        - trigger_event
+  - type: rest
+    namespace: hookdeck-twilio-rest
+    port: 8080
+    description: REST adapter for the hookdeck-twilio integration.
+    resources:
+    - path: /hookdeck-twilio
+      name: hookdeck-twilio
+      description: REST surface for the hookdeck-twilio integration.
+      operations:
+      - method: POST
+        name: trigger
+        description: Trigger the hookdeck-twilio integration.
+        call: hookdeck_twilio
+        with:
+          trigger_event: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.

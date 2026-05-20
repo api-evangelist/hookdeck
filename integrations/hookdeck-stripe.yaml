@@ -1,0 +1,168 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Make Stripe webhooks resilient through Hookdeck
+  description: Route every Stripe webhook event through a Hookdeck source, fan out to internal destinations, and auto-retry on destination failure so a Stripe outage on your side never silently drops a charge.succeeded or invoice.paid event.
+  tags:
+  - Hookdeck
+  - Integration
+  - Payments
+  - stripe
+  created: '2026-05-20'
+  modified: '2026-05-20'
+binds:
+- namespace: env
+  keys:
+    HOOKDECK_API_KEY: HOOKDECK_API_KEY
+    STRIPE_API_KEY: STRIPE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: hookdeck
+    baseUri: https://api.hookdeck.com/2025-07-01
+    description: Hookdeck API operations consumed by this integration.
+    resources:
+    - name: sources
+      path: /sources
+      operations:
+      - name: createsource
+        method: POST
+        description: Create a Hookdeck source that exposes a stable URL for Stripe to deliver webhooks to.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: destinations
+      path: /destinations
+      operations:
+      - name: createdestination
+        method: POST
+        description: Create a destination pointing at the internal Stripe-handler service.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: connections
+      path: /connections
+      operations:
+      - name: createconnection
+        method: POST
+        description: Wire the Stripe source to the internal destination.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: events-id-retry
+      path: /events/{id}/retry
+      operations:
+      - name: retryevent
+        method: POST
+        description: Manually retry a failed Stripe webhook event.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Path parameter id.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  - type: http
+    namespace: stripe
+    baseUri: https://api.stripe.com
+    description: Stripe API operations consumed by this integration.
+    resources:
+    - name: v1-webhook-endpoints
+      path: /v1/webhook_endpoints
+      operations:
+      - name: createwebhookendpoint
+        method: POST
+        description: 'Stripe API: createWebhookEndpoint'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: v1-events-id
+      path: /v1/events/{id}
+      operations:
+      - name: getevent
+        method: GET
+        description: 'Stripe API: getEvent'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Path parameter id.
+          required: true
+  exposes:
+  - type: mcp
+    namespace: hookdeck-stripe-mcp
+    description: MCP adapter for the hookdeck-stripe integration.
+    tools:
+    - name: hookdeck_stripe
+      description: Execute the hookdeck stripe integration end-to-end.
+      inputSchema:
+        type: object
+        properties:
+          trigger_event:
+            type: object
+            description: Triggering event payload.
+        required:
+        - trigger_event
+  - type: rest
+    namespace: hookdeck-stripe-rest
+    port: 8080
+    description: REST adapter for the hookdeck-stripe integration.
+    resources:
+    - path: /hookdeck-stripe
+      name: hookdeck-stripe
+      description: REST surface for the hookdeck-stripe integration.
+      operations:
+      - method: POST
+        name: trigger
+        description: Trigger the hookdeck-stripe integration.
+        call: hookdeck_stripe
+        with:
+          trigger_event: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.

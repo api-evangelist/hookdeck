@@ -1,0 +1,345 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Hookdeck Admin REST API — Integrations
+  description: 'Hookdeck Admin REST API — Integrations. 7 operations. Lead operation: Get integrations. Self-contained Naftiko capability covering one business surface.'
+  tags:
+  - Hookdeck
+  - Integrations
+  created: '2026-05-20'
+  modified: '2026-05-20'
+binds:
+- namespace: env
+  keys:
+    HOOKDECK_API_KEY: HOOKDECK_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: hookdeck-integrations
+    baseUri: https://api.hookdeck.com/2025-07-01
+    description: Hookdeck Admin REST API — Integrations business capability. Self-contained, no shared references.
+    resources:
+    - name: integrations
+      path: /integrations
+      operations:
+      - name: getintegrations
+        method: GET
+        description: Get integrations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: label
+          in: query
+          type: string
+          description: query parameter label.
+        - name: provider
+          in: query
+          type: string
+          description: query parameter provider.
+      - name: createintegration
+        method: POST
+        description: Create an integration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: integrations-id
+      path: /integrations/{id}
+      operations:
+      - name: getintegration
+        method: GET
+        description: Get an integration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: path parameter id.
+          required: true
+      - name: updateintegration
+        method: PUT
+        description: Update an integration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: path parameter id.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deleteintegration
+        method: DELETE
+        description: Delete an integration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: path parameter id.
+          required: true
+    - name: integrations-id-attach-source-id
+      path: /integrations/{id}/attach/{source_id}
+      operations:
+      - name: attachintegrationtosource
+        method: PUT
+        description: Attach an integration to a source
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: path parameter id.
+          required: true
+        - name: source_id
+          in: path
+          type: string
+          description: path parameter source_id.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: integrations-id-detach-source-id
+      path: /integrations/{id}/detach/{source_id}
+      operations:
+      - name: detachintegrationtosource
+        method: PUT
+        description: Detach an integration from a source
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: path parameter id.
+          required: true
+        - name: source_id
+          in: path
+          type: string
+          description: path parameter source_id.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+  exposes:
+  - type: rest
+    namespace: hookdeck-integrations-rest
+    port: 8080
+    description: REST adapter for Hookdeck Admin REST API — Integrations. One resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/integrations
+      name: integrations
+      description: REST surface for integrations.
+      operations:
+      - method: GET
+        name: getintegrations
+        description: Get integrations
+        call: hookdeck-integrations.getintegrations
+        with:
+          label: rest.label
+          provider: rest.provider
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createintegration
+        description: Create an integration
+        call: hookdeck-integrations.createintegration
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/integrations/{id}
+      name: integrations-id
+      description: REST surface for integrations-id.
+      operations:
+      - method: GET
+        name: getintegration
+        description: Get an integration
+        call: hookdeck-integrations.getintegration
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updateintegration
+        description: Update an integration
+        call: hookdeck-integrations.updateintegration
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteintegration
+        description: Delete an integration
+        call: hookdeck-integrations.deleteintegration
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/integrations/{id}/attach/{source_id}
+      name: integrations-id-attach-source-id
+      description: REST surface for integrations-id-attach-source-id.
+      operations:
+      - method: PUT
+        name: attachintegrationtosource
+        description: Attach an integration to a source
+        call: hookdeck-integrations.attachintegrationtosource
+        with:
+          id: rest.id
+          source_id: rest.source_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/integrations/{id}/detach/{source_id}
+      name: integrations-id-detach-source-id
+      description: REST surface for integrations-id-detach-source-id.
+      operations:
+      - method: PUT
+        name: detachintegrationtosource
+        description: Detach an integration from a source
+        call: hookdeck-integrations.detachintegrationtosource
+        with:
+          id: rest.id
+          source_id: rest.source_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: hookdeck-integrations-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Hookdeck Admin REST API — Integrations. One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: hookdeck-getintegrations
+      description: Get integrations
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hookdeck-integrations.getintegrations
+      with:
+        label: tools.label
+        provider: tools.provider
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-createintegration
+      description: Create an integration
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hookdeck-integrations.createintegration
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-getintegration
+      description: Get an integration
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hookdeck-integrations.getintegration
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-updateintegration
+      description: Update an integration
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: hookdeck-integrations.updateintegration
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-deleteintegration
+      description: Delete an integration
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: hookdeck-integrations.deleteintegration
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-attachintegrationtosource
+      description: Attach an integration to a source
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: hookdeck-integrations.attachintegrationtosource
+      with:
+        id: tools.id
+        source_id: tools.source_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-detachintegrationtosource
+      description: Detach an integration from a source
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: hookdeck-integrations.detachintegrationtosource
+      with:
+        id: tools.id
+        source_id: tools.source_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

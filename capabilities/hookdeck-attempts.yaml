@@ -1,0 +1,151 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Hookdeck Admin REST API — Attempts
+  description: 'Hookdeck Admin REST API — Attempts. 2 operations. Lead operation: Retrieve attempts. Self-contained Naftiko capability covering one business surface.'
+  tags:
+  - Hookdeck
+  - Attempts
+  created: '2026-05-20'
+  modified: '2026-05-20'
+binds:
+- namespace: env
+  keys:
+    HOOKDECK_API_KEY: HOOKDECK_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: hookdeck-attempts
+    baseUri: https://api.hookdeck.com/2025-07-01
+    description: Hookdeck Admin REST API — Attempts business capability. Self-contained, no shared references.
+    resources:
+    - name: attempts
+      path: /attempts
+      operations:
+      - name: getattempts
+        method: GET
+        description: Retrieve attempts
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: query
+          type: string
+          description: query parameter id.
+        - name: event_id
+          in: query
+          type: string
+          description: query parameter event_id.
+        - name: order_by
+          in: query
+          type: string
+          description: query parameter order_by.
+        - name: dir
+          in: query
+          type: string
+          description: query parameter dir.
+        - name: limit
+          in: query
+          type: integer
+          description: query parameter limit.
+        - name: next
+          in: query
+          type: string
+          description: query parameter next.
+        - name: prev
+          in: query
+          type: string
+          description: query parameter prev.
+    - name: attempts-id
+      path: /attempts/{id}
+      operations:
+      - name: getattempt
+        method: GET
+        description: Retrieve an attempt
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: path parameter id.
+          required: true
+  exposes:
+  - type: rest
+    namespace: hookdeck-attempts-rest
+    port: 8080
+    description: REST adapter for Hookdeck Admin REST API — Attempts. One resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/attempts
+      name: attempts
+      description: REST surface for attempts.
+      operations:
+      - method: GET
+        name: getattempts
+        description: Retrieve attempts
+        call: hookdeck-attempts.getattempts
+        with:
+          id: rest.id
+          event_id: rest.event_id
+          order_by: rest.order_by
+          dir: rest.dir
+          limit: rest.limit
+          next: rest.next
+          prev: rest.prev
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/attempts/{id}
+      name: attempts-id
+      description: REST surface for attempts-id.
+      operations:
+      - method: GET
+        name: getattempt
+        description: Retrieve an attempt
+        call: hookdeck-attempts.getattempt
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: hookdeck-attempts-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Hookdeck Admin REST API — Attempts. One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: hookdeck-getattempts
+      description: Retrieve attempts
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hookdeck-attempts.getattempts
+      with:
+        id: tools.id
+        event_id: tools.event_id
+        order_by: tools.order_by
+        dir: tools.dir
+        limit: tools.limit
+        next: tools.next
+        prev: tools.prev
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-getattempt
+      description: Retrieve an attempt
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hookdeck-attempts.getattempt
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.

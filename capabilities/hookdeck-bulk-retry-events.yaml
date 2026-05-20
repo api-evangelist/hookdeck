@@ -1,0 +1,306 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Hookdeck Admin REST API — Bulk retry events
+  description: 'Hookdeck Admin REST API — Bulk retry events. 5 operations. Lead operation: Retrieve events bulk retries. Self-contained Naftiko capability covering one business surface.'
+  tags:
+  - Hookdeck
+  - Bulk retry events
+  created: '2026-05-20'
+  modified: '2026-05-20'
+binds:
+- namespace: env
+  keys:
+    HOOKDECK_API_KEY: HOOKDECK_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: hookdeck-bulk-retry-events
+    baseUri: https://api.hookdeck.com/2025-07-01
+    description: Hookdeck Admin REST API — Bulk retry events business capability. Self-contained, no shared references.
+    resources:
+    - name: bulk-events-retry
+      path: /bulk/events/retry
+      operations:
+      - name: geteventbulkretries
+        method: GET
+        description: Retrieve events bulk retries
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: cancelled_at
+          in: query
+          type: string
+          description: query parameter cancelled_at.
+        - name: completed_at
+          in: query
+          type: string
+          description: query parameter completed_at.
+        - name: created_at
+          in: query
+          type: string
+          description: query parameter created_at.
+        - name: id
+          in: query
+          type: string
+          description: query parameter id.
+        - name: query
+          in: query
+          type: object
+          description: query parameter query.
+        - name: query_partial_match
+          in: query
+          type: boolean
+          description: query parameter query_partial_match.
+        - name: in_progress
+          in: query
+          type: boolean
+          description: query parameter in_progress.
+        - name: order_by
+          in: query
+          type: string
+          description: query parameter order_by.
+        - name: dir
+          in: query
+          type: string
+          description: query parameter dir.
+        - name: limit
+          in: query
+          type: integer
+          description: query parameter limit.
+        - name: next
+          in: query
+          type: string
+          description: query parameter next.
+        - name: prev
+          in: query
+          type: string
+          description: query parameter prev.
+      - name: createeventbulkretry
+        method: POST
+        description: Create events bulk retry
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: bulk-events-retry-plan
+      path: /bulk/events/retry/plan
+      operations:
+      - name: generateeventbulkretryplan
+        method: GET
+        description: Generate events bulk retry plan
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: query
+          in: query
+          type: object
+          description: query parameter query.
+    - name: bulk-events-retry-id
+      path: /bulk/events/retry/{id}
+      operations:
+      - name: geteventbulkretry
+        method: GET
+        description: Retrieve events bulk retry
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: path parameter id.
+          required: true
+    - name: bulk-events-retry-id-cancel
+      path: /bulk/events/retry/{id}/cancel
+      operations:
+      - name: canceleventbulkretry
+        method: POST
+        description: Cancel events bulk retry
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: path parameter id.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: hookdeck-bulk-retry-events-rest
+    port: 8080
+    description: REST adapter for Hookdeck Admin REST API — Bulk retry events. One resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/bulk/events/retry
+      name: bulk-events-retry
+      description: REST surface for bulk-events-retry.
+      operations:
+      - method: GET
+        name: geteventbulkretries
+        description: Retrieve events bulk retries
+        call: hookdeck-bulk-retry-events.geteventbulkretries
+        with:
+          cancelled_at: rest.cancelled_at
+          completed_at: rest.completed_at
+          created_at: rest.created_at
+          id: rest.id
+          query: rest.query
+          query_partial_match: rest.query_partial_match
+          in_progress: rest.in_progress
+          order_by: rest.order_by
+          dir: rest.dir
+          limit: rest.limit
+          next: rest.next
+          prev: rest.prev
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createeventbulkretry
+        description: Create events bulk retry
+        call: hookdeck-bulk-retry-events.createeventbulkretry
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/bulk/events/retry/plan
+      name: bulk-events-retry-plan
+      description: REST surface for bulk-events-retry-plan.
+      operations:
+      - method: GET
+        name: generateeventbulkretryplan
+        description: Generate events bulk retry plan
+        call: hookdeck-bulk-retry-events.generateeventbulkretryplan
+        with:
+          query: rest.query
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/bulk/events/retry/{id}
+      name: bulk-events-retry-id
+      description: REST surface for bulk-events-retry-id.
+      operations:
+      - method: GET
+        name: geteventbulkretry
+        description: Retrieve events bulk retry
+        call: hookdeck-bulk-retry-events.geteventbulkretry
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/bulk/events/retry/{id}/cancel
+      name: bulk-events-retry-id-cancel
+      description: REST surface for bulk-events-retry-id-cancel.
+      operations:
+      - method: POST
+        name: canceleventbulkretry
+        description: Cancel events bulk retry
+        call: hookdeck-bulk-retry-events.canceleventbulkretry
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: hookdeck-bulk-retry-events-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Hookdeck Admin REST API — Bulk retry events. One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: hookdeck-geteventbulkretries
+      description: Retrieve events bulk retries
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hookdeck-bulk-retry-events.geteventbulkretries
+      with:
+        cancelled_at: tools.cancelled_at
+        completed_at: tools.completed_at
+        created_at: tools.created_at
+        id: tools.id
+        query: tools.query
+        query_partial_match: tools.query_partial_match
+        in_progress: tools.in_progress
+        order_by: tools.order_by
+        dir: tools.dir
+        limit: tools.limit
+        next: tools.next
+        prev: tools.prev
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-createeventbulkretry
+      description: Create events bulk retry
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hookdeck-bulk-retry-events.createeventbulkretry
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-generateeventbulkretryplan
+      description: Generate events bulk retry plan
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hookdeck-bulk-retry-events.generateeventbulkretryplan
+      with:
+        query: tools.query
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-geteventbulkretry
+      description: Retrieve events bulk retry
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hookdeck-bulk-retry-events.geteventbulkretry
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-canceleventbulkretry
+      description: Cancel events bulk retry
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hookdeck-bulk-retry-events.canceleventbulkretry
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

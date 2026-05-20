@@ -1,0 +1,124 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Alert Slack on Hookdeck delivery issues
+  description: When Hookdeck flags a delivery issue (repeated 5xx, schema mismatch, signature failure), post a structured alert to the right Slack channel so the on-call engineer can triage with one click.
+  tags:
+  - Hookdeck
+  - Integration
+  - Collaboration
+  - slack
+  created: '2026-05-20'
+  modified: '2026-05-20'
+binds:
+- namespace: env
+  keys:
+    HOOKDECK_API_KEY: HOOKDECK_API_KEY
+    SLACK_API_KEY: SLACK_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: hookdeck
+    baseUri: https://api.hookdeck.com/2025-07-01
+    description: Hookdeck API operations consumed by this integration.
+    resources:
+    - name: issues
+      path: /issues
+      operations:
+      - name: getissues
+        method: GET
+        description: List open Hookdeck delivery issues.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters: []
+    - name: issues-id
+      path: /issues/{id}
+      operations:
+      - name: getissue
+        method: GET
+        description: Get the full payload of a single issue for the alert body.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Path parameter id.
+          required: true
+    - name: issue-triggers
+      path: /issue-triggers
+      operations:
+      - name: createissuetrigger
+        method: POST
+        description: Create an issue trigger that fires when matching delivery issues appear.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  - type: http
+    namespace: slack
+    baseUri: https://slack.com
+    description: Slack Web API operations consumed by this integration.
+    resources:
+    - name: api-chat-postmessage
+      path: /api/chat.postMessage
+      operations:
+      - name: postmessage
+        method: POST
+        description: 'Slack Web API: postMessage'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: mcp
+    namespace: hookdeck-slack-mcp
+    description: MCP adapter for the hookdeck-slack integration.
+    tools:
+    - name: hookdeck_slack
+      description: Execute the hookdeck slack integration end-to-end.
+      inputSchema:
+        type: object
+        properties:
+          trigger_event:
+            type: object
+            description: Triggering event payload.
+        required:
+        - trigger_event
+  - type: rest
+    namespace: hookdeck-slack-rest
+    port: 8080
+    description: REST adapter for the hookdeck-slack integration.
+    resources:
+    - path: /hookdeck-slack
+      name: hookdeck-slack
+      description: REST surface for the hookdeck-slack integration.
+      operations:
+      - method: POST
+        name: trigger
+        description: Trigger the hookdeck-slack integration.
+        call: hookdeck_slack
+        with:
+          trigger_event: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.

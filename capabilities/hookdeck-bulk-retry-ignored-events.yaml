@@ -1,0 +1,306 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Hookdeck Admin REST API — Bulk retry ignored events
+  description: 'Hookdeck Admin REST API — Bulk retry ignored events. 5 operations. Lead operation: Retrieve ignored events bulk retries. Self-contained Naftiko capability covering one business surface.'
+  tags:
+  - Hookdeck
+  - Bulk retry ignored events
+  created: '2026-05-20'
+  modified: '2026-05-20'
+binds:
+- namespace: env
+  keys:
+    HOOKDECK_API_KEY: HOOKDECK_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: hookdeck-bulk-retry-ignored-events
+    baseUri: https://api.hookdeck.com/2025-07-01
+    description: Hookdeck Admin REST API — Bulk retry ignored events business capability. Self-contained, no shared references.
+    resources:
+    - name: bulk-ignored-events-retry
+      path: /bulk/ignored-events/retry
+      operations:
+      - name: getignoredeventbulkretries
+        method: GET
+        description: Retrieve ignored events bulk retries
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: cancelled_at
+          in: query
+          type: string
+          description: query parameter cancelled_at.
+        - name: completed_at
+          in: query
+          type: string
+          description: query parameter completed_at.
+        - name: created_at
+          in: query
+          type: string
+          description: query parameter created_at.
+        - name: id
+          in: query
+          type: string
+          description: query parameter id.
+        - name: query
+          in: query
+          type: object
+          description: query parameter query.
+        - name: query_partial_match
+          in: query
+          type: boolean
+          description: query parameter query_partial_match.
+        - name: in_progress
+          in: query
+          type: boolean
+          description: query parameter in_progress.
+        - name: order_by
+          in: query
+          type: string
+          description: query parameter order_by.
+        - name: dir
+          in: query
+          type: string
+          description: query parameter dir.
+        - name: limit
+          in: query
+          type: integer
+          description: query parameter limit.
+        - name: next
+          in: query
+          type: string
+          description: query parameter next.
+        - name: prev
+          in: query
+          type: string
+          description: query parameter prev.
+      - name: createignoredeventbulkretry
+        method: POST
+        description: Create ignored events bulk retry
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: bulk-ignored-events-retry-plan
+      path: /bulk/ignored-events/retry/plan
+      operations:
+      - name: generateignoredeventbulkretryplan
+        method: GET
+        description: Generate ignored events bulk retry plan
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: query
+          in: query
+          type: object
+          description: query parameter query.
+    - name: bulk-ignored-events-retry-id
+      path: /bulk/ignored-events/retry/{id}
+      operations:
+      - name: getignoredeventbulkretry
+        method: GET
+        description: Retrieve ignored events bulk retry
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: path parameter id.
+          required: true
+    - name: bulk-ignored-events-retry-id-cancel
+      path: /bulk/ignored-events/retry/{id}/cancel
+      operations:
+      - name: cancelignoredeventbulkretry
+        method: POST
+        description: Cancel ignored events bulk retry
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: path parameter id.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: hookdeck-bulk-retry-ignored-events-rest
+    port: 8080
+    description: REST adapter for Hookdeck Admin REST API — Bulk retry ignored events. One resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/bulk/ignored-events/retry
+      name: bulk-ignored-events-retry
+      description: REST surface for bulk-ignored-events-retry.
+      operations:
+      - method: GET
+        name: getignoredeventbulkretries
+        description: Retrieve ignored events bulk retries
+        call: hookdeck-bulk-retry-ignored-events.getignoredeventbulkretries
+        with:
+          cancelled_at: rest.cancelled_at
+          completed_at: rest.completed_at
+          created_at: rest.created_at
+          id: rest.id
+          query: rest.query
+          query_partial_match: rest.query_partial_match
+          in_progress: rest.in_progress
+          order_by: rest.order_by
+          dir: rest.dir
+          limit: rest.limit
+          next: rest.next
+          prev: rest.prev
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createignoredeventbulkretry
+        description: Create ignored events bulk retry
+        call: hookdeck-bulk-retry-ignored-events.createignoredeventbulkretry
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/bulk/ignored-events/retry/plan
+      name: bulk-ignored-events-retry-plan
+      description: REST surface for bulk-ignored-events-retry-plan.
+      operations:
+      - method: GET
+        name: generateignoredeventbulkretryplan
+        description: Generate ignored events bulk retry plan
+        call: hookdeck-bulk-retry-ignored-events.generateignoredeventbulkretryplan
+        with:
+          query: rest.query
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/bulk/ignored-events/retry/{id}
+      name: bulk-ignored-events-retry-id
+      description: REST surface for bulk-ignored-events-retry-id.
+      operations:
+      - method: GET
+        name: getignoredeventbulkretry
+        description: Retrieve ignored events bulk retry
+        call: hookdeck-bulk-retry-ignored-events.getignoredeventbulkretry
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/bulk/ignored-events/retry/{id}/cancel
+      name: bulk-ignored-events-retry-id-cancel
+      description: REST surface for bulk-ignored-events-retry-id-cancel.
+      operations:
+      - method: POST
+        name: cancelignoredeventbulkretry
+        description: Cancel ignored events bulk retry
+        call: hookdeck-bulk-retry-ignored-events.cancelignoredeventbulkretry
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: hookdeck-bulk-retry-ignored-events-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Hookdeck Admin REST API — Bulk retry ignored events. One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: hookdeck-getignoredeventbulkretries
+      description: Retrieve ignored events bulk retries
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hookdeck-bulk-retry-ignored-events.getignoredeventbulkretries
+      with:
+        cancelled_at: tools.cancelled_at
+        completed_at: tools.completed_at
+        created_at: tools.created_at
+        id: tools.id
+        query: tools.query
+        query_partial_match: tools.query_partial_match
+        in_progress: tools.in_progress
+        order_by: tools.order_by
+        dir: tools.dir
+        limit: tools.limit
+        next: tools.next
+        prev: tools.prev
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-createignoredeventbulkretry
+      description: Create ignored events bulk retry
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hookdeck-bulk-retry-ignored-events.createignoredeventbulkretry
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-generateignoredeventbulkretryplan
+      description: Generate ignored events bulk retry plan
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hookdeck-bulk-retry-ignored-events.generateignoredeventbulkretryplan
+      with:
+        query: tools.query
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-getignoredeventbulkretry
+      description: Retrieve ignored events bulk retry
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hookdeck-bulk-retry-ignored-events.getignoredeventbulkretry
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-cancelignoredeventbulkretry
+      description: Cancel ignored events bulk retry
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hookdeck-bulk-retry-ignored-events.cancelignoredeventbulkretry
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

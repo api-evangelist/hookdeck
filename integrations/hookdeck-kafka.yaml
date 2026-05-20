@@ -1,0 +1,134 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Bridge Hookdeck deliveries into Kafka via REST proxy
+  description: Use Hookdeck as the public webhook ingress and forward to a Confluent Kafka REST Proxy destination so every external event lands in the company's event-streaming backbone with one durable hop.
+  tags:
+  - Hookdeck
+  - Integration
+  - Streaming
+  - kafka
+  created: '2026-05-20'
+  modified: '2026-05-20'
+binds:
+- namespace: env
+  keys:
+    HOOKDECK_API_KEY: HOOKDECK_API_KEY
+    KAFKA_API_KEY: KAFKA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: hookdeck
+    baseUri: https://api.hookdeck.com/2025-07-01
+    description: Hookdeck API operations consumed by this integration.
+    resources:
+    - name: destinations
+      path: /destinations
+      operations:
+      - name: createdestination
+        method: POST
+        description: Create the Kafka REST Proxy destination.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: connections
+      path: /connections
+      operations:
+      - name: createconnection
+        method: POST
+        description: Connect the source to the Kafka destination.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: transformations
+      path: /transformations
+      operations:
+      - name: createtransformation
+        method: POST
+        description: Transform inbound events into the Kafka topic payload shape.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  - type: http
+    namespace: kafka
+    baseUri: https://your-kafka-rest-proxy.example.com
+    description: Kafka REST Proxy operations consumed by this integration.
+    resources:
+    - name: topics-topic
+      path: /topics/{topic}
+      operations:
+      - name: producerecords
+        method: POST
+        description: 'Kafka REST Proxy: produceRecords'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: topic
+          in: path
+          type: string
+          description: Path parameter topic.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: mcp
+    namespace: hookdeck-kafka-mcp
+    description: MCP adapter for the hookdeck-kafka integration.
+    tools:
+    - name: hookdeck_kafka
+      description: Execute the hookdeck kafka integration end-to-end.
+      inputSchema:
+        type: object
+        properties:
+          trigger_event:
+            type: object
+            description: Triggering event payload.
+        required:
+        - trigger_event
+  - type: rest
+    namespace: hookdeck-kafka-rest
+    port: 8080
+    description: REST adapter for the hookdeck-kafka integration.
+    resources:
+    - path: /hookdeck-kafka
+      name: hookdeck-kafka
+      description: REST surface for the hookdeck-kafka integration.
+      operations:
+      - method: POST
+        name: trigger
+        description: Trigger the hookdeck-kafka integration.
+        call: hookdeck_kafka
+        with:
+          trigger_event: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.

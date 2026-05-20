@@ -1,0 +1,313 @@
+# Curated top Hookdeck integrations grouped by category.
+# Each entry becomes one Naftiko capability YAML in integrations/.
+# Hookdeck is an event gateway — sources receive webhooks, connections route to
+# destinations, events get retried / inspected / triaged. Categories reflect the
+# systems that webhook teams routinely pair with Hookdeck.
+# Hookdeck Admin REST API base URI: https://api.hookdeck.com/2025-07-01
+
+# Payments / webhook resilience (1)
+- partner: stripe
+  name: Make Stripe webhooks resilient through Hookdeck
+  category: Payments
+  use_case: Route every Stripe webhook event through a Hookdeck source, fan out to internal destinations, and auto-retry on destination failure so a Stripe outage on your side never silently drops a charge.succeeded or invoice.paid event.
+  partner_baseUri: https://api.stripe.com
+  partner_api: Stripe API
+  provider_ops:
+    - method: POST
+      path: /sources
+      name: createSource
+      description: Create a Hookdeck source that exposes a stable URL for Stripe to deliver webhooks to.
+    - method: POST
+      path: /destinations
+      name: createDestination
+      description: Create a destination pointing at the internal Stripe-handler service.
+    - method: POST
+      path: /connections
+      name: createConnection
+      description: Wire the Stripe source to the internal destination.
+    - method: POST
+      path: /events/{id}/retry
+      name: retryEvent
+      description: Manually retry a failed Stripe webhook event.
+  partner_ops:
+    - method: POST
+      path: /v1/webhook_endpoints
+      name: createWebhookEndpoint
+    - method: GET
+      path: /v1/events/{id}
+      name: getEvent
+
+# Commerce (1)
+- partner: shopify
+  name: Buffer Shopify webhooks through Hookdeck for replay and audit
+  category: Commerce
+  use_case: Ingest every Shopify order, fulfillment, and refund webhook into a Hookdeck source so the events team can replay history, debug missed deliveries, and rate-limit fan-out into back-office systems.
+  partner_baseUri: https://yourshop.myshopify.com
+  partner_api: Shopify Admin API
+  provider_ops:
+    - method: POST
+      path: /sources
+      name: createSource
+      description: Create a Hookdeck source URL for Shopify webhooks.
+    - method: GET
+      path: /events
+      name: getEvents
+      description: List recent Shopify-origin events for replay or audit.
+    - method: POST
+      path: /events/{id}/retry
+      name: retryEvent
+      description: Replay a specific Shopify webhook event.
+  partner_ops:
+    - method: POST
+      path: /admin/api/2024-10/webhooks.json
+      name: createWebhook
+
+# Communications (1)
+- partner: twilio
+  name: Route Twilio status callbacks through Hookdeck
+  category: Communications
+  use_case: Use Hookdeck as the public ingress for Twilio SMS / voice status callbacks, then fan out to the messaging service plus an analytics destination, with automatic retry on 5xx so delivery state never gets lost.
+  partner_baseUri: https://api.twilio.com
+  partner_api: Twilio REST API
+  provider_ops:
+    - method: POST
+      path: /sources
+      name: createSource
+      description: Create a Hookdeck source URL for Twilio status callbacks.
+    - method: POST
+      path: /destinations
+      name: createDestination
+      description: Create the destination handler for delivery receipts.
+    - method: POST
+      path: /connections
+      name: createConnection
+      description: Connect the Twilio source to the destination.
+  partner_ops:
+    - method: POST
+      path: /2010-04-01/Accounts/{AccountSid}/Messages.json
+      name: createMessage
+
+# Email (1)
+- partner: sendgrid
+  name: Capture SendGrid event webhooks with Hookdeck
+  category: Email
+  use_case: Point the SendGrid Event Webhook at a Hookdeck source, transform the payload with a Hookdeck transformation, and fan out delivery, open, click, and bounce events to both the data warehouse and the CRM.
+  partner_baseUri: https://api.sendgrid.com
+  partner_api: SendGrid Web API
+  provider_ops:
+    - method: POST
+      path: /sources
+      name: createSource
+      description: Create a Hookdeck source for the SendGrid event webhook.
+    - method: POST
+      path: /transformations
+      name: createTransformation
+      description: Create a transformation that normalizes SendGrid event payloads.
+    - method: POST
+      path: /connections
+      name: createConnection
+      description: Connect the SendGrid source to a normalized-events destination.
+  partner_ops:
+    - method: PATCH
+      path: /v3/user/webhooks/event/settings
+      name: updateEventWebhookSettings
+
+# Collaboration (1)
+- partner: slack
+  name: Alert Slack on Hookdeck delivery issues
+  category: Collaboration
+  use_case: When Hookdeck flags a delivery issue (repeated 5xx, schema mismatch, signature failure), post a structured alert to the right Slack channel so the on-call engineer can triage with one click.
+  partner_baseUri: https://slack.com
+  partner_api: Slack Web API
+  provider_ops:
+    - method: GET
+      path: /issues
+      name: getIssues
+      description: List open Hookdeck delivery issues.
+    - method: GET
+      path: /issues/{id}
+      name: getIssue
+      description: Get the full payload of a single issue for the alert body.
+    - method: POST
+      path: /issue-triggers
+      name: createIssueTrigger
+      description: Create an issue trigger that fires when matching delivery issues appear.
+  partner_ops:
+    - method: POST
+      path: /api/chat.postMessage
+      name: postMessage
+
+# Observability (1)
+- partner: datadog
+  name: Stream Hookdeck delivery metrics into Datadog
+  category: Observability
+  use_case: Pull Hookdeck event, attempt, and queue-depth metrics on an interval and forward them to Datadog as custom metrics so the SRE team can dashboard webhook health alongside the rest of the platform.
+  partner_baseUri: https://api.datadoghq.com
+  partner_api: Datadog API
+  provider_ops:
+    - method: GET
+      path: /metrics/events
+      name: queryEventMetrics
+      description: Query Hookdeck event metrics (success / failed / paused).
+    - method: GET
+      path: /metrics/attempts
+      name: queryAttemptMetrics
+      description: Query attempt metrics including retry latency.
+    - method: GET
+      path: /metrics/queue-depth
+      name: queryQueueDepthMetrics
+      description: Query current queue depth per destination.
+  partner_ops:
+    - method: POST
+      path: /api/v2/series
+      name: submitMetrics
+
+# Incident response (1)
+- partner: pagerduty
+  name: Page on-call from Hookdeck delivery issues
+  category: Incident response
+  use_case: When a Hookdeck issue trigger fires (e.g. a destination has been failing for N minutes), create a PagerDuty incident with the failing connection, recent event ids, and a deep link back to Hookdeck so the responder lands on context.
+  partner_baseUri: https://events.pagerduty.com
+  partner_api: PagerDuty Events API
+  provider_ops:
+    - method: GET
+      path: /issues
+      name: getIssues
+      description: List open Hookdeck delivery issues.
+    - method: GET
+      path: /issues/{id}
+      name: getIssue
+      description: Get the failing connection and recent attempts for the page body.
+    - method: POST
+      path: /bulk/events/retry
+      name: createEventBulkRetry
+      description: Optionally kick off a bulk retry once the underlying outage is resolved.
+  partner_ops:
+    - method: POST
+      path: /v2/enqueue
+      name: createIncident
+
+# Queueing (1)
+- partner: aws-sqs
+  name: Fan Hookdeck events into AWS SQS for downstream workers
+  category: Queueing
+  use_case: For high-throughput sources, point a Hookdeck destination at an AWS SQS-backed HTTPS endpoint so internal workers can consume events at their own pace with native SQS replay, DLQ, and visibility-timeout semantics.
+  partner_baseUri: https://sqs.us-east-1.amazonaws.com
+  partner_api: AWS SQS API
+  provider_ops:
+    - method: POST
+      path: /destinations
+      name: createDestination
+      description: Create the SQS-facing Hookdeck destination.
+    - method: POST
+      path: /connections
+      name: createConnection
+      description: Connect a source to the SQS destination.
+    - method: POST
+      path: /transformations
+      name: createTransformation
+      description: Create a transformation that maps the raw event into the SQS message shape.
+  partner_ops:
+    - method: POST
+      path: /
+      name: sendMessage
+
+# Streaming (1)
+- partner: kafka
+  name: Bridge Hookdeck deliveries into Kafka via REST proxy
+  category: Streaming
+  use_case: Use Hookdeck as the public webhook ingress and forward to a Confluent Kafka REST Proxy destination so every external event lands in the company's event-streaming backbone with one durable hop.
+  partner_baseUri: https://your-kafka-rest-proxy.example.com
+  partner_api: Kafka REST Proxy
+  provider_ops:
+    - method: POST
+      path: /destinations
+      name: createDestination
+      description: Create the Kafka REST Proxy destination.
+    - method: POST
+      path: /connections
+      name: createConnection
+      description: Connect the source to the Kafka destination.
+    - method: POST
+      path: /transformations
+      name: createTransformation
+      description: Transform inbound events into the Kafka topic payload shape.
+  partner_ops:
+    - method: POST
+      path: /topics/{topic}
+      name: produceRecords
+
+# AI triage (1)
+- partner: anthropic
+  name: Triage Hookdeck delivery issues with Claude
+  category: AI
+  use_case: When a Hookdeck issue surfaces a recurring delivery failure, feed the failing event payload and recent attempt history to Claude for root-cause classification and a suggested fix, then attach the suggestion to the issue.
+  partner_baseUri: https://api.anthropic.com
+  partner_api: Anthropic Messages API
+  provider_ops:
+    - method: GET
+      path: /issues/{id}
+      name: getIssue
+      description: Get the delivery issue and failing attempts as context.
+    - method: GET
+      path: /events/{id}/raw_body
+      name: getEventRawBody
+      description: Pull the raw event body for the model to inspect.
+    - method: PUT
+      path: /issues/{id}
+      name: updateIssue
+      description: Write the suggested fix back onto the Hookdeck issue.
+  partner_ops:
+    - method: POST
+      path: /v1/messages
+      name: createMessage
+
+# Issue tracking (1)
+- partner: linear
+  name: Turn Hookdeck delivery issues into Linear tickets
+  category: Issue tracking
+  use_case: When Hookdeck flags a persistent delivery problem, create a Linear issue in the right team with the failing connection, destination, event sample, and a deep link back to Hookdeck so the fix has a tracked owner.
+  partner_baseUri: https://api.linear.app
+  partner_api: Linear GraphQL API
+  provider_ops:
+    - method: GET
+      path: /issues
+      name: getIssues
+      description: List open Hookdeck delivery issues to sync.
+    - method: GET
+      path: /issues/{id}
+      name: getIssue
+      description: Get full issue context including the failing connection.
+    - method: PUT
+      path: /issues/{id}
+      name: updateIssue
+      description: Mark the Hookdeck issue as tracked once the Linear ticket is filed.
+  partner_ops:
+    - method: POST
+      path: /graphql
+      name: createIssue
+
+# CI / workflows (1)
+- partner: github
+  name: Trigger GitHub Actions workflows from Hookdeck events
+  category: CI / Workflows
+  use_case: Use Hookdeck as the durable entrypoint for inbound webhooks (vendor events, partner callbacks, IoT pings) and route them to a GitHub Actions repository-dispatch destination so workflows fire reliably with full retry and replay history.
+  partner_baseUri: https://api.github.com
+  partner_api: GitHub REST API
+  provider_ops:
+    - method: POST
+      path: /destinations
+      name: createDestination
+      description: Create a destination pointing at the GitHub repository-dispatch endpoint.
+    - method: POST
+      path: /connections
+      name: createConnection
+      description: Connect the inbound source to the GitHub destination.
+    - method: POST
+      path: /transformations
+      name: createTransformation
+      description: Transform the incoming event into a repository-dispatch payload.
+  partner_ops:
+    - method: POST
+      path: /repos/{owner}/{repo}/dispatches
+      name: createRepositoryDispatch

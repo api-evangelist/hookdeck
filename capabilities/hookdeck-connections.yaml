@@ -1,0 +1,693 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Hookdeck Admin REST API — Connections
+  description: 'Hookdeck Admin REST API — Connections. 13 operations. Lead operation: Retrieve connections. Self-contained Naftiko capability covering one business surface.'
+  tags:
+  - Hookdeck
+  - Connections
+  created: '2026-05-20'
+  modified: '2026-05-20'
+binds:
+- namespace: env
+  keys:
+    HOOKDECK_API_KEY: HOOKDECK_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: hookdeck-connections
+    baseUri: https://api.hookdeck.com/2025-07-01
+    description: Hookdeck Admin REST API — Connections business capability. Self-contained, no shared references.
+    resources:
+    - name: connections
+      path: /connections
+      operations:
+      - name: getconnections
+        method: GET
+        description: Retrieve connections
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: query
+          type: string
+          description: query parameter id.
+        - name: name
+          in: query
+          type: string
+          description: query parameter name.
+        - name: destination_id
+          in: query
+          type: string
+          description: query parameter destination_id.
+        - name: source_id
+          in: query
+          type: string
+          description: query parameter source_id.
+        - name: disabled
+          in: query
+          type: boolean
+          description: query parameter disabled.
+        - name: disabled_at
+          in: query
+          type: string
+          description: query parameter disabled_at.
+        - name: full_name
+          in: query
+          type: string
+          description: query parameter full_name.
+        - name: paused_at
+          in: query
+          type: string
+          description: query parameter paused_at.
+        - name: order_by
+          in: query
+          type: string
+          description: query parameter order_by.
+        - name: dir
+          in: query
+          type: string
+          description: query parameter dir.
+        - name: limit
+          in: query
+          type: integer
+          description: query parameter limit.
+        - name: next
+          in: query
+          type: string
+          description: query parameter next.
+        - name: prev
+          in: query
+          type: string
+          description: query parameter prev.
+      - name: createconnection
+        method: POST
+        description: Create a connection
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: upsertconnection
+        method: PUT
+        description: Create/Update a connection
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: connections-count
+      path: /connections/count
+      operations:
+      - name: countconnections
+        method: GET
+        description: Count connections
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: destination_id
+          in: query
+          type: string
+          description: query parameter destination_id.
+        - name: source_id
+          in: query
+          type: string
+          description: query parameter source_id.
+        - name: disabled
+          in: query
+          type: boolean
+          description: query parameter disabled.
+        - name: disabled_at
+          in: query
+          type: string
+          description: query parameter disabled_at.
+        - name: paused_at
+          in: query
+          type: string
+          description: query parameter paused_at.
+    - name: connections-id
+      path: /connections/{id}
+      operations:
+      - name: getconnection
+        method: GET
+        description: Retrieve a connection
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: path parameter id.
+          required: true
+      - name: updateconnection
+        method: PUT
+        description: Update a connection
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: path parameter id.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deleteconnection
+        method: DELETE
+        description: Delete a connection
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: path parameter id.
+          required: true
+    - name: connections-id-disable
+      path: /connections/{id}/disable
+      operations:
+      - name: disableconnection
+        method: PUT
+        description: Disable a connection
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: path parameter id.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: connections-id-archive
+      path: /connections/{id}/archive
+      operations:
+      - name: disableconnectionarchive
+        method: PUT
+        description: Disable a connection
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: path parameter id.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: connections-id-enable
+      path: /connections/{id}/enable
+      operations:
+      - name: enableconnection
+        method: PUT
+        description: Enable a connection
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: path parameter id.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: connections-id-unarchive
+      path: /connections/{id}/unarchive
+      operations:
+      - name: enableconnectionunarchive
+        method: PUT
+        description: Enable a connection
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: path parameter id.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: connections-id-pause
+      path: /connections/{id}/pause
+      operations:
+      - name: pauseconnection
+        method: PUT
+        description: Pause a connection
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: path parameter id.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: connections-id-unpause
+      path: /connections/{id}/unpause
+      operations:
+      - name: unpauseconnection
+        method: PUT
+        description: Unpause a connection
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: path parameter id.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+  exposes:
+  - type: rest
+    namespace: hookdeck-connections-rest
+    port: 8080
+    description: REST adapter for Hookdeck Admin REST API — Connections. One resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/connections
+      name: connections
+      description: REST surface for connections.
+      operations:
+      - method: GET
+        name: getconnections
+        description: Retrieve connections
+        call: hookdeck-connections.getconnections
+        with:
+          id: rest.id
+          name: rest.name
+          destination_id: rest.destination_id
+          source_id: rest.source_id
+          disabled: rest.disabled
+          disabled_at: rest.disabled_at
+          full_name: rest.full_name
+          paused_at: rest.paused_at
+          order_by: rest.order_by
+          dir: rest.dir
+          limit: rest.limit
+          next: rest.next
+          prev: rest.prev
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createconnection
+        description: Create a connection
+        call: hookdeck-connections.createconnection
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: upsertconnection
+        description: Create/Update a connection
+        call: hookdeck-connections.upsertconnection
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/connections/count
+      name: connections-count
+      description: REST surface for connections-count.
+      operations:
+      - method: GET
+        name: countconnections
+        description: Count connections
+        call: hookdeck-connections.countconnections
+        with:
+          destination_id: rest.destination_id
+          source_id: rest.source_id
+          disabled: rest.disabled
+          disabled_at: rest.disabled_at
+          paused_at: rest.paused_at
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/connections/{id}
+      name: connections-id
+      description: REST surface for connections-id.
+      operations:
+      - method: GET
+        name: getconnection
+        description: Retrieve a connection
+        call: hookdeck-connections.getconnection
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updateconnection
+        description: Update a connection
+        call: hookdeck-connections.updateconnection
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteconnection
+        description: Delete a connection
+        call: hookdeck-connections.deleteconnection
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/connections/{id}/disable
+      name: connections-id-disable
+      description: REST surface for connections-id-disable.
+      operations:
+      - method: PUT
+        name: disableconnection
+        description: Disable a connection
+        call: hookdeck-connections.disableconnection
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/connections/{id}/archive
+      name: connections-id-archive
+      description: REST surface for connections-id-archive.
+      operations:
+      - method: PUT
+        name: disableconnectionarchive
+        description: Disable a connection
+        call: hookdeck-connections.disableconnectionarchive
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/connections/{id}/enable
+      name: connections-id-enable
+      description: REST surface for connections-id-enable.
+      operations:
+      - method: PUT
+        name: enableconnection
+        description: Enable a connection
+        call: hookdeck-connections.enableconnection
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/connections/{id}/unarchive
+      name: connections-id-unarchive
+      description: REST surface for connections-id-unarchive.
+      operations:
+      - method: PUT
+        name: enableconnectionunarchive
+        description: Enable a connection
+        call: hookdeck-connections.enableconnectionunarchive
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/connections/{id}/pause
+      name: connections-id-pause
+      description: REST surface for connections-id-pause.
+      operations:
+      - method: PUT
+        name: pauseconnection
+        description: Pause a connection
+        call: hookdeck-connections.pauseconnection
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/connections/{id}/unpause
+      name: connections-id-unpause
+      description: REST surface for connections-id-unpause.
+      operations:
+      - method: PUT
+        name: unpauseconnection
+        description: Unpause a connection
+        call: hookdeck-connections.unpauseconnection
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: hookdeck-connections-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Hookdeck Admin REST API — Connections. One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: hookdeck-getconnections
+      description: Retrieve connections
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hookdeck-connections.getconnections
+      with:
+        id: tools.id
+        name: tools.name
+        destination_id: tools.destination_id
+        source_id: tools.source_id
+        disabled: tools.disabled
+        disabled_at: tools.disabled_at
+        full_name: tools.full_name
+        paused_at: tools.paused_at
+        order_by: tools.order_by
+        dir: tools.dir
+        limit: tools.limit
+        next: tools.next
+        prev: tools.prev
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-createconnection
+      description: Create a connection
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hookdeck-connections.createconnection
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-upsertconnection
+      description: Create/Update a connection
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: hookdeck-connections.upsertconnection
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-countconnections
+      description: Count connections
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hookdeck-connections.countconnections
+      with:
+        destination_id: tools.destination_id
+        source_id: tools.source_id
+        disabled: tools.disabled
+        disabled_at: tools.disabled_at
+        paused_at: tools.paused_at
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-getconnection
+      description: Retrieve a connection
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hookdeck-connections.getconnection
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-updateconnection
+      description: Update a connection
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: hookdeck-connections.updateconnection
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-deleteconnection
+      description: Delete a connection
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: hookdeck-connections.deleteconnection
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-disableconnection
+      description: Disable a connection
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: hookdeck-connections.disableconnection
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-disableconnectionarchive
+      description: Disable a connection
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: hookdeck-connections.disableconnectionarchive
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-enableconnection
+      description: Enable a connection
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: hookdeck-connections.enableconnection
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-enableconnectionunarchive
+      description: Enable a connection
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: hookdeck-connections.enableconnectionunarchive
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-pauseconnection
+      description: Pause a connection
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: hookdeck-connections.pauseconnection
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-unpauseconnection
+      description: Unpause a connection
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: hookdeck-connections.unpauseconnection
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

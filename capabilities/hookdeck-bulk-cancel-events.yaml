@@ -1,0 +1,257 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Hookdeck Admin REST API — Bulk cancel events
+  description: 'Hookdeck Admin REST API — Bulk cancel events. 4 operations. Lead operation: Retrieve events bulk cancels. Self-contained Naftiko capability covering one business surface.'
+  tags:
+  - Hookdeck
+  - Bulk cancel events
+  created: '2026-05-20'
+  modified: '2026-05-20'
+binds:
+- namespace: env
+  keys:
+    HOOKDECK_API_KEY: HOOKDECK_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: hookdeck-bulk-cancel-events
+    baseUri: https://api.hookdeck.com/2025-07-01
+    description: Hookdeck Admin REST API — Bulk cancel events business capability. Self-contained, no shared references.
+    resources:
+    - name: bulk-events-cancel
+      path: /bulk/events/cancel
+      operations:
+      - name: geteventbulkcancels
+        method: GET
+        description: Retrieve events bulk cancels
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: cancelled_at
+          in: query
+          type: string
+          description: query parameter cancelled_at.
+        - name: completed_at
+          in: query
+          type: string
+          description: query parameter completed_at.
+        - name: created_at
+          in: query
+          type: string
+          description: query parameter created_at.
+        - name: id
+          in: query
+          type: string
+          description: query parameter id.
+        - name: query
+          in: query
+          type: object
+          description: query parameter query.
+        - name: query_partial_match
+          in: query
+          type: boolean
+          description: query parameter query_partial_match.
+        - name: in_progress
+          in: query
+          type: boolean
+          description: query parameter in_progress.
+        - name: order_by
+          in: query
+          type: string
+          description: query parameter order_by.
+        - name: dir
+          in: query
+          type: string
+          description: query parameter dir.
+        - name: limit
+          in: query
+          type: integer
+          description: query parameter limit.
+        - name: next
+          in: query
+          type: string
+          description: query parameter next.
+        - name: prev
+          in: query
+          type: string
+          description: query parameter prev.
+      - name: createeventbulkcancel
+        method: POST
+        description: Create events bulk cancel
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: bulk-events-cancel-plan
+      path: /bulk/events/cancel/plan
+      operations:
+      - name: generateeventbulkcancelplan
+        method: GET
+        description: Generate events bulk cancel plan
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: query
+          in: query
+          type: object
+          description: query parameter query.
+    - name: bulk-events-cancel-id
+      path: /bulk/events/cancel/{id}
+      operations:
+      - name: geteventbulkcancel
+        method: GET
+        description: Retrieve events bulk cancel
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: path parameter id.
+          required: true
+  exposes:
+  - type: rest
+    namespace: hookdeck-bulk-cancel-events-rest
+    port: 8080
+    description: REST adapter for Hookdeck Admin REST API — Bulk cancel events. One resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/bulk/events/cancel
+      name: bulk-events-cancel
+      description: REST surface for bulk-events-cancel.
+      operations:
+      - method: GET
+        name: geteventbulkcancels
+        description: Retrieve events bulk cancels
+        call: hookdeck-bulk-cancel-events.geteventbulkcancels
+        with:
+          cancelled_at: rest.cancelled_at
+          completed_at: rest.completed_at
+          created_at: rest.created_at
+          id: rest.id
+          query: rest.query
+          query_partial_match: rest.query_partial_match
+          in_progress: rest.in_progress
+          order_by: rest.order_by
+          dir: rest.dir
+          limit: rest.limit
+          next: rest.next
+          prev: rest.prev
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createeventbulkcancel
+        description: Create events bulk cancel
+        call: hookdeck-bulk-cancel-events.createeventbulkcancel
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/bulk/events/cancel/plan
+      name: bulk-events-cancel-plan
+      description: REST surface for bulk-events-cancel-plan.
+      operations:
+      - method: GET
+        name: generateeventbulkcancelplan
+        description: Generate events bulk cancel plan
+        call: hookdeck-bulk-cancel-events.generateeventbulkcancelplan
+        with:
+          query: rest.query
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/bulk/events/cancel/{id}
+      name: bulk-events-cancel-id
+      description: REST surface for bulk-events-cancel-id.
+      operations:
+      - method: GET
+        name: geteventbulkcancel
+        description: Retrieve events bulk cancel
+        call: hookdeck-bulk-cancel-events.geteventbulkcancel
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: hookdeck-bulk-cancel-events-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Hookdeck Admin REST API — Bulk cancel events. One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: hookdeck-geteventbulkcancels
+      description: Retrieve events bulk cancels
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hookdeck-bulk-cancel-events.geteventbulkcancels
+      with:
+        cancelled_at: tools.cancelled_at
+        completed_at: tools.completed_at
+        created_at: tools.created_at
+        id: tools.id
+        query: tools.query
+        query_partial_match: tools.query_partial_match
+        in_progress: tools.in_progress
+        order_by: tools.order_by
+        dir: tools.dir
+        limit: tools.limit
+        next: tools.next
+        prev: tools.prev
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-createeventbulkcancel
+      description: Create events bulk cancel
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hookdeck-bulk-cancel-events.createeventbulkcancel
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-generateeventbulkcancelplan
+      description: Generate events bulk cancel plan
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hookdeck-bulk-cancel-events.generateeventbulkcancelplan
+      with:
+        query: tools.query
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-geteventbulkcancel
+      description: Retrieve events bulk cancel
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hookdeck-bulk-cancel-events.geteventbulkcancel
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.

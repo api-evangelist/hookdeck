@@ -1,0 +1,487 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Hookdeck Admin REST API — Metrics
+  description: 'Hookdeck Admin REST API — Metrics. 7 operations. Lead operation: Query request metrics. Self-contained Naftiko capability covering one business surface.'
+  tags:
+  - Hookdeck
+  - Metrics
+  created: '2026-05-20'
+  modified: '2026-05-20'
+binds:
+- namespace: env
+  keys:
+    HOOKDECK_API_KEY: HOOKDECK_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: hookdeck-metrics
+    baseUri: https://api.hookdeck.com/2025-07-01
+    description: Hookdeck Admin REST API — Metrics business capability. Self-contained, no shared references.
+    resources:
+    - name: metrics-requests
+      path: /metrics/requests
+      operations:
+      - name: queryrequestmetrics
+        method: GET
+        description: Query request metrics
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: date_range
+          in: query
+          type: object
+          description: query parameter date_range.
+        - name: granularity
+          in: query
+          type: string
+          description: query parameter granularity.
+        - name: filters
+          in: query
+          type: object
+          description: query parameter filters.
+        - name: measures
+          in: query
+          type: array
+          description: query parameter measures.
+        - name: dimensions
+          in: query
+          type: array
+          description: query parameter dimensions.
+    - name: metrics-events
+      path: /metrics/events
+      operations:
+      - name: queryeventmetrics
+        method: GET
+        description: Query event metrics
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: date_range
+          in: query
+          type: object
+          description: query parameter date_range.
+        - name: granularity
+          in: query
+          type: string
+          description: query parameter granularity.
+        - name: filters
+          in: query
+          type: object
+          description: query parameter filters.
+        - name: measures
+          in: query
+          type: array
+          description: query parameter measures.
+        - name: dimensions
+          in: query
+          type: array
+          description: query parameter dimensions.
+    - name: metrics-attempts
+      path: /metrics/attempts
+      operations:
+      - name: queryattemptmetrics
+        method: GET
+        description: Query attempt metrics
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: date_range
+          in: query
+          type: object
+          description: query parameter date_range.
+        - name: granularity
+          in: query
+          type: string
+          description: query parameter granularity.
+        - name: filters
+          in: query
+          type: object
+          description: query parameter filters.
+        - name: measures
+          in: query
+          type: array
+          description: query parameter measures.
+        - name: dimensions
+          in: query
+          type: array
+          description: query parameter dimensions.
+    - name: metrics-events-by-issue
+      path: /metrics/events-by-issue
+      operations:
+      - name: queryeventsbyissuemetrics
+        method: GET
+        description: Query event metrics grouped by individual issue
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: date_range
+          in: query
+          type: object
+          description: query parameter date_range.
+        - name: granularity
+          in: query
+          type: string
+          description: query parameter granularity.
+        - name: filters
+          in: query
+          type: object
+          description: query parameter filters.
+        - name: measures
+          in: query
+          type: array
+          description: query parameter measures.
+        - name: dimensions
+          in: query
+          type: array
+          description: query parameter dimensions.
+    - name: metrics-queue-depth
+      path: /metrics/queue-depth
+      operations:
+      - name: queryqueuedepthmetrics
+        method: GET
+        description: Query queue depth metrics
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: date_range
+          in: query
+          type: object
+          description: query parameter date_range.
+        - name: granularity
+          in: query
+          type: string
+          description: query parameter granularity.
+        - name: filters
+          in: query
+          type: object
+          description: query parameter filters.
+        - name: measures
+          in: query
+          type: array
+          description: query parameter measures.
+        - name: dimensions
+          in: query
+          type: array
+          description: query parameter dimensions.
+    - name: metrics-transformations
+      path: /metrics/transformations
+      operations:
+      - name: querytransformationmetrics
+        method: GET
+        description: Query transformation execution metrics
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: date_range
+          in: query
+          type: object
+          description: query parameter date_range.
+        - name: granularity
+          in: query
+          type: string
+          description: query parameter granularity.
+        - name: filters
+          in: query
+          type: object
+          description: query parameter filters.
+        - name: measures
+          in: query
+          type: array
+          description: query parameter measures.
+        - name: dimensions
+          in: query
+          type: array
+          description: query parameter dimensions.
+    - name: metrics-events-pending-timeseries
+      path: /metrics/events-pending-timeseries
+      operations:
+      - name: queryeventspendingtimeseriesmetrics
+        method: GET
+        description: Query events pending timeseries metrics
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: date_range
+          in: query
+          type: object
+          description: query parameter date_range.
+        - name: granularity
+          in: query
+          type: string
+          description: query parameter granularity.
+        - name: filters
+          in: query
+          type: object
+          description: query parameter filters.
+        - name: measures
+          in: query
+          type: array
+          description: query parameter measures.
+        - name: dimensions
+          in: query
+          type: array
+          description: query parameter dimensions.
+  exposes:
+  - type: rest
+    namespace: hookdeck-metrics-rest
+    port: 8080
+    description: REST adapter for Hookdeck Admin REST API — Metrics. One resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/metrics/requests
+      name: metrics-requests
+      description: REST surface for metrics-requests.
+      operations:
+      - method: GET
+        name: queryrequestmetrics
+        description: Query request metrics
+        call: hookdeck-metrics.queryrequestmetrics
+        with:
+          date_range: rest.date_range
+          granularity: rest.granularity
+          filters: rest.filters
+          measures: rest.measures
+          dimensions: rest.dimensions
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/metrics/events
+      name: metrics-events
+      description: REST surface for metrics-events.
+      operations:
+      - method: GET
+        name: queryeventmetrics
+        description: Query event metrics
+        call: hookdeck-metrics.queryeventmetrics
+        with:
+          date_range: rest.date_range
+          granularity: rest.granularity
+          filters: rest.filters
+          measures: rest.measures
+          dimensions: rest.dimensions
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/metrics/attempts
+      name: metrics-attempts
+      description: REST surface for metrics-attempts.
+      operations:
+      - method: GET
+        name: queryattemptmetrics
+        description: Query attempt metrics
+        call: hookdeck-metrics.queryattemptmetrics
+        with:
+          date_range: rest.date_range
+          granularity: rest.granularity
+          filters: rest.filters
+          measures: rest.measures
+          dimensions: rest.dimensions
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/metrics/events-by-issue
+      name: metrics-events-by-issue
+      description: REST surface for metrics-events-by-issue.
+      operations:
+      - method: GET
+        name: queryeventsbyissuemetrics
+        description: Query event metrics grouped by individual issue
+        call: hookdeck-metrics.queryeventsbyissuemetrics
+        with:
+          date_range: rest.date_range
+          granularity: rest.granularity
+          filters: rest.filters
+          measures: rest.measures
+          dimensions: rest.dimensions
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/metrics/queue-depth
+      name: metrics-queue-depth
+      description: REST surface for metrics-queue-depth.
+      operations:
+      - method: GET
+        name: queryqueuedepthmetrics
+        description: Query queue depth metrics
+        call: hookdeck-metrics.queryqueuedepthmetrics
+        with:
+          date_range: rest.date_range
+          granularity: rest.granularity
+          filters: rest.filters
+          measures: rest.measures
+          dimensions: rest.dimensions
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/metrics/transformations
+      name: metrics-transformations
+      description: REST surface for metrics-transformations.
+      operations:
+      - method: GET
+        name: querytransformationmetrics
+        description: Query transformation execution metrics
+        call: hookdeck-metrics.querytransformationmetrics
+        with:
+          date_range: rest.date_range
+          granularity: rest.granularity
+          filters: rest.filters
+          measures: rest.measures
+          dimensions: rest.dimensions
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/metrics/events-pending-timeseries
+      name: metrics-events-pending-timeseries
+      description: REST surface for metrics-events-pending-timeseries.
+      operations:
+      - method: GET
+        name: queryeventspendingtimeseriesmetrics
+        description: Query events pending timeseries metrics
+        call: hookdeck-metrics.queryeventspendingtimeseriesmetrics
+        with:
+          date_range: rest.date_range
+          granularity: rest.granularity
+          filters: rest.filters
+          measures: rest.measures
+          dimensions: rest.dimensions
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: hookdeck-metrics-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Hookdeck Admin REST API — Metrics. One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: hookdeck-queryrequestmetrics
+      description: Query request metrics
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hookdeck-metrics.queryrequestmetrics
+      with:
+        date_range: tools.date_range
+        granularity: tools.granularity
+        filters: tools.filters
+        measures: tools.measures
+        dimensions: tools.dimensions
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-queryeventmetrics
+      description: Query event metrics
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hookdeck-metrics.queryeventmetrics
+      with:
+        date_range: tools.date_range
+        granularity: tools.granularity
+        filters: tools.filters
+        measures: tools.measures
+        dimensions: tools.dimensions
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-queryattemptmetrics
+      description: Query attempt metrics
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hookdeck-metrics.queryattemptmetrics
+      with:
+        date_range: tools.date_range
+        granularity: tools.granularity
+        filters: tools.filters
+        measures: tools.measures
+        dimensions: tools.dimensions
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-queryeventsbyissuemetrics
+      description: Query event metrics grouped by individual issue
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hookdeck-metrics.queryeventsbyissuemetrics
+      with:
+        date_range: tools.date_range
+        granularity: tools.granularity
+        filters: tools.filters
+        measures: tools.measures
+        dimensions: tools.dimensions
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-queryqueuedepthmetrics
+      description: Query queue depth metrics
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hookdeck-metrics.queryqueuedepthmetrics
+      with:
+        date_range: tools.date_range
+        granularity: tools.granularity
+        filters: tools.filters
+        measures: tools.measures
+        dimensions: tools.dimensions
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-querytransformationmetrics
+      description: Query transformation execution metrics
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hookdeck-metrics.querytransformationmetrics
+      with:
+        date_range: tools.date_range
+        granularity: tools.granularity
+        filters: tools.filters
+        measures: tools.measures
+        dimensions: tools.dimensions
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hookdeck-queryeventspendingtimeseriesmetrics
+      description: Query events pending timeseries metrics
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hookdeck-metrics.queryeventspendingtimeseriesmetrics
+      with:
+        date_range: tools.date_range
+        granularity: tools.granularity
+        filters: tools.filters
+        measures: tools.measures
+        dimensions: tools.dimensions
+      outputParameters:
+      - type: object
+        mapping: $.

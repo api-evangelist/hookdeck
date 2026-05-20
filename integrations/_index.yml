@@ -1,0 +1,60 @@
+- slug: hookdeck-stripe
+  label: Make Stripe webhooks resilient through Hookdeck
+  partner: stripe
+  category: Payments
+  use_case: Route every Stripe webhook event through a Hookdeck source, fan out to internal destinations, and auto-retry on destination failure so a Stripe outage on your side never silently drops a charge.succeeded or invoice.paid event.
+- slug: hookdeck-shopify
+  label: Buffer Shopify webhooks through Hookdeck for replay and audit
+  partner: shopify
+  category: Commerce
+  use_case: Ingest every Shopify order, fulfillment, and refund webhook into a Hookdeck source so the events team can replay history, debug missed deliveries, and rate-limit fan-out into back-office systems.
+- slug: hookdeck-twilio
+  label: Route Twilio status callbacks through Hookdeck
+  partner: twilio
+  category: Communications
+  use_case: Use Hookdeck as the public ingress for Twilio SMS / voice status callbacks, then fan out to the messaging service plus an analytics destination, with automatic retry on 5xx so delivery state never gets lost.
+- slug: hookdeck-sendgrid
+  label: Capture SendGrid event webhooks with Hookdeck
+  partner: sendgrid
+  category: Email
+  use_case: Point the SendGrid Event Webhook at a Hookdeck source, transform the payload with a Hookdeck transformation, and fan out delivery, open, click, and bounce events to both the data warehouse and the CRM.
+- slug: hookdeck-slack
+  label: Alert Slack on Hookdeck delivery issues
+  partner: slack
+  category: Collaboration
+  use_case: When Hookdeck flags a delivery issue (repeated 5xx, schema mismatch, signature failure), post a structured alert to the right Slack channel so the on-call engineer can triage with one click.
+- slug: hookdeck-datadog
+  label: Stream Hookdeck delivery metrics into Datadog
+  partner: datadog
+  category: Observability
+  use_case: Pull Hookdeck event, attempt, and queue-depth metrics on an interval and forward them to Datadog as custom metrics so the SRE team can dashboard webhook health alongside the rest of the platform.
+- slug: hookdeck-pagerduty
+  label: Page on-call from Hookdeck delivery issues
+  partner: pagerduty
+  category: Incident response
+  use_case: When a Hookdeck issue trigger fires (e.g. a destination has been failing for N minutes), create a PagerDuty incident with the failing connection, recent event ids, and a deep link back to Hookdeck so the responder lands on context.
+- slug: hookdeck-aws-sqs
+  label: Fan Hookdeck events into AWS SQS for downstream workers
+  partner: aws-sqs
+  category: Queueing
+  use_case: For high-throughput sources, point a Hookdeck destination at an AWS SQS-backed HTTPS endpoint so internal workers can consume events at their own pace with native SQS replay, DLQ, and visibility-timeout semantics.
+- slug: hookdeck-kafka
+  label: Bridge Hookdeck deliveries into Kafka via REST proxy
+  partner: kafka
+  category: Streaming
+  use_case: Use Hookdeck as the public webhook ingress and forward to a Confluent Kafka REST Proxy destination so every external event lands in the company's event-streaming backbone with one durable hop.
+- slug: hookdeck-anthropic
+  label: Triage Hookdeck delivery issues with Claude
+  partner: anthropic
+  category: AI
+  use_case: When a Hookdeck issue surfaces a recurring delivery failure, feed the failing event payload and recent attempt history to Claude for root-cause classification and a suggested fix, then attach the suggestion to the issue.
+- slug: hookdeck-linear
+  label: Turn Hookdeck delivery issues into Linear tickets
+  partner: linear
+  category: Issue tracking
+  use_case: When Hookdeck flags a persistent delivery problem, create a Linear issue in the right team with the failing connection, destination, event sample, and a deep link back to Hookdeck so the fix has a tracked owner.
+- slug: hookdeck-github
+  label: Trigger GitHub Actions workflows from Hookdeck events
+  partner: github
+  category: CI / Workflows
+  use_case: Use Hookdeck as the durable entrypoint for inbound webhooks (vendor events, partner callbacks, IoT pings) and route them to a GitHub Actions repository-dispatch destination so workflows fire reliably with full retry and replay history.

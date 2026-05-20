@@ -1,0 +1,124 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Page on-call from Hookdeck delivery issues
+  description: When a Hookdeck issue trigger fires (e.g. a destination has been failing for N minutes), create a PagerDuty incident with the failing connection, recent event ids, and a deep link back to Hookdeck so the responder lands on context.
+  tags:
+  - Hookdeck
+  - Integration
+  - Incident response
+  - pagerduty
+  created: '2026-05-20'
+  modified: '2026-05-20'
+binds:
+- namespace: env
+  keys:
+    HOOKDECK_API_KEY: HOOKDECK_API_KEY
+    PAGERDUTY_API_KEY: PAGERDUTY_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: hookdeck
+    baseUri: https://api.hookdeck.com/2025-07-01
+    description: Hookdeck API operations consumed by this integration.
+    resources:
+    - name: issues
+      path: /issues
+      operations:
+      - name: getissues
+        method: GET
+        description: List open Hookdeck delivery issues.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters: []
+    - name: issues-id
+      path: /issues/{id}
+      operations:
+      - name: getissue
+        method: GET
+        description: Get the failing connection and recent attempts for the page body.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Path parameter id.
+          required: true
+    - name: bulk-events-retry
+      path: /bulk/events/retry
+      operations:
+      - name: createeventbulkretry
+        method: POST
+        description: Optionally kick off a bulk retry once the underlying outage is resolved.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  - type: http
+    namespace: pagerduty
+    baseUri: https://events.pagerduty.com
+    description: PagerDuty Events API operations consumed by this integration.
+    resources:
+    - name: v2-enqueue
+      path: /v2/enqueue
+      operations:
+      - name: createincident
+        method: POST
+        description: 'PagerDuty Events API: createIncident'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: mcp
+    namespace: hookdeck-pagerduty-mcp
+    description: MCP adapter for the hookdeck-pagerduty integration.
+    tools:
+    - name: hookdeck_pagerduty
+      description: Execute the hookdeck pagerduty integration end-to-end.
+      inputSchema:
+        type: object
+        properties:
+          trigger_event:
+            type: object
+            description: Triggering event payload.
+        required:
+        - trigger_event
+  - type: rest
+    namespace: hookdeck-pagerduty-rest
+    port: 8080
+    description: REST adapter for the hookdeck-pagerduty integration.
+    resources:
+    - path: /hookdeck-pagerduty
+      name: hookdeck-pagerduty
+      description: REST surface for the hookdeck-pagerduty integration.
+      operations:
+      - method: POST
+        name: trigger
+        description: Trigger the hookdeck-pagerduty integration.
+        call: hookdeck_pagerduty
+        with:
+          trigger_event: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.

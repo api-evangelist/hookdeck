@@ -1,0 +1,114 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Stream Hookdeck delivery metrics into Datadog
+  description: Pull Hookdeck event, attempt, and queue-depth metrics on an interval and forward them to Datadog as custom metrics so the SRE team can dashboard webhook health alongside the rest of the platform.
+  tags:
+  - Hookdeck
+  - Integration
+  - Observability
+  - datadog
+  created: '2026-05-20'
+  modified: '2026-05-20'
+binds:
+- namespace: env
+  keys:
+    HOOKDECK_API_KEY: HOOKDECK_API_KEY
+    DATADOG_API_KEY: DATADOG_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: hookdeck
+    baseUri: https://api.hookdeck.com/2025-07-01
+    description: Hookdeck API operations consumed by this integration.
+    resources:
+    - name: metrics-events
+      path: /metrics/events
+      operations:
+      - name: queryeventmetrics
+        method: GET
+        description: Query Hookdeck event metrics (success / failed / paused).
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters: []
+    - name: metrics-attempts
+      path: /metrics/attempts
+      operations:
+      - name: queryattemptmetrics
+        method: GET
+        description: Query attempt metrics including retry latency.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters: []
+    - name: metrics-queue-depth
+      path: /metrics/queue-depth
+      operations:
+      - name: queryqueuedepthmetrics
+        method: GET
+        description: Query current queue depth per destination.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters: []
+  - type: http
+    namespace: datadog
+    baseUri: https://api.datadoghq.com
+    description: Datadog API operations consumed by this integration.
+    resources:
+    - name: api-v2-series
+      path: /api/v2/series
+      operations:
+      - name: submitmetrics
+        method: POST
+        description: 'Datadog API: submitMetrics'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: mcp
+    namespace: hookdeck-datadog-mcp
+    description: MCP adapter for the hookdeck-datadog integration.
+    tools:
+    - name: hookdeck_datadog
+      description: Execute the hookdeck datadog integration end-to-end.
+      inputSchema:
+        type: object
+        properties:
+          trigger_event:
+            type: object
+            description: Triggering event payload.
+        required:
+        - trigger_event
+  - type: rest
+    namespace: hookdeck-datadog-rest
+    port: 8080
+    description: REST adapter for the hookdeck-datadog integration.
+    resources:
+    - path: /hookdeck-datadog
+      name: hookdeck-datadog
+      description: REST surface for the hookdeck-datadog integration.
+      operations:
+      - method: POST
+        name: trigger
+        description: Trigger the hookdeck-datadog integration.
+        call: hookdeck_datadog
+        with:
+          trigger_event: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
