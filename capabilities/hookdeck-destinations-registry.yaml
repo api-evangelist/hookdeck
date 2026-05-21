@@ -1,0 +1,86 @@
+naftiko: "1.0.0-alpha2"
+
+info:
+  title: Hookdeck Destinations Registry
+  description: >-
+    Read-only inventory of Hookdeck Destination resources — the target URLs
+    Hookdeck delivers events to. Used by Naftiko Fleet to show "which of my
+    deployed Naftiko capability containers are sitting behind a Hookdeck
+    destination" and by agents that need to introspect downstream delivery
+    targets before triggering a replay or retry.
+  tags:
+    - Naftiko
+    - Hookdeck
+    - Partnership
+    - Webhooks
+    - Destinations
+    - Inventory
+  created: '2026-05-21'
+  modified: '2026-05-21'
+
+binds:
+  - namespace: hookdeck-env
+    keys:
+      HOOKDECK_API_TOKEN: HOOKDECK_API_TOKEN
+
+capability:
+  consumes:
+    - namespace: hookdeck
+      type: http
+      baseUri: https://api.hookdeck.com/2025-07-01
+      authentication:
+        type: bearer
+        token: '{{HOOKDECK_API_TOKEN}}'
+      resources:
+        - name: destinations
+          path: /destinations
+          operations:
+            - name: list-destinations
+              method: GET
+        - name: destination
+          path: /destinations/{{id}}
+          operations:
+            - name: get-destination
+              method: GET
+              inputParameters:
+                - name: id
+                  in: path
+                  required: true
+
+  exposes:
+    - type: rest
+      address: 0.0.0.0
+      port: 8080
+      namespace: hookdeck-destinations-registry-rest
+      resources:
+        - name: destinations
+          path: /destinations
+          operations:
+            - name: list-destinations
+              method: GET
+              call: hookdeck.list-destinations
+        - name: destination
+          path: /destinations/{id}
+          operations:
+            - name: get-destination
+              method: GET
+              inputParameters:
+                - { name: id, in: path, type: string, required: true }
+              call: hookdeck.get-destination
+
+    - type: mcp
+      address: 0.0.0.0
+      port: 3010
+      namespace: hookdeck-destinations-registry-mcp
+      description: MCP server for agents introspecting Hookdeck Destination inventory.
+      tools:
+        - name: list-destinations
+          description: List every Hookdeck Destination (delivery target URL, retry policy, rate-limit shape).
+          hints: { readOnly: true }
+          call: hookdeck.list-destinations
+        - name: get-destination
+          description: Fetch a single Hookdeck Destination by id (URL, retry rule, auth, transformations attached).
+          hints: { readOnly: true }
+          inputParameters:
+            - { name: id, type: string, required: true }
+          call: hookdeck.get-destination

@@ -1,0 +1,104 @@
+naftiko: "1.0.0-alpha2"
+
+info:
+  title: Hookdeck Issues Triage
+  description: >-
+    Pulls Hookdeck Issue records — escalated delivery failures auto-grouped
+    from repeated event errors — and re-exposes them so Naftiko governance
+    dashboards, on-call agents, and capability owners can triage in one
+    place. Pairs cleanly with hookdeck-issue-trigger-author (which authors
+    the rules that create these issues) and hookdeck-events-replay (which
+    fixes them).
+  tags:
+    - Naftiko
+    - Hookdeck
+    - Partnership
+    - Webhooks
+    - Issues
+    - Governance
+  created: '2026-05-21'
+  modified: '2026-05-21'
+
+binds:
+  - namespace: hookdeck-env
+    keys:
+      HOOKDECK_API_TOKEN: HOOKDECK_API_TOKEN
+
+capability:
+  consumes:
+    - namespace: hookdeck
+      type: http
+      baseUri: https://api.hookdeck.com/2025-07-01
+      authentication:
+        type: bearer
+        token: '{{HOOKDECK_API_TOKEN}}'
+      resources:
+        - name: issues
+          path: /issues
+          operations:
+            - name: list-issues
+              method: GET
+        - name: issue
+          path: /issues/{{id}}
+          operations:
+            - name: get-issue
+              method: GET
+              inputParameters:
+                - name: id
+                  in: path
+                  required: true
+            - name: dismiss-issue
+              method: DELETE
+              inputParameters:
+                - name: id
+                  in: path
+                  required: true
+
+  exposes:
+    - type: rest
+      address: 0.0.0.0
+      port: 8080
+      namespace: hookdeck-issues-triage-rest
+      resources:
+        - name: issues
+          path: /issues
+          operations:
+            - name: list-issues
+              method: GET
+              call: hookdeck.list-issues
+        - name: issue
+          path: /issues/{id}
+          operations:
+            - name: get-issue
+              method: GET
+              inputParameters:
+                - { name: id, in: path, type: string, required: true }
+              call: hookdeck.get-issue
+            - name: dismiss-issue
+              method: DELETE
+              inputParameters:
+                - { name: id, in: path, type: string, required: true }
+              call: hookdeck.dismiss-issue
+
+    - type: mcp
+      address: 0.0.0.0
+      port: 3010
+      namespace: hookdeck-issues-triage-mcp
+      description: MCP server for governance agents triaging Hookdeck delivery issues across Naftiko capabilities.
+      tools:
+        - name: list-issues
+          description: List open Hookdeck Issues (escalated delivery-failure clusters) across the project.
+          hints: { readOnly: true }
+          call: hookdeck.list-issues
+        - name: get-issue
+          description: Fetch a single Hookdeck Issue by id (trigger rule, affected destinations, sample failing events).
+          hints: { readOnly: true }
+          inputParameters:
+            - { name: id, type: string, required: true }
+          call: hookdeck.get-issue
+        - name: dismiss-issue
+          description: Dismiss a resolved Hookdeck Issue (clears the alert state).
+          hints: { destructiveHint: true }
+          inputParameters:
+            - { name: id, type: string, required: true }
+          call: hookdeck.dismiss-issue
