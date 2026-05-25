@@ -1,0 +1,704 @@
+openapi: 3.0.1
+info:
+  title: Hookdeck Integrations API
+  version: 1.0.0
+  description: Configure platform integrations that adapt Hookdeck behavior for specific source platforms — including signature
+    verification, header normalization, and platform-aware retries.
+  contact:
+    name: Hookdeck Support
+    url: https://hookdeck.com/contact-us
+    email: info@hookdeck.com
+servers:
+- url: https://api.hookdeck.com/2025-07-01
+  description: Production API
+security:
+- bearerAuth: []
+- basicAuth: []
+tags:
+- name: Integrations
+  description: An integration configures platform-specific behaviors, such as signature verification.
+paths:
+  /integrations:
+    get:
+      operationId: getIntegrations
+      summary: Get integrations
+      description: ''
+      tags:
+      - Integrations
+      responses:
+        '200':
+          description: List of integrations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationPaginatedResult'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: query
+        name: label
+        schema:
+          type: string
+          description: The integration label
+      - in: query
+        name: provider
+        schema:
+          $ref: '#/components/schemas/IntegrationProvider'
+    post:
+      operationId: createIntegration
+      summary: Create an integration
+      description: ''
+      tags:
+      - Integrations
+      responses:
+        '200':
+          description: A single integration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Integration'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                label:
+                  type: string
+                  description: Label of the integration
+                configs:
+                  anyOf:
+                  - $ref: '#/components/schemas/HMACIntegrationConfigs'
+                  - $ref: '#/components/schemas/APIKeyIntegrationConfigs'
+                  - $ref: '#/components/schemas/HandledAPIKeyIntegrationConfigs'
+                  - $ref: '#/components/schemas/HandledHMACConfigs'
+                  - $ref: '#/components/schemas/BasicAuthIntegrationConfigs'
+                  - $ref: '#/components/schemas/ShopifyIntegrationConfigs'
+                  - $ref: '#/components/schemas/VercelLogDrainsIntegrationConfigs'
+                  - type: object
+                    properties: {}
+                    additionalProperties: false
+                  description: Decrypted Key/Value object of the associated configuration for that provider
+                  x-docs-force-simple-type: true
+                  x-docs-type: object
+                provider:
+                  $ref: '#/components/schemas/IntegrationProvider'
+                features:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/IntegrationFeature'
+                  description: List of features to enable (see features list above)
+                  x-docs-force-simple-type: true
+                  x-docs-type: Array of string
+              additionalProperties: false
+  /integrations/{id}:
+    get:
+      operationId: getIntegration
+      summary: Get an integration
+      description: ''
+      tags:
+      - Integrations
+      responses:
+        '200':
+          description: A single integration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Integration'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Integration ID
+        required: true
+    put:
+      operationId: updateIntegration
+      summary: Update an integration
+      description: ''
+      tags:
+      - Integrations
+      responses:
+        '200':
+          description: A single integration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Integration'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Integration ID
+        required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                label:
+                  type: string
+                  description: Label of the integration
+                configs:
+                  anyOf:
+                  - $ref: '#/components/schemas/HMACIntegrationConfigs'
+                  - $ref: '#/components/schemas/APIKeyIntegrationConfigs'
+                  - $ref: '#/components/schemas/HandledAPIKeyIntegrationConfigs'
+                  - $ref: '#/components/schemas/HandledHMACConfigs'
+                  - $ref: '#/components/schemas/BasicAuthIntegrationConfigs'
+                  - $ref: '#/components/schemas/ShopifyIntegrationConfigs'
+                  - $ref: '#/components/schemas/VercelLogDrainsIntegrationConfigs'
+                  - type: object
+                    properties: {}
+                    additionalProperties: false
+                  description: Decrypted Key/Value object of the associated configuration for that provider
+                  x-docs-force-simple-type: true
+                  x-docs-type: object
+                provider:
+                  $ref: '#/components/schemas/IntegrationProvider'
+                features:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/IntegrationFeature'
+                  description: List of features to enable (see features list above)
+                  x-docs-force-simple-type: true
+                  x-docs-type: Array of string
+              additionalProperties: false
+    delete:
+      operationId: deleteIntegration
+      summary: Delete an integration
+      description: ''
+      tags:
+      - Integrations
+      responses:
+        '200':
+          description: An object with deleted integration id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeletedIntegration'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Integration ID
+        required: true
+  /integrations/{id}/attach/{source_id}:
+    put:
+      operationId: attachIntegrationToSource
+      summary: Attach an integration to a source
+      description: ''
+      tags:
+      - Integrations
+      responses:
+        '200':
+          description: Attach operation success status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttachedIntegrationToSource'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Integration ID
+        required: true
+      - in: path
+        name: source_id
+        schema:
+          type: string
+          description: Source ID
+        required: true
+  /integrations/{id}/detach/{source_id}:
+    put:
+      operationId: detachIntegrationToSource
+      summary: Detach an integration from a source
+      description: ''
+      tags:
+      - Integrations
+      responses:
+        '200':
+          description: Detach operation success status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetachedIntegrationFromSource'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Integration ID
+        required: true
+      - in: path
+        name: source_id
+        schema:
+          type: string
+          description: Source ID
+        required: true
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    basicAuth:
+      type: http
+      scheme: basic
+  schemas:
+    DetachedIntegrationFromSource:
+      type: object
+      properties: {}
+      additionalProperties: false
+    OrderByDirection:
+      anyOf:
+      - enum:
+        - asc
+      - enum:
+        - desc
+      - enum:
+        - ASC
+      - enum:
+        - DESC
+    IntegrationFeature:
+      type: string
+      enum:
+      - VERIFICATION
+      - HANDSHAKE
+    IntegrationPaginatedResult:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/Integration'
+      additionalProperties: false
+    ShopifyIntegrationConfigs:
+      type: object
+      properties:
+        webhook_secret_key:
+          type: string
+      required:
+      - webhook_secret_key
+      additionalProperties: false
+    APIKeyIntegrationConfigs:
+      type: object
+      properties:
+        header_key:
+          type: string
+        api_key:
+          type: string
+      required:
+      - header_key
+      - api_key
+      additionalProperties: false
+    DeletedIntegration:
+      type: object
+      properties:
+        id:
+          type: string
+      required:
+      - id
+      additionalProperties: false
+    VercelLogDrainsIntegrationConfigs:
+      type: object
+      properties:
+        webhook_secret_key:
+          type: string
+          nullable: true
+        vercel_log_drains_secret:
+          type: string
+      required:
+      - vercel_log_drains_secret
+      additionalProperties: false
+    AttachedIntegrationToSource:
+      type: object
+      properties:
+        success:
+          type: boolean
+      required:
+      - success
+      additionalProperties: false
+    SeekPagination:
+      type: object
+      properties:
+        order_by:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        dir:
+          anyOf:
+          - $ref: '#/components/schemas/OrderByDirection'
+          - type: array
+            items:
+              $ref: '#/components/schemas/OrderByDirection'
+        limit:
+          type: integer
+        prev:
+          type: string
+        next:
+          type: string
+      additionalProperties: false
+    BasicAuthIntegrationConfigs:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+      - username
+      - password
+      additionalProperties: false
+    HMACAlgorithms:
+      type: string
+      enum:
+      - md5
+      - sha1
+      - sha256
+      - sha512
+    IntegrationProvider:
+      type: string
+      enum:
+      - AIPRISE
+      - ALCHEMY
+      - DOCUSIGN
+      - INTERCOM
+      - HMAC
+      - BASIC_AUTH
+      - API_KEY
+      - MANAGED
+      - HOOKDECK_OUTPOST
+      - SANITY
+      - BIGCOMMERCE
+      - CLAUDE
+      - OPENAI
+      - POLAR
+      - BRIDGE_XYZ
+      - BRIDGE_API
+      - CHARGEBEE_BILLING
+      - CHAINDOTS
+      - CLOUDSIGNAL
+      - COINBASE
+      - COURIER
+      - CURSOR
+      - MERAKI
+      - FIREBLOCKS
+      - FRONTAPP
+      - ZOOM
+      - TWITTER
+      - RECHARGE
+      - RECURLY
+      - REVOLUT
+      - RING_CENTRAL
+      - STRIPE
+      - PROPERTY-FINDER
+      - QUOTER
+      - SHOPIFY
+      - TWILIO
+      - GITHUB
+      - POSTMARK
+      - TALLY
+      - TYPEFORM
+      - PICQER
+      - XERO
+      - SVIX
+      - RESEND
+      - GEMINI
+      - ADYEN
+      - AKENEO
+      - GITLAB
+      - WOOCOMMERCE
+      - OKTA
+      - OURA
+      - COMMERCELAYER
+      - HUBSPOT
+      - MAILGUN
+      - PERSONA
+      - PIPEDRIVE
+      - SENDGRID
+      - WORKOS
+      - SYNCTERA
+      - AWS_SNS
+      - THREE_D_EYE
+      - TWITCH
+      - ENODE
+      - FAUNDIT
+      - FAVRO
+      - LINEAR
+      - SHIPBOB
+      - SHIPHERO
+      - SHOPLINE
+      - WIX
+      - NMI
+      - NEON
+      - ORB
+      - PYLON
+      - RAZORPAY
+      - REPAY
+      - SQUARE
+      - SOLIDGATE
+      - TRELLO
+      - EBAY
+      - TELNYX
+      - DISCORD
+      - TOKENIO
+      - FISERV
+      - FUSIONAUTH
+      - BONDSMITH
+      - VERCEL_LOG_DRAINS
+      - VERCEL
+      - TEBEX
+      - SLACK
+      - SMARTCAR
+      - MAILCHIMP
+      - NUVEMSHOP
+      - PADDLE
+      - PAYPAL
+      - PAYMOB
+      - PAYSTACK
+      - SCRAPFLY
+      - PORTAL
+      - TREEZOR
+      - PRAXIS
+      - CUSTOMERIO
+      - EXACT_ONLINE
+      - FACEBOOK
+      - WHATSAPP
+      - REPLICATE
+      - TIKTOK
+      - TIKTOK_SHOP
+      - AIRWALLEX
+      - ASCEND
+      - ALIPAY
+      - ZENDESK
+      - UPOLLO
+      - SMILE
+      - NYLAS
+      - CLIO
+      - GOCARDLESS
+      - LINKEDIN
+      - LITHIC
+      - UTILA
+      - GREENDOT
+      - ZEROHASH
+      - AIRTABLE
+      - ASANA
+      - ASHBY
+      - FASTSPRING
+      - PAYPRO_GLOBAL
+      - USPS
+      - WALMART
+      - FIREFLIES
+      - FLEXPORT
+      - UBER
+      - WECHAT
+      - CIRCLE
+    HandledHMACConfigs:
+      type: object
+      properties:
+        webhook_secret_key:
+          type: string
+      required:
+      - webhook_secret_key
+      additionalProperties: false
+    HandledAPIKeyIntegrationConfigs:
+      type: object
+      properties:
+        api_key:
+          type: string
+      required:
+      - api_key
+      additionalProperties: false
+    HMACIntegrationConfigs:
+      type: object
+      properties:
+        webhook_secret_key:
+          type: string
+        algorithm:
+          $ref: '#/components/schemas/HMACAlgorithms'
+        header_key:
+          type: string
+        encoding:
+          type: string
+          enum:
+          - base64
+          - hex
+      required:
+      - webhook_secret_key
+      - algorithm
+      - header_key
+      - encoding
+      additionalProperties: false
+    Integration:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the integration
+        team_id:
+          type: string
+          description: ID of the project
+        label:
+          type: string
+          description: Label of the integration
+        provider:
+          $ref: '#/components/schemas/IntegrationProvider'
+        features:
+          type: array
+          items:
+            $ref: '#/components/schemas/IntegrationFeature'
+          description: List of features to enable (see features list below)
+          x-docs-force-simple-type: true
+          x-docs-type: Array of string
+        configs:
+          anyOf:
+          - $ref: '#/components/schemas/HMACIntegrationConfigs'
+          - $ref: '#/components/schemas/APIKeyIntegrationConfigs'
+          - $ref: '#/components/schemas/HandledAPIKeyIntegrationConfigs'
+          - $ref: '#/components/schemas/HandledHMACConfigs'
+          - $ref: '#/components/schemas/BasicAuthIntegrationConfigs'
+          - $ref: '#/components/schemas/ShopifyIntegrationConfigs'
+          - $ref: '#/components/schemas/VercelLogDrainsIntegrationConfigs'
+          - type: object
+            properties: {}
+            additionalProperties: false
+          description: Decrypted Key/Value object of the associated configuration for that provider
+          x-docs-force-simple-type: true
+          x-docs-type: object
+        sources:
+          type: array
+          items:
+            type: string
+            description: ID of the source
+          description: List of source IDs the integration is attached to
+        updated_at:
+          type: string
+          format: date-time
+          description: Date the integration was last updated
+        created_at:
+          type: string
+          format: date-time
+          description: Date the integration was created
+      required:
+      - id
+      - team_id
+      - label
+      - provider
+      - features
+      - configs
+      - sources
+      - updated_at
+      - created_at
+      additionalProperties: false
+    APIErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        status:
+          type: number
+          format: float
+          description: Status code
+        message:
+          type: string
+          description: Error description
+        data:
+          type: object
+          properties: {}
+          nullable: true
+      required:
+      - code
+      - status
+      - message
+      additionalProperties: false
+      description: Error response model

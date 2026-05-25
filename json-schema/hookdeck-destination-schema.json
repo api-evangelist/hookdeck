@@ -1,0 +1,806 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hookdeck/main/json-schema/hookdeck-destination-schema.json",
+  "title": "Hookdeck Destination",
+  "description": "Associated [Destination](#destination-object) object",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "ID of the destination"
+    },
+    "name": {
+      "type": "string",
+      "description": "A unique, human-friendly name for the destination"
+    },
+    "description": {
+      "type": "string",
+      "nullable": true,
+      "description": "Description of the destination"
+    },
+    "team_id": {
+      "type": "string",
+      "description": "ID of the project"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "HTTP",
+        "CLI",
+        "MOCK_API"
+      ],
+      "description": "Type of the destination"
+    },
+    "config": {
+      "$ref": "#/$defs/DestinationConfig"
+    },
+    "disabled_at": {
+      "type": "string",
+      "format": "date-time",
+      "nullable": true,
+      "description": "Date the destination was disabled"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date the destination was last updated"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date the destination was created"
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "team_id",
+    "type",
+    "disabled_at",
+    "updated_at",
+    "created_at"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "DestinationConfigHTTPAuthGCPServiceAccount": {
+      "type": "object",
+      "properties": {
+        "service_account_key": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string",
+          "nullable": true
+        }
+      },
+      "additionalProperties": false,
+      "x-docs-type": "GCP_SERVICE_ACCOUNT"
+    },
+    "DestinationConfigCLIAuthBasicAuth": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "x-docs-type": "BASIC_AUTH"
+    },
+    "DestinationTypeConfigCLI": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "description": "Path for the CLI destination"
+        },
+        "path_forwarding_disabled": {
+          "type": "boolean"
+        },
+        "http_method": {
+          "type": "string",
+          "enum": [
+            "GET",
+            "POST",
+            "PUT",
+            "PATCH",
+            "DELETE"
+          ],
+          "nullable": true
+        },
+        "auth_type": {
+          "type": "string",
+          "enum": [
+            "HOOKDECK_SIGNATURE",
+            "CUSTOM_SIGNATURE",
+            "BASIC_AUTH",
+            "API_KEY",
+            "BEARER_TOKEN",
+            "OAUTH2_CLIENT_CREDENTIALS",
+            "OAUTH2_AUTHORIZATION_CODE",
+            "AWS_SIGNATURE",
+            "GCP_SERVICE_ACCOUNT"
+          ],
+          "nullable": true
+        },
+        "auth": {
+          "$ref": "#/$defs/DestinationConfigCLIAuth"
+        }
+      },
+      "required": [
+        "path"
+      ],
+      "additionalProperties": false,
+      "description": "The type config for CLI. Requires type to be `CLI`.",
+      "x-docs-type": "CLI"
+    },
+    "DestinationConfigHTTPAuthAPIKey": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "api_key": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string",
+          "enum": [
+            "header",
+            "query"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "x-docs-type": "API_KEY"
+    },
+    "DestinationConfigHTTPAuthBearerToken": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "x-docs-type": "BEARER_TOKEN"
+    },
+    "DestinationConfigMockAPIAuthCustomSHA256HMACSignature": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "signing_secret": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "x-docs-type": "CUSTOM_SIGNATURE"
+    },
+    "DestinationConfigMockAPIAuthAPIKey": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "api_key": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string",
+          "enum": [
+            "header",
+            "query"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "x-docs-type": "API_KEY"
+    },
+    "DestinationConfigCLIAuthCustomSHA256HMACSignature": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "signing_secret": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "x-docs-type": "CUSTOM_SIGNATURE"
+    },
+    "DestinationConfigMockAPIAuthBasicAuth": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "x-docs-type": "BASIC_AUTH"
+    },
+    "DestinationConfig": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "$ref": "#/$defs/DestinationTypeConfigHTTP"
+        },
+        {
+          "$ref": "#/$defs/DestinationTypeConfigCLI"
+        },
+        {
+          "$ref": "#/$defs/DestinationTypeConfigMOCK_API"
+        }
+      ],
+      "description": "Configuration object for the destination type",
+      "default": {}
+    },
+    "DestinationConfigHTTPAuthOAuth2ClientCredentials": {
+      "type": "object",
+      "properties": {
+        "auth_server": {
+          "type": "string"
+        },
+        "client_id": {
+          "type": "string"
+        },
+        "client_secret": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string"
+        },
+        "authentication_type": {
+          "type": "string",
+          "enum": [
+            "basic",
+            "bearer",
+            "x-www-form-urlencoded"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "x-docs-type": "OAUTH2_CLIENT_CREDENTIALS"
+    },
+    "DestinationConfigCLIAuthBearerToken": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "x-docs-type": "BEARER_TOKEN"
+    },
+    "DestinationConfigHTTPAuthAWSSignature": {
+      "type": "object",
+      "properties": {
+        "access_key_id": {
+          "type": "string"
+        },
+        "secret_access_key": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "x-docs-type": "AWS_SIGNATURE"
+    },
+    "DestinationConfigHTTPAuthHookdeckSignatureDefault": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false,
+      "x-docs-type": "HOOKDECK_SIGNATURE"
+    },
+    "DestinationTypeConfigHTTP": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "URL"
+        },
+        "rate_limit": {
+          "type": "number",
+          "format": "float",
+          "nullable": true
+        },
+        "rate_limit_period": {
+          "type": "string",
+          "enum": [
+            "second",
+            "minute",
+            "hour",
+            "concurrent"
+          ],
+          "nullable": true
+        },
+        "path_forwarding_disabled": {
+          "type": "boolean"
+        },
+        "http_method": {
+          "type": "string",
+          "enum": [
+            "GET",
+            "POST",
+            "PUT",
+            "PATCH",
+            "DELETE"
+          ],
+          "nullable": true
+        },
+        "auth_type": {
+          "type": "string",
+          "enum": [
+            "HOOKDECK_SIGNATURE",
+            "CUSTOM_SIGNATURE",
+            "BASIC_AUTH",
+            "API_KEY",
+            "BEARER_TOKEN",
+            "OAUTH2_CLIENT_CREDENTIALS",
+            "OAUTH2_AUTHORIZATION_CODE",
+            "AWS_SIGNATURE",
+            "GCP_SERVICE_ACCOUNT"
+          ],
+          "nullable": true
+        },
+        "auth": {
+          "$ref": "#/$defs/DestinationConfigHTTPAuth"
+        }
+      },
+      "required": [
+        "url"
+      ],
+      "additionalProperties": false,
+      "description": "The type config for HTTP. Requires type to be `HTTP`.",
+      "x-docs-type": "HTTP"
+    },
+    "DestinationConfigCLIAuth": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "$ref": "#/$defs/DestinationConfigCLIAuthHookdeckSignatureDefault"
+        },
+        {
+          "$ref": "#/$defs/DestinationConfigCLIAuthCustomSHA256HMACSignature"
+        },
+        {
+          "$ref": "#/$defs/DestinationConfigCLIAuthBasicAuth"
+        },
+        {
+          "$ref": "#/$defs/DestinationConfigCLIAuthAPIKey"
+        },
+        {
+          "$ref": "#/$defs/DestinationConfigCLIAuthBearerToken"
+        },
+        {
+          "$ref": "#/$defs/DestinationConfigCLIAuthOAuth2ClientCredentials"
+        },
+        {
+          "$ref": "#/$defs/DestinationConfigCLIAuthOAuth2AuthorizationCode"
+        },
+        {
+          "$ref": "#/$defs/DestinationConfigCLIAuthAWSSignature"
+        },
+        {
+          "$ref": "#/$defs/DestinationConfigCLIAuthGCPServiceAccount"
+        },
+        {
+          "$ref": "#/$defs/DestinationConfigCLIAuthEmpty"
+        }
+      ]
+    },
+    "DestinationConfigMockAPIAuthHookdeckSignatureDefault": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false,
+      "x-docs-type": "HOOKDECK_SIGNATURE"
+    },
+    "DestinationConfigCLIAuthGCPServiceAccount": {
+      "type": "object",
+      "properties": {
+        "service_account_key": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string",
+          "nullable": true
+        }
+      },
+      "additionalProperties": false,
+      "x-docs-type": "GCP_SERVICE_ACCOUNT"
+    },
+    "DestinationConfigMockAPIAuth": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "$ref": "#/$defs/DestinationConfigMockAPIAuthHookdeckSignatureDefault"
+        },
+        {
+          "$ref": "#/$defs/DestinationConfigMockAPIAuthCustomSHA256HMACSignature"
+        },
+        {
+          "$ref": "#/$defs/DestinationConfigMockAPIAuthBasicAuth"
+        },
+        {
+          "$ref": "#/$defs/DestinationConfigMockAPIAuthAPIKey"
+        },
+        {
+          "$ref": "#/$defs/DestinationConfigMockAPIAuthBearerToken"
+        },
+        {
+          "$ref": "#/$defs/DestinationConfigMockAPIAuthOAuth2ClientCredentials"
+        },
+        {
+          "$ref": "#/$defs/DestinationConfigMockAPIAuthOAuth2AuthorizationCode"
+        },
+        {
+          "$ref": "#/$defs/DestinationConfigMockAPIAuthAWSSignature"
+        },
+        {
+          "$ref": "#/$defs/DestinationConfigMockAPIAuthGCPServiceAccount"
+        },
+        {
+          "$ref": "#/$defs/DestinationConfigMockAPIAuthEmpty"
+        }
+      ]
+    },
+    "DestinationConfigCLIAuthOAuth2AuthorizationCode": {
+      "type": "object",
+      "properties": {
+        "auth_server": {
+          "type": "string"
+        },
+        "client_id": {
+          "type": "string"
+        },
+        "client_secret": {
+          "type": "string"
+        },
+        "refresh_token": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "x-docs-type": "OAUTH2_AUTHORIZATION_CODE"
+    },
+    "DestinationConfigHTTPAuth": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "$ref": "#/$defs/DestinationConfigHTTPAuthHookdeckSignatureDefault"
+        },
+        {
+          "$ref": "#/$defs/DestinationConfigHTTPAuthCustomSHA256HMACSignature"
+        },
+        {
+          "$ref": "#/$defs/DestinationConfigHTTPAuthBasicAuth"
+        },
+        {
+          "$ref": "#/$defs/DestinationConfigHTTPAuthAPIKey"
+        },
+        {
+          "$ref": "#/$defs/DestinationConfigHTTPAuthBearerToken"
+        },
+        {
+          "$ref": "#/$defs/DestinationConfigHTTPAuthOAuth2ClientCredentials"
+        },
+        {
+          "$ref": "#/$defs/DestinationConfigHTTPAuthOAuth2AuthorizationCode"
+        },
+        {
+          "$ref": "#/$defs/DestinationConfigHTTPAuthAWSSignature"
+        },
+        {
+          "$ref": "#/$defs/DestinationConfigHTTPAuthGCPServiceAccount"
+        },
+        {
+          "$ref": "#/$defs/DestinationConfigHTTPAuthEmpty"
+        }
+      ]
+    },
+    "DestinationConfigMockAPIAuthOAuth2AuthorizationCode": {
+      "type": "object",
+      "properties": {
+        "auth_server": {
+          "type": "string"
+        },
+        "client_id": {
+          "type": "string"
+        },
+        "client_secret": {
+          "type": "string"
+        },
+        "refresh_token": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "x-docs-type": "OAUTH2_AUTHORIZATION_CODE"
+    },
+    "DestinationTypeConfigMOCK_API": {
+      "type": "object",
+      "properties": {
+        "rate_limit": {
+          "type": "number",
+          "format": "float",
+          "nullable": true
+        },
+        "rate_limit_period": {
+          "type": "string",
+          "enum": [
+            "second",
+            "minute",
+            "hour",
+            "concurrent"
+          ],
+          "nullable": true
+        },
+        "path_forwarding_disabled": {
+          "type": "boolean"
+        },
+        "http_method": {
+          "type": "string",
+          "enum": [
+            "GET",
+            "POST",
+            "PUT",
+            "PATCH",
+            "DELETE"
+          ],
+          "nullable": true
+        },
+        "auth_type": {
+          "type": "string",
+          "enum": [
+            "HOOKDECK_SIGNATURE",
+            "CUSTOM_SIGNATURE",
+            "BASIC_AUTH",
+            "API_KEY",
+            "BEARER_TOKEN",
+            "OAUTH2_CLIENT_CREDENTIALS",
+            "OAUTH2_AUTHORIZATION_CODE",
+            "AWS_SIGNATURE",
+            "GCP_SERVICE_ACCOUNT"
+          ],
+          "nullable": true
+        },
+        "auth": {
+          "$ref": "#/$defs/DestinationConfigMockAPIAuth"
+        }
+      },
+      "additionalProperties": false,
+      "description": "The type config for MOCK_API. Requires type to be `MOCK_API`.",
+      "x-docs-type": "MOCK_API"
+    },
+    "DestinationConfigMockAPIAuthGCPServiceAccount": {
+      "type": "object",
+      "properties": {
+        "service_account_key": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string",
+          "nullable": true
+        }
+      },
+      "additionalProperties": false,
+      "x-docs-type": "GCP_SERVICE_ACCOUNT"
+    },
+    "DestinationConfigCLIAuthAPIKey": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "api_key": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string",
+          "enum": [
+            "header",
+            "query"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "x-docs-type": "API_KEY"
+    },
+    "DestinationConfigMockAPIAuthOAuth2ClientCredentials": {
+      "type": "object",
+      "properties": {
+        "auth_server": {
+          "type": "string"
+        },
+        "client_id": {
+          "type": "string"
+        },
+        "client_secret": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string"
+        },
+        "authentication_type": {
+          "type": "string",
+          "enum": [
+            "basic",
+            "bearer",
+            "x-www-form-urlencoded"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "x-docs-type": "OAUTH2_CLIENT_CREDENTIALS"
+    },
+    "DestinationConfigMockAPIAuthBearerToken": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "x-docs-type": "BEARER_TOKEN"
+    },
+    "DestinationConfigMockAPIAuthAWSSignature": {
+      "type": "object",
+      "properties": {
+        "access_key_id": {
+          "type": "string"
+        },
+        "secret_access_key": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "x-docs-type": "AWS_SIGNATURE"
+    },
+    "DestinationConfigCLIAuthEmpty": {
+      "nullable": true,
+      "x-docs-hide": true,
+      "x-docs-nullable": true
+    },
+    "DestinationConfigCLIAuthHookdeckSignatureDefault": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false,
+      "x-docs-type": "HOOKDECK_SIGNATURE"
+    },
+    "DestinationConfigCLIAuthOAuth2ClientCredentials": {
+      "type": "object",
+      "properties": {
+        "auth_server": {
+          "type": "string"
+        },
+        "client_id": {
+          "type": "string"
+        },
+        "client_secret": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string"
+        },
+        "authentication_type": {
+          "type": "string",
+          "enum": [
+            "basic",
+            "bearer",
+            "x-www-form-urlencoded"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "x-docs-type": "OAUTH2_CLIENT_CREDENTIALS"
+    },
+    "DestinationConfigHTTPAuthCustomSHA256HMACSignature": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "signing_secret": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "x-docs-type": "CUSTOM_SIGNATURE"
+    },
+    "DestinationConfigHTTPAuthEmpty": {
+      "nullable": true,
+      "x-docs-hide": true,
+      "x-docs-nullable": true
+    },
+    "DestinationConfigHTTPAuthBasicAuth": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "x-docs-type": "BASIC_AUTH"
+    },
+    "DestinationConfigCLIAuthAWSSignature": {
+      "type": "object",
+      "properties": {
+        "access_key_id": {
+          "type": "string"
+        },
+        "secret_access_key": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "x-docs-type": "AWS_SIGNATURE"
+    },
+    "DestinationConfigHTTPAuthOAuth2AuthorizationCode": {
+      "type": "object",
+      "properties": {
+        "auth_server": {
+          "type": "string"
+        },
+        "client_id": {
+          "type": "string"
+        },
+        "client_secret": {
+          "type": "string"
+        },
+        "refresh_token": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "x-docs-type": "OAUTH2_AUTHORIZATION_CODE"
+    },
+    "DestinationConfigMockAPIAuthEmpty": {
+      "nullable": true,
+      "x-docs-hide": true,
+      "x-docs-nullable": true
+    }
+  }
+}

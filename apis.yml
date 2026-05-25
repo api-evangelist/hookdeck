@@ -1,139 +1,413 @@
 aid: hookdeck
-url: >-
-  https://raw.githubusercontent.com/api-evangelist/hookdeck/refs/heads/main/apis.yml
-apis:
-  - aid: hookdeck:hookdeck-api
-    name: Hookdeck API
-    tags:
-      - Connections
-      - Destinations
-      - Event Gateways
-      - Events
-      - Gateways
-      - Metrics
-      - Sources
-      - Transformations
-      - Webhooks
-    baseURL: https://api.hookdeck.com
-    humanURL: https://hookdeck.com/docs/api
-    properties:
-      - url: https://hookdeck.com/docs/api
-        type: Documentation
-      - url: https://api.hookdeck.com/2025-07-01/openapi
-        type: OpenAPI
-      - url: https://hookdeck.com/docs/authentication
-        type: Authentication
-      - url: https://hookdeck.com/docs/hookdeck-basics
-        type: GettingStarted
-    description: >-
-      The Hookdeck REST API provides programmatic access to the Hookdeck Event
-      Gateway platform. It enables management of sources, destinations,
-      connections, transformations, events, attempts, metrics, and more.
-      Authentication is via Bearer token or Basic auth using your project API
-      key. The API uses date-based versioning in the base URL path.
-  - aid: hookdeck:hookdeck
-    name: Hookdeck
-    tags:
-      - Event Gateways
-      - Gateways
-      - Webhooks
-    humanURL: ' https://hookdeck.com/'
-    properties:
-      - url: ' https://hookdeck.com/'
-        type: Documentation
-    description: >-
-      From webhooks to external event streams, Hookdeck ensures every event is
-      received, processed, and monitored reliably at scale, giving you complete
-      visibility and control.
+url: https://raw.githubusercontent.com/api-evangelist/hookdeck/refs/heads/main/apis.yml
 name: Hookdeck
+description: >-
+  Hookdeck is a Toronto-based webhook and event-infrastructure platform. The
+  Hookdeck Event Gateway sits between webhook senders and your services to
+  receive, verify, queue, retry, transform, filter, route, and observe events
+  reliably at scale. Hookdeck exposes a fully versioned REST Admin API, a CLI
+  for local development, language SDKs (TypeScript, Go, Python, .NET), a
+  Terraform provider, and the open-source Outpost project for self-hostable
+  outbound webhook delivery.
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+type: Index
+access: 3rd-Party
+position: Consumer
+created: '2025-08-19'
+modified: '2026-05-25'
 tags:
+  - Webhooks
   - Event Gateways
   - Gateways
-  - Webhooks
-type: Index
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
-access: 3rd-Party
-created: '2025-08-19'
-modified: '2026-05-19'
-position: Consumer
+  - Events
+  - Event Infrastructure
+  - Event-Driven
+  - Messaging
+  - Queues
+  - Retries
+  - Transformations
+  - Observability
 segments:
   - Gateways
-description: >-
-  Hookdeck is a powerful tool that helps businesses streamline their webhook workflows.
-  With Hookdeck, users can easily manage, monitor, and debug all of their webhooks
-  in one centralized platform. By providing real-time notifications, detailed logs,
-  and error handling capabilities, Hookdeck simplifies the process of integrating
-  and testing webhooks.
+  - Event-Driven
+  - Webhooks
+apis:
+  - aid: hookdeck:hookdeck-connections-api
+    name: Hookdeck Connections API
+    tags:
+      - Webhooks
+      - Event Gateways
+      - Connections
+    baseURL: https://api.hookdeck.com/2025-07-01
+    humanURL: https://hookdeck.com/docs/api
+    description: >-
+      Create, update, list, archive, pause, and unpause connections. A
+      connection routes events from a Source to a Destination and may carry
+      rules (retry, alert, transform, filter, delay) that determine how the
+      gateway processes events along that path.
+    properties:
+      - type: Documentation
+        url: https://hookdeck.com/docs/api
+      - type: OpenAPI
+        url: openapi/hookdeck-connections-api-openapi.yml
+      - type: JSONSchema
+        url: json-schema/hookdeck-connection-schema.json
+      - type: NaftikoCapability
+        url: capabilities/hookdeck-connections.yaml
+      - type: NaftikoCapability
+        url: capabilities/hookdeck-connections-topology.yaml
+  - aid: hookdeck:hookdeck-sources-api
+    name: Hookdeck Sources API
+    tags:
+      - Webhooks
+      - Sources
+      - Event Gateways
+    baseURL: https://api.hookdeck.com/2025-07-01
+    humanURL: https://hookdeck.com/docs/sources
+    description: >-
+      Manage sources — the upstream endpoints (webhook senders or push
+      channels) that ingest events into Hookdeck. Sources support
+      platform-specific verification (Stripe, GitHub, Twilio, Shopify, and
+      many more), allowed HTTP methods, allowed content types, allowed IPs,
+      and a configurable custom response returned to the caller.
+    properties:
+      - type: Documentation
+        url: https://hookdeck.com/docs/sources
+      - type: OpenAPI
+        url: openapi/hookdeck-sources-api-openapi.yml
+      - type: JSONSchema
+        url: json-schema/hookdeck-source-schema.json
+      - type: NaftikoCapability
+        url: capabilities/hookdeck-sources.yaml
+      - type: NaftikoCapability
+        url: capabilities/hookdeck-sources-discovery.yaml
+  - aid: hookdeck:hookdeck-destinations-api
+    name: Hookdeck Destinations API
+    tags:
+      - Webhooks
+      - Destinations
+      - Event Gateways
+    baseURL: https://api.hookdeck.com/2025-07-01
+    humanURL: https://hookdeck.com/docs/destinations
+    description: >-
+      Manage destinations — the downstream targets (HTTP endpoints, AWS SQS,
+      Azure Service Bus, GCP Pub/Sub, Kafka, RabbitMQ, MongoDB, and more)
+      where Hookdeck delivers events. Supports configurable auth methods,
+      rate limiting, path forwarding, archival, and pause/disable controls.
+    properties:
+      - type: Documentation
+        url: https://hookdeck.com/docs/destinations
+      - type: OpenAPI
+        url: openapi/hookdeck-destinations-api-openapi.yml
+      - type: JSONSchema
+        url: json-schema/hookdeck-destination-schema.json
+      - type: NaftikoCapability
+        url: capabilities/hookdeck-destinations.yaml
+      - type: NaftikoCapability
+        url: capabilities/hookdeck-destinations-registry.yaml
+      - type: NaftikoCapability
+        url: capabilities/hookdeck-spec-driven-destination.yaml
+  - aid: hookdeck:hookdeck-events-api
+    name: Hookdeck Events API
+    tags:
+      - Webhooks
+      - Events
+      - Attempts
+      - Event Gateways
+    baseURL: https://api.hookdeck.com/2025-07-01
+    humanURL: https://hookdeck.com/docs/events
+    description: >-
+      List, retrieve, retry, mute, and inspect events and their delivery
+      attempts. An event is any request Hookdeck received from a source; an
+      attempt is each delivery try against a destination, including status,
+      response body, response time, and error code.
+    properties:
+      - type: Documentation
+        url: https://hookdeck.com/docs/events
+      - type: OpenAPI
+        url: openapi/hookdeck-events-api-openapi.yml
+      - type: JSONSchema
+        url: json-schema/hookdeck-event-schema.json
+      - type: JSONSchema
+        url: json-schema/hookdeck-attempt-schema.json
+      - type: NaftikoCapability
+        url: capabilities/hookdeck-events.yaml
+      - type: NaftikoCapability
+        url: capabilities/hookdeck-events-replay.yaml
+      - type: NaftikoCapability
+        url: capabilities/hookdeck-attempts.yaml
+  - aid: hookdeck:hookdeck-requests-api
+    name: Hookdeck Requests API
+    tags:
+      - Webhooks
+      - Requests
+      - Event Gateways
+    baseURL: https://api.hookdeck.com/2025-07-01
+    humanURL: https://hookdeck.com/docs/requests
+    description: >-
+      List and inspect raw requests received by Hookdeck. A request precedes
+      events and is what gets accepted at the gateway boundary before
+      verification, fan-out, transformation, and routing produce one or more
+      downstream events.
+    properties:
+      - type: Documentation
+        url: https://hookdeck.com/docs/requests
+      - type: OpenAPI
+        url: openapi/hookdeck-requests-api-openapi.yml
+      - type: JSONSchema
+        url: json-schema/hookdeck-request-schema.json
+      - type: NaftikoCapability
+        url: capabilities/hookdeck-requests.yaml
+  - aid: hookdeck:hookdeck-transformations-api
+    name: Hookdeck Transformations API
+    tags:
+      - Transformations
+      - Webhooks
+      - Event Gateways
+    baseURL: https://api.hookdeck.com/2025-07-01
+    humanURL: https://hookdeck.com/docs/transformations
+    description: >-
+      Manage transformations — sandboxed JavaScript executed against events
+      to mutate headers, body, path, or query string before delivery. Also
+      includes a sandboxed run endpoint for testing transformation code
+      against sample event payloads.
+    properties:
+      - type: Documentation
+        url: https://hookdeck.com/docs/transformations
+      - type: OpenAPI
+        url: openapi/hookdeck-transformations-api-openapi.yml
+      - type: JSONSchema
+        url: json-schema/hookdeck-transformation-schema.json
+      - type: NaftikoCapability
+        url: capabilities/hookdeck-transformations.yaml
+      - type: NaftikoCapability
+        url: capabilities/hookdeck-transformations-author.yaml
+  - aid: hookdeck:hookdeck-bookmarks-api
+    name: Hookdeck Bookmarks API
+    tags:
+      - Bookmarks
+      - Webhooks
+      - Event Gateways
+    baseURL: https://api.hookdeck.com/2025-07-01
+    humanURL: https://hookdeck.com/docs/bookmarks
+    description: >-
+      Save bookmarked events for quick replay and one-click testing during
+      development. Bookmarks let your team capture canonical event payloads
+      and trigger them on demand into any destination.
+    properties:
+      - type: Documentation
+        url: https://hookdeck.com/docs/bookmarks
+      - type: OpenAPI
+        url: openapi/hookdeck-bookmarks-api-openapi.yml
+      - type: NaftikoCapability
+        url: capabilities/hookdeck-bookmarks.yaml
+      - type: NaftikoCapability
+        url: capabilities/hookdeck-bookmarks-snapshot.yaml
+  - aid: hookdeck:hookdeck-bulk-operations-api
+    name: Hookdeck Bulk Operations API
+    tags:
+      - Bulk Operations
+      - Webhooks
+      - Event Gateways
+    baseURL: https://api.hookdeck.com/2025-07-01
+    humanURL: https://hookdeck.com/docs/bulk-retries
+    description: >-
+      Plan, schedule, and cancel bulk operations that retry or cancel many
+      events, requests, or ignored events at once. Each bulk operation
+      reports per-batch counts, total scope, and live progress, and can be
+      cancelled mid-run.
+    properties:
+      - type: Documentation
+        url: https://hookdeck.com/docs/bulk-retries
+      - type: OpenAPI
+        url: openapi/hookdeck-bulk-operations-api-openapi.yml
+      - type: NaftikoCapability
+        url: capabilities/hookdeck-bulk-retry-events.yaml
+      - type: NaftikoCapability
+        url: capabilities/hookdeck-bulk-retry-ignored-events.yaml
+      - type: NaftikoCapability
+        url: capabilities/hookdeck-bulk-retry-requests.yaml
+      - type: NaftikoCapability
+        url: capabilities/hookdeck-bulk-cancel-events.yaml
+      - type: NaftikoCapability
+        url: capabilities/hookdeck-bulk-retry-orchestrator.yaml
+  - aid: hookdeck:hookdeck-issues-api
+    name: Hookdeck Issues API
+    tags:
+      - Issues
+      - Issue Triggers
+      - Observability
+    baseURL: https://api.hookdeck.com/2025-07-01
+    humanURL: https://hookdeck.com/docs/issues
+    description: >-
+      Track issues that occur on events, requests, and backpressure, and
+      manage the triggers (rules) that open and route issues to Slack,
+      Email, Microsoft Teams, Discord, BetterUptime, and other channels.
+    properties:
+      - type: Documentation
+        url: https://hookdeck.com/docs/issues
+      - type: OpenAPI
+        url: openapi/hookdeck-issues-api-openapi.yml
+      - type: JSONSchema
+        url: json-schema/hookdeck-issue-schema.json
+      - type: NaftikoCapability
+        url: capabilities/hookdeck-issues.yaml
+      - type: NaftikoCapability
+        url: capabilities/hookdeck-issue-triggers.yaml
+      - type: NaftikoCapability
+        url: capabilities/hookdeck-issues-triage.yaml
+      - type: NaftikoCapability
+        url: capabilities/hookdeck-issue-trigger-author.yaml
+  - aid: hookdeck:hookdeck-metrics-api
+    name: Hookdeck Metrics API
+    tags:
+      - Metrics
+      - Observability
+      - Event Gateways
+    baseURL: https://api.hookdeck.com/2025-07-01
+    humanURL: https://hookdeck.com/docs/metrics
+    description: >-
+      Query aggregated metrics for events, requests, and attempts — success
+      counts, failure counts, response time, throughput, and SLA bands
+      grouped by source, destination, or connection. Backs the dashboard
+      analytics and downstream observability bridges.
+    properties:
+      - type: Documentation
+        url: https://hookdeck.com/docs/metrics
+      - type: OpenAPI
+        url: openapi/hookdeck-metrics-api-openapi.yml
+      - type: NaftikoCapability
+        url: capabilities/hookdeck-metrics.yaml
+      - type: NaftikoCapability
+        url: capabilities/hookdeck-metrics-bridge.yaml
+  - aid: hookdeck:hookdeck-integrations-api
+    name: Hookdeck Integrations API
+    tags:
+      - Integrations
+      - Webhooks
+      - Event Gateways
+    baseURL: https://api.hookdeck.com/2025-07-01
+    humanURL: https://hookdeck.com/docs/integrations
+    description: >-
+      Configure platform integrations that adapt Hookdeck behavior for
+      specific source platforms — including signature verification, header
+      normalization, allowed event types, and platform-aware retries (e.g.,
+      Stripe, GitHub, Twilio, Shopify, Linear).
+    properties:
+      - type: Documentation
+        url: https://hookdeck.com/docs/integrations
+      - type: OpenAPI
+        url: openapi/hookdeck-integrations-api-openapi.yml
+      - type: NaftikoCapability
+        url: capabilities/hookdeck-integrations.yaml
+      - type: NaftikoCapability
+        url: capabilities/hookdeck-integrations-catalog.yaml
+  - aid: hookdeck:hookdeck-notifications-api
+    name: Hookdeck Notifications API
+    tags:
+      - Notifications
+      - Observability
+    baseURL: https://api.hookdeck.com/2025-07-01
+    humanURL: https://hookdeck.com/docs/notifications
+    description: >-
+      Manage how your team is notified when issues occur — channel routing,
+      mute windows, per-team subscriptions, and the templates rendered to
+      Slack, Email, Microsoft Teams, and Discord.
+    properties:
+      - type: Documentation
+        url: https://hookdeck.com/docs/notifications
+      - type: OpenAPI
+        url: openapi/hookdeck-notifications-api-openapi.yml
+      - type: NaftikoCapability
+        url: capabilities/hookdeck-notifications.yaml
 common:
-  - url: https://hookdeck.com/docs
-    type: Documentation
-  - url: https://hookdeck.com/docs/api
-    type: APIReference
-  - url: https://api.hookdeck.com/2025-07-01/openapi
-    type: OpenAPI
-  - url: https://hookdeck.com/docs/hookdeck-basics
-    type: GettingStarted
-  - url: https://hookdeck.com/docs/authentication
-    type: Authentication
-  - url: https://hookdeck.com/pricing
-    type: Pricing
-  - url: https://hookdeck.com/blog
-    type: Blog
-  - url: https://hookdeck.com/docs/cli
-    type: CLI
-  - url: https://github.com/hookdeck/hookdeck-cli
-    type: CLI
-  - url: https://dashboard.hookdeck.com/signup
-    type: SignUp
-  - url: https://dashboard.hookdeck.com/signin
-    type: Login
-  - url: https://status.hookdeck.com/
-    type: StatusPage
-  - url: https://hookdeck.com/contact
-    type: Contact
-  - url: https://hookdeck.com/company
-    type: About
-  - url: https://hookdeck.com/customers
-    type: Customers
-  - url: https://github.com/hookdeck
-    type: GitHubOrganization
-  - url: https://github.com/hookdeck/hookdeck-api-schema
-    type: GitHubRepository
-  - url: https://github.com/hookdeck/hookdeck-typescript-sdk
-    type: GitHubRepository
-  - url: https://github.com/hookdeck/hookdeck-go-sdk
-    type: GitHubRepository
-  - url: https://www.npmjs.com/package/@hookdeck/sdk
-    type: SDK
-  - url: https://registry.terraform.io/providers/hookdeck/hookdeck/latest/docs
-    type: TerraformProvider
-  - url: https://hookdeck.com/docs/use-cases/receive-webhooks/quickstart
-    type: Quickstart
-  - url: https://hookdeck.com/docs/use-cases/send-webhooks
-    type: Documentation
-  - url: https://hookdeck.com/terms
-    type: TermsOfService
-  - url: https://hookdeck.com/privacy
-    type: PrivacyPolicy
-  - url: https://trust.hookdeck.com
-    type: Security
-  - url: https://hookdeck.com/dpa
-    type: DataProcessingAddendum
-  - url: https://x.com/Hookdeck
-    type: X
-  - url: https://www.linkedin.com/company/hookdeck
-    type: LinkedIn
-  - url: https://join.slack.com/t/hookdeckdevelopers/shared_invite/zt-yw7hlyzp-EQuO3QvdiBlH9Tz2KZg5MQ
-    type: Slack
-  - url: https://hookdeck.com/event-gateway
-    type: Documentation
-  - url: https://hookdeck.com/outpost
-    type: Documentation
-  - url: https://hookdeck.com/careers
-    type: Careers
-  - name: Agent Skills
+  - type: Documentation
+    url: https://hookdeck.com/docs
+  - type: APIReference
+    url: https://hookdeck.com/docs/api
+  - type: OpenAPI
+    url: https://api.hookdeck.com/2025-07-01/openapi
+  - type: GettingStarted
+    url: https://hookdeck.com/docs/hookdeck-basics
+  - type: Authentication
+    url: https://hookdeck.com/docs/authentication
+  - type: Pricing
+    url: https://hookdeck.com/pricing
+  - type: Plans
+    url: plans/hookdeck-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/hookdeck-rate-limits.yml
+  - type: FinOps
+    url: finops/hookdeck-finops.yml
+  - type: JSONLD
+    url: json-ld/hookdeck-context.jsonld
+  - type: Blog
+    url: https://hookdeck.com/blog
+  - type: CLI
+    url: https://hookdeck.com/docs/cli
+  - type: CLI
+    url: https://github.com/hookdeck/hookdeck-cli
+  - type: SDK
+    url: https://github.com/hookdeck/hookdeck-typescript-sdk
+  - type: SDK
+    url: https://github.com/hookdeck/hookdeck-go-sdk
+  - type: SDK
+    url: https://github.com/hookdeck/hookdeck-python-sdk
+  - type: SDK
+    url: https://github.com/hookdeck/hookdeck-dotnet-sdk
+  - type: SDK
+    url: https://www.npmjs.com/package/@hookdeck/sdk
+  - type: TerraformProvider
+    url: https://registry.terraform.io/providers/hookdeck/hookdeck/latest/docs
+  - type: GitHubOrganization
+    url: https://github.com/hookdeck
+  - type: GitHubRepository
+    url: https://github.com/hookdeck/hookdeck-api-schema
+  - type: GitHubRepository
+    url: https://github.com/hookdeck/outpost
+  - name: Outpost
+    type: OpenSource
+    url: https://hookdeck.com/outpost
+  - type: AgentSkill
     url: https://github.com/hookdeck/webhook-skills
-    type: AgentSkill
+  - type: Quickstart
+    url: https://hookdeck.com/docs/use-cases/receive-webhooks/quickstart
+  - type: Documentation
+    url: https://hookdeck.com/docs/use-cases/send-webhooks
+  - type: Documentation
+    url: https://hookdeck.com/event-gateway
+  - type: Documentation
+    url: https://hookdeck.com/outpost
+  - type: Changelog
+    url: https://hookdeck.com/changelog
+  - type: StatusPage
+    url: https://status.hookdeck.com/
+  - type: SignUp
+    url: https://dashboard.hookdeck.com/signup
+  - type: Login
+    url: https://dashboard.hookdeck.com/signin
+  - type: Contact
+    url: https://hookdeck.com/contact
+  - type: About
+    url: https://hookdeck.com/company
+  - type: Customers
+    url: https://hookdeck.com/customers
+  - type: Careers
+    url: https://hookdeck.com/careers
+  - type: TermsOfService
+    url: https://hookdeck.com/terms
+  - type: PrivacyPolicy
+    url: https://hookdeck.com/privacy
+  - type: Security
+    url: https://trust.hookdeck.com
+  - type: DataProcessingAddendum
+    url: https://hookdeck.com/dpa
+  - type: X
+    url: https://x.com/Hookdeck
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/hookdeck
+  - type: Slack
+    url: https://join.slack.com/t/hookdeckdevelopers/shared_invite/zt-yw7hlyzp-EQuO3QvdiBlH9Tz2KZg5MQ
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

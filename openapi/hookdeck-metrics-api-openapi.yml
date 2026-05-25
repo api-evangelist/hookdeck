@@ -1,0 +1,837 @@
+openapi: 3.0.1
+info:
+  title: Hookdeck Metrics API
+  version: 1.0.0
+  description: Query aggregated metrics for events, requests, and attempts — success counts, failure counts, response time,
+    throughput, and SLA bands grouped by source, destination, or connection.
+  contact:
+    name: Hookdeck Support
+    url: https://hookdeck.com/contact-us
+    email: info@hookdeck.com
+servers:
+- url: https://api.hookdeck.com/2025-07-01
+  description: Production API
+security:
+- bearerAuth: []
+- basicAuth: []
+tags:
+- name: Metrics
+  description: Query aggregated metrics for events, requests, and attempts with time-based grouping and filtering.
+paths:
+  /metrics/requests:
+    get:
+      operationId: queryRequestMetrics
+      summary: Query request metrics
+      description: Query aggregated request metrics with time-based grouping and filtering
+      tags:
+      - Metrics
+      responses:
+        '200':
+          description: Request metrics results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsResponse'
+      parameters:
+      - in: query
+        name: date_range
+        schema:
+          type: object
+          properties:
+            start:
+              type: string
+              format: date-time
+              description: Start of the time range in ISO 8601 format
+            end:
+              type: string
+              format: date-time
+              description: End of the time range in ISO 8601 format
+          required:
+          - start
+          - end
+          additionalProperties: false
+      - in: query
+        name: granularity
+        schema:
+          type: string
+          pattern: ^(\d+)(s|m|h|d|w|M)$
+          nullable: true
+          description: 'Time bucket granularity. Format: <number><unit> where unit is s (seconds 1-60), m (minutes 1-60),
+            h (hours 1-24), d (days 1-31), w (weeks 1-4), M (months 1-12). Examples: 1s, 5m, 1h, 1d'
+      - in: query
+        name: filters
+        schema:
+          type: object
+          properties:
+            source_id:
+              anyOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+                minItems: 1
+              description: Filter by source ID (single value or array)
+            rejection_cause:
+              anyOf:
+              - type: string
+                enum:
+                - SOURCE_DISABLED
+                - NO_CONNECTION
+                - VERIFICATION_FAILED
+                - UNSUPPORTED_HTTP_METHOD
+                - UNSUPPORTED_CONTENT_TYPE
+                - UNPARSABLE_JSON
+                - PAYLOAD_TOO_LARGE
+                - INGESTION_FATAL
+                - UNKNOWN
+              - type: array
+                items:
+                  type: string
+                  enum:
+                  - SOURCE_DISABLED
+                  - NO_CONNECTION
+                  - VERIFICATION_FAILED
+                  - UNSUPPORTED_HTTP_METHOD
+                  - UNSUPPORTED_CONTENT_TYPE
+                  - UNPARSABLE_JSON
+                  - PAYLOAD_TOO_LARGE
+                  - INGESTION_FATAL
+                  - UNKNOWN
+                minItems: 1
+              description: Filter by rejection cause (single value or array)
+            status:
+              anyOf:
+              - type: string
+                enum:
+                - ACCEPTED
+                - REJECTED
+              - type: array
+                items:
+                  type: string
+                  enum:
+                  - ACCEPTED
+                  - REJECTED
+                minItems: 1
+              description: Filter by request status (single value or array)
+            bulk_retry_ids:
+              type: array
+              items:
+                type: string
+              description: Filter by bulk retry operation IDs
+            events_count:
+              type: object
+              properties:
+                min:
+                  type: integer
+                  minimum: 0
+                  description: Minimum number of events
+                max:
+                  type: integer
+                  minimum: 0
+                  description: Maximum number of events
+              additionalProperties: false
+              description: Filter by number of events created (range with min/max)
+            ignored_count:
+              type: object
+              properties:
+                min:
+                  type: integer
+                  minimum: 0
+                  description: Minimum number of ignored
+                max:
+                  type: integer
+                  minimum: 0
+                  description: Maximum number of ignored
+              additionalProperties: false
+              description: Filter by number of ignored connections (range with min/max)
+          additionalProperties: false
+      - in: query
+        name: measures
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - count
+            - accepted_count
+            - rejected_count
+            - discarded_count
+            - avg_events_per_request
+            - avg_ignored_per_request
+          minItems: 1
+          description: Metrics to calculate
+      - in: query
+        name: dimensions
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - source_id
+            - rejection_cause
+            - status
+            - bulk_retry_ids
+            - events_count
+            - ignored_count
+          description: Dimensions to group by
+  /metrics/events:
+    get:
+      operationId: queryEventMetrics
+      summary: Query event metrics
+      description: Query aggregated event metrics with time-based grouping and filtering
+      tags:
+      - Metrics
+      responses:
+        '200':
+          description: Event metrics results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsResponse'
+      parameters:
+      - in: query
+        name: date_range
+        schema:
+          type: object
+          properties:
+            start:
+              type: string
+              format: date-time
+              description: Start of the time range in ISO 8601 format
+            end:
+              type: string
+              format: date-time
+              description: End of the time range in ISO 8601 format
+          required:
+          - start
+          - end
+          additionalProperties: false
+      - in: query
+        name: granularity
+        schema:
+          type: string
+          pattern: ^(\d+)(s|m|h|d|w|M)$
+          nullable: true
+          description: 'Time bucket granularity. Format: <number><unit> where unit is s (seconds 1-60), m (minutes 1-60),
+            h (hours 1-24), d (days 1-31), w (weeks 1-4), M (months 1-12). Examples: 1s, 5m, 1h, 1d'
+      - in: query
+        name: filters
+        schema:
+          type: object
+          properties:
+            source_id:
+              anyOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+                minItems: 1
+              description: Filter by source ID (single value or array)
+            webhook_id:
+              anyOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+                minItems: 1
+              description: Filter by webhook/connection ID (single value or array)
+            destination_id:
+              anyOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+                minItems: 1
+              description: Filter by destination ID (single value or array)
+            status:
+              anyOf:
+              - type: string
+                enum:
+                - SUCCESSFUL
+                - FAILED
+                - QUEUED
+                - CANCELLED
+                - HOLD
+                - SCHEDULED
+              - type: array
+                items:
+                  type: string
+                  enum:
+                  - SUCCESSFUL
+                  - FAILED
+                  - QUEUED
+                  - CANCELLED
+                  - HOLD
+                  - SCHEDULED
+                minItems: 1
+              description: Filter by event status (single value or array)
+            error_code:
+              type: string
+              description: Filter by error code
+            issue_ids:
+              type: array
+              items:
+                type: string
+              description: Filter by issue IDs (array contains match)
+            bulk_retry_ids:
+              type: array
+              items:
+                type: string
+              description: Filter by bulk retry operation IDs (array contains match)
+            event_data_id:
+              type: string
+              description: Filter by event data ID
+            cli_id:
+              type: string
+              description: Filter by CLI ID
+            cli_user_id:
+              type: string
+              description: Filter by CLI user ID
+            attempts:
+              type: integer
+              minimum: 0
+              description: Filter by number of attempts
+            response_status:
+              type: integer
+              minimum: 100
+              maximum: 599
+              description: Filter by HTTP response status code
+          additionalProperties: false
+      - in: query
+        name: measures
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - count
+            - successful_count
+            - failed_count
+            - scheduled_count
+            - paused_count
+            - error_rate
+            - avg_attempts
+            - scheduled_retry_count
+          minItems: 1
+          description: Metrics to calculate
+      - in: query
+        name: dimensions
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - status
+            - source_id
+            - webhook_id
+            - destination_id
+            - error_code
+            - event_data_id
+            - cli_id
+            - cli_user_id
+            - attempts
+            - response_status
+          description: Dimensions to group by
+  /metrics/attempts:
+    get:
+      operationId: queryAttemptMetrics
+      summary: Query attempt metrics
+      description: Query aggregated attempt metrics with time-based grouping and filtering
+      tags:
+      - Metrics
+      responses:
+        '200':
+          description: Attempt metrics results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsResponse'
+      parameters:
+      - in: query
+        name: date_range
+        schema:
+          type: object
+          properties:
+            start:
+              type: string
+              format: date-time
+              description: Start of the time range in ISO 8601 format
+            end:
+              type: string
+              format: date-time
+              description: End of the time range in ISO 8601 format
+          required:
+          - start
+          - end
+          additionalProperties: false
+      - in: query
+        name: granularity
+        schema:
+          type: string
+          pattern: ^(\d+)(s|m|h|d|w|M)$
+          nullable: true
+          description: 'Time bucket granularity. Format: <number><unit> where unit is s (seconds 1-60), m (minutes 1-60),
+            h (hours 1-24), d (days 1-31), w (weeks 1-4), M (months 1-12). Examples: 1s, 5m, 1h, 1d'
+      - in: query
+        name: filters
+        schema:
+          type: object
+          properties:
+            destination_id:
+              anyOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+                minItems: 1
+              description: Filter by destination ID (single value or array)
+            event_id:
+              type: string
+              description: Filter by event ID
+            status:
+              anyOf:
+              - type: string
+                enum:
+                - SUCCESSFUL
+                - FAILED
+              - type: array
+                items:
+                  type: string
+                  enum:
+                  - SUCCESSFUL
+                  - FAILED
+                minItems: 1
+              description: Filter by attempt status (single value or array)
+            error_code:
+              type: string
+              description: Filter by error code
+            bulk_retry_id:
+              type: string
+              description: Filter by bulk retry ID
+            trigger:
+              type: string
+              description: Filter by trigger type
+          additionalProperties: false
+      - in: query
+        name: measures
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - count
+            - successful_count
+            - failed_count
+            - delivered_count
+            - error_rate
+            - response_latency_avg
+            - response_latency_max
+            - response_latency_p95
+            - response_latency_p99
+            - delivery_latency_avg
+          minItems: 1
+          description: Metrics to calculate
+      - in: query
+        name: dimensions
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - destination_id
+            - event_id
+            - status
+            - error_code
+            - bulk_retry_id
+            - trigger
+          description: Dimensions to group by
+  /metrics/events-by-issue:
+    get:
+      operationId: queryEventsByIssueMetrics
+      summary: Query event metrics grouped by individual issue
+      description: Returns metrics for events broken down by individual issue IDs. Uses arrayJoin to create one row per issue
+        per event, enabling per-issue analytics. Useful for tracking which issues affect the most events over time.
+      tags:
+      - Metrics
+      responses:
+        '200':
+          description: Events by issue metrics results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsResponse'
+      parameters:
+      - in: query
+        name: date_range
+        schema:
+          type: object
+          properties:
+            start:
+              type: string
+              format: date-time
+              description: Start of the time range in ISO 8601 format
+            end:
+              type: string
+              format: date-time
+              description: End of the time range in ISO 8601 format
+          required:
+          - start
+          - end
+          additionalProperties: false
+      - in: query
+        name: granularity
+        schema:
+          type: string
+          pattern: ^(\d+)(s|m|h|d|w|M)$
+          nullable: true
+          description: 'Time bucket granularity. Format: <number><unit> where unit is s (seconds 1-60), m (minutes 1-60),
+            h (hours 1-24), d (days 1-31), w (weeks 1-4), M (months 1-12). Examples: 1s, 5m, 1h, 1d'
+      - in: query
+        name: filters
+        schema:
+          type: object
+          properties:
+            issue_id:
+              anyOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+                minItems: 1
+              description: Filter by issue ID(s) - required. Single ID or array of IDs
+            source_id:
+              type: string
+              description: Filter by source ID
+            destination_id:
+              type: string
+              description: Filter by destination ID
+            webhook_id:
+              type: string
+              description: Filter by webhook/connection ID
+          required:
+          - issue_id
+          additionalProperties: false
+      - in: query
+        name: measures
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - count
+          minItems: 1
+          description: Metrics to calculate
+      - in: query
+        name: dimensions
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - issue_id
+            - source_id
+            - destination_id
+            - webhook_id
+          description: Dimensions to group by
+  /metrics/queue-depth:
+    get:
+      operationId: queryQueueDepthMetrics
+      summary: Query queue depth metrics
+      description: Query queue depth metrics for destinations (pending events count and age)
+      tags:
+      - Metrics
+      responses:
+        '200':
+          description: Queue depth metrics results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsResponse'
+      parameters:
+      - in: query
+        name: date_range
+        schema:
+          type: object
+          properties:
+            start:
+              type: string
+              format: date-time
+              description: Start of the time range in ISO 8601 format
+            end:
+              type: string
+              format: date-time
+              description: End of the time range in ISO 8601 format
+          required:
+          - start
+          - end
+          additionalProperties: false
+      - in: query
+        name: granularity
+        schema:
+          type: string
+          pattern: ^(\d+)(s|m|h|d|w|M)$
+          nullable: true
+          description: 'Time bucket granularity. Format: <number><unit> where unit is s (seconds 1-60), m (minutes 1-60),
+            h (hours 1-24), d (days 1-31), w (weeks 1-4), M (months 1-12). Examples: 1s, 5m, 1h, 1d'
+      - in: query
+        name: filters
+        schema:
+          type: object
+          properties:
+            destination_id:
+              type: string
+              description: Filter by destination ID
+          additionalProperties: false
+      - in: query
+        name: measures
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - max_depth
+            - max_age
+          minItems: 1
+          description: Metrics to calculate
+      - in: query
+        name: dimensions
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - destination_id
+          description: Dimensions to group by
+  /metrics/transformations:
+    get:
+      operationId: queryTransformationMetrics
+      summary: Query transformation execution metrics
+      description: Query aggregated transformation execution metrics with time-based grouping and filtering
+      tags:
+      - Metrics
+      responses:
+        '200':
+          description: Transformation metrics results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsResponse'
+      parameters:
+      - in: query
+        name: date_range
+        schema:
+          type: object
+          properties:
+            start:
+              type: string
+              format: date-time
+              description: Start of the time range in ISO 8601 format
+            end:
+              type: string
+              format: date-time
+              description: End of the time range in ISO 8601 format
+          required:
+          - start
+          - end
+          additionalProperties: false
+      - in: query
+        name: granularity
+        schema:
+          type: string
+          pattern: ^(\d+)(s|m|h|d|w|M)$
+          nullable: true
+          description: 'Time bucket granularity. Format: <number><unit> where unit is s (seconds 1-60), m (minutes 1-60),
+            h (hours 1-24), d (days 1-31), w (weeks 1-4), M (months 1-12). Examples: 1s, 5m, 1h, 1d'
+      - in: query
+        name: filters
+        schema:
+          type: object
+          properties:
+            transformation_id:
+              type: string
+              description: Filter by transformation ID
+            webhook_id:
+              type: string
+              description: Filter by connection ID
+            log_level:
+              type: string
+              enum:
+              - error
+              - warn
+              - info
+              - debug
+              - ''
+              description: Filter by log level
+            issue_id:
+              type: string
+              description: Filter by issue ID
+          additionalProperties: false
+      - in: query
+        name: measures
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - count
+            - successful_count
+            - failed_count
+            - error_rate
+            - error_count
+            - warn_count
+            - info_count
+            - debug_count
+          minItems: 1
+          description: Metrics to calculate
+      - in: query
+        name: dimensions
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - transformation_id
+            - webhook_id
+            - log_level
+            - issue_id
+          description: Dimensions to group by
+  /metrics/events-pending-timeseries:
+    get:
+      operationId: queryEventsPendingTimeseriesMetrics
+      summary: Query events pending timeseries metrics
+      description: Query aggregated events pending timeseries metrics with time-based grouping and filtering
+      tags:
+      - Metrics
+      responses:
+        '200':
+          description: Events pending timeseries metrics results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsResponse'
+      parameters:
+      - in: query
+        name: date_range
+        schema:
+          type: object
+          properties:
+            start:
+              type: string
+              format: date-time
+              description: Start of the time range in ISO 8601 format
+            end:
+              type: string
+              format: date-time
+              description: End of the time range in ISO 8601 format
+          required:
+          - start
+          - end
+          additionalProperties: false
+      - in: query
+        name: granularity
+        schema:
+          type: string
+          pattern: ^(\d+)(s|m|h|d|w|M)$
+          nullable: true
+          description: 'Time bucket granularity. Format: <number><unit> where unit is s (seconds 1-60), m (minutes 1-60),
+            h (hours 1-24), d (days 1-31), w (weeks 1-4), M (months 1-12). Examples: 1s, 5m, 1h, 1d'
+      - in: query
+        name: filters
+        schema:
+          type: object
+          properties:
+            destination_id:
+              type: string
+              description: Filter by destination ID
+          additionalProperties: false
+      - in: query
+        name: measures
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - count
+          minItems: 1
+          description: List of measures to aggregate (count)
+      - in: query
+        name: dimensions
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - destination_id
+          description: List of dimensions to group by
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    basicAuth:
+      type: http
+      scheme: basic
+  schemas:
+    MetricsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetricDataPoint'
+          description: Array of metric data points
+        metadata:
+          type: object
+          properties:
+            granularity:
+              type: string
+              nullable: true
+              description: Time granularity used in the query
+            query_time_ms:
+              type: number
+              format: float
+              description: Query execution time in milliseconds
+            row_count:
+              type: number
+              format: float
+              description: Number of rows returned
+            row_limit:
+              type: number
+              format: float
+              description: Maximum number of rows that can be returned
+            truncated:
+              type: boolean
+              description: Whether results were truncated due to row limit
+            warning:
+              type: string
+              description: Warning message if results were truncated
+          additionalProperties: false
+          description: Query metadata
+      additionalProperties: false
+      description: Metrics query response with data and metadata
+    MetricDataPoint:
+      type: object
+      properties:
+        time_bucket:
+          type: string
+          nullable: true
+          description: Time bucket for the metric data point
+        dimensions:
+          type: object
+          properties: {}
+          additionalProperties:
+            anyOf:
+            - type: string
+            - type: number
+              format: float
+            - type: boolean
+          description: Key-value pairs of dimension names and their values.
+        metrics:
+          type: object
+          properties: {}
+          additionalProperties:
+            type: number
+            format: float
+          description: Key-value pairs of metric names and their calculated values.
+      additionalProperties: false
+      description: A single metric data point with time bucket, dimensions, and metrics

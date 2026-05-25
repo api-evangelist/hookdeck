@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hookdeck/main/json-schema/hookdeck-request-schema.json",
+  "title": "Hookdeck Request",
+  "description": "JSON Schema for the Hookdeck Request entity, extracted from the Hookdeck Admin REST API (v2025-07-01).",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "ID of the request"
+    },
+    "team_id": {
+      "type": "string",
+      "description": "ID of the project"
+    },
+    "verified": {
+      "type": "boolean",
+      "nullable": true,
+      "description": "Whether or not the request was verified when received"
+    },
+    "original_event_data_id": {
+      "type": "string",
+      "nullable": true,
+      "description": "ID of the request data"
+    },
+    "rejection_cause": {
+      "$ref": "#/$defs/RequestRejectionCause"
+    },
+    "ingested_at": {
+      "type": "string",
+      "format": "date-time",
+      "nullable": true,
+      "description": "The time the request was originally received"
+    },
+    "source_id": {
+      "type": "string",
+      "description": "ID of the associated source"
+    },
+    "events_count": {
+      "type": "integer",
+      "nullable": true,
+      "description": "The count of events created from this request (CLI events not included)"
+    },
+    "cli_events_count": {
+      "type": "integer",
+      "nullable": true,
+      "description": "The count of CLI events created from this request"
+    },
+    "ignored_count": {
+      "type": "integer",
+      "nullable": true,
+      "x-docs-hide": true
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date the event was last updated"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "\tDate the event was created"
+    },
+    "data": {
+      "$ref": "#/$defs/ShortEventData"
+    }
+  },
+  "required": [
+    "id",
+    "team_id",
+    "verified",
+    "original_event_data_id",
+    "rejection_cause",
+    "ingested_at",
+    "source_id",
+    "events_count",
+    "cli_events_count",
+    "ignored_count",
+    "updated_at",
+    "created_at"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "RequestRejectionCause": {
+      "type": "string",
+      "enum": [
+        "SOURCE_DISABLED",
+        "NO_CONNECTION",
+        "VERIFICATION_FAILED",
+        "UNSUPPORTED_HTTP_METHOD",
+        "UNSUPPORTED_CONTENT_TYPE",
+        "UNPARSABLE_JSON",
+        "PAYLOAD_TOO_LARGE",
+        "INGESTION_FATAL",
+        "UNKNOWN"
+      ],
+      "x-docs-type": "string"
+    },
+    "ShortEventData": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "description": "Request path"
+        },
+        "query": {
+          "type": "string",
+          "nullable": true,
+          "description": "Raw query param string"
+        },
+        "parsed_query": {
+          "anyOf": [
+            {
+              "type": "string",
+              "nullable": true
+            },
+            {
+              "type": "object",
+              "properties": {}
+            }
+          ],
+          "nullable": true,
+          "description": "JSON representation of query params"
+        },
+        "headers": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": {
+                "type": "string",
+                "nullable": true
+              }
+            }
+          ],
+          "nullable": true,
+          "description": "JSON representation of the headers"
+        },
+        "body": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "properties": {}
+            },
+            {
+              "type": "array",
+              "items": {}
+            }
+          ],
+          "nullable": true,
+          "description": "JSON or string representation of the body"
+        },
+        "is_large_payload": {
+          "type": "boolean",
+          "nullable": true,
+          "description": "Whether the payload is considered large payload and not searchable"
+        }
+      },
+      "required": [
+        "path",
+        "query",
+        "parsed_query",
+        "headers",
+        "body"
+      ],
+      "additionalProperties": false,
+      "nullable": true,
+      "description": "Request data"
+    }
+  }
+}

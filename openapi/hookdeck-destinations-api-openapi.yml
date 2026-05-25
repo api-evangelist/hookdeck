@@ -1,0 +1,1231 @@
+openapi: 3.0.1
+info:
+  title: Hookdeck Destinations API
+  version: 1.0.0
+  description: Manage destinations — the downstream targets (HTTP endpoints, AWS, Azure, GCP, queues) where Hookdeck delivers
+    events. Supports auth methods, rate limiting, and path forwarding.
+  contact:
+    name: Hookdeck Support
+    url: https://hookdeck.com/contact-us
+    email: info@hookdeck.com
+servers:
+- url: https://api.hookdeck.com/2025-07-01
+  description: Production API
+security:
+- bearerAuth: []
+- basicAuth: []
+tags:
+- name: Destinations
+  description: A destination is any endpoint to which your webhooks can be routed.
+paths:
+  /destinations:
+    get:
+      operationId: getDestinations
+      summary: Retrieve destinations
+      description: This endpoint lists destinations, or a subset of destinations.
+      tags:
+      - Destinations
+      responses:
+        '200':
+          description: List of destinations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DestinationPaginatedResult'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: query
+        name: id
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+          description: Filter by destination IDs
+      - in: query
+        name: name
+        schema:
+          anyOf:
+          - type: string
+            pattern: ^[A-z0-9-_]+$
+            maxLength: 155
+          - $ref: '#/components/schemas/Operators'
+          - type: array
+            items:
+              type: string
+              pattern: ^[A-z0-9-_]+$
+              maxLength: 155
+          description: The destination name
+      - in: query
+        name: type
+        schema:
+          anyOf:
+          - type: string
+            enum:
+            - HTTP
+            - CLI
+            - MOCK_API
+          - type: array
+            items:
+              type: string
+              enum:
+              - HTTP
+              - CLI
+              - MOCK_API
+          description: Filter by destination type
+      - in: query
+        name: disabled
+        schema:
+          type: boolean
+          description: Include disabled resources in the response
+      - in: query
+        name: disabled_at
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+            nullable: true
+          - $ref: '#/components/schemas/Operators'
+          description: Date the destination was disabled
+      - in: query
+        name: order_by
+        schema:
+          type: string
+          maxLength: 255
+          enum:
+          - name
+          - created_at
+          - updated_at
+          description: Sort key
+      - in: query
+        name: dir
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          description: Sort direction
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          minimum: 0
+          maximum: 255
+          description: Result set size
+      - in: query
+        name: next
+        schema:
+          type: string
+          maxLength: 255
+          description: The ID to provide in the query to get the next set of results
+      - in: query
+        name: prev
+        schema:
+          type: string
+          maxLength: 255
+          description: The ID to provide in the query to get the previous set of results
+    post:
+      operationId: createDestination
+      summary: Create a destination
+      description: This endpoint creates a destination.
+      tags:
+      - Destinations
+      responses:
+        '200':
+          description: A single destination
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Destination'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  pattern: ^[A-z0-9-_]+$
+                  maxLength: 155
+                  description: Name for the destination
+                type:
+                  type: string
+                  enum:
+                  - HTTP
+                  - CLI
+                  - MOCK_API
+                  description: Type of the destination
+                  default: HTTP
+                description:
+                  type: string
+                  maxLength: 500
+                  nullable: true
+                  description: Description for the destination
+                config:
+                  $ref: '#/components/schemas/VerificationConfig'
+              required:
+              - name
+              additionalProperties: false
+    put:
+      operationId: upsertDestination
+      summary: Create/Update a destination
+      description: This endpoint creates a destination, or updates an existing destination by name.
+      tags:
+      - Destinations
+      responses:
+        '200':
+          description: A single destination
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Destination'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  pattern: ^[A-z0-9-_]+$
+                  maxLength: 155
+                  description: Name for the destination
+                type:
+                  type: string
+                  enum:
+                  - HTTP
+                  - CLI
+                  - MOCK_API
+                  description: Type of the destination
+                  default: HTTP
+                description:
+                  type: string
+                  maxLength: 500
+                  nullable: true
+                  description: Description for the destination
+                config:
+                  $ref: '#/components/schemas/VerificationConfig'
+              required:
+              - name
+              additionalProperties: false
+  /destinations/count:
+    get:
+      operationId: countDestinations
+      summary: Count destinations
+      description: ''
+      tags:
+      - Destinations
+      responses:
+        '200':
+          description: Count of destinations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                    format: float
+                    description: Count of destinations
+                required:
+                - count
+                additionalProperties: false
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: query
+        name: id
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+          description: Filter by destination IDs
+      - in: query
+        name: name
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 155
+          - type: array
+            items:
+              type: string
+              maxLength: 155
+          description: The destination name
+      - in: query
+        name: disabled
+        schema:
+          type: boolean
+          description: Include disabled resources in the response
+      - in: query
+        name: disabled_at
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+            nullable: true
+          - type: array
+            items:
+              type: string
+              format: date-time
+              nullable: true
+          description: Date the destination was disabled
+  /destinations/{id}:
+    get:
+      operationId: getDestination
+      summary: Retrieve a destination
+      description: This endpoint retrieves a specific destination.
+      tags:
+      - Destinations
+      responses:
+        '200':
+          description: A single destination
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Destination'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '410':
+          description: Gone
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: query
+        name: include
+        schema:
+          type: string
+          enum:
+          - config.auth
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Destination ID
+        required: true
+    put:
+      operationId: updateDestination
+      summary: Update a destination
+      description: This endpoint updates a destination.
+      tags:
+      - Destinations
+      responses:
+        '200':
+          description: A single destination
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Destination'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Destination ID
+        required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  pattern: ^[A-z0-9-_]+$
+                  maxLength: 155
+                  description: Name for the destination
+                type:
+                  type: string
+                  enum:
+                  - HTTP
+                  - CLI
+                  - MOCK_API
+                  description: Type of the destination
+                description:
+                  type: string
+                  maxLength: 500
+                  nullable: true
+                  description: Description for the destination
+                config:
+                  $ref: '#/components/schemas/VerificationConfig'
+              additionalProperties: false
+    delete:
+      operationId: deleteDestination
+      summary: Delete a destination
+      description: This endpoint permanently deletes a destination. This action cannot be undone.
+      tags:
+      - Destinations
+      responses:
+        '200':
+          description: A single destination
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: ID of the destination
+                required:
+                - id
+                additionalProperties: false
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+  /destinations/{id}/disable:
+    put:
+      operationId: disableDestination
+      summary: Disable a destination
+      description: This endpoint disables a destination. A disabled destination will no longer deliver any events.
+      tags:
+      - Destinations
+      responses:
+        '200':
+          description: A single destination
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Destination'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Destination ID
+        required: true
+  /destinations/{id}/archive:
+    put:
+      operationId: disableDestination_archive
+      summary: Disable a destination
+      description: This endpoint disables a destination. A disabled destination will no longer deliver any events.
+      tags:
+      - Destinations
+      responses:
+        '200':
+          description: A single destination
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Destination'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Destination ID
+        required: true
+  /destinations/{id}/enable:
+    put:
+      operationId: enableDestination
+      summary: Enable a destination
+      description: This endpoint enables a destination that was previously disabled.
+      tags:
+      - Destinations
+      responses:
+        '200':
+          description: A single destination
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Destination'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Destination ID
+        required: true
+  /destinations/{id}/unarchive:
+    put:
+      operationId: enableDestination_unarchive
+      summary: Enable a destination
+      description: This endpoint enables a destination that was previously disabled.
+      tags:
+      - Destinations
+      responses:
+        '200':
+          description: A single destination
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Destination'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Destination ID
+        required: true
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    basicAuth:
+      type: http
+      scheme: basic
+  schemas:
+    DestinationConfigHTTPAuthOAuth2ClientCredentials:
+      type: object
+      properties:
+        auth_server:
+          type: string
+        client_id:
+          type: string
+        client_secret:
+          type: string
+        scope:
+          type: string
+        authentication_type:
+          type: string
+          enum:
+          - basic
+          - bearer
+          - x-www-form-urlencoded
+      additionalProperties: false
+      x-docs-type: OAUTH2_CLIENT_CREDENTIALS
+    DestinationConfigHTTPAuthBasicAuth:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      additionalProperties: false
+      x-docs-type: BASIC_AUTH
+    DestinationConfigHTTPAuthAPIKey:
+      type: object
+      properties:
+        key:
+          type: string
+        api_key:
+          type: string
+        to:
+          type: string
+          enum:
+          - header
+          - query
+      additionalProperties: false
+      x-docs-type: API_KEY
+    DestinationConfigCLIAuth:
+      type: object
+      properties: {}
+      additionalProperties: false
+      oneOf:
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthHookdeckSignatureDefault'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthCustomSHA256HMACSignature'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthBasicAuth'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthAPIKey'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthBearerToken'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthOAuth2ClientCredentials'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthOAuth2AuthorizationCode'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthAWSSignature'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthGCPServiceAccount'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthEmpty'
+    SeekPagination:
+      type: object
+      properties:
+        order_by:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        dir:
+          anyOf:
+          - $ref: '#/components/schemas/OrderByDirection'
+          - type: array
+            items:
+              $ref: '#/components/schemas/OrderByDirection'
+        limit:
+          type: integer
+        prev:
+          type: string
+        next:
+          type: string
+      additionalProperties: false
+    Destination:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the destination
+        name:
+          type: string
+          description: A unique, human-friendly name for the destination
+        description:
+          type: string
+          nullable: true
+          description: Description of the destination
+        team_id:
+          type: string
+          description: ID of the project
+        type:
+          type: string
+          enum:
+          - HTTP
+          - CLI
+          - MOCK_API
+          description: Type of the destination
+        config:
+          $ref: '#/components/schemas/DestinationConfig'
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date the destination was disabled
+        updated_at:
+          type: string
+          format: date-time
+          description: Date the destination was last updated
+        created_at:
+          type: string
+          format: date-time
+          description: Date the destination was created
+      required:
+      - id
+      - name
+      - team_id
+      - type
+      - disabled_at
+      - updated_at
+      - created_at
+      additionalProperties: false
+      description: Associated [Destination](#destination-object) object
+    DestinationConfigCLIAuthOAuth2AuthorizationCode:
+      type: object
+      properties:
+        auth_server:
+          type: string
+        client_id:
+          type: string
+        client_secret:
+          type: string
+        refresh_token:
+          type: string
+        scope:
+          type: string
+      additionalProperties: false
+      x-docs-type: OAUTH2_AUTHORIZATION_CODE
+    DestinationConfigHTTPAuthOAuth2AuthorizationCode:
+      type: object
+      properties:
+        auth_server:
+          type: string
+        client_id:
+          type: string
+        client_secret:
+          type: string
+        refresh_token:
+          type: string
+        scope:
+          type: string
+      additionalProperties: false
+      x-docs-type: OAUTH2_AUTHORIZATION_CODE
+    DestinationConfigHTTPAuthGCPServiceAccount:
+      type: object
+      properties:
+        service_account_key:
+          type: string
+        scope:
+          type: string
+          nullable: true
+      additionalProperties: false
+      x-docs-type: GCP_SERVICE_ACCOUNT
+    DestinationConfigHTTPAuthBearerToken:
+      type: object
+      properties:
+        token:
+          type: string
+      additionalProperties: false
+      x-docs-type: BEARER_TOKEN
+    VerificationConfig:
+      type: object
+      properties: {}
+      additionalProperties: false
+      oneOf:
+      - $ref: '#/components/schemas/DestinationTypeConfigHTTP'
+        x-required: true
+      - $ref: '#/components/schemas/DestinationTypeConfigCLI'
+        x-required: true
+      - $ref: '#/components/schemas/DestinationTypeConfigMOCK_API'
+      description: The type configs for the specified type
+      default: {}
+    DestinationConfigHTTPAuthHookdeckSignatureDefault:
+      type: object
+      properties: {}
+      additionalProperties: false
+      x-docs-type: HOOKDECK_SIGNATURE
+    DestinationConfigMockAPIAuthBasicAuth:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      additionalProperties: false
+      x-docs-type: BASIC_AUTH
+    DestinationConfigMockAPIAuthOAuth2AuthorizationCode:
+      type: object
+      properties:
+        auth_server:
+          type: string
+        client_id:
+          type: string
+        client_secret:
+          type: string
+        refresh_token:
+          type: string
+        scope:
+          type: string
+      additionalProperties: false
+      x-docs-type: OAUTH2_AUTHORIZATION_CODE
+    DestinationConfigMockAPIAuthGCPServiceAccount:
+      type: object
+      properties:
+        service_account_key:
+          type: string
+        scope:
+          type: string
+          nullable: true
+      additionalProperties: false
+      x-docs-type: GCP_SERVICE_ACCOUNT
+    DestinationConfigCLIAuthEmpty:
+      nullable: true
+      x-docs-hide: true
+      x-docs-nullable: true
+    DestinationConfigHTTPAuthEmpty:
+      nullable: true
+      x-docs-hide: true
+      x-docs-nullable: true
+    DestinationConfigCLIAuthCustomSHA256HMACSignature:
+      type: object
+      properties:
+        key:
+          type: string
+        signing_secret:
+          type: string
+      additionalProperties: false
+      x-docs-type: CUSTOM_SIGNATURE
+    DestinationConfigCLIAuthBasicAuth:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      additionalProperties: false
+      x-docs-type: BASIC_AUTH
+    DestinationConfig:
+      type: object
+      properties: {}
+      additionalProperties: false
+      oneOf:
+      - $ref: '#/components/schemas/DestinationTypeConfigHTTP'
+      - $ref: '#/components/schemas/DestinationTypeConfigCLI'
+      - $ref: '#/components/schemas/DestinationTypeConfigMOCK_API'
+      description: Configuration object for the destination type
+      default: {}
+    DestinationConfigMockAPIAuthHookdeckSignatureDefault:
+      type: object
+      properties: {}
+      additionalProperties: false
+      x-docs-type: HOOKDECK_SIGNATURE
+    DestinationConfigHTTPAuthCustomSHA256HMACSignature:
+      type: object
+      properties:
+        key:
+          type: string
+        signing_secret:
+          type: string
+      additionalProperties: false
+      x-docs-type: CUSTOM_SIGNATURE
+    DestinationConfigCLIAuthOAuth2ClientCredentials:
+      type: object
+      properties:
+        auth_server:
+          type: string
+        client_id:
+          type: string
+        client_secret:
+          type: string
+        scope:
+          type: string
+        authentication_type:
+          type: string
+          enum:
+          - basic
+          - bearer
+          - x-www-form-urlencoded
+      additionalProperties: false
+      x-docs-type: OAUTH2_CLIENT_CREDENTIALS
+    DestinationConfigCLIAuthAWSSignature:
+      type: object
+      properties:
+        access_key_id:
+          type: string
+        secret_access_key:
+          type: string
+        region:
+          type: string
+        service:
+          type: string
+      additionalProperties: false
+      x-docs-type: AWS_SIGNATURE
+    DestinationConfigMockAPIAuth:
+      type: object
+      properties: {}
+      additionalProperties: false
+      oneOf:
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthHookdeckSignatureDefault'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthCustomSHA256HMACSignature'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthBasicAuth'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthAPIKey'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthBearerToken'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthOAuth2ClientCredentials'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthOAuth2AuthorizationCode'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthAWSSignature'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthGCPServiceAccount'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthEmpty'
+    DestinationConfigHTTPAuth:
+      type: object
+      properties: {}
+      additionalProperties: false
+      oneOf:
+      - $ref: '#/components/schemas/DestinationConfigHTTPAuthHookdeckSignatureDefault'
+      - $ref: '#/components/schemas/DestinationConfigHTTPAuthCustomSHA256HMACSignature'
+      - $ref: '#/components/schemas/DestinationConfigHTTPAuthBasicAuth'
+      - $ref: '#/components/schemas/DestinationConfigHTTPAuthAPIKey'
+      - $ref: '#/components/schemas/DestinationConfigHTTPAuthBearerToken'
+      - $ref: '#/components/schemas/DestinationConfigHTTPAuthOAuth2ClientCredentials'
+      - $ref: '#/components/schemas/DestinationConfigHTTPAuthOAuth2AuthorizationCode'
+      - $ref: '#/components/schemas/DestinationConfigHTTPAuthAWSSignature'
+      - $ref: '#/components/schemas/DestinationConfigHTTPAuthGCPServiceAccount'
+      - $ref: '#/components/schemas/DestinationConfigHTTPAuthEmpty'
+    DestinationConfigHTTPAuthAWSSignature:
+      type: object
+      properties:
+        access_key_id:
+          type: string
+        secret_access_key:
+          type: string
+        region:
+          type: string
+        service:
+          type: string
+      additionalProperties: false
+      x-docs-type: AWS_SIGNATURE
+    DestinationTypeConfigMOCK_API:
+      type: object
+      properties:
+        rate_limit:
+          type: number
+          format: float
+          nullable: true
+        rate_limit_period:
+          type: string
+          enum:
+          - second
+          - minute
+          - hour
+          - concurrent
+          nullable: true
+        path_forwarding_disabled:
+          type: boolean
+        http_method:
+          type: string
+          enum:
+          - GET
+          - POST
+          - PUT
+          - PATCH
+          - DELETE
+          nullable: true
+        auth_type:
+          type: string
+          enum:
+          - HOOKDECK_SIGNATURE
+          - CUSTOM_SIGNATURE
+          - BASIC_AUTH
+          - API_KEY
+          - BEARER_TOKEN
+          - OAUTH2_CLIENT_CREDENTIALS
+          - OAUTH2_AUTHORIZATION_CODE
+          - AWS_SIGNATURE
+          - GCP_SERVICE_ACCOUNT
+          nullable: true
+        auth:
+          $ref: '#/components/schemas/DestinationConfigMockAPIAuth'
+      additionalProperties: false
+      description: The type config for MOCK_API. Requires type to be `MOCK_API`.
+      x-docs-type: MOCK_API
+    DestinationConfigMockAPIAuthCustomSHA256HMACSignature:
+      type: object
+      properties:
+        key:
+          type: string
+        signing_secret:
+          type: string
+      additionalProperties: false
+      x-docs-type: CUSTOM_SIGNATURE
+    DestinationConfigMockAPIAuthAPIKey:
+      type: object
+      properties:
+        key:
+          type: string
+        api_key:
+          type: string
+        to:
+          type: string
+          enum:
+          - header
+          - query
+      additionalProperties: false
+      x-docs-type: API_KEY
+    DestinationConfigMockAPIAuthAWSSignature:
+      type: object
+      properties:
+        access_key_id:
+          type: string
+        secret_access_key:
+          type: string
+        region:
+          type: string
+        service:
+          type: string
+      additionalProperties: false
+      x-docs-type: AWS_SIGNATURE
+    DestinationTypeConfigCLI:
+      type: object
+      properties:
+        path:
+          type: string
+          description: Path for the CLI destination
+        path_forwarding_disabled:
+          type: boolean
+        http_method:
+          type: string
+          enum:
+          - GET
+          - POST
+          - PUT
+          - PATCH
+          - DELETE
+          nullable: true
+        auth_type:
+          type: string
+          enum:
+          - HOOKDECK_SIGNATURE
+          - CUSTOM_SIGNATURE
+          - BASIC_AUTH
+          - API_KEY
+          - BEARER_TOKEN
+          - OAUTH2_CLIENT_CREDENTIALS
+          - OAUTH2_AUTHORIZATION_CODE
+          - AWS_SIGNATURE
+          - GCP_SERVICE_ACCOUNT
+          nullable: true
+        auth:
+          $ref: '#/components/schemas/DestinationConfigCLIAuth'
+      required:
+      - path
+      additionalProperties: false
+      description: The type config for CLI. Requires type to be `CLI`.
+      x-docs-type: CLI
+    DestinationConfigCLIAuthHookdeckSignatureDefault:
+      type: object
+      properties: {}
+      additionalProperties: false
+      x-docs-type: HOOKDECK_SIGNATURE
+    DestinationConfigCLIAuthAPIKey:
+      type: object
+      properties:
+        key:
+          type: string
+        api_key:
+          type: string
+        to:
+          type: string
+          enum:
+          - header
+          - query
+      additionalProperties: false
+      x-docs-type: API_KEY
+    APIErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        status:
+          type: number
+          format: float
+          description: Status code
+        message:
+          type: string
+          description: Error description
+        data:
+          type: object
+          properties: {}
+          nullable: true
+      required:
+      - code
+      - status
+      - message
+      additionalProperties: false
+      description: Error response model
+    DestinationConfigCLIAuthGCPServiceAccount:
+      type: object
+      properties:
+        service_account_key:
+          type: string
+        scope:
+          type: string
+          nullable: true
+      additionalProperties: false
+      x-docs-type: GCP_SERVICE_ACCOUNT
+    DestinationConfigMockAPIAuthEmpty:
+      nullable: true
+      x-docs-hide: true
+      x-docs-nullable: true
+    DestinationConfigCLIAuthBearerToken:
+      type: object
+      properties:
+        token:
+          type: string
+      additionalProperties: false
+      x-docs-type: BEARER_TOKEN
+    OrderByDirection:
+      anyOf:
+      - enum:
+        - asc
+      - enum:
+        - desc
+      - enum:
+        - ASC
+      - enum:
+        - DESC
+    Operators:
+      type: object
+      properties:
+        gt:
+          type: string
+          format: date-time
+          nullable: true
+        gte:
+          type: string
+          format: date-time
+          nullable: true
+        le:
+          type: string
+          format: date-time
+          nullable: true
+        lte:
+          type: string
+          format: date-time
+          nullable: true
+        any:
+          type: boolean
+        all:
+          type: boolean
+      additionalProperties: false
+    DestinationPaginatedResult:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/Destination'
+      additionalProperties: false
+    DestinationConfigMockAPIAuthOAuth2ClientCredentials:
+      type: object
+      properties:
+        auth_server:
+          type: string
+        client_id:
+          type: string
+        client_secret:
+          type: string
+        scope:
+          type: string
+        authentication_type:
+          type: string
+          enum:
+          - basic
+          - bearer
+          - x-www-form-urlencoded
+      additionalProperties: false
+      x-docs-type: OAUTH2_CLIENT_CREDENTIALS
+    DestinationTypeConfigHTTP:
+      type: object
+      properties:
+        url:
+          type: string
+          format: URL
+        rate_limit:
+          type: number
+          format: float
+          nullable: true
+        rate_limit_period:
+          type: string
+          enum:
+          - second
+          - minute
+          - hour
+          - concurrent
+          nullable: true
+        path_forwarding_disabled:
+          type: boolean
+        http_method:
+          type: string
+          enum:
+          - GET
+          - POST
+          - PUT
+          - PATCH
+          - DELETE
+          nullable: true
+        auth_type:
+          type: string
+          enum:
+          - HOOKDECK_SIGNATURE
+          - CUSTOM_SIGNATURE
+          - BASIC_AUTH
+          - API_KEY
+          - BEARER_TOKEN
+          - OAUTH2_CLIENT_CREDENTIALS
+          - OAUTH2_AUTHORIZATION_CODE
+          - AWS_SIGNATURE
+          - GCP_SERVICE_ACCOUNT
+          nullable: true
+        auth:
+          $ref: '#/components/schemas/DestinationConfigHTTPAuth'
+      required:
+      - url
+      additionalProperties: false
+      description: The type config for HTTP. Requires type to be `HTTP`.
+      x-docs-type: HTTP
+    DestinationConfigMockAPIAuthBearerToken:
+      type: object
+      properties:
+        token:
+          type: string
+      additionalProperties: false
+      x-docs-type: BEARER_TOKEN

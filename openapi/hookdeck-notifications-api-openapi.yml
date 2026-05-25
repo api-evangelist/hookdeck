@@ -1,0 +1,243 @@
+openapi: 3.0.1
+info:
+  title: Hookdeck Notifications API
+  version: 1.0.0
+  description: Manage how your team is notified when issues occur — channel routing, mute windows, and per-team subscriptions.
+  contact:
+    name: Hookdeck Support
+    url: https://hookdeck.com/contact-us
+    email: info@hookdeck.com
+servers:
+- url: https://api.hookdeck.com/2025-07-01
+  description: Production API
+security:
+- bearerAuth: []
+- basicAuth: []
+tags:
+- name: Notifications
+  description: Notifications let your team receive alerts anytime an issue changes.
+paths:
+  /notifications/webhooks:
+    put:
+      operationId: toggleWebhookNotifications
+      summary: Webhook Notifications
+      description: This endpoint enables or disables webhook notifications for the project, and sets the topics and source
+        to deliver them to.
+      tags:
+      - Notifications
+      responses:
+        '200':
+          description: Toggle operation status response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ToggleWebhookNotifications'
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                enabled:
+                  type: boolean
+                  description: Enable or disable webhook notifications on the project
+                topics:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/TopicsValue'
+                  description: List of topics to send notifications for
+                source_id:
+                  type: string
+                  description: The Hookdeck Source to send the webhook to
+              required:
+              - enabled
+              - topics
+              - source_id
+              additionalProperties: false
+  /teams/current/custom_domains:
+    post:
+      operationId: addCustomDomain
+      summary: Add a custom domain to the project
+      description: ''
+      tags:
+      - Notifications
+      responses:
+        '200':
+          description: Custom domain successfuly added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddCustomHostname'
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddCustomHostname'
+    get:
+      operationId: listCustomDomains
+      summary: List all custom domains and their verification statuses for the project
+      description: ''
+      tags:
+      - Notifications
+      responses:
+        '200':
+          description: List of custom domains
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListCustomDomainSchema'
+      parameters: []
+  /teams/current/custom_domains/{domain_id}:
+    delete:
+      operationId: deleteCustomDomain
+      summary: Removes a custom domain from the project
+      description: ''
+      tags:
+      - Notifications
+      responses:
+        '200':
+          description: Custom domain successfuly removed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteCustomDomainSchema'
+      parameters:
+      - in: path
+        name: domain_id
+        schema:
+          type: string
+        required: true
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    basicAuth:
+      type: http
+      scheme: basic
+  schemas:
+    DeleteCustomDomainSchema:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The custom hostname ID
+      required:
+      - id
+      additionalProperties: false
+    AddCustomHostname:
+      type: object
+      properties:
+        hostname:
+          type: string
+          description: The custom hostname to attach to the project
+      required:
+      - hostname
+      additionalProperties: false
+    ListCustomDomainSchema:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+          hostname:
+            type: string
+          status:
+            type: string
+          ssl:
+            type: object
+            properties:
+              id:
+                type: string
+              type:
+                type: string
+              method:
+                type: string
+              status:
+                type: string
+              txt_name:
+                type: string
+              txt_value:
+                type: string
+              validation_records:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                    txt_name:
+                      type: string
+                    txt_value:
+                      type: string
+                  additionalProperties: false
+              dcv_delegation_records:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    cname:
+                      type: string
+                    cname_target:
+                      type: string
+                  additionalProperties: false
+              settings:
+                type: object
+                properties:
+                  min_tls_version:
+                    type: string
+                additionalProperties: false
+              bundle_method:
+                type: string
+              wildcard:
+                type: boolean
+              certificate_authority:
+                type: string
+            additionalProperties: false
+          verification_errors:
+            type: array
+            items:
+              type: string
+          ownership_verification:
+            type: object
+            properties:
+              type:
+                type: string
+              name:
+                type: string
+              value:
+                type: string
+            additionalProperties: false
+          created_at:
+            type: string
+        additionalProperties: false
+    TopicsValue:
+      type: string
+      enum:
+      - issue.opened
+      - issue.updated
+      - deprecated.attempt-failed
+      - event.successful
+      description: Supported topics
+      x-docs-type: string
+    ToggleWebhookNotifications:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        topics:
+          type: array
+          items:
+            $ref: '#/components/schemas/TopicsValue'
+          nullable: true
+        source_id:
+          type: string
+      required:
+      - enabled
+      - source_id
+      additionalProperties: false

@@ -1,0 +1,621 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hookdeck/main/json-schema/hookdeck-issue-schema.json",
+  "title": "Hookdeck Issue",
+  "description": "Issue",
+  "anyOf": [
+    {
+      "$ref": "#/$defs/DeliveryIssue"
+    },
+    {
+      "$ref": "#/$defs/TransformationIssue"
+    },
+    {
+      "$ref": "#/$defs/BackpressureIssue"
+    },
+    {
+      "$ref": "#/$defs/RequestIssue"
+    }
+  ],
+  "$defs": {
+    "RequestIssue": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Issue ID",
+          "example": "iss_YXKv5OdJXCiVwkPhGy"
+        },
+        "team_id": {
+          "type": "string",
+          "description": "ID of the project"
+        },
+        "status": {
+          "$ref": "#/$defs/IssueStatus"
+        },
+        "opened_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO timestamp for when the issue was last opened"
+        },
+        "first_seen_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO timestamp for when the issue was first opened"
+        },
+        "last_seen_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO timestamp for when the issue last occured"
+        },
+        "last_updated_by": {
+          "type": "string",
+          "nullable": true,
+          "description": "Deprecated, will always be set to null"
+        },
+        "dismissed_at": {
+          "type": "string",
+          "format": "date-time",
+          "nullable": true,
+          "description": "ISO timestamp for when the issue was dismissed"
+        },
+        "auto_resolved_at": {
+          "type": "string",
+          "format": "date-time",
+          "nullable": true,
+          "x-docs-hide": true
+        },
+        "merged_with": {
+          "type": "string",
+          "nullable": true,
+          "x-docs-hide": true
+        },
+        "updated_at": {
+          "type": "string",
+          "description": "ISO timestamp for when the issue was last updated"
+        },
+        "created_at": {
+          "type": "string",
+          "description": "ISO timestamp for when the issue was created"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "request"
+          ]
+        },
+        "aggregation_keys": {
+          "$ref": "#/$defs/RequestIssueAggregationKeys"
+        },
+        "reference": {
+          "$ref": "#/$defs/RequestIssueReference"
+        }
+      },
+      "required": [
+        "id",
+        "team_id",
+        "status",
+        "opened_at",
+        "first_seen_at",
+        "last_seen_at",
+        "updated_at",
+        "created_at",
+        "type",
+        "aggregation_keys",
+        "reference"
+      ],
+      "additionalProperties": false,
+      "description": "Request issue"
+    },
+    "IssueTriggerBackpressureDelay": {
+      "type": "integer",
+      "minimum": 60000,
+      "maximum": 86400000,
+      "description": "The minimum delay (backpressure) to open the issue for min of 1 minute (60000) and max of 1 day (86400000)",
+      "x-docs-type": "integer"
+    },
+    "IssueStatus": {
+      "type": "string",
+      "enum": [
+        "OPENED",
+        "IGNORED",
+        "ACKNOWLEDGED",
+        "RESOLVED"
+      ],
+      "description": "Issue status"
+    },
+    "RequestIssueAggregationKeys": {
+      "type": "object",
+      "properties": {
+        "source_id": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rejection_cause": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RequestRejectionCause"
+          }
+        }
+      },
+      "required": [
+        "source_id",
+        "rejection_cause"
+      ],
+      "additionalProperties": false,
+      "description": "Keys used as the aggregation keys a 'request' type issue"
+    },
+    "RequestIssueReference": {
+      "type": "object",
+      "properties": {
+        "request_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "request_id"
+      ],
+      "additionalProperties": false,
+      "description": "Reference to the request an issue is being created for."
+    },
+    "DeliveryIssueReference": {
+      "type": "object",
+      "properties": {
+        "event_id": {
+          "type": "string"
+        },
+        "attempt_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "event_id",
+        "attempt_id"
+      ],
+      "additionalProperties": false,
+      "description": "Reference to the event and attempt an issue is being created for."
+    },
+    "DeliveryIssue": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Issue ID",
+          "example": "iss_YXKv5OdJXCiVwkPhGy"
+        },
+        "team_id": {
+          "type": "string",
+          "description": "ID of the project"
+        },
+        "status": {
+          "$ref": "#/$defs/IssueStatus"
+        },
+        "opened_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO timestamp for when the issue was last opened"
+        },
+        "first_seen_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO timestamp for when the issue was first opened"
+        },
+        "last_seen_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO timestamp for when the issue last occured"
+        },
+        "last_updated_by": {
+          "type": "string",
+          "nullable": true,
+          "description": "Deprecated, will always be set to null"
+        },
+        "dismissed_at": {
+          "type": "string",
+          "format": "date-time",
+          "nullable": true,
+          "description": "ISO timestamp for when the issue was dismissed"
+        },
+        "auto_resolved_at": {
+          "type": "string",
+          "format": "date-time",
+          "nullable": true,
+          "x-docs-hide": true
+        },
+        "merged_with": {
+          "type": "string",
+          "nullable": true,
+          "x-docs-hide": true
+        },
+        "updated_at": {
+          "type": "string",
+          "description": "ISO timestamp for when the issue was last updated"
+        },
+        "created_at": {
+          "type": "string",
+          "description": "ISO timestamp for when the issue was created"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "delivery"
+          ]
+        },
+        "aggregation_keys": {
+          "$ref": "#/$defs/DeliveryIssueAggregationKeys"
+        },
+        "reference": {
+          "$ref": "#/$defs/DeliveryIssueReference"
+        }
+      },
+      "required": [
+        "id",
+        "team_id",
+        "status",
+        "opened_at",
+        "first_seen_at",
+        "last_seen_at",
+        "updated_at",
+        "created_at",
+        "type",
+        "aggregation_keys",
+        "reference"
+      ],
+      "additionalProperties": false,
+      "description": "Delivery issue"
+    },
+    "TransformationIssueReference": {
+      "type": "object",
+      "properties": {
+        "transformation_execution_id": {
+          "type": "string"
+        },
+        "trigger_event_request_transformation_id": {
+          "type": "string",
+          "nullable": true,
+          "description": "Deprecated but still found on historical issues"
+        }
+      },
+      "required": [
+        "transformation_execution_id"
+      ],
+      "additionalProperties": false,
+      "description": "Reference to the event request transformation an issue is being created for."
+    },
+    "BackpressureIssueAggregationKeys": {
+      "type": "object",
+      "properties": {
+        "destination_id": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "delay": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/IssueTriggerBackpressureDelay"
+          }
+        }
+      },
+      "required": [
+        "destination_id",
+        "delay"
+      ],
+      "additionalProperties": false,
+      "description": "Keys used as the aggregation keys a 'backpressure' type issue"
+    },
+    "DeliveryIssueAggregationKeys": {
+      "type": "object",
+      "properties": {
+        "webhook_id": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "response_status": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "error_code": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AttemptErrorCodes"
+          }
+        }
+      },
+      "required": [
+        "webhook_id",
+        "response_status",
+        "error_code"
+      ],
+      "additionalProperties": false,
+      "description": "Keys used as the aggregation keys a 'delivery' type issue"
+    },
+    "AttemptErrorCodes": {
+      "type": "string",
+      "enum": [
+        "BAD_RESPONSE",
+        "CANCELLED",
+        "TIMEOUT",
+        "NOT_FOUND",
+        "CANCELLED_PAST_RETENTION",
+        "CONNECTION_REFUSED",
+        "CONNECTION_RESET",
+        "MISSING_URL",
+        "CLI",
+        "CLI_UNAVAILABLE",
+        "SELF_SIGNED_CERT",
+        "ERR_TLS_CERT_ALTNAME_INVALID",
+        "ERR_SSL_WRONG_VERSION_NUMBER",
+        "NETWORK_ERROR",
+        "NETWORK_REQUEST_CANCELED",
+        "NETWORK_UNREACHABLE",
+        "TOO_MANY_REDIRECTS",
+        "INVALID_CHARACTER",
+        "INVALID_URL",
+        "SSL_ERROR_CA_UNKNOWN",
+        "DATA_ARCHIVED",
+        "SSL_CERT_EXPIRED",
+        "BULK_RETRY_CANCELLED",
+        "DNS_LOOKUP_FAILED",
+        "HOST_UNREACHABLE",
+        "INTERNAL_ERROR",
+        "PROTOCOL_ERROR",
+        "PAYLOAD_MISSING",
+        "UNABLE_TO_GET_ISSUER_CERT",
+        "SOCKET_CLOSED",
+        "OAUTH2_HANDSHAKE_FAILED",
+        "Z_DATA_ERROR",
+        "UNKNOWN"
+      ],
+      "description": "Error code of the delivery attempt"
+    },
+    "RequestRejectionCause": {
+      "type": "string",
+      "enum": [
+        "SOURCE_DISABLED",
+        "NO_CONNECTION",
+        "VERIFICATION_FAILED",
+        "UNSUPPORTED_HTTP_METHOD",
+        "UNSUPPORTED_CONTENT_TYPE",
+        "UNPARSABLE_JSON",
+        "PAYLOAD_TOO_LARGE",
+        "INGESTION_FATAL",
+        "UNKNOWN"
+      ],
+      "x-docs-type": "string"
+    },
+    "TransformationIssueAggregationKeys": {
+      "type": "object",
+      "properties": {
+        "transformation_id": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "log_level": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/TransformationExecutionLogLevel"
+          }
+        }
+      },
+      "required": [
+        "transformation_id",
+        "log_level"
+      ],
+      "additionalProperties": false,
+      "description": "Keys used as the aggregation keys a 'transformation' type issue"
+    },
+    "TransformationExecutionLogLevel": {
+      "type": "string",
+      "enum": [
+        "debug",
+        "info",
+        "warn",
+        "error",
+        "fatal"
+      ],
+      "description": "The minimum log level to open the issue on"
+    },
+    "TransformationIssue": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Issue ID",
+          "example": "iss_YXKv5OdJXCiVwkPhGy"
+        },
+        "team_id": {
+          "type": "string",
+          "description": "ID of the project"
+        },
+        "status": {
+          "$ref": "#/$defs/IssueStatus"
+        },
+        "opened_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO timestamp for when the issue was last opened"
+        },
+        "first_seen_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO timestamp for when the issue was first opened"
+        },
+        "last_seen_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO timestamp for when the issue last occured"
+        },
+        "last_updated_by": {
+          "type": "string",
+          "nullable": true,
+          "description": "Deprecated, will always be set to null"
+        },
+        "dismissed_at": {
+          "type": "string",
+          "format": "date-time",
+          "nullable": true,
+          "description": "ISO timestamp for when the issue was dismissed"
+        },
+        "auto_resolved_at": {
+          "type": "string",
+          "format": "date-time",
+          "nullable": true,
+          "x-docs-hide": true
+        },
+        "merged_with": {
+          "type": "string",
+          "nullable": true,
+          "x-docs-hide": true
+        },
+        "updated_at": {
+          "type": "string",
+          "description": "ISO timestamp for when the issue was last updated"
+        },
+        "created_at": {
+          "type": "string",
+          "description": "ISO timestamp for when the issue was created"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "transformation"
+          ]
+        },
+        "aggregation_keys": {
+          "$ref": "#/$defs/TransformationIssueAggregationKeys"
+        },
+        "reference": {
+          "$ref": "#/$defs/TransformationIssueReference"
+        }
+      },
+      "required": [
+        "id",
+        "team_id",
+        "status",
+        "opened_at",
+        "first_seen_at",
+        "last_seen_at",
+        "updated_at",
+        "created_at",
+        "type",
+        "aggregation_keys",
+        "reference"
+      ],
+      "additionalProperties": false,
+      "description": "Transformation issue"
+    },
+    "BackpressureIssue": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Issue ID",
+          "example": "iss_YXKv5OdJXCiVwkPhGy"
+        },
+        "team_id": {
+          "type": "string",
+          "description": "ID of the project"
+        },
+        "status": {
+          "$ref": "#/$defs/IssueStatus"
+        },
+        "opened_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO timestamp for when the issue was last opened"
+        },
+        "first_seen_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO timestamp for when the issue was first opened"
+        },
+        "last_seen_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO timestamp for when the issue last occured"
+        },
+        "last_updated_by": {
+          "type": "string",
+          "nullable": true,
+          "description": "Deprecated, will always be set to null"
+        },
+        "dismissed_at": {
+          "type": "string",
+          "format": "date-time",
+          "nullable": true,
+          "description": "ISO timestamp for when the issue was dismissed"
+        },
+        "auto_resolved_at": {
+          "type": "string",
+          "format": "date-time",
+          "nullable": true,
+          "x-docs-hide": true
+        },
+        "merged_with": {
+          "type": "string",
+          "nullable": true,
+          "x-docs-hide": true
+        },
+        "updated_at": {
+          "type": "string",
+          "description": "ISO timestamp for when the issue was last updated"
+        },
+        "created_at": {
+          "type": "string",
+          "description": "ISO timestamp for when the issue was created"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "backpressure"
+          ]
+        },
+        "aggregation_keys": {
+          "$ref": "#/$defs/BackpressureIssueAggregationKeys"
+        },
+        "reference": {
+          "$ref": "#/$defs/BackpressureIssueReference"
+        }
+      },
+      "required": [
+        "id",
+        "team_id",
+        "status",
+        "opened_at",
+        "first_seen_at",
+        "last_seen_at",
+        "updated_at",
+        "created_at",
+        "type",
+        "aggregation_keys",
+        "reference"
+      ],
+      "additionalProperties": false,
+      "description": "Backpressure issue"
+    },
+    "BackpressureIssueReference": {
+      "type": "object",
+      "properties": {
+        "destination_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "destination_id"
+      ],
+      "additionalProperties": false,
+      "description": "Reference to the destination backpressure an issue is being created for."
+    }
+  }
+}

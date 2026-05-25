@@ -1,0 +1,250 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hookdeck/main/json-schema/hookdeck-event-schema.json",
+  "title": "Hookdeck Event",
+  "description": "JSON Schema for the Hookdeck Event entity, extracted from the Hookdeck Admin REST API (v2025-07-01).",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "ID of the event"
+    },
+    "team_id": {
+      "type": "string",
+      "description": "ID of the project"
+    },
+    "webhook_id": {
+      "type": "string",
+      "description": "ID of the associated connection (webhook)"
+    },
+    "source_id": {
+      "type": "string",
+      "description": "ID of the associated source"
+    },
+    "destination_id": {
+      "type": "string",
+      "description": "ID of the associated destination"
+    },
+    "event_data_id": {
+      "type": "string",
+      "description": "ID of the event data"
+    },
+    "request_id": {
+      "type": "string",
+      "description": "ID of the request that created the event"
+    },
+    "attempts": {
+      "type": "integer",
+      "description": "Number of delivery attempts made"
+    },
+    "last_attempt_at": {
+      "type": "string",
+      "format": "date-time",
+      "nullable": true,
+      "description": "Date of the most recently attempted retry"
+    },
+    "next_attempt_at": {
+      "type": "string",
+      "format": "date-time",
+      "nullable": true,
+      "description": "Date of the next scheduled retry"
+    },
+    "response_status": {
+      "type": "integer",
+      "nullable": true,
+      "description": "Event status"
+    },
+    "error_code": {
+      "$ref": "#/$defs/AttemptErrorCodes"
+    },
+    "status": {
+      "$ref": "#/$defs/EventStatus"
+    },
+    "successful_at": {
+      "type": "string",
+      "format": "date-time",
+      "nullable": true,
+      "description": "Date of the latest successful attempt"
+    },
+    "cli_id": {
+      "type": "string",
+      "nullable": true,
+      "description": "ID of the CLI the event is sent to"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date the event was last updated"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date the event was created"
+    },
+    "data": {
+      "$ref": "#/$defs/EventData"
+    }
+  },
+  "required": [
+    "id",
+    "team_id",
+    "webhook_id",
+    "source_id",
+    "destination_id",
+    "event_data_id",
+    "request_id",
+    "attempts",
+    "last_attempt_at",
+    "next_attempt_at",
+    "status",
+    "successful_at",
+    "cli_id",
+    "updated_at",
+    "created_at"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "EventStatus": {
+      "type": "string",
+      "enum": [
+        "SCHEDULED",
+        "QUEUED",
+        "HOLD",
+        "SUCCESSFUL",
+        "FAILED",
+        "CANCELLED"
+      ]
+    },
+    "AttemptErrorCodes": {
+      "type": "string",
+      "enum": [
+        "BAD_RESPONSE",
+        "CANCELLED",
+        "TIMEOUT",
+        "NOT_FOUND",
+        "CANCELLED_PAST_RETENTION",
+        "CONNECTION_REFUSED",
+        "CONNECTION_RESET",
+        "MISSING_URL",
+        "CLI",
+        "CLI_UNAVAILABLE",
+        "SELF_SIGNED_CERT",
+        "ERR_TLS_CERT_ALTNAME_INVALID",
+        "ERR_SSL_WRONG_VERSION_NUMBER",
+        "NETWORK_ERROR",
+        "NETWORK_REQUEST_CANCELED",
+        "NETWORK_UNREACHABLE",
+        "TOO_MANY_REDIRECTS",
+        "INVALID_CHARACTER",
+        "INVALID_URL",
+        "SSL_ERROR_CA_UNKNOWN",
+        "DATA_ARCHIVED",
+        "SSL_CERT_EXPIRED",
+        "BULK_RETRY_CANCELLED",
+        "DNS_LOOKUP_FAILED",
+        "HOST_UNREACHABLE",
+        "INTERNAL_ERROR",
+        "PROTOCOL_ERROR",
+        "PAYLOAD_MISSING",
+        "UNABLE_TO_GET_ISSUER_CERT",
+        "SOCKET_CLOSED",
+        "OAUTH2_HANDSHAKE_FAILED",
+        "Z_DATA_ERROR",
+        "UNKNOWN"
+      ],
+      "description": "Error code of the delivery attempt"
+    },
+    "EventData": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "method": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string",
+          "nullable": true,
+          "description": "Raw path string"
+        },
+        "query": {
+          "type": "string",
+          "nullable": true,
+          "description": "Raw query param string"
+        },
+        "parsed_query": {
+          "anyOf": [
+            {
+              "type": "string",
+              "nullable": true
+            },
+            {
+              "type": "object",
+              "properties": {}
+            }
+          ],
+          "nullable": true,
+          "description": "JSON representation of query params"
+        },
+        "headers": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": {
+                "type": "string",
+                "nullable": true
+              }
+            }
+          ],
+          "nullable": true,
+          "description": "JSON representation of the headers"
+        },
+        "appended_headers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of headers that were added by Hookdeck"
+        },
+        "body": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "properties": {}
+            },
+            {
+              "type": "array",
+              "items": {}
+            }
+          ],
+          "nullable": true,
+          "description": "JSON or string representation of the body"
+        },
+        "is_large_payload": {
+          "type": "boolean",
+          "description": "Whether the payload is considered large payload and not searchable"
+        }
+      },
+      "required": [
+        "url",
+        "method",
+        "path",
+        "query",
+        "parsed_query",
+        "headers",
+        "body"
+      ],
+      "additionalProperties": false,
+      "nullable": true,
+      "description": "Event data if included"
+    }
+  }
+}

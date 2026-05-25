@@ -1,0 +1,191 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hookdeck/main/json-schema/hookdeck-attempt-schema.json",
+  "title": "Hookdeck EventAttempt",
+  "description": "JSON Schema for the Hookdeck EventAttempt entity, extracted from the Hookdeck Admin REST API (v2025-07-01).",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Attempt ID"
+    },
+    "team_id": {
+      "type": "string",
+      "description": "ID of the project"
+    },
+    "event_id": {
+      "type": "string",
+      "description": "Event ID"
+    },
+    "destination_id": {
+      "type": "string",
+      "description": "Destination ID"
+    },
+    "response_status": {
+      "type": "integer",
+      "nullable": true,
+      "description": "Attempt's HTTP response code"
+    },
+    "attempt_number": {
+      "type": "integer",
+      "nullable": true,
+      "description": "Sequential number of attempts (up to and including this one) made for the associated event"
+    },
+    "trigger": {
+      "$ref": "#/$defs/AttemptTrigger"
+    },
+    "error_code": {
+      "$ref": "#/$defs/AttemptErrorCodes"
+    },
+    "body": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {},
+          "nullable": true,
+          "description": "Response body from the destination"
+        },
+        {
+          "type": "string",
+          "nullable": true,
+          "description": "Response body from the destination"
+        }
+      ]
+    },
+    "requested_url": {
+      "type": "string",
+      "nullable": true,
+      "description": "URL of the destination where delivery was attempted"
+    },
+    "http_method": {
+      "type": "string",
+      "enum": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "nullable": true,
+      "description": "HTTP method used to deliver the attempt"
+    },
+    "bulk_retry_id": {
+      "type": "string",
+      "nullable": true,
+      "description": "ID of associated bulk retry"
+    },
+    "status": {
+      "$ref": "#/$defs/AttemptStatus"
+    },
+    "successful_at": {
+      "type": "string",
+      "format": "date-time",
+      "nullable": true,
+      "description": "Date the attempt was successful"
+    },
+    "delivered_at": {
+      "type": "string",
+      "format": "date-time",
+      "nullable": true,
+      "description": "Date the attempt was delivered"
+    },
+    "responded_at": {
+      "type": "string",
+      "format": "date-time",
+      "nullable": true,
+      "description": "Date the destination responded to this attempt"
+    },
+    "delivery_latency": {
+      "type": "integer",
+      "nullable": true,
+      "description": "Time elapsed between attempt initiation and final delivery (in ms)"
+    },
+    "response_latency": {
+      "type": "integer",
+      "nullable": true,
+      "description": "Time elapsed between attempt initiation and a response from the destination (in ms)"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date the attempt was last updated"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date the attempt was created"
+    }
+  },
+  "required": [
+    "id",
+    "team_id",
+    "event_id",
+    "destination_id",
+    "status",
+    "updated_at",
+    "created_at"
+  ],
+  "additionalProperties": false,
+  "nullable": true,
+  "$defs": {
+    "AttemptStatus": {
+      "type": "string",
+      "enum": [
+        "FAILED",
+        "SUCCESSFUL"
+      ],
+      "description": "Attempt status"
+    },
+    "AttemptErrorCodes": {
+      "type": "string",
+      "enum": [
+        "BAD_RESPONSE",
+        "CANCELLED",
+        "TIMEOUT",
+        "NOT_FOUND",
+        "CANCELLED_PAST_RETENTION",
+        "CONNECTION_REFUSED",
+        "CONNECTION_RESET",
+        "MISSING_URL",
+        "CLI",
+        "CLI_UNAVAILABLE",
+        "SELF_SIGNED_CERT",
+        "ERR_TLS_CERT_ALTNAME_INVALID",
+        "ERR_SSL_WRONG_VERSION_NUMBER",
+        "NETWORK_ERROR",
+        "NETWORK_REQUEST_CANCELED",
+        "NETWORK_UNREACHABLE",
+        "TOO_MANY_REDIRECTS",
+        "INVALID_CHARACTER",
+        "INVALID_URL",
+        "SSL_ERROR_CA_UNKNOWN",
+        "DATA_ARCHIVED",
+        "SSL_CERT_EXPIRED",
+        "BULK_RETRY_CANCELLED",
+        "DNS_LOOKUP_FAILED",
+        "HOST_UNREACHABLE",
+        "INTERNAL_ERROR",
+        "PROTOCOL_ERROR",
+        "PAYLOAD_MISSING",
+        "UNABLE_TO_GET_ISSUER_CERT",
+        "SOCKET_CLOSED",
+        "OAUTH2_HANDSHAKE_FAILED",
+        "Z_DATA_ERROR",
+        "UNKNOWN"
+      ],
+      "description": "Error code of the delivery attempt"
+    },
+    "AttemptTrigger": {
+      "type": "string",
+      "enum": [
+        "INITIAL",
+        "MANUAL",
+        "BULK_RETRY",
+        "UNPAUSE",
+        "AUTOMATIC"
+      ],
+      "nullable": true,
+      "description": "How the attempt was triggered"
+    }
+  }
+}

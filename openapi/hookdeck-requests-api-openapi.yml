@@ -1,0 +1,1307 @@
+openapi: 3.0.1
+info:
+  title: Hookdeck Requests API
+  version: 1.0.0
+  description: List and inspect raw requests Hookdeck has received. A request precedes events and is what gets accepted at
+    the gateway.
+  contact:
+    name: Hookdeck Support
+    url: https://hookdeck.com/contact-us
+    email: info@hookdeck.com
+servers:
+- url: https://api.hookdeck.com/2025-07-01
+  description: Production API
+security:
+- bearerAuth: []
+- basicAuth: []
+tags:
+- name: Requests
+  description: A request represent a webhook received by Hookdeck.
+paths:
+  /requests:
+    get:
+      operationId: getRequests
+      summary: Retrieve requests
+      description: This endpoint lists requests, or a subset of requests.
+      tags:
+      - Requests
+      responses:
+        '200':
+          description: List of requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestPaginatedResult'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: query
+        name: id
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+            description: Request ID
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+              description: Request ID
+          description: Filter by requests IDs
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - accepted
+          - rejected
+          description: Filter by status
+      - in: query
+        name: rejection_cause
+        schema:
+          anyOf:
+          - $ref: '#/components/schemas/RequestRejectionCause'
+          - type: array
+            items:
+              $ref: '#/components/schemas/RequestRejectionCause'
+          nullable: true
+          description: Filter by rejection cause
+      - in: query
+        name: source_id
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+            description: Source ID
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+              description: Source ID
+          description: Filter by source IDs
+      - in: query
+        name: verified
+        schema:
+          type: boolean
+          description: Filter by verification status
+      - in: query
+        name: search_term
+        schema:
+          type: string
+          minLength: 3
+          description: URL Encoded string of the value to match partially to the body, headers, parsed_query or path
+      - in: query
+        name: headers
+        schema:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+            additionalProperties: false
+          description: URL Encoded string of the JSON to match to the data headers
+          x-docs-force-simple-type: true
+          x-docs-type: JSON
+      - in: query
+        name: body
+        schema:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+            additionalProperties: false
+          description: URL Encoded string of the JSON to match to the data body
+          x-docs-force-simple-type: true
+          x-docs-type: JSON
+      - in: query
+        name: parsed_query
+        schema:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+            additionalProperties: false
+          description: URL Encoded string of the JSON to match to the parsed query (JSON representation of the query)
+          x-docs-force-simple-type: true
+          x-docs-type: JSON
+      - in: query
+        name: path
+        schema:
+          type: string
+          description: URL Encoded string of the value to match partially to the path
+      - in: query
+        name: ignored_count
+        schema:
+          anyOf:
+          - type: integer
+            minimum: 0
+          - $ref: '#/components/schemas/Operators'
+          - type: array
+            items:
+              type: integer
+              minimum: 0
+          description: Filter by count of ignored events
+      - in: query
+        name: events_count
+        schema:
+          anyOf:
+          - type: integer
+            minimum: 0
+          - $ref: '#/components/schemas/Operators'
+          - type: array
+            items:
+              type: integer
+              minimum: 0
+          description: Filter by count of events
+      - in: query
+        name: cli_events_count
+        schema:
+          anyOf:
+          - type: integer
+            minimum: 0
+          - $ref: '#/components/schemas/Operators'
+          - type: array
+            items:
+              type: integer
+              minimum: 0
+          description: Filter by count of CLI events
+      - in: query
+        name: created_at
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - $ref: '#/components/schemas/Operators'
+          description: Filter by request created date
+      - in: query
+        name: ingested_at
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - $ref: '#/components/schemas/Operators'
+          description: Filter by request ingested date
+      - in: query
+        name: bulk_retry_id
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+          x-docs-hide: true
+      - in: query
+        name: include
+        schema:
+          type: string
+          enum:
+          - data
+          x-docs-hide: true
+      - in: query
+        name: progressive
+        schema:
+          type: string
+          enum:
+          - 'true'
+          - 'false'
+          description: Enable progressive loading for partial results
+          x-docs-hide: true
+      - in: query
+        name: order_by
+        schema:
+          type: string
+          maxLength: 255
+          enum:
+          - created_at
+          - ingested_at
+          description: Sort key
+      - in: query
+        name: dir
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          description: Sort direction
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          minimum: 0
+          maximum: 255
+          description: Result set size
+      - in: query
+        name: next
+        schema:
+          type: string
+          maxLength: 255
+          description: The ID to provide in the query to get the next set of results
+      - in: query
+        name: prev
+        schema:
+          type: string
+          maxLength: 255
+          description: The ID to provide in the query to get the previous set of results
+  /requests/{id}:
+    get:
+      operationId: getRequest
+      summary: Retrieve a request
+      description: This endpoint retrieves a specific request.
+      tags:
+      - Requests
+      responses:
+        '200':
+          description: A single request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Request'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Request ID
+        required: true
+  /requests/{id}/raw_body:
+    get:
+      operationId: getRequestRawBody
+      summary: Get a request raw body data
+      description: ''
+      tags:
+      - Requests
+      responses:
+        '200':
+          description: A request raw body data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RawBody'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Request ID
+        required: true
+  /requests/{id}/retry:
+    post:
+      operationId: retryRequest
+      summary: Retry a request
+      description: This endpoint retries a specific request. Retrying a request creates new events based on the request for
+        the specified connections (or all matching connections if none specified).
+      tags:
+      - Requests
+      responses:
+        '200':
+          description: Retry request operation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetryRequest'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Request ID
+        required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                webhook_ids:
+                  type: array
+                  items:
+                    type: string
+                    maxLength: 255
+                    description: Connection (webhook) IDs
+                  description: Subset of connection (webhook) IDs to re-run the event logic on. Useful to retry only specific
+                    ignored_events. If left empty, all connection (webhook) IDs will be considered.
+              additionalProperties: false
+  /requests/{id}/events:
+    get:
+      operationId: getRequestEvents
+      summary: Retrieve request events
+      description: This endpoint retrieves all events that were created as a result of the specified request.
+      tags:
+      - Requests
+      responses:
+        '200':
+          description: List of events
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventPaginatedResult'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: query
+        name: id
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+            description: Event ID
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+              description: Event ID
+          description: Filter by event IDs
+      - in: query
+        name: status
+        schema:
+          anyOf:
+          - $ref: '#/components/schemas/EventStatus'
+          - type: array
+            items:
+              $ref: '#/components/schemas/EventStatus'
+          description: Lifecyle status of the event
+      - in: query
+        name: webhook_id
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+            description: Connection (webhook) ID
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+              description: Connection (webhook) ID
+          description: Filter by connection (webhook) IDs
+      - in: query
+        name: destination_id
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+            description: Destination ID
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+              description: Destination ID
+          description: Filter by destination IDs
+      - in: query
+        name: source_id
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+            description: Source ID
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+              description: Source ID
+          description: Filter by source IDs
+      - in: query
+        name: attempts
+        schema:
+          anyOf:
+          - type: integer
+            minimum: 0
+          - $ref: '#/components/schemas/Operators'
+          description: Filter by number of attempts
+      - in: query
+        name: response_status
+        schema:
+          anyOf:
+          - type: integer
+            minimum: 200
+            maximum: 600
+          - $ref: '#/components/schemas/Operators'
+          - type: array
+            items:
+              type: integer
+              minimum: 200
+              maximum: 600
+          nullable: true
+          description: Filter by HTTP response status code
+      - in: query
+        name: successful_at
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - $ref: '#/components/schemas/Operators'
+          nullable: true
+          description: Filter by `successful_at` date using a date operator
+      - in: query
+        name: created_at
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - $ref: '#/components/schemas/Operators'
+          description: Filter by `created_at` date using a date operator
+      - in: query
+        name: error_code
+        schema:
+          anyOf:
+          - $ref: '#/components/schemas/AttemptErrorCodes'
+          - type: array
+            items:
+              $ref: '#/components/schemas/AttemptErrorCodes'
+          description: Filter by error code code
+      - in: query
+        name: cli_id
+        schema:
+          anyOf:
+          - type: string
+          - type: object
+            properties:
+              any:
+                type: boolean
+              all:
+                type: boolean
+            additionalProperties: false
+          - type: array
+            items:
+              type: string
+          nullable: true
+          description: Filter by CLI IDs. `?[any]=true` operator for any CLI.
+      - in: query
+        name: last_attempt_at
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - $ref: '#/components/schemas/Operators'
+          nullable: true
+          description: Filter by `last_attempt_at` date using a date operator
+      - in: query
+        name: next_attempt_at
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - $ref: '#/components/schemas/Operators'
+          nullable: true
+          description: Filter by `next_attempt_at` date using a date operator
+      - in: query
+        name: search_term
+        schema:
+          type: string
+          minLength: 3
+          description: URL Encoded string of the value to match partially to the body, headers, parsed_query or path
+      - in: query
+        name: headers
+        schema:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+            additionalProperties: false
+          description: URL Encoded string of the JSON to match to the data headers
+          x-docs-force-simple-type: true
+          x-docs-type: JSON
+      - in: query
+        name: body
+        schema:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+            additionalProperties: false
+          description: URL Encoded string of the JSON to match to the data body
+          x-docs-force-simple-type: true
+          x-docs-type: JSON
+      - in: query
+        name: parsed_query
+        schema:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+            additionalProperties: false
+          description: URL Encoded string of the JSON to match to the parsed query (JSON representation of the query)
+          x-docs-force-simple-type: true
+          x-docs-type: JSON
+      - in: query
+        name: path
+        schema:
+          type: string
+          description: URL Encoded string of the value to match partially to the path
+      - in: query
+        name: cli_user_id
+        schema:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+          nullable: true
+          x-docs-hide: true
+      - in: query
+        name: issue_id
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+          x-docs-hide: true
+      - in: query
+        name: event_data_id
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+          x-docs-hide: true
+      - in: query
+        name: bulk_retry_id
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+          x-docs-hide: true
+      - in: query
+        name: include
+        schema:
+          type: string
+          enum:
+          - data
+          description: Include the data object in the event model
+          x-docs-hide: true
+      - in: query
+        name: progressive
+        schema:
+          type: string
+          enum:
+          - 'true'
+          - 'false'
+          description: Enable progressive loading for partial results
+          x-docs-hide: true
+      - in: query
+        name: order_by
+        schema:
+          type: string
+          maxLength: 255
+          enum:
+          - created_at
+          description: Sort key
+      - in: query
+        name: dir
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          description: Sort direction
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          minimum: 0
+          maximum: 255
+          description: Result set size
+      - in: query
+        name: next
+        schema:
+          type: string
+          maxLength: 255
+          description: The ID to provide in the query to get the next set of results
+      - in: query
+        name: prev
+        schema:
+          type: string
+          maxLength: 255
+          description: The ID to provide in the query to get the previous set of results
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Request ID
+        required: true
+  /requests/{id}/ignored_events:
+    get:
+      operationId: getRequestIgnoredEvents
+      summary: Retrieve request ignored events
+      description: This endpoint retrieves all events that were ignored (filtered out) for the specified request.
+      tags:
+      - Requests
+      responses:
+        '200':
+          description: List of ignored events
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IgnoredEventPaginatedResult'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: query
+        name: id
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+            description: Request ID
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+              description: Request ID
+          description: Filter by ignored events IDs
+      - in: query
+        name: order_by
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+            enum:
+            - created_at
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+              enum:
+              - created_at
+            minItems: 2
+            maxItems: 2
+          description: Sort key(s)
+      - in: query
+        name: dir
+        schema:
+          anyOf:
+          - type: string
+            enum:
+            - asc
+            - desc
+          - type: array
+            items:
+              type: string
+              enum:
+              - asc
+              - desc
+            minItems: 2
+            maxItems: 2
+          description: Sort direction(s)
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          minimum: 0
+          maximum: 255
+          description: Result set size
+      - in: query
+        name: next
+        schema:
+          type: string
+          maxLength: 255
+          description: The ID to provide in the query to get the next set of results
+      - in: query
+        name: prev
+        schema:
+          type: string
+          maxLength: 255
+          description: The ID to provide in the query to get the previous set of results
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Request ID
+        required: true
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    basicAuth:
+      type: http
+      scheme: basic
+  schemas:
+    SeekPagination:
+      type: object
+      properties:
+        order_by:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        dir:
+          anyOf:
+          - $ref: '#/components/schemas/OrderByDirection'
+          - type: array
+            items:
+              $ref: '#/components/schemas/OrderByDirection'
+        limit:
+          type: integer
+        prev:
+          type: string
+        next:
+          type: string
+      additionalProperties: false
+    EventStatus:
+      type: string
+      enum:
+      - SCHEDULED
+      - QUEUED
+      - HOLD
+      - SUCCESSFUL
+      - FAILED
+      - CANCELLED
+    TransformationFailedMeta:
+      type: object
+      properties:
+        transformation_id:
+          type: string
+      required:
+      - transformation_id
+      additionalProperties: false
+    Request:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the request
+        team_id:
+          type: string
+          description: ID of the project
+        verified:
+          type: boolean
+          nullable: true
+          description: Whether or not the request was verified when received
+        original_event_data_id:
+          type: string
+          nullable: true
+          description: ID of the request data
+        rejection_cause:
+          $ref: '#/components/schemas/RequestRejectionCause'
+        ingested_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: The time the request was originally received
+        source_id:
+          type: string
+          description: ID of the associated source
+        events_count:
+          type: integer
+          nullable: true
+          description: The count of events created from this request (CLI events not included)
+        cli_events_count:
+          type: integer
+          nullable: true
+          description: The count of CLI events created from this request
+        ignored_count:
+          type: integer
+          nullable: true
+          x-docs-hide: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Date the event was last updated
+        created_at:
+          type: string
+          format: date-time
+          description: "\tDate the event was created"
+        data:
+          $ref: '#/components/schemas/ShortEventData'
+      required:
+      - id
+      - team_id
+      - verified
+      - original_event_data_id
+      - rejection_cause
+      - ingested_at
+      - source_id
+      - events_count
+      - cli_events_count
+      - ignored_count
+      - updated_at
+      - created_at
+      additionalProperties: false
+    RequestPaginatedResult:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/Request'
+      additionalProperties: false
+    IgnoredEvent:
+      type: object
+      properties:
+        id:
+          type: string
+        team_id:
+          type: string
+          description: ID of the project
+        webhook_id:
+          type: string
+          description: ID of the associated connection (webhook)
+        cause:
+          $ref: '#/components/schemas/IgnoredEventCause'
+        request_id:
+          type: string
+        meta:
+          anyOf:
+          - $ref: '#/components/schemas/FilteredMeta'
+          - $ref: '#/components/schemas/TransformationFailedMeta'
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+      required:
+      - id
+      - team_id
+      - webhook_id
+      - cause
+      - request_id
+      - created_at
+      additionalProperties: false
+    EventPaginatedResult:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event'
+      additionalProperties: false
+    RequestRejectionCause:
+      type: string
+      enum:
+      - SOURCE_DISABLED
+      - NO_CONNECTION
+      - VERIFICATION_FAILED
+      - UNSUPPORTED_HTTP_METHOD
+      - UNSUPPORTED_CONTENT_TYPE
+      - UNPARSABLE_JSON
+      - PAYLOAD_TOO_LARGE
+      - INGESTION_FATAL
+      - UNKNOWN
+      x-docs-type: string
+    EventData:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        path:
+          type: string
+          nullable: true
+          description: Raw path string
+        query:
+          type: string
+          nullable: true
+          description: Raw query param string
+        parsed_query:
+          anyOf:
+          - type: string
+            nullable: true
+          - type: object
+            properties: {}
+          nullable: true
+          description: JSON representation of query params
+        headers:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+            additionalProperties:
+              type: string
+              nullable: true
+          nullable: true
+          description: JSON representation of the headers
+        appended_headers:
+          type: array
+          items:
+            type: string
+          description: List of headers that were added by Hookdeck
+        body:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+          - type: array
+            items: {}
+          nullable: true
+          description: JSON or string representation of the body
+        is_large_payload:
+          type: boolean
+          description: Whether the payload is considered large payload and not searchable
+      required:
+      - url
+      - method
+      - path
+      - query
+      - parsed_query
+      - headers
+      - body
+      additionalProperties: false
+      nullable: true
+      description: Event data if included
+    IgnoredEventPaginatedResult:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/IgnoredEvent'
+      additionalProperties: false
+    Event:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the event
+        team_id:
+          type: string
+          description: ID of the project
+        webhook_id:
+          type: string
+          description: ID of the associated connection (webhook)
+        source_id:
+          type: string
+          description: ID of the associated source
+        destination_id:
+          type: string
+          description: ID of the associated destination
+        event_data_id:
+          type: string
+          description: ID of the event data
+        request_id:
+          type: string
+          description: ID of the request that created the event
+        attempts:
+          type: integer
+          description: Number of delivery attempts made
+        last_attempt_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date of the most recently attempted retry
+        next_attempt_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date of the next scheduled retry
+        response_status:
+          type: integer
+          nullable: true
+          description: Event status
+        error_code:
+          $ref: '#/components/schemas/AttemptErrorCodes'
+        status:
+          $ref: '#/components/schemas/EventStatus'
+        successful_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date of the latest successful attempt
+        cli_id:
+          type: string
+          nullable: true
+          description: ID of the CLI the event is sent to
+        updated_at:
+          type: string
+          format: date-time
+          description: Date the event was last updated
+        created_at:
+          type: string
+          format: date-time
+          description: Date the event was created
+        data:
+          $ref: '#/components/schemas/EventData'
+      required:
+      - id
+      - team_id
+      - webhook_id
+      - source_id
+      - destination_id
+      - event_data_id
+      - request_id
+      - attempts
+      - last_attempt_at
+      - next_attempt_at
+      - status
+      - successful_at
+      - cli_id
+      - updated_at
+      - created_at
+      additionalProperties: false
+    AttemptErrorCodes:
+      type: string
+      enum:
+      - BAD_RESPONSE
+      - CANCELLED
+      - TIMEOUT
+      - NOT_FOUND
+      - CANCELLED_PAST_RETENTION
+      - CONNECTION_REFUSED
+      - CONNECTION_RESET
+      - MISSING_URL
+      - CLI
+      - CLI_UNAVAILABLE
+      - SELF_SIGNED_CERT
+      - ERR_TLS_CERT_ALTNAME_INVALID
+      - ERR_SSL_WRONG_VERSION_NUMBER
+      - NETWORK_ERROR
+      - NETWORK_REQUEST_CANCELED
+      - NETWORK_UNREACHABLE
+      - TOO_MANY_REDIRECTS
+      - INVALID_CHARACTER
+      - INVALID_URL
+      - SSL_ERROR_CA_UNKNOWN
+      - DATA_ARCHIVED
+      - SSL_CERT_EXPIRED
+      - BULK_RETRY_CANCELLED
+      - DNS_LOOKUP_FAILED
+      - HOST_UNREACHABLE
+      - INTERNAL_ERROR
+      - PROTOCOL_ERROR
+      - PAYLOAD_MISSING
+      - UNABLE_TO_GET_ISSUER_CERT
+      - SOCKET_CLOSED
+      - OAUTH2_HANDSHAKE_FAILED
+      - Z_DATA_ERROR
+      - UNKNOWN
+      description: Error code of the delivery attempt
+    ShortEventData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: Request path
+        query:
+          type: string
+          nullable: true
+          description: Raw query param string
+        parsed_query:
+          anyOf:
+          - type: string
+            nullable: true
+          - type: object
+            properties: {}
+          nullable: true
+          description: JSON representation of query params
+        headers:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+            additionalProperties:
+              type: string
+              nullable: true
+          nullable: true
+          description: JSON representation of the headers
+        body:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+          - type: array
+            items: {}
+          nullable: true
+          description: JSON or string representation of the body
+        is_large_payload:
+          type: boolean
+          nullable: true
+          description: Whether the payload is considered large payload and not searchable
+      required:
+      - path
+      - query
+      - parsed_query
+      - headers
+      - body
+      additionalProperties: false
+      nullable: true
+      description: Request data
+    APIErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        status:
+          type: number
+          format: float
+          description: Status code
+        message:
+          type: string
+          description: Error description
+        data:
+          type: object
+          properties: {}
+          nullable: true
+      required:
+      - code
+      - status
+      - message
+      additionalProperties: false
+      description: Error response model
+    IgnoredEventCause:
+      type: string
+      enum:
+      - DISABLED
+      - FILTERED
+      - TRANSFORMATION_FAILED
+      - CLI_DISCONNECTED
+    RawBody:
+      type: object
+      properties:
+        body:
+          type: string
+      required:
+      - body
+      additionalProperties: false
+    OrderByDirection:
+      anyOf:
+      - enum:
+        - asc
+      - enum:
+        - desc
+      - enum:
+        - ASC
+      - enum:
+        - DESC
+    Operators:
+      type: object
+      properties:
+        gt:
+          type: string
+          format: date-time
+          nullable: true
+        gte:
+          type: string
+          format: date-time
+          nullable: true
+        le:
+          type: string
+          format: date-time
+          nullable: true
+        lte:
+          type: string
+          format: date-time
+          nullable: true
+        any:
+          type: boolean
+        all:
+          type: boolean
+      additionalProperties: false
+    FilteredMeta:
+      type: array
+      items:
+        type: string
+        enum:
+        - body
+        - headers
+        - path
+        - query
+    RetryRequest:
+      type: object
+      properties:
+        request:
+          $ref: '#/components/schemas/Request'
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event'
+          nullable: true
+      required:
+      - request
+      additionalProperties: false

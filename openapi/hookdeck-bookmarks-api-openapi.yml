@@ -1,0 +1,818 @@
+openapi: 3.0.1
+info:
+  title: Hookdeck Bookmarks API
+  version: 1.0.0
+  description: Save bookmarked events for quick replay and convenient one-click testing during development.
+  contact:
+    name: Hookdeck Support
+    url: https://hookdeck.com/contact-us
+    email: info@hookdeck.com
+servers:
+- url: https://api.hookdeck.com/2025-07-01
+  description: Production API
+security:
+- bearerAuth: []
+- basicAuth: []
+tags:
+- name: Bookmarks
+  description: A bookmark lets you conveniently store and replay a specific request.
+paths:
+  /bookmarks:
+    get:
+      operationId: getBookmarks
+      summary: Retrieve bookmarks
+      description: This endpoint lists bookmarks, or a subset of bookmarks.
+      tags:
+      - Bookmarks
+      responses:
+        '200':
+          description: List of bookmarks
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookmarkPaginatedResult'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: query
+        name: id
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+            description: Bookmark ID
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+              description: Bookmark ID
+          description: Filter by bookmark IDs
+      - in: query
+        name: name
+        schema:
+          anyOf:
+          - type: string
+            pattern: ^[A-z0-9-_]+$
+            maxLength: 155
+            description: Bookmark name
+          - type: array
+            items:
+              type: string
+              pattern: ^[A-z0-9-_]+$
+              maxLength: 155
+              description: Bookmark name
+          description: Filter by bookmark name
+      - in: query
+        name: webhook_id
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+            description: Connection (webhook) ID
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+              description: Connection (webhook) ID
+          description: Filter by associated connection (webhook) ID
+      - in: query
+        name: event_data_id
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+            description: Event Data ID
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+              description: Event Data ID
+          description: Filter by associated event data ID
+      - in: query
+        name: label
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+            description: Bookmark label
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+              description: Bookmark label
+          description: Filter by label
+      - in: query
+        name: last_used_at
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+            nullable: true
+            description: Last used date
+          - $ref: '#/components/schemas/Operators'
+          description: Filter by last used date
+      - in: query
+        name: order_by
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+            enum:
+            - created_at
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+              enum:
+              - created_at
+            minItems: 2
+            maxItems: 2
+          description: Sort key(s)
+      - in: query
+        name: dir
+        schema:
+          anyOf:
+          - type: string
+            enum:
+            - asc
+            - desc
+          - type: array
+            items:
+              type: string
+              enum:
+              - asc
+              - desc
+            minItems: 2
+            maxItems: 2
+          description: Sort direction(s)
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          minimum: 0
+          maximum: 255
+          description: Result set size
+      - in: query
+        name: next
+        schema:
+          type: string
+          maxLength: 255
+          description: The ID to provide in the query to get the next set of results
+      - in: query
+        name: prev
+        schema:
+          type: string
+          maxLength: 255
+          description: The ID to provide in the query to get the previous set of results
+    post:
+      operationId: createBookmark
+      summary: Create a bookmark
+      description: This endpoint creates a bookmark from a specific event.
+      tags:
+      - Bookmarks
+      responses:
+        '200':
+          description: A single bookmark
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bookmark'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event_data_id:
+                  type: string
+                  maxLength: 255
+                  description: ID of the event data to bookmark
+                webhook_id:
+                  type: string
+                  maxLength: 255
+                  description: ID of the associated connection (webhook)
+                label:
+                  type: string
+                  maxLength: 255
+                  description: Descriptive name of the bookmark
+                name:
+                  type: string
+                  pattern: ^[A-z0-9-_]+$
+                  maxLength: 155
+                  description: A unique, human-friendly name for the bookmark
+              required:
+              - event_data_id
+              - webhook_id
+              - label
+              additionalProperties: false
+  /bookmarks/{id}:
+    get:
+      operationId: getBookmark
+      summary: Retrieve a bookmark
+      description: This endpoint retrieves a specific bookmark.
+      tags:
+      - Bookmarks
+      responses:
+        '200':
+          description: A single bookmark
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bookmark'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Bookmark ID
+        required: true
+    put:
+      operationId: updateBookmark
+      summary: Update a bookmark
+      description: This endpoint updates a bookmark.
+      tags:
+      - Bookmarks
+      responses:
+        '200':
+          description: A single bookmark
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bookmark'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Bookmark ID
+        required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event_data_id:
+                  type: string
+                  maxLength: 255
+                  description: ID of the event data to bookmark
+                webhook_id:
+                  type: string
+                  maxLength: 255
+                  description: ID of the associated connection (webhook)
+                label:
+                  type: string
+                  maxLength: 255
+                  description: Descriptive name of the bookmark
+                name:
+                  type: string
+                  pattern: ^[A-z0-9-_]+$
+                  maxLength: 155
+                  description: A unique, human-friendly name for the bookmark
+              additionalProperties: false
+    delete:
+      operationId: deleteBookmark
+      summary: Delete a bookmark
+      description: This endpoint permanently deletes a bookmark. This action cannot be undone.
+      tags:
+      - Bookmarks
+      responses:
+        '200':
+          description: An object with deleted bookmark's id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeletedBookmarkResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Bookmark ID
+        required: true
+  /bookmarks/{id}/raw_body:
+    get:
+      operationId: getBookmarkRawBody
+      summary: Get a bookmark raw body data
+      description: ''
+      tags:
+      - Bookmarks
+      responses:
+        '200':
+          description: A request raw body data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RawBody'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Bookmark ID
+        required: true
+  /bookmarks/{id}/trigger:
+    post:
+      operationId: triggerBookmark
+      summary: Trigger a bookmark
+      description: This endpoint triggers a bookmark, replaying its associated event against all matching connections.
+      tags:
+      - Bookmarks
+      responses:
+        '200':
+          description: Array of created events
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventArray'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Bookmark ID
+        required: true
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    basicAuth:
+      type: http
+      scheme: basic
+  schemas:
+    OrderByDirection:
+      anyOf:
+      - enum:
+        - asc
+      - enum:
+        - desc
+      - enum:
+        - ASC
+      - enum:
+        - DESC
+    DeletedBookmarkResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Bookmark ID
+      required:
+      - id
+      additionalProperties: false
+    Operators:
+      type: object
+      properties:
+        gt:
+          type: string
+          format: date-time
+          nullable: true
+        gte:
+          type: string
+          format: date-time
+          nullable: true
+        le:
+          type: string
+          format: date-time
+          nullable: true
+        lte:
+          type: string
+          format: date-time
+          nullable: true
+        any:
+          type: boolean
+        all:
+          type: boolean
+      additionalProperties: false
+    BookmarkPaginatedResult:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/Bookmark'
+      additionalProperties: false
+    EventArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/Event'
+    SeekPagination:
+      type: object
+      properties:
+        order_by:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        dir:
+          anyOf:
+          - $ref: '#/components/schemas/OrderByDirection'
+          - type: array
+            items:
+              $ref: '#/components/schemas/OrderByDirection'
+        limit:
+          type: integer
+        prev:
+          type: string
+        next:
+          type: string
+      additionalProperties: false
+    EventData:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        path:
+          type: string
+          nullable: true
+          description: Raw path string
+        query:
+          type: string
+          nullable: true
+          description: Raw query param string
+        parsed_query:
+          anyOf:
+          - type: string
+            nullable: true
+          - type: object
+            properties: {}
+          nullable: true
+          description: JSON representation of query params
+        headers:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+            additionalProperties:
+              type: string
+              nullable: true
+          nullable: true
+          description: JSON representation of the headers
+        appended_headers:
+          type: array
+          items:
+            type: string
+          description: List of headers that were added by Hookdeck
+        body:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+          - type: array
+            items: {}
+          nullable: true
+          description: JSON or string representation of the body
+        is_large_payload:
+          type: boolean
+          description: Whether the payload is considered large payload and not searchable
+      required:
+      - url
+      - method
+      - path
+      - query
+      - parsed_query
+      - headers
+      - body
+      additionalProperties: false
+      nullable: true
+      description: Event data if included
+    Event:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the event
+        team_id:
+          type: string
+          description: ID of the project
+        webhook_id:
+          type: string
+          description: ID of the associated connection (webhook)
+        source_id:
+          type: string
+          description: ID of the associated source
+        destination_id:
+          type: string
+          description: ID of the associated destination
+        event_data_id:
+          type: string
+          description: ID of the event data
+        request_id:
+          type: string
+          description: ID of the request that created the event
+        attempts:
+          type: integer
+          description: Number of delivery attempts made
+        last_attempt_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date of the most recently attempted retry
+        next_attempt_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date of the next scheduled retry
+        response_status:
+          type: integer
+          nullable: true
+          description: Event status
+        error_code:
+          $ref: '#/components/schemas/AttemptErrorCodes'
+        status:
+          $ref: '#/components/schemas/EventStatus'
+        successful_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date of the latest successful attempt
+        cli_id:
+          type: string
+          nullable: true
+          description: ID of the CLI the event is sent to
+        updated_at:
+          type: string
+          format: date-time
+          description: Date the event was last updated
+        created_at:
+          type: string
+          format: date-time
+          description: Date the event was created
+        data:
+          $ref: '#/components/schemas/EventData'
+      required:
+      - id
+      - team_id
+      - webhook_id
+      - source_id
+      - destination_id
+      - event_data_id
+      - request_id
+      - attempts
+      - last_attempt_at
+      - next_attempt_at
+      - status
+      - successful_at
+      - cli_id
+      - updated_at
+      - created_at
+      additionalProperties: false
+    AttemptErrorCodes:
+      type: string
+      enum:
+      - BAD_RESPONSE
+      - CANCELLED
+      - TIMEOUT
+      - NOT_FOUND
+      - CANCELLED_PAST_RETENTION
+      - CONNECTION_REFUSED
+      - CONNECTION_RESET
+      - MISSING_URL
+      - CLI
+      - CLI_UNAVAILABLE
+      - SELF_SIGNED_CERT
+      - ERR_TLS_CERT_ALTNAME_INVALID
+      - ERR_SSL_WRONG_VERSION_NUMBER
+      - NETWORK_ERROR
+      - NETWORK_REQUEST_CANCELED
+      - NETWORK_UNREACHABLE
+      - TOO_MANY_REDIRECTS
+      - INVALID_CHARACTER
+      - INVALID_URL
+      - SSL_ERROR_CA_UNKNOWN
+      - DATA_ARCHIVED
+      - SSL_CERT_EXPIRED
+      - BULK_RETRY_CANCELLED
+      - DNS_LOOKUP_FAILED
+      - HOST_UNREACHABLE
+      - INTERNAL_ERROR
+      - PROTOCOL_ERROR
+      - PAYLOAD_MISSING
+      - UNABLE_TO_GET_ISSUER_CERT
+      - SOCKET_CLOSED
+      - OAUTH2_HANDSHAKE_FAILED
+      - Z_DATA_ERROR
+      - UNKNOWN
+      description: Error code of the delivery attempt
+    EventStatus:
+      type: string
+      enum:
+      - SCHEDULED
+      - QUEUED
+      - HOLD
+      - SUCCESSFUL
+      - FAILED
+      - CANCELLED
+    ShortEventData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: Request path
+        query:
+          type: string
+          nullable: true
+          description: Raw query param string
+        parsed_query:
+          anyOf:
+          - type: string
+            nullable: true
+          - type: object
+            properties: {}
+          nullable: true
+          description: JSON representation of query params
+        headers:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+            additionalProperties:
+              type: string
+              nullable: true
+          nullable: true
+          description: JSON representation of the headers
+        body:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+          - type: array
+            items: {}
+          nullable: true
+          description: JSON or string representation of the body
+        is_large_payload:
+          type: boolean
+          nullable: true
+          description: Whether the payload is considered large payload and not searchable
+      required:
+      - path
+      - query
+      - parsed_query
+      - headers
+      - body
+      additionalProperties: false
+      nullable: true
+      description: Request data
+    APIErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        status:
+          type: number
+          format: float
+          description: Status code
+        message:
+          type: string
+          description: Error description
+        data:
+          type: object
+          properties: {}
+          nullable: true
+      required:
+      - code
+      - status
+      - message
+      additionalProperties: false
+      description: Error response model
+    Bookmark:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the bookmark
+        team_id:
+          type: string
+          description: ID of the project
+        webhook_id:
+          type: string
+          description: ID of the associated connection (webhook)
+        event_data_id:
+          type: string
+          description: ID of the bookmarked event data
+        label:
+          type: string
+          description: Descriptive name of the bookmark
+        alias:
+          type: string
+          nullable: true
+          description: Alternate alias for the bookmark
+        data:
+          $ref: '#/components/schemas/ShortEventData'
+        last_used_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date the bookmark was last manually triggered
+        updated_at:
+          type: string
+          format: date-time
+          description: Date the bookmark was last updated
+        created_at:
+          type: string
+          format: date-time
+          description: Date the bookmark was created
+      required:
+      - id
+      - team_id
+      - webhook_id
+      - event_data_id
+      - label
+      - updated_at
+      - created_at
+      additionalProperties: false
+    RawBody:
+      type: object
+      properties:
+        body:
+          type: string
+      required:
+      - body
+      additionalProperties: false

@@ -1,0 +1,975 @@
+openapi: 3.0.1
+info:
+  title: Hookdeck Transformations API
+  version: 1.0.0
+  description: Manage JavaScript transformations executed against events to mutate headers, body, path, or query string before
+    delivery, and run them in a test sandbox.
+  contact:
+    name: Hookdeck Support
+    url: https://hookdeck.com/contact-us
+    email: info@hookdeck.com
+servers:
+- url: https://api.hookdeck.com/2025-07-01
+  description: Production API
+security:
+- bearerAuth: []
+- basicAuth: []
+tags:
+- name: Transformations
+  description: A transformation represents JavaScript code that will be executed on a connection's requests. Transformations
+    are applied to connections using Rules.
+paths:
+  /transformations:
+    get:
+      operationId: getTransformations
+      summary: Retrieve transformations
+      description: This endpoint lists transformations, or a subset of transformations.
+      tags:
+      - Transformations
+      responses:
+        '200':
+          description: List of transformations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransformationPaginatedResult'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: query
+        name: id
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+          description: Filter by transformation IDs
+      - in: query
+        name: name
+        schema:
+          anyOf:
+          - type: string
+            pattern: ^[A-z0-9-_]+$
+            maxLength: 155
+            nullable: true
+          - $ref: '#/components/schemas/Operators'
+          description: Filter by transformation name
+      - in: query
+        name: order_by
+        schema:
+          type: string
+          maxLength: 255
+          enum:
+          - name
+          - created_at
+          - updated_at
+          description: Sort key
+      - in: query
+        name: dir
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          description: Sort direction
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          minimum: 0
+          maximum: 255
+          description: Result set size
+      - in: query
+        name: next
+        schema:
+          type: string
+          maxLength: 255
+          description: The ID to provide in the query to get the next set of results
+      - in: query
+        name: prev
+        schema:
+          type: string
+          maxLength: 255
+          description: The ID to provide in the query to get the previous set of results
+    post:
+      operationId: createTransformation
+      summary: Create a transformation
+      description: This endpoint creates a transformation.
+      tags:
+      - Transformations
+      responses:
+        '200':
+          description: A single transformation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transformation'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  pattern: ^[A-z0-9-_]+$
+                  maxLength: 155
+                  description: A unique, human-friendly name for the transformation
+                code:
+                  type: string
+                  description: JavaScript code to be executed as string
+                env:
+                  type: object
+                  properties: {}
+                  additionalProperties:
+                    type: string
+                  description: Key-value environment variables to be passed to the transformation
+              required:
+              - name
+              - code
+              additionalProperties: false
+    put:
+      operationId: upsertTransformation
+      summary: Create/Update a transformation
+      description: This endpoint creates a transformation, or updates an existing transformation by name.
+      tags:
+      - Transformations
+      responses:
+        '200':
+          description: A single transformation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transformation'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  pattern: ^[A-z0-9-_]+$
+                  maxLength: 155
+                  description: A unique, human-friendly name for the transformation
+                code:
+                  type: string
+                  description: JavaScript code to be executed as string
+                env:
+                  type: object
+                  properties: {}
+                  additionalProperties:
+                    type: string
+                  description: Key-value environment variables to be passed to the transformation
+              required:
+              - name
+              - code
+              additionalProperties: false
+  /transformations/count:
+    get:
+      operationId: getTransformationsCount
+      summary: Get transformations count
+      description: ''
+      tags:
+      - Transformations
+      responses:
+        '200':
+          description: Count of transformations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                    format: float
+                    description: Number of transformations
+                required:
+                - count
+                additionalProperties: false
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters: []
+  /transformations/{id}:
+    get:
+      operationId: getTransformation
+      summary: Retrieve a transformation
+      description: This endpoint retrieves a specific transformation.
+      tags:
+      - Transformations
+      responses:
+        '200':
+          description: A single transformation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transformation'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Transformation ID
+        required: true
+    delete:
+      operationId: deleteTransformation
+      summary: Delete a transformation
+      description: This endpoint permanently deletes a transformation. This action cannot be undone.
+      tags:
+      - Transformations
+      responses:
+        '200':
+          description: An object with deleted transformation id
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: ID of the Transformation
+                required:
+                - id
+                additionalProperties: false
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Transformation ID
+        required: true
+    put:
+      operationId: updateTransformation
+      summary: Update a transformation
+      description: This endpoint updates a transformation.
+      tags:
+      - Transformations
+      responses:
+        '200':
+          description: A single transformation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transformation'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Transformation ID
+        required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  pattern: ^[A-z0-9-_]+$
+                  maxLength: 155
+                  description: A unique, human-friendly name for the transformation
+                code:
+                  type: string
+                  description: JavaScript code to be executed
+                env:
+                  type: object
+                  properties: {}
+                  additionalProperties:
+                    type: string
+                  description: Key-value environment variables to be passed to the transformation
+              additionalProperties: false
+  /transformations/run:
+    put:
+      operationId: testTransformation
+      summary: Test a transformation
+      description: This endpoint executes a transformation against a sample request payload and returns the transformed result
+        without persisting anything.
+      tags:
+      - Transformations
+      responses:
+        '200':
+          description: Transformation run output
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransformationExecutorOutput'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                env:
+                  type: object
+                  properties: {}
+                  additionalProperties:
+                    type: string
+                  description: Key-value environment variables to be passed to the transformation
+                webhook_id:
+                  type: string
+                  description: ID of the connection (webhook) to use for the execution `context`
+                code:
+                  type: string
+                  description: JavaScript code to be executed
+                transformation_id:
+                  type: string
+                  description: Transformation ID
+                request:
+                  type: object
+                  properties:
+                    headers:
+                      type: object
+                      properties: {}
+                      additionalProperties:
+                        type: string
+                      description: Headers of the request
+                      x-docs-force-simple-type: true
+                      x-docs-type: JSON
+                    body:
+                      anyOf:
+                      - type: object
+                        properties: {}
+                        additionalProperties: false
+                        x-docs-force-simple-type: true
+                        x-docs-type: JSON
+                      - type: string
+                      description: Body of the request
+                      x-docs-force-simple-type: true
+                    path:
+                      type: string
+                      nullable: true
+                      description: Path of the request
+                    query:
+                      type: string
+                      nullable: true
+                      description: String representation of the query params of the request
+                    parsed_query:
+                      type: object
+                      properties: {}
+                      additionalProperties: false
+                      description: JSON representation of the query params
+                      x-docs-force-simple-type: true
+                      x-docs-type: JSON
+                  required:
+                  - headers
+                  additionalProperties: false
+                  description: Request input to use for the transformation execution
+                event_id:
+                  type: string
+                  x-docs-hide: true
+              additionalProperties: false
+  /transformations/{id}/executions:
+    get:
+      operationId: getTransformationExecutions
+      summary: Get transformation executions
+      description: ''
+      tags:
+      - Transformations
+      responses:
+        '200':
+          description: List of transformation executions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransformationExecutionPaginatedResult'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: query
+        name: log_level
+        schema:
+          anyOf:
+          - type: string
+            enum:
+            - debug
+            - info
+            - warn
+            - error
+            - fatal
+            nullable: true
+          - type: array
+            items:
+              type: string
+              enum:
+              - debug
+              - info
+              - warn
+              - error
+              - fatal
+              nullable: true
+          description: Log level of the execution
+      - in: query
+        name: webhook_id
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+          description: ID of the connection the execution was run for
+      - in: query
+        name: issue_id
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+          description: ID of the associated issue
+      - in: query
+        name: created_at
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - $ref: '#/components/schemas/Operators'
+          description: ISO date of the transformation's execution
+      - in: query
+        name: order_by
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+            enum:
+            - created_at
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+              enum:
+              - created_at
+            minItems: 2
+            maxItems: 2
+          description: Sort key(s)
+      - in: query
+        name: dir
+        schema:
+          anyOf:
+          - type: string
+            enum:
+            - asc
+            - desc
+          - type: array
+            items:
+              type: string
+              enum:
+              - asc
+              - desc
+            minItems: 2
+            maxItems: 2
+          description: Sort direction(s)
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          minimum: 0
+          maximum: 255
+          description: Result set size
+      - in: query
+        name: next
+        schema:
+          type: string
+          maxLength: 255
+          description: The ID to provide in the query to get the next set of results
+      - in: query
+        name: prev
+        schema:
+          type: string
+          maxLength: 255
+          description: The ID to provide in the query to get the previous set of results
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Transformation ID
+        required: true
+  /transformations/{id}/executions/{execution_id}:
+    get:
+      operationId: getTransformationExecution
+      summary: Get a transformation execution
+      description: ''
+      tags:
+      - Transformations
+      responses:
+        '200':
+          description: A single transformation execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransformationExecution'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Transformation ID
+        required: true
+      - in: path
+        name: execution_id
+        schema:
+          type: string
+          description: Execution ID
+        required: true
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    basicAuth:
+      type: http
+      scheme: basic
+  schemas:
+    TransformationExecutionPaginatedResult:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransformationExecution'
+      additionalProperties: false
+    OrderByDirection:
+      anyOf:
+      - enum:
+        - asc
+      - enum:
+        - desc
+      - enum:
+        - ASC
+      - enum:
+        - DESC
+    Operators:
+      type: object
+      properties:
+        gt:
+          type: string
+          format: date-time
+          nullable: true
+        gte:
+          type: string
+          format: date-time
+          nullable: true
+        le:
+          type: string
+          format: date-time
+          nullable: true
+        lte:
+          type: string
+          format: date-time
+          nullable: true
+        any:
+          type: boolean
+        all:
+          type: boolean
+      additionalProperties: false
+    APIErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        status:
+          type: number
+          format: float
+          description: Status code
+        message:
+          type: string
+          description: Error description
+        data:
+          type: object
+          properties: {}
+          nullable: true
+      required:
+      - code
+      - status
+      - message
+      additionalProperties: false
+      description: Error response model
+    TransformationExecution:
+      type: object
+      properties:
+        id:
+          type: string
+        transformed_event_data_id:
+          type: string
+          nullable: true
+        original_event_data_id:
+          type: string
+        transformation_id:
+          type: string
+        team_id:
+          type: string
+          description: ID of the project
+        webhook_id:
+          type: string
+          description: ID of the associated connection (webhook)
+        log_level:
+          $ref: '#/components/schemas/TransformationExecutionLogLevel'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConsoleLine'
+        updated_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+        original_event_data:
+          $ref: '#/components/schemas/ShortEventData'
+        transformed_event_data:
+          $ref: '#/components/schemas/ShortEventData'
+        issue_id:
+          type: string
+          nullable: true
+      required:
+      - id
+      - original_event_data_id
+      - transformation_id
+      - team_id
+      - webhook_id
+      - log_level
+      - logs
+      - updated_at
+      - created_at
+      additionalProperties: false
+    Transformation:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the transformation
+        team_id:
+          type: string
+          description: ID of the project
+        name:
+          type: string
+          description: A unique, human-friendly name for the transformation
+        code:
+          type: string
+          description: JavaScript code to be executed
+        encrypted_env:
+          type: string
+          nullable: true
+          x-docs-hide: true
+        iv:
+          type: string
+          nullable: true
+          x-docs-hide: true
+        env:
+          type: object
+          properties: {}
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Key-value environment variables to be passed to the transformation
+          x-docs-force-simple-type: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Date the transformation was last updated
+        created_at:
+          type: string
+          format: date-time
+          description: Date the transformation was created
+      required:
+      - id
+      - team_id
+      - name
+      - code
+      - updated_at
+      - created_at
+      additionalProperties: false
+    SeekPagination:
+      type: object
+      properties:
+        order_by:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        dir:
+          anyOf:
+          - $ref: '#/components/schemas/OrderByDirection'
+          - type: array
+            items:
+              $ref: '#/components/schemas/OrderByDirection'
+        limit:
+          type: integer
+        prev:
+          type: string
+        next:
+          type: string
+      additionalProperties: false
+    TransformationExecutorOutput:
+      type: object
+      properties:
+        request_id:
+          type: string
+          nullable: true
+        transformation_id:
+          type: string
+          nullable: true
+        execution_id:
+          type: string
+          nullable: true
+        log_level:
+          $ref: '#/components/schemas/TransformationExecutionLogLevel'
+        request:
+          type: object
+          properties:
+            headers:
+              anyOf:
+              - type: string
+              - type: object
+                properties: {}
+                additionalProperties:
+                  nullable: true
+              nullable: true
+            path:
+              type: string
+            query:
+              anyOf:
+              - type: object
+                properties: {}
+                additionalProperties: false
+                nullable: true
+              - type: string
+              nullable: true
+            parsed_query:
+              anyOf:
+              - type: string
+                nullable: true
+              - type: object
+                properties: {}
+                additionalProperties: false
+              nullable: true
+            body:
+              anyOf:
+              - type: string
+                nullable: true
+              - type: object
+                properties: {}
+                additionalProperties: false
+              nullable: true
+          required:
+          - path
+          additionalProperties: false
+          nullable: true
+        console:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConsoleLine'
+          nullable: true
+      required:
+      - log_level
+      additionalProperties: false
+    ConsoleLine:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - error
+          - log
+          - warn
+          - info
+          - debug
+        message:
+          type: string
+      required:
+      - type
+      - message
+      additionalProperties: false
+    ShortEventData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: Request path
+        query:
+          type: string
+          nullable: true
+          description: Raw query param string
+        parsed_query:
+          anyOf:
+          - type: string
+            nullable: true
+          - type: object
+            properties: {}
+          nullable: true
+          description: JSON representation of query params
+        headers:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+            additionalProperties:
+              type: string
+              nullable: true
+          nullable: true
+          description: JSON representation of the headers
+        body:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+          - type: array
+            items: {}
+          nullable: true
+          description: JSON or string representation of the body
+        is_large_payload:
+          type: boolean
+          nullable: true
+          description: Whether the payload is considered large payload and not searchable
+      required:
+      - path
+      - query
+      - parsed_query
+      - headers
+      - body
+      additionalProperties: false
+      nullable: true
+      description: Request data
+    TransformationPaginatedResult:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transformation'
+      additionalProperties: false
+    TransformationExecutionLogLevel:
+      type: string
+      enum:
+      - debug
+      - info
+      - warn
+      - error
+      - fatal
+      description: The minimum log level to open the issue on

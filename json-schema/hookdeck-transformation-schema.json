@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hookdeck/main/json-schema/hookdeck-transformation-schema.json",
+  "title": "Hookdeck Transformation",
+  "description": "JSON Schema for the Hookdeck Transformation entity, extracted from the Hookdeck Admin REST API (v2025-07-01).",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "ID of the transformation"
+    },
+    "team_id": {
+      "type": "string",
+      "description": "ID of the project"
+    },
+    "name": {
+      "type": "string",
+      "description": "A unique, human-friendly name for the transformation"
+    },
+    "code": {
+      "type": "string",
+      "description": "JavaScript code to be executed"
+    },
+    "encrypted_env": {
+      "type": "string",
+      "nullable": true,
+      "x-docs-hide": true
+    },
+    "iv": {
+      "type": "string",
+      "nullable": true,
+      "x-docs-hide": true
+    },
+    "env": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": {
+        "type": "string"
+      },
+      "nullable": true,
+      "description": "Key-value environment variables to be passed to the transformation",
+      "x-docs-force-simple-type": true
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date the transformation was last updated"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date the transformation was created"
+    }
+  },
+  "required": [
+    "id",
+    "team_id",
+    "name",
+    "code",
+    "updated_at",
+    "created_at"
+  ],
+  "additionalProperties": false
+}

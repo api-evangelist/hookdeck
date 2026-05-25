@@ -1,0 +1,126 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "hookdeck": "https://hookdeck.com/ns#",
+    "schema": "http://schema.org/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+
+    "id": "@id",
+    "type": "@type",
+    "name": "schema:name",
+    "description": "schema:description",
+    "url": {
+      "@id": "schema:url",
+      "@type": "@id"
+    },
+    "created_at": {
+      "@id": "schema:dateCreated",
+      "@type": "xsd:dateTime"
+    },
+    "updated_at": {
+      "@id": "schema:dateModified",
+      "@type": "xsd:dateTime"
+    },
+
+    "Source": "hookdeck:Source",
+    "Destination": "hookdeck:Destination",
+    "Connection": "hookdeck:Connection",
+    "Event": "hookdeck:Event",
+    "Request": "hookdeck:Request",
+    "Attempt": "hookdeck:Attempt",
+    "Transformation": "hookdeck:Transformation",
+    "Bookmark": "hookdeck:Bookmark",
+    "Issue": "hookdeck:Issue",
+    "IssueTrigger": "hookdeck:IssueTrigger",
+    "Integration": "hookdeck:Integration",
+    "Notification": "hookdeck:Notification",
+
+    "source": {
+      "@id": "hookdeck:source",
+      "@type": "@id"
+    },
+    "destination": {
+      "@id": "hookdeck:destination",
+      "@type": "@id"
+    },
+    "connection": {
+      "@id": "hookdeck:connection",
+      "@type": "@id"
+    },
+    "rules": {
+      "@id": "hookdeck:rules",
+      "@container": "@list"
+    },
+
+    "verification": "hookdeck:verification",
+    "allowed_http_methods": {
+      "@id": "hookdeck:allowedHttpMethods",
+      "@container": "@list"
+    },
+    "custom_response": "hookdeck:customResponse",
+    "auth_method": "hookdeck:authMethod",
+    "rate_limit": "hookdeck:rateLimit",
+    "rate_limit_period": "hookdeck:rateLimitPeriod",
+    "path_forwarding_disabled": "hookdeck:pathForwardingDisabled",
+    "http_method": "hookdeck:httpMethod",
+    "headers": "hookdeck:headers",
+    "body": "hookdeck:body",
+    "query": "hookdeck:query",
+    "parsed_query": "hookdeck:parsedQuery",
+    "data": "hookdeck:data",
+    "path": "hookdeck:path",
+    "status": "hookdeck:status",
+    "successful_at": {
+      "@id": "hookdeck:successfulAt",
+      "@type": "xsd:dateTime"
+    },
+    "attempts": {
+      "@id": "hookdeck:attempts",
+      "@container": "@list"
+    },
+    "response_status": "hookdeck:responseStatus",
+    "response_latency": "hookdeck:responseLatency",
+    "error_code": "hookdeck:errorCode",
+    "trigger": "hookdeck:trigger",
+    "issue_id": {
+      "@id": "hookdeck:issueId",
+      "@type": "@id"
+    },
+    "issue_trigger_id": {
+      "@id": "hookdeck:issueTriggerId",
+      "@type": "@id"
+    },
+    "channels": "hookdeck:channels",
+    "transformation": "hookdeck:transformation",
+    "transformation_code": "hookdeck:transformationCode",
+    "delay": "hookdeck:delay",
+    "retry": "hookdeck:retry",
+    "filter": "hookdeck:filter",
+    "alert": "hookdeck:alert",
+    "team_id": {
+      "@id": "hookdeck:teamId",
+      "@type": "@id"
+    },
+    "project_id": {
+      "@id": "hookdeck:projectId",
+      "@type": "@id"
+    },
+    "workspace_id": {
+      "@id": "hookdeck:workspaceId",
+      "@type": "@id"
+    },
+    "archived_at": {
+      "@id": "hookdeck:archivedAt",
+      "@type": "xsd:dateTime"
+    },
+    "paused_at": {
+      "@id": "hookdeck:pausedAt",
+      "@type": "xsd:dateTime"
+    },
+    "disabled_at": {
+      "@id": "hookdeck:disabledAt",
+      "@type": "xsd:dateTime"
+    }
+  }
+}

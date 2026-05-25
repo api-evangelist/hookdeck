@@ -1,0 +1,3230 @@
+openapi: 3.0.1
+info:
+  title: Hookdeck Issues API
+  version: 1.0.0
+  description: Track issues that occur on events, requests, and backpressure, and manage the triggers (rules) that open and
+    route issues to Slack, Email, Teams, Discord, BetterUptime, and other channels.
+  contact:
+    name: Hookdeck Support
+    url: https://hookdeck.com/contact-us
+    email: info@hookdeck.com
+servers:
+- url: https://api.hookdeck.com/2025-07-01
+  description: Production API
+security:
+- bearerAuth: []
+- basicAuth: []
+tags:
+- name: Issues
+  description: Issues lets you track problems in your project and communicate resolution steps with your team.
+- name: Issue Triggers
+  description: Issue Triggers lets you setup rules that trigger issues when certain conditions are met.
+paths:
+  /issue-triggers:
+    get:
+      operationId: getIssueTriggers
+      summary: Retrieve issue triggers
+      description: This endpoint lists issue triggers.
+      tags:
+      - Issue Triggers
+      responses:
+        '200':
+          description: List of issue triggers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssueTriggerPaginatedResult'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: query
+        name: name
+        schema:
+          type: string
+          maxLength: 255
+          description: Filter by issue trigger name
+      - in: query
+        name: type
+        schema:
+          anyOf:
+          - $ref: '#/components/schemas/IssueType'
+          - type: array
+            items:
+              $ref: '#/components/schemas/IssueType'
+      - in: query
+        name: disabled_at
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+            nullable: true
+          - $ref: '#/components/schemas/Operators'
+          description: Date when the issue trigger was disabled
+      - in: query
+        name: order_by
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+            enum:
+            - created_at
+            - type
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+              enum:
+              - created_at
+              - type
+            minItems: 2
+            maxItems: 2
+          description: Sort key(s)
+      - in: query
+        name: dir
+        schema:
+          anyOf:
+          - type: string
+            enum:
+            - asc
+            - desc
+          - type: array
+            items:
+              type: string
+              enum:
+              - asc
+              - desc
+            minItems: 2
+            maxItems: 2
+          description: Sort direction(s)
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          minimum: 0
+          maximum: 255
+          description: Result set size
+      - in: query
+        name: next
+        schema:
+          type: string
+          maxLength: 255
+          description: The ID to provide in the query to get the next set of results
+      - in: query
+        name: prev
+        schema:
+          type: string
+          maxLength: 255
+          description: The ID to provide in the query to get the previous set of results
+    post:
+      operationId: createIssueTrigger
+      summary: Create an issue trigger
+      description: This endpoint creates an issue trigger.
+      tags:
+      - Issue Triggers
+      responses:
+        '200':
+          description: A single issue trigger
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssueTrigger'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  $ref: '#/components/schemas/IssueType'
+                configs:
+                  anyOf:
+                  - $ref: '#/components/schemas/IssueTriggerDeliveryConfigs'
+                  - $ref: '#/components/schemas/IssueTriggerTransformationConfigs'
+                  - $ref: '#/components/schemas/IssueTriggerBackpressureConfigs'
+                  - $ref: '#/components/schemas/IssueTriggerRequestConfigs'
+                  description: Configuration object for the specific issue type selected
+                channels:
+                  $ref: '#/components/schemas/IssueTriggerChannels'
+                name:
+                  type: string
+                  maxLength: 255
+                  nullable: true
+                  description: Optional unique name to use as reference when using the API
+              required:
+              - type
+              - channels
+              additionalProperties: false
+    put:
+      operationId: upsertIssueTrigger
+      summary: Create/Update an issue trigger
+      description: This endpoint creates an issue trigger, or updates an existing issue trigger by name.
+      tags:
+      - Issue Triggers
+      responses:
+        '200':
+          description: A single issue trigger
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssueTrigger'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  $ref: '#/components/schemas/IssueType'
+                configs:
+                  anyOf:
+                  - $ref: '#/components/schemas/IssueTriggerDeliveryConfigs'
+                  - $ref: '#/components/schemas/IssueTriggerTransformationConfigs'
+                  - $ref: '#/components/schemas/IssueTriggerBackpressureConfigs'
+                  - $ref: '#/components/schemas/IssueTriggerRequestConfigs'
+                  description: Configuration object for the specific issue type selected
+                channels:
+                  $ref: '#/components/schemas/IssueTriggerChannels'
+                name:
+                  type: string
+                  maxLength: 255
+                  description: Required unique name to use as reference when using the API
+              required:
+              - type
+              - channels
+              - name
+              additionalProperties: false
+  /issue-triggers/{id}:
+    get:
+      operationId: getIssueTrigger
+      summary: Retrieve an issue trigger
+      description: This endpoint retrieves a specific issue trigger.
+      tags:
+      - Issue Triggers
+      responses:
+        '200':
+          description: A single issue trigger
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssueTrigger'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Issue trigger ID
+        required: true
+    put:
+      operationId: updateIssueTrigger
+      summary: Update an issue trigger
+      description: This endpoint updates an issue trigger.
+      tags:
+      - Issue Triggers
+      responses:
+        '200':
+          description: A single issue trigger
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssueTrigger'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Issue trigger ID
+        required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                configs:
+                  anyOf:
+                  - $ref: '#/components/schemas/IssueTriggerDeliveryConfigs'
+                  - $ref: '#/components/schemas/IssueTriggerTransformationConfigs'
+                  - $ref: '#/components/schemas/IssueTriggerBackpressureConfigs'
+                  - $ref: '#/components/schemas/IssueTriggerRequestConfigs'
+                  description: Configuration object for the specific issue type selected
+                channels:
+                  $ref: '#/components/schemas/IssueTriggerChannels'
+                disabled_at:
+                  type: string
+                  format: date-time
+                  nullable: true
+                  description: Date when the issue trigger was disabled
+                name:
+                  type: string
+                  maxLength: 255
+                  nullable: true
+                  description: Optional unique name to use as reference when using the API
+              additionalProperties: false
+    delete:
+      operationId: deleteIssueTrigger
+      summary: Delete an issue trigger
+      description: This endpoint permanently deletes an issue trigger. This action cannot be undone.
+      tags:
+      - Issue Triggers
+      responses:
+        '200':
+          description: An object with deleted issue trigger's id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeletedIssueTriggerResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Issue trigger ID
+        required: true
+  /issue-triggers/{id}/disable:
+    put:
+      operationId: disableIssueTrigger
+      summary: Disable an issue trigger
+      description: This endpoint disables an issue trigger so it stops producing issues.
+      tags:
+      - Issue Triggers
+      responses:
+        '200':
+          description: A single issue trigger
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssueTrigger'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Issue trigger ID
+        required: true
+  /issue-triggers/{id}/enable:
+    put:
+      operationId: enableIssueTrigger
+      summary: Enable an issue trigger
+      description: This endpoint enables a previously disabled issue trigger.
+      tags:
+      - Issue Triggers
+      responses:
+        '200':
+          description: A single issue trigger
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssueTrigger'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Issue trigger ID
+        required: true
+  /issues:
+    get:
+      operationId: getIssues
+      summary: Retrieve issues
+      description: This endpoint lists issues, or a subset of issues.
+      tags:
+      - Issues
+      responses:
+        '200':
+          description: List of issues
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssueWithDataPaginatedResult'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: query
+        name: id
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+            example: iss_YXKv5OdJXCiVwkPhGy
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+              example: iss_YXKv5OdJXCiVwkPhGy
+          description: Filter by Issue IDs
+      - in: query
+        name: issue_trigger_id
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+            description: Issue trigger ID
+            example: it_BXKv5OdJXCiVwkPhGy
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+              description: Issue trigger ID
+              example: it_BXKv5OdJXCiVwkPhGy
+          description: Filter by Issue trigger IDs
+      - in: query
+        name: type
+        schema:
+          anyOf:
+          - type: string
+            enum:
+            - delivery
+            - transformation
+            - backpressure
+            - request
+            description: Issue type
+            example: delivery
+          - type: array
+            items:
+              type: string
+              enum:
+              - delivery
+              - transformation
+              - backpressure
+              - request
+              description: Issue type
+              example: delivery
+          description: Filter by Issue types
+      - in: query
+        name: status
+        schema:
+          anyOf:
+          - type: string
+            enum:
+            - OPENED
+            - IGNORED
+            - ACKNOWLEDGED
+            - RESOLVED
+            description: Issue status
+            example: OPENED
+          - type: array
+            items:
+              type: string
+              enum:
+              - OPENED
+              - IGNORED
+              - ACKNOWLEDGED
+              - RESOLVED
+              description: Issue status
+              example: OPENED
+          description: Filter by Issue statuses
+      - in: query
+        name: merged_with
+        schema:
+          anyOf:
+          - type: string
+            description: Issue ID
+            example: iss_AXKv3OdJXCiKlkPhDz
+          - type: array
+            items:
+              type: string
+              description: Issue ID
+              example: iss_AXKv3OdJXCiKlkPhDz
+          description: Filter by Merged Issue IDs
+      - in: query
+        name: aggregation_keys
+        schema:
+          type: object
+          properties:
+            webhook_id:
+              anyOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+            response_status:
+              anyOf:
+              - type: number
+                format: float
+              - type: array
+                items:
+                  type: number
+                  format: float
+            error_code:
+              anyOf:
+              - $ref: '#/components/schemas/AttemptErrorCodes'
+              - type: array
+                items:
+                  $ref: '#/components/schemas/AttemptErrorCodes'
+            transformation_id:
+              anyOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+            log_level:
+              anyOf:
+              - type: string
+                enum:
+                - debug
+                - info
+                - warn
+                - error
+                - fatal
+              - type: array
+                items:
+                  type: string
+                  enum:
+                  - debug
+                  - info
+                  - warn
+                  - error
+                  - fatal
+            destination_id:
+              anyOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+            delay:
+              anyOf:
+              - type: number
+                format: float
+              - type: array
+                items:
+                  type: number
+                  format: float
+            source_id:
+              anyOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+            rejection_cause:
+              anyOf:
+              - $ref: '#/components/schemas/RequestRejectionCause'
+              - type: array
+                items:
+                  $ref: '#/components/schemas/RequestRejectionCause'
+          additionalProperties: false
+          description: Filter by aggregation keys
+          x-docs-force-simple-type: true
+          x-docs-type: JSON
+      - in: query
+        name: created_at
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+            nullable: true
+          - $ref: '#/components/schemas/Operators'
+          description: Filter by created dates
+      - in: query
+        name: first_seen_at
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+            nullable: true
+          - $ref: '#/components/schemas/Operators'
+          description: Filter by first seen dates
+      - in: query
+        name: last_seen_at
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+            nullable: true
+          - $ref: '#/components/schemas/Operators'
+          description: Filter by last seen dates
+      - in: query
+        name: dismissed_at
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+            nullable: true
+          - $ref: '#/components/schemas/Operators'
+          description: Filter by dismissed dates
+      - in: query
+        name: order_by
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+            enum:
+            - created_at
+            - first_seen_at
+            - last_seen_at
+            - opened_at
+            - status
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+              enum:
+              - created_at
+              - first_seen_at
+              - last_seen_at
+              - opened_at
+              - status
+            minItems: 2
+            maxItems: 2
+          description: Sort key(s)
+      - in: query
+        name: dir
+        schema:
+          anyOf:
+          - type: string
+            enum:
+            - asc
+            - desc
+          - type: array
+            items:
+              type: string
+              enum:
+              - asc
+              - desc
+            minItems: 2
+            maxItems: 2
+          description: Sort direction(s)
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          minimum: 0
+          maximum: 255
+          description: Result set size
+      - in: query
+        name: next
+        schema:
+          type: string
+          maxLength: 255
+          description: The ID to provide in the query to get the next set of results
+      - in: query
+        name: prev
+        schema:
+          type: string
+          maxLength: 255
+          description: The ID to provide in the query to get the previous set of results
+  /issues/count:
+    get:
+      operationId: getIssueCount
+      summary: Get the number of issues
+      description: ''
+      tags:
+      - Issues
+      responses:
+        '200':
+          description: Issue count
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssueCount'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: query
+        name: id
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+            example: iss_YXKv5OdJXCiVwkPhGy
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+              example: iss_YXKv5OdJXCiVwkPhGy
+          description: Filter by Issue IDs
+      - in: query
+        name: issue_trigger_id
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+            description: Issue trigger ID
+            example: it_BXKv5OdJXCiVwkPhGy
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+              description: Issue trigger ID
+              example: it_BXKv5OdJXCiVwkPhGy
+          description: Filter by Issue trigger IDs
+      - in: query
+        name: type
+        schema:
+          anyOf:
+          - type: string
+            enum:
+            - delivery
+            - transformation
+            - backpressure
+            - request
+            description: Issue type
+            example: delivery
+          - type: array
+            items:
+              type: string
+              enum:
+              - delivery
+              - transformation
+              - backpressure
+              - request
+              description: Issue type
+              example: delivery
+          description: Filter by Issue types
+      - in: query
+        name: status
+        schema:
+          anyOf:
+          - type: string
+            enum:
+            - OPENED
+            - IGNORED
+            - ACKNOWLEDGED
+            - RESOLVED
+            description: Issue status
+            example: OPENED
+          - type: array
+            items:
+              type: string
+              enum:
+              - OPENED
+              - IGNORED
+              - ACKNOWLEDGED
+              - RESOLVED
+              description: Issue status
+              example: OPENED
+          description: Filter by Issue statuses
+      - in: query
+        name: merged_with
+        schema:
+          anyOf:
+          - type: string
+            description: Issue ID
+            example: iss_AXKv3OdJXCiKlkPhDz
+          - type: array
+            items:
+              type: string
+              description: Issue ID
+              example: iss_AXKv3OdJXCiKlkPhDz
+          description: Filter by Merged Issue IDs
+      - in: query
+        name: aggregation_keys
+        schema:
+          type: object
+          properties:
+            webhook_id:
+              anyOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+            response_status:
+              anyOf:
+              - type: number
+                format: float
+              - type: array
+                items:
+                  type: number
+                  format: float
+            error_code:
+              anyOf:
+              - $ref: '#/components/schemas/AttemptErrorCodes'
+              - type: array
+                items:
+                  $ref: '#/components/schemas/AttemptErrorCodes'
+            transformation_id:
+              anyOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+            log_level:
+              anyOf:
+              - type: string
+                enum:
+                - debug
+                - info
+                - warn
+                - error
+                - fatal
+              - type: array
+                items:
+                  type: string
+                  enum:
+                  - debug
+                  - info
+                  - warn
+                  - error
+                  - fatal
+            destination_id:
+              anyOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+            delay:
+              anyOf:
+              - type: number
+                format: float
+              - type: array
+                items:
+                  type: number
+                  format: float
+            source_id:
+              anyOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+            rejection_cause:
+              anyOf:
+              - $ref: '#/components/schemas/RequestRejectionCause'
+              - type: array
+                items:
+                  $ref: '#/components/schemas/RequestRejectionCause'
+          additionalProperties: false
+          description: Filter by aggregation keys
+          x-docs-force-simple-type: true
+          x-docs-type: JSON
+      - in: query
+        name: created_at
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+            nullable: true
+          - $ref: '#/components/schemas/Operators'
+          description: Filter by created dates
+      - in: query
+        name: first_seen_at
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+            nullable: true
+          - $ref: '#/components/schemas/Operators'
+          description: Filter by first seen dates
+      - in: query
+        name: last_seen_at
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+            nullable: true
+          - $ref: '#/components/schemas/Operators'
+          description: Filter by last seen dates
+      - in: query
+        name: dismissed_at
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+            nullable: true
+          - $ref: '#/components/schemas/Operators'
+          description: Filter by dismissed dates
+      - in: query
+        name: order_by
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+            enum:
+            - created_at
+            - first_seen_at
+            - last_seen_at
+            - opened_at
+            - status
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+              enum:
+              - created_at
+              - first_seen_at
+              - last_seen_at
+              - opened_at
+              - status
+            minItems: 2
+            maxItems: 2
+          description: Sort key(s)
+      - in: query
+        name: dir
+        schema:
+          anyOf:
+          - type: string
+            enum:
+            - asc
+            - desc
+          - type: array
+            items:
+              type: string
+              enum:
+              - asc
+              - desc
+            minItems: 2
+            maxItems: 2
+          description: Sort direction(s)
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          minimum: 0
+          maximum: 255
+          description: Result set size
+      - in: query
+        name: next
+        schema:
+          type: string
+          maxLength: 255
+          description: The ID to provide in the query to get the next set of results
+      - in: query
+        name: prev
+        schema:
+          type: string
+          maxLength: 255
+          description: The ID to provide in the query to get the previous set of results
+  /issues/{id}:
+    get:
+      operationId: getIssue
+      summary: Retrieve an issue
+      description: This endpoint retrieves a specific issue.
+      tags:
+      - Issues
+      responses:
+        '200':
+          description: A single issue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssueWithData'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Issue ID
+        required: true
+    put:
+      operationId: updateIssue
+      summary: Update an issue
+      description: This endpoint updates an issue's status.
+      tags:
+      - Issues
+      responses:
+        '200':
+          description: Updated issue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Issue'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Issue ID
+        required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum:
+                  - OPENED
+                  - IGNORED
+                  - ACKNOWLEDGED
+                  - RESOLVED
+                  description: New status
+              required:
+              - status
+              additionalProperties: false
+    delete:
+      operationId: dismissIssue
+      summary: Dismiss an issue
+      description: This endpoint dismisses an issue.
+      tags:
+      - Issues
+      responses:
+        '200':
+          description: Dismissed issue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Issue'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Issue ID
+        required: true
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    basicAuth:
+      type: http
+      scheme: basic
+  schemas:
+    DestinationConfigHTTPAuthOAuth2ClientCredentials:
+      type: object
+      properties:
+        auth_server:
+          type: string
+        client_id:
+          type: string
+        client_secret:
+          type: string
+        scope:
+          type: string
+        authentication_type:
+          type: string
+          enum:
+          - basic
+          - bearer
+          - x-www-form-urlencoded
+      additionalProperties: false
+      x-docs-type: OAUTH2_CLIENT_CREDENTIALS
+    IssueTriggerSlackChannel:
+      type: object
+      properties:
+        channel_name:
+          type: string
+      required:
+      - channel_name
+      additionalProperties: false
+      description: Channel for a 'Slack' issue trigger
+    EventStatus:
+      type: string
+      enum:
+      - SCHEDULED
+      - QUEUED
+      - HOLD
+      - SUCCESSFUL
+      - FAILED
+      - CANCELLED
+    IssueTrigger:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the issue trigger
+        team_id:
+          type: string
+          nullable: true
+          description: ID of the project
+        name:
+          type: string
+          nullable: true
+          description: Optional unique name to use as reference when using the API
+        type:
+          $ref: '#/components/schemas/IssueType'
+        configs:
+          $ref: '#/components/schemas/IssueTriggerReference'
+        channels:
+          $ref: '#/components/schemas/IssueTriggerChannels'
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: ISO timestamp for when the issue trigger was disabled
+        updated_at:
+          type: string
+          format: date-time
+          description: ISO timestamp for when the issue trigger was last updated
+        created_at:
+          type: string
+          format: date-time
+          description: ISO timestamp for when the issue trigger was created
+        deleted_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: ISO timestamp for when the issue trigger was deleted
+      required:
+      - id
+      - type
+      - configs
+      - updated_at
+      - created_at
+      additionalProperties: false
+    IssueTriggerPaginatedResult:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/IssueTrigger'
+      additionalProperties: false
+    AttemptStatus:
+      type: string
+      enum:
+      - FAILED
+      - SUCCESSFUL
+      description: Attempt status
+    RequestIssueAggregationKeys:
+      type: object
+      properties:
+        source_id:
+          type: array
+          items:
+            type: string
+        rejection_cause:
+          type: array
+          items:
+            $ref: '#/components/schemas/RequestRejectionCause'
+      required:
+      - source_id
+      - rejection_cause
+      additionalProperties: false
+      description: Keys used as the aggregation keys a 'request' type issue
+    DestinationConfigHTTPAuthEmpty:
+      nullable: true
+      x-docs-hide: true
+      x-docs-nullable: true
+    BackpressureIssue:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Issue ID
+          example: iss_YXKv5OdJXCiVwkPhGy
+        team_id:
+          type: string
+          description: ID of the project
+        status:
+          $ref: '#/components/schemas/IssueStatus'
+        opened_at:
+          type: string
+          format: date-time
+          description: ISO timestamp for when the issue was last opened
+        first_seen_at:
+          type: string
+          format: date-time
+          description: ISO timestamp for when the issue was first opened
+        last_seen_at:
+          type: string
+          format: date-time
+          description: ISO timestamp for when the issue last occured
+        last_updated_by:
+          type: string
+          nullable: true
+          description: Deprecated, will always be set to null
+        dismissed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: ISO timestamp for when the issue was dismissed
+        auto_resolved_at:
+          type: string
+          format: date-time
+          nullable: true
+          x-docs-hide: true
+        merged_with:
+          type: string
+          nullable: true
+          x-docs-hide: true
+        updated_at:
+          type: string
+          description: ISO timestamp for when the issue was last updated
+        created_at:
+          type: string
+          description: ISO timestamp for when the issue was created
+        type:
+          type: string
+          enum:
+          - backpressure
+        aggregation_keys:
+          $ref: '#/components/schemas/BackpressureIssueAggregationKeys'
+        reference:
+          $ref: '#/components/schemas/BackpressureIssueReference'
+      required:
+      - id
+      - team_id
+      - status
+      - opened_at
+      - first_seen_at
+      - last_seen_at
+      - updated_at
+      - created_at
+      - type
+      - aggregation_keys
+      - reference
+      additionalProperties: false
+      description: Backpressure issue
+    DestinationConfigCLIAuthCustomSHA256HMACSignature:
+      type: object
+      properties:
+        key:
+          type: string
+        signing_secret:
+          type: string
+      additionalProperties: false
+      x-docs-type: CUSTOM_SIGNATURE
+    RequestIssue:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Issue ID
+          example: iss_YXKv5OdJXCiVwkPhGy
+        team_id:
+          type: string
+          description: ID of the project
+        status:
+          $ref: '#/components/schemas/IssueStatus'
+        opened_at:
+          type: string
+          format: date-time
+          description: ISO timestamp for when the issue was last opened
+        first_seen_at:
+          type: string
+          format: date-time
+          description: ISO timestamp for when the issue was first opened
+        last_seen_at:
+          type: string
+          format: date-time
+          description: ISO timestamp for when the issue last occured
+        last_updated_by:
+          type: string
+          nullable: true
+          description: Deprecated, will always be set to null
+        dismissed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: ISO timestamp for when the issue was dismissed
+        auto_resolved_at:
+          type: string
+          format: date-time
+          nullable: true
+          x-docs-hide: true
+        merged_with:
+          type: string
+          nullable: true
+          x-docs-hide: true
+        updated_at:
+          type: string
+          description: ISO timestamp for when the issue was last updated
+        created_at:
+          type: string
+          description: ISO timestamp for when the issue was created
+        type:
+          type: string
+          enum:
+          - request
+        aggregation_keys:
+          $ref: '#/components/schemas/RequestIssueAggregationKeys'
+        reference:
+          $ref: '#/components/schemas/RequestIssueReference'
+      required:
+      - id
+      - team_id
+      - status
+      - opened_at
+      - first_seen_at
+      - last_seen_at
+      - updated_at
+      - created_at
+      - type
+      - aggregation_keys
+      - reference
+      additionalProperties: false
+      description: Request issue
+    DeletedIssueTriggerResponse:
+      type: object
+      properties:
+        id:
+          type: string
+      required:
+      - id
+      additionalProperties: false
+    IssueTriggerMicrosoftTeamsChannel:
+      type: object
+      properties:
+        channel_name:
+          type: string
+      required:
+      - channel_name
+      additionalProperties: false
+      description: Channel for a 'Microsoft Teams' issue trigger
+    RequestIssueWithData:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Issue ID
+          example: iss_YXKv5OdJXCiVwkPhGy
+        team_id:
+          type: string
+          description: ID of the project
+        status:
+          $ref: '#/components/schemas/IssueStatus'
+        opened_at:
+          type: string
+          format: date-time
+          description: ISO timestamp for when the issue was last opened
+        first_seen_at:
+          type: string
+          format: date-time
+          description: ISO timestamp for when the issue was first opened
+        last_seen_at:
+          type: string
+          format: date-time
+          description: ISO timestamp for when the issue last occured
+        last_updated_by:
+          type: string
+          nullable: true
+          description: Deprecated, will always be set to null
+        dismissed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: ISO timestamp for when the issue was dismissed
+        auto_resolved_at:
+          type: string
+          format: date-time
+          nullable: true
+          x-docs-hide: true
+        merged_with:
+          type: string
+          nullable: true
+          x-docs-hide: true
+        updated_at:
+          type: string
+          description: ISO timestamp for when the issue was last updated
+        created_at:
+          type: string
+          description: ISO timestamp for when the issue was created
+        type:
+          type: string
+          enum:
+          - request
+        aggregation_keys:
+          $ref: '#/components/schemas/RequestIssueAggregationKeys'
+        reference:
+          $ref: '#/components/schemas/RequestIssueReference'
+        data:
+          $ref: '#/components/schemas/RequestIssueData'
+      required:
+      - id
+      - team_id
+      - status
+      - opened_at
+      - first_seen_at
+      - last_seen_at
+      - updated_at
+      - created_at
+      - type
+      - aggregation_keys
+      - reference
+      additionalProperties: false
+      description: Request issue
+    BackpressureIssueReference:
+      type: object
+      properties:
+        destination_id:
+          type: string
+      required:
+      - destination_id
+      additionalProperties: false
+      description: Reference to the destination backpressure an issue is being created for.
+    DestinationConfigCLIAuthOAuth2ClientCredentials:
+      type: object
+      properties:
+        auth_server:
+          type: string
+        client_id:
+          type: string
+        client_secret:
+          type: string
+        scope:
+          type: string
+        authentication_type:
+          type: string
+          enum:
+          - basic
+          - bearer
+          - x-www-form-urlencoded
+      additionalProperties: false
+      x-docs-type: OAUTH2_CLIENT_CREDENTIALS
+    BackpressureIssueWithData:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Issue ID
+          example: iss_YXKv5OdJXCiVwkPhGy
+        team_id:
+          type: string
+          description: ID of the project
+        status:
+          $ref: '#/components/schemas/IssueStatus'
+        opened_at:
+          type: string
+          format: date-time
+          description: ISO timestamp for when the issue was last opened
+        first_seen_at:
+          type: string
+          format: date-time
+          description: ISO timestamp for when the issue was first opened
+        last_seen_at:
+          type: string
+          format: date-time
+          description: ISO timestamp for when the issue last occured
+        last_updated_by:
+          type: string
+          nullable: true
+          description: Deprecated, will always be set to null
+        dismissed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: ISO timestamp for when the issue was dismissed
+        auto_resolved_at:
+          type: string
+          format: date-time
+          nullable: true
+          x-docs-hide: true
+        merged_with:
+          type: string
+          nullable: true
+          x-docs-hide: true
+        updated_at:
+          type: string
+          description: ISO timestamp for when the issue was last updated
+        created_at:
+          type: string
+          description: ISO timestamp for when the issue was created
+        type:
+          type: string
+          enum:
+          - backpressure
+        aggregation_keys:
+          $ref: '#/components/schemas/BackpressureIssueAggregationKeys'
+        reference:
+          $ref: '#/components/schemas/BackpressureIssueReference'
+        data:
+          $ref: '#/components/schemas/BackpressureIssueData'
+      required:
+      - id
+      - team_id
+      - status
+      - opened_at
+      - first_seen_at
+      - last_seen_at
+      - updated_at
+      - created_at
+      - type
+      - aggregation_keys
+      - reference
+      additionalProperties: false
+      description: Backpressure issue
+    DestinationConfigCLIAuthAWSSignature:
+      type: object
+      properties:
+        access_key_id:
+          type: string
+        secret_access_key:
+          type: string
+        region:
+          type: string
+        service:
+          type: string
+      additionalProperties: false
+      x-docs-type: AWS_SIGNATURE
+    IssueType:
+      type: string
+      enum:
+      - delivery
+      - transformation
+      - backpressure
+      - request
+      description: Issue type
+    DestinationConfigMockAPIAuthAWSSignature:
+      type: object
+      properties:
+        access_key_id:
+          type: string
+        secret_access_key:
+          type: string
+        region:
+          type: string
+        service:
+          type: string
+      additionalProperties: false
+      x-docs-type: AWS_SIGNATURE
+    DeliveryIssueData:
+      type: object
+      properties:
+        trigger_event:
+          $ref: '#/components/schemas/Event'
+        trigger_attempt:
+          $ref: '#/components/schemas/EventAttempt'
+      additionalProperties: false
+      nullable: true
+      description: Delivery issue data
+    OrderByDirection:
+      anyOf:
+      - enum:
+        - asc
+      - enum:
+        - desc
+      - enum:
+        - ASC
+      - enum:
+        - DESC
+    Operators:
+      type: object
+      properties:
+        gt:
+          type: string
+          format: date-time
+          nullable: true
+        gte:
+          type: string
+          format: date-time
+          nullable: true
+        le:
+          type: string
+          format: date-time
+          nullable: true
+        lte:
+          type: string
+          format: date-time
+          nullable: true
+        any:
+          type: boolean
+        all:
+          type: boolean
+      additionalProperties: false
+    Issue:
+      anyOf:
+      - $ref: '#/components/schemas/DeliveryIssue'
+      - $ref: '#/components/schemas/TransformationIssue'
+      - $ref: '#/components/schemas/BackpressureIssue'
+      - $ref: '#/components/schemas/RequestIssue'
+      description: Issue
+    IssueWithData:
+      anyOf:
+      - $ref: '#/components/schemas/DeliveryIssueWithData'
+      - $ref: '#/components/schemas/TransformationIssueWithData'
+      - $ref: '#/components/schemas/BackpressureIssueWithData'
+      - $ref: '#/components/schemas/RequestIssueWithData'
+    RequestIssueData:
+      type: object
+      properties:
+        request:
+          $ref: '#/components/schemas/Request'
+      additionalProperties: false
+      nullable: true
+      description: Request issue data
+    DeliveryIssueWithData:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Issue ID
+          example: iss_YXKv5OdJXCiVwkPhGy
+        team_id:
+          type: string
+          description: ID of the project
+        status:
+          $ref: '#/components/schemas/IssueStatus'
+        opened_at:
+          type: string
+          format: date-time
+          description: ISO timestamp for when the issue was last opened
+        first_seen_at:
+          type: string
+          format: date-time
+          description: ISO timestamp for when the issue was first opened
+        last_seen_at:
+          type: string
+          format: date-time
+          description: ISO timestamp for when the issue last occured
+        last_updated_by:
+          type: string
+          nullable: true
+          description: Deprecated, will always be set to null
+        dismissed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: ISO timestamp for when the issue was dismissed
+        auto_resolved_at:
+          type: string
+          format: date-time
+          nullable: true
+          x-docs-hide: true
+        merged_with:
+          type: string
+          nullable: true
+          x-docs-hide: true
+        updated_at:
+          type: string
+          description: ISO timestamp for when the issue was last updated
+        created_at:
+          type: string
+          description: ISO timestamp for when the issue was created
+        type:
+          type: string
+          enum:
+          - delivery
+        aggregation_keys:
+          $ref: '#/components/schemas/DeliveryIssueAggregationKeys'
+        reference:
+          $ref: '#/components/schemas/DeliveryIssueReference'
+        data:
+          $ref: '#/components/schemas/DeliveryIssueData'
+      required:
+      - id
+      - team_id
+      - status
+      - opened_at
+      - first_seen_at
+      - last_seen_at
+      - updated_at
+      - created_at
+      - type
+      - aggregation_keys
+      - reference
+      additionalProperties: false
+      description: Delivery issue
+    DestinationConfigCLIAuth:
+      type: object
+      properties: {}
+      additionalProperties: false
+      oneOf:
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthHookdeckSignatureDefault'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthCustomSHA256HMACSignature'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthBasicAuth'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthAPIKey'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthBearerToken'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthOAuth2ClientCredentials'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthOAuth2AuthorizationCode'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthAWSSignature'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthGCPServiceAccount'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthEmpty'
+    SeekPagination:
+      type: object
+      properties:
+        order_by:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        dir:
+          anyOf:
+          - $ref: '#/components/schemas/OrderByDirection'
+          - type: array
+            items:
+              $ref: '#/components/schemas/OrderByDirection'
+        limit:
+          type: integer
+        prev:
+          type: string
+        next:
+          type: string
+      additionalProperties: false
+    DestinationConfigCLIAuthOAuth2AuthorizationCode:
+      type: object
+      properties:
+        auth_server:
+          type: string
+        client_id:
+          type: string
+        client_secret:
+          type: string
+        refresh_token:
+          type: string
+        scope:
+          type: string
+      additionalProperties: false
+      x-docs-type: OAUTH2_AUTHORIZATION_CODE
+    DestinationConfigHTTPAuthOAuth2AuthorizationCode:
+      type: object
+      properties:
+        auth_server:
+          type: string
+        client_id:
+          type: string
+        client_secret:
+          type: string
+        refresh_token:
+          type: string
+        scope:
+          type: string
+      additionalProperties: false
+      x-docs-type: OAUTH2_AUTHORIZATION_CODE
+    IssueTriggerChannels:
+      type: object
+      properties:
+        slack:
+          $ref: '#/components/schemas/IssueTriggerSlackChannel'
+        microsoft_teams:
+          $ref: '#/components/schemas/IssueTriggerMicrosoftTeamsChannel'
+        discord:
+          $ref: '#/components/schemas/IssueTriggerDiscordChannel'
+        betteruptime:
+          $ref: '#/components/schemas/IssueTriggerBetterUptimeChannel'
+        pagerduty:
+          $ref: '#/components/schemas/IssueTriggerIntegrationChannel'
+        opsgenie:
+          $ref: '#/components/schemas/IssueTriggerIntegrationChannel'
+        email:
+          $ref: '#/components/schemas/IssueTriggerEmailChannel'
+      additionalProperties: false
+      nullable: true
+      description: Notification channels object for the specific channel type
+    TransformationIssueWithData:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Issue ID
+          example: iss_YXKv5OdJXCiVwkPhGy
+        team_id:
+          type: string
+          description: ID of the project
+        status:
+          $ref: '#/components/schemas/IssueStatus'
+        opened_at:
+          type: string
+          format: date-time
+          description: ISO timestamp for when the issue was last opened
+        first_seen_at:
+          type: string
+          format: date-time
+          description: ISO timestamp for when the issue was first opened
+        last_seen_at:
+          type: string
+          format: date-time
+          description: ISO timestamp for when the issue last occured
+        last_updated_by:
+          type: string
+          nullable: true
+          description: Deprecated, will always be set to null
+        dismissed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: ISO timestamp for when the issue was dismissed
+        auto_resolved_at:
+          type: string
+          format: date-time
+          nullable: true
+          x-docs-hide: true
+        merged_with:
+          type: string
+          nullable: true
+          x-docs-hide: true
+        updated_at:
+          type: string
+          description: ISO timestamp for when the issue was last updated
+        created_at:
+          type: string
+          description: ISO timestamp for when the issue was created
+        type:
+          type: string
+          enum:
+          - transformation
+        aggregation_keys:
+          $ref: '#/components/schemas/TransformationIssueAggregationKeys'
+        reference:
+          $ref: '#/components/schemas/TransformationIssueReference'
+        data:
+          $ref: '#/components/schemas/TransformationIssueData'
+      required:
+      - id
+      - team_id
+      - status
+      - opened_at
+      - first_seen_at
+      - last_seen_at
+      - updated_at
+      - created_at
+      - type
+      - aggregation_keys
+      - reference
+      additionalProperties: false
+      description: Transformation issue
+    DestinationConfigMockAPIAuthGCPServiceAccount:
+      type: object
+      properties:
+        service_account_key:
+          type: string
+        scope:
+          type: string
+          nullable: true
+      additionalProperties: false
+      x-docs-type: GCP_SERVICE_ACCOUNT
+    IssueWithDataPaginatedResult:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/IssueWithData'
+      additionalProperties: false
+    IssueCount:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Number of issues
+          example: 5
+      required:
+      - count
+      additionalProperties: false
+    TransformationIssueAggregationKeys:
+      type: object
+      properties:
+        transformation_id:
+          type: array
+          items:
+            type: string
+        log_level:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransformationExecutionLogLevel'
+      required:
+      - transformation_id
+      - log_level
+      additionalProperties: false
+      description: Keys used as the aggregation keys a 'transformation' type issue
+    DestinationConfigMockAPIAuthHookdeckSignatureDefault:
+      type: object
+      properties: {}
+      additionalProperties: false
+      x-docs-type: HOOKDECK_SIGNATURE
+    IssueStatus:
+      type: string
+      enum:
+      - OPENED
+      - IGNORED
+      - ACKNOWLEDGED
+      - RESOLVED
+      description: Issue status
+    DestinationConfigHTTPAuthCustomSHA256HMACSignature:
+      type: object
+      properties:
+        key:
+          type: string
+        signing_secret:
+          type: string
+      additionalProperties: false
+      x-docs-type: CUSTOM_SIGNATURE
+    IssueTriggerIntegrationChannel:
+      type: object
+      properties: {}
+      additionalProperties: false
+      description: Integration channel for an issue trigger
+      x-docs-type: object
+    RequestRejectionCause:
+      type: string
+      enum:
+      - SOURCE_DISABLED
+      - NO_CONNECTION
+      - VERIFICATION_FAILED
+      - UNSUPPORTED_HTTP_METHOD
+      - UNSUPPORTED_CONTENT_TYPE
+      - UNPARSABLE_JSON
+      - PAYLOAD_TOO_LARGE
+      - INGESTION_FATAL
+      - UNKNOWN
+      x-docs-type: string
+    TransformationExecution:
+      type: object
+      properties:
+        id:
+          type: string
+        transformed_event_data_id:
+          type: string
+          nullable: true
+        original_event_data_id:
+          type: string
+        transformation_id:
+          type: string
+        team_id:
+          type: string
+          description: ID of the project
+        webhook_id:
+          type: string
+          description: ID of the associated connection (webhook)
+        log_level:
+          $ref: '#/components/schemas/TransformationExecutionLogLevel'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConsoleLine'
+        updated_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+        original_event_data:
+          $ref: '#/components/schemas/ShortEventData'
+        transformed_event_data:
+          $ref: '#/components/schemas/ShortEventData'
+        issue_id:
+          type: string
+          nullable: true
+      required:
+      - id
+      - original_event_data_id
+      - transformation_id
+      - team_id
+      - webhook_id
+      - log_level
+      - logs
+      - updated_at
+      - created_at
+      additionalProperties: false
+    DestinationConfigHTTPAuth:
+      type: object
+      properties: {}
+      additionalProperties: false
+      oneOf:
+      - $ref: '#/components/schemas/DestinationConfigHTTPAuthHookdeckSignatureDefault'
+      - $ref: '#/components/schemas/DestinationConfigHTTPAuthCustomSHA256HMACSignature'
+      - $ref: '#/components/schemas/DestinationConfigHTTPAuthBasicAuth'
+      - $ref: '#/components/schemas/DestinationConfigHTTPAuthAPIKey'
+      - $ref: '#/components/schemas/DestinationConfigHTTPAuthBearerToken'
+      - $ref: '#/components/schemas/DestinationConfigHTTPAuthOAuth2ClientCredentials'
+      - $ref: '#/components/schemas/DestinationConfigHTTPAuthOAuth2AuthorizationCode'
+      - $ref: '#/components/schemas/DestinationConfigHTTPAuthAWSSignature'
+      - $ref: '#/components/schemas/DestinationConfigHTTPAuthGCPServiceAccount'
+      - $ref: '#/components/schemas/DestinationConfigHTTPAuthEmpty'
+    Event:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the event
+        team_id:
+          type: string
+          description: ID of the project
+        webhook_id:
+          type: string
+          description: ID of the associated connection (webhook)
+        source_id:
+          type: string
+          description: ID of the associated source
+        destination_id:
+          type: string
+          description: ID of the associated destination
+        event_data_id:
+          type: string
+          description: ID of the event data
+        request_id:
+          type: string
+          description: ID of the request that created the event
+        attempts:
+          type: integer
+          description: Number of delivery attempts made
+        last_attempt_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date of the most recently attempted retry
+        next_attempt_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date of the next scheduled retry
+        response_status:
+          type: integer
+          nullable: true
+          description: Event status
+        error_code:
+          $ref: '#/components/schemas/AttemptErrorCodes'
+        status:
+          $ref: '#/components/schemas/EventStatus'
+        successful_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date of the latest successful attempt
+        cli_id:
+          type: string
+          nullable: true
+          description: ID of the CLI the event is sent to
+        updated_at:
+          type: string
+          format: date-time
+          description: Date the event was last updated
+        created_at:
+          type: string
+          format: date-time
+          description: Date the event was created
+        data:
+          $ref: '#/components/schemas/EventData'
+      required:
+      - id
+      - team_id
+      - webhook_id
+      - source_id
+      - destination_id
+      - event_data_id
+      - request_id
+      - attempts
+      - last_attempt_at
+      - next_attempt_at
+      - status
+      - successful_at
+      - cli_id
+      - updated_at
+      - created_at
+      additionalProperties: false
+    AttemptTrigger:
+      type: string
+      enum:
+      - INITIAL
+      - MANUAL
+      - BULK_RETRY
+      - UNPAUSE
+      - AUTOMATIC
+      nullable: true
+      description: How the attempt was triggered
+    DestinationTypeConfigMOCK_API:
+      type: object
+      properties:
+        rate_limit:
+          type: number
+          format: float
+          nullable: true
+        rate_limit_period:
+          type: string
+          enum:
+          - second
+          - minute
+          - hour
+          - concurrent
+          nullable: true
+        path_forwarding_disabled:
+          type: boolean
+        http_method:
+          type: string
+          enum:
+          - GET
+          - POST
+          - PUT
+          - PATCH
+          - DELETE
+          nullable: true
+        auth_type:
+          type: string
+          enum:
+          - HOOKDECK_SIGNATURE
+          - CUSTOM_SIGNATURE
+          - BASIC_AUTH
+          - API_KEY
+          - BEARER_TOKEN
+          - OAUTH2_CLIENT_CREDENTIALS
+          - OAUTH2_AUTHORIZATION_CODE
+          - AWS_SIGNATURE
+          - GCP_SERVICE_ACCOUNT
+          nullable: true
+        auth:
+          $ref: '#/components/schemas/DestinationConfigMockAPIAuth'
+      additionalProperties: false
+      description: The type config for MOCK_API. Requires type to be `MOCK_API`.
+      x-docs-type: MOCK_API
+    DestinationTypeConfigCLI:
+      type: object
+      properties:
+        path:
+          type: string
+          description: Path for the CLI destination
+        path_forwarding_disabled:
+          type: boolean
+        http_method:
+          type: string
+          enum:
+          - GET
+          - POST
+          - PUT
+          - PATCH
+          - DELETE
+          nullable: true
+        auth_type:
+          type: string
+          enum:
+          - HOOKDECK_SIGNATURE
+          - CUSTOM_SIGNATURE
+          - BASIC_AUTH
+          - API_KEY
+          - BEARER_TOKEN
+          - OAUTH2_CLIENT_CREDENTIALS
+          - OAUTH2_AUTHORIZATION_CODE
+          - AWS_SIGNATURE
+          - GCP_SERVICE_ACCOUNT
+          nullable: true
+        auth:
+          $ref: '#/components/schemas/DestinationConfigCLIAuth'
+      required:
+      - path
+      additionalProperties: false
+      description: The type config for CLI. Requires type to be `CLI`.
+      x-docs-type: CLI
+    DestinationConfigMockAPIAuthEmpty:
+      nullable: true
+      x-docs-hide: true
+      x-docs-nullable: true
+    IssueTriggerBackpressureConfigs:
+      type: object
+      properties:
+        delay:
+          $ref: '#/components/schemas/IssueTriggerBackpressureDelay'
+        destinations:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+          description: A pattern to match on the destination name or array of destination IDs. Use `*` as wildcard.
+          x-docs-force-simple-type: true
+      required:
+      - delay
+      - destinations
+      additionalProperties: false
+      description: Configurations for a 'Backpressure' issue trigger
+    DestinationConfigMockAPIAuthOAuth2ClientCredentials:
+      type: object
+      properties:
+        auth_server:
+          type: string
+        client_id:
+          type: string
+        client_secret:
+          type: string
+        scope:
+          type: string
+        authentication_type:
+          type: string
+          enum:
+          - basic
+          - bearer
+          - x-www-form-urlencoded
+      additionalProperties: false
+      x-docs-type: OAUTH2_CLIENT_CREDENTIALS
+    RequestIssueReference:
+      type: object
+      properties:
+        request_id:
+          type: string
+      required:
+      - request_id
+      additionalProperties: false
+      description: Reference to the request an issue is being created for.
+    DestinationConfigHTTPAuthBasicAuth:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      additionalProperties: false
+      x-docs-type: BASIC_AUTH
+    DestinationConfigHTTPAuthAPIKey:
+      type: object
+      properties:
+        key:
+          type: string
+        api_key:
+          type: string
+        to:
+          type: string
+          enum:
+          - header
+          - query
+      additionalProperties: false
+      x-docs-type: API_KEY
+    IssueTriggerEmailChannel:
+      type: object
+      properties: {}
+      additionalProperties: false
+      description: Email channel for an issue trigger
+      x-docs-type: object
+    IssueTriggerTransformationConfigs:
+      type: object
+      properties:
+        log_level:
+          $ref: '#/components/schemas/TransformationExecutionLogLevel'
+        transformations:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+          description: A pattern to match on the transformation name or array of transformation IDs. Use `*` as wildcard.
+          x-docs-force-simple-type: true
+      required:
+      - log_level
+      - transformations
+      additionalProperties: false
+      description: Configurations for a 'Transformation' issue trigger
+    EventAttempt:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Attempt ID
+        team_id:
+          type: string
+          description: ID of the project
+        event_id:
+          type: string
+          description: Event ID
+        destination_id:
+          type: string
+          description: Destination ID
+        response_status:
+          type: integer
+          nullable: true
+          description: Attempt's HTTP response code
+        attempt_number:
+          type: integer
+          nullable: true
+          description: Sequential number of attempts (up to and including this one) made for the associated event
+        trigger:
+          $ref: '#/components/schemas/AttemptTrigger'
+        error_code:
+          $ref: '#/components/schemas/AttemptErrorCodes'
+        body:
+          anyOf:
+          - type: object
+            properties: {}
+            nullable: true
+            description: Response body from the destination
+          - type: string
+            nullable: true
+            description: Response body from the destination
+        requested_url:
+          type: string
+          nullable: true
+          description: URL of the destination where delivery was attempted
+        http_method:
+          type: string
+          enum:
+          - GET
+          - POST
+          - PUT
+          - PATCH
+          - DELETE
+          nullable: true
+          description: HTTP method used to deliver the attempt
+        bulk_retry_id:
+          type: string
+          nullable: true
+          description: ID of associated bulk retry
+        status:
+          $ref: '#/components/schemas/AttemptStatus'
+        successful_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date the attempt was successful
+        delivered_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date the attempt was delivered
+        responded_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date the destination responded to this attempt
+        delivery_latency:
+          type: integer
+          nullable: true
+          description: Time elapsed between attempt initiation and final delivery (in ms)
+        response_latency:
+          type: integer
+          nullable: true
+          description: Time elapsed between attempt initiation and a response from the destination (in ms)
+        updated_at:
+          type: string
+          format: date-time
+          description: Date the attempt was last updated
+        created_at:
+          type: string
+          format: date-time
+          description: Date the attempt was created
+      required:
+      - id
+      - team_id
+      - event_id
+      - destination_id
+      - status
+      - updated_at
+      - created_at
+      additionalProperties: false
+      nullable: true
+    DestinationConfigHTTPAuthBearerToken:
+      type: object
+      properties:
+        token:
+          type: string
+      additionalProperties: false
+      x-docs-type: BEARER_TOKEN
+    DestinationConfigHTTPAuthHookdeckSignatureDefault:
+      type: object
+      properties: {}
+      additionalProperties: false
+      x-docs-type: HOOKDECK_SIGNATURE
+    DestinationConfigMockAPIAuthBasicAuth:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      additionalProperties: false
+      x-docs-type: BASIC_AUTH
+    DestinationConfigCLIAuthEmpty:
+      nullable: true
+      x-docs-hide: true
+      x-docs-nullable: true
+    DestinationConfig:
+      type: object
+      properties: {}
+      additionalProperties: false
+      oneOf:
+      - $ref: '#/components/schemas/DestinationTypeConfigHTTP'
+      - $ref: '#/components/schemas/DestinationTypeConfigCLI'
+      - $ref: '#/components/schemas/DestinationTypeConfigMOCK_API'
+      description: Configuration object for the destination type
+      default: {}
+    IssueTriggerBackpressureDelay:
+      type: integer
+      minimum: 60000
+      maximum: 86400000
+      description: The minimum delay (backpressure) to open the issue for min of 1 minute (60000) and max of 1 day (86400000)
+      x-docs-type: integer
+    EventData:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        path:
+          type: string
+          nullable: true
+          description: Raw path string
+        query:
+          type: string
+          nullable: true
+          description: Raw query param string
+        parsed_query:
+          anyOf:
+          - type: string
+            nullable: true
+          - type: object
+            properties: {}
+          nullable: true
+          description: JSON representation of query params
+        headers:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+            additionalProperties:
+              type: string
+              nullable: true
+          nullable: true
+          description: JSON representation of the headers
+        appended_headers:
+          type: array
+          items:
+            type: string
+          description: List of headers that were added by Hookdeck
+        body:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+          - type: array
+            items: {}
+          nullable: true
+          description: JSON or string representation of the body
+        is_large_payload:
+          type: boolean
+          description: Whether the payload is considered large payload and not searchable
+      required:
+      - url
+      - method
+      - path
+      - query
+      - parsed_query
+      - headers
+      - body
+      additionalProperties: false
+      nullable: true
+      description: Event data if included
+    TransformationIssueData:
+      type: object
+      properties:
+        transformation_execution:
+          $ref: '#/components/schemas/TransformationExecution'
+        trigger_attempt:
+          $ref: '#/components/schemas/EventAttempt'
+      required:
+      - transformation_execution
+      additionalProperties: false
+      nullable: true
+      description: Transformation issue data
+    BackpressureIssueData:
+      type: object
+      properties:
+        destination:
+          $ref: '#/components/schemas/Destination'
+      additionalProperties: false
+      nullable: true
+      description: Backpressure issue data
+    DestinationConfigMockAPIAuth:
+      type: object
+      properties: {}
+      additionalProperties: false
+      oneOf:
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthHookdeckSignatureDefault'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthCustomSHA256HMACSignature'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthBasicAuth'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthAPIKey'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthBearerToken'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthOAuth2ClientCredentials'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthOAuth2AuthorizationCode'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthAWSSignature'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthGCPServiceAccount'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthEmpty'
+    DeliveryIssue:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Issue ID
+          example: iss_YXKv5OdJXCiVwkPhGy
+        team_id:
+          type: string
+          description: ID of the project
+        status:
+          $ref: '#/components/schemas/IssueStatus'
+        opened_at:
+          type: string
+          format: date-time
+          description: ISO timestamp for when the issue was last opened
+        first_seen_at:
+          type: string
+          format: date-time
+          description: ISO timestamp for when the issue was first opened
+        last_seen_at:
+          type: string
+          format: date-time
+          description: ISO timestamp for when the issue last occured
+        last_updated_by:
+          type: string
+          nullable: true
+          description: Deprecated, will always be set to null
+        dismissed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: ISO timestamp for when the issue was dismissed
+        auto_resolved_at:
+          type: string
+          format: date-time
+          nullable: true
+          x-docs-hide: true
+        merged_with:
+          type: string
+          nullable: true
+          x-docs-hide: true
+        updated_at:
+          type: string
+          description: ISO timestamp for when the issue was last updated
+        created_at:
+          type: string
+          description: ISO timestamp for when the issue was created
+        type:
+          type: string
+          enum:
+          - delivery
+        aggregation_keys:
+          $ref: '#/components/schemas/DeliveryIssueAggregationKeys'
+        reference:
+          $ref: '#/components/schemas/DeliveryIssueReference'
+      required:
+      - id
+      - team_id
+      - status
+      - opened_at
+      - first_seen_at
+      - last_seen_at
+      - updated_at
+      - created_at
+      - type
+      - aggregation_keys
+      - reference
+      additionalProperties: false
+      description: Delivery issue
+    IssueTriggerStrategy:
+      type: string
+      enum:
+      - first_attempt
+      - final_attempt
+      description: The strategy uses to open the issue
+    DestinationConfigMockAPIAuthAPIKey:
+      type: object
+      properties:
+        key:
+          type: string
+        api_key:
+          type: string
+        to:
+          type: string
+          enum:
+          - header
+          - query
+      additionalProperties: false
+      x-docs-type: API_KEY
+    ConsoleLine:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - error
+          - log
+          - warn
+          - info
+          - debug
+        message:
+          type: string
+      required:
+      - type
+      - message
+      additionalProperties: false
+    TransformationIssueReference:
+      type: object
+      properties:
+        transformation_execution_id:
+          type: string
+        trigger_event_request_transformation_id:
+          type: string
+          nullable: true
+          description: Deprecated but still found on historical issues
+      required:
+      - transformation_execution_id
+      additionalProperties: false
+      description: Reference to the event request transformation an issue is being created for.
+    DestinationConfigCLIAuthHookdeckSignatureDefault:
+      type: object
+      properties: {}
+      additionalProperties: false
+      x-docs-type: HOOKDECK_SIGNATURE
+    DestinationConfigCLIAuthAPIKey:
+      type: object
+      properties:
+        key:
+          type: string
+        api_key:
+          type: string
+        to:
+          type: string
+          enum:
+          - header
+          - query
+      additionalProperties: false
+      x-docs-type: API_KEY
+    APIErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        status:
+          type: number
+          format: float
+          description: Status code
+        message:
+          type: string
+          description: Error description
+        data:
+          type: object
+          properties: {}
+          nullable: true
+      required:
+      - code
+      - status
+      - message
+      additionalProperties: false
+      description: Error response model
+    TransformationExecutionLogLevel:
+      type: string
+      enum:
+      - debug
+      - info
+      - warn
+      - error
+      - fatal
+      description: The minimum log level to open the issue on
+    DeliveryIssueReference:
+      type: object
+      properties:
+        event_id:
+          type: string
+        attempt_id:
+          type: string
+      required:
+      - event_id
+      - attempt_id
+      additionalProperties: false
+      description: Reference to the event and attempt an issue is being created for.
+    DestinationConfigMockAPIAuthBearerToken:
+      type: object
+      properties:
+        token:
+          type: string
+      additionalProperties: false
+      x-docs-type: BEARER_TOKEN
+    BackpressureIssueAggregationKeys:
+      type: object
+      properties:
+        destination_id:
+          type: array
+          items:
+            type: string
+        delay:
+          type: array
+          items:
+            $ref: '#/components/schemas/IssueTriggerBackpressureDelay'
+      required:
+      - destination_id
+      - delay
+      additionalProperties: false
+      description: Keys used as the aggregation keys a 'backpressure' type issue
+    Destination:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the destination
+        name:
+          type: string
+          description: A unique, human-friendly name for the destination
+        description:
+          type: string
+          nullable: true
+          description: Description of the destination
+        team_id:
+          type: string
+          description: ID of the project
+        type:
+          type: string
+          enum:
+          - HTTP
+          - CLI
+          - MOCK_API
+          description: Type of the destination
+        config:
+          $ref: '#/components/schemas/DestinationConfig'
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date the destination was disabled
+        updated_at:
+          type: string
+          format: date-time
+          description: Date the destination was last updated
+        created_at:
+          type: string
+          format: date-time
+          description: Date the destination was created
+      required:
+      - id
+      - name
+      - team_id
+      - type
+      - disabled_at
+      - updated_at
+      - created_at
+      additionalProperties: false
+      description: Associated [Destination](#destination-object) object
+    IssueTriggerDeliveryConfigs:
+      type: object
+      properties:
+        strategy:
+          $ref: '#/components/schemas/IssueTriggerStrategy'
+        connections:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+          description: A pattern to match on the connection name or array of connection IDs. Use `*` as wildcard.
+          x-docs-force-simple-type: true
+      required:
+      - strategy
+      - connections
+      additionalProperties: false
+      description: Configurations for a 'delivery' issue trigger
+    DestinationConfigHTTPAuthGCPServiceAccount:
+      type: object
+      properties:
+        service_account_key:
+          type: string
+        scope:
+          type: string
+          nullable: true
+      additionalProperties: false
+      x-docs-type: GCP_SERVICE_ACCOUNT
+    IssueTriggerRequestConfigs:
+      type: object
+      properties:
+        rejection_causes:
+          anyOf:
+          - type: string
+            enum:
+            - '*'
+          - type: array
+            items:
+              $ref: '#/components/schemas/RequestRejectionCause'
+          description: An array of rejection causes to match on, or '*' to match all rejection causes.
+          x-docs-force-simple-type: true
+        excluded_rejection_causes:
+          type: array
+          items:
+            $ref: '#/components/schemas/RequestRejectionCause'
+          description: Optional array of rejection causes to exclude. When specified, rejection_causes must be '*'. This allows
+            matching all causes EXCEPT the specified ones.
+          x-docs-force-simple-type: true
+        sources:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+          description: A pattern to match on the source name or array of source IDs. Use `*` as wildcard.
+          x-docs-force-simple-type: true
+      required:
+      - rejection_causes
+      - sources
+      additionalProperties: false
+      description: Configurations for a 'Request' issue trigger
+    DestinationConfigMockAPIAuthOAuth2AuthorizationCode:
+      type: object
+      properties:
+        auth_server:
+          type: string
+        client_id:
+          type: string
+        client_secret:
+          type: string
+        refresh_token:
+          type: string
+        scope:
+          type: string
+      additionalProperties: false
+      x-docs-type: OAUTH2_AUTHORIZATION_CODE
+    DeliveryIssueAggregationKeys:
+      type: object
+      properties:
+        webhook_id:
+          type: array
+          items:
+            type: string
+        response_status:
+          type: array
+          items:
+            type: number
+            format: float
+        error_code:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttemptErrorCodes'
+      required:
+      - webhook_id
+      - response_status
+      - error_code
+      additionalProperties: false
+      description: Keys used as the aggregation keys a 'delivery' type issue
+    Request:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the request
+        team_id:
+          type: string
+          description: ID of the project
+        verified:
+          type: boolean
+          nullable: true
+          description: Whether or not the request was verified when received
+        original_event_data_id:
+          type: string
+          nullable: true
+          description: ID of the request data
+        rejection_cause:
+          $ref: '#/components/schemas/RequestRejectionCause'
+        ingested_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: The time the request was originally received
+        source_id:
+          type: string
+          description: ID of the associated source
+        events_count:
+          type: integer
+          nullable: true
+          description: The count of events created from this request (CLI events not included)
+        cli_events_count:
+          type: integer
+          nullable: true
+          description: The count of CLI events created from this request
+        ignored_count:
+          type: integer
+          nullable: true
+          x-docs-hide: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Date the event was last updated
+        created_at:
+          type: string
+          format: date-time
+          description: "\tDate the event was created"
+        data:
+          $ref: '#/components/schemas/ShortEventData'
+      required:
+      - id
+      - team_id
+      - verified
+      - original_event_data_id
+      - rejection_cause
+      - ingested_at
+      - source_id
+      - events_count
+      - cli_events_count
+      - ignored_count
+      - updated_at
+      - created_at
+      additionalProperties: false
+    DestinationConfigCLIAuthBasicAuth:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      additionalProperties: false
+      x-docs-type: BASIC_AUTH
+    IssueTriggerReference:
+      anyOf:
+      - $ref: '#/components/schemas/IssueTriggerDeliveryConfigs'
+      - $ref: '#/components/schemas/IssueTriggerTransformationConfigs'
+      - $ref: '#/components/schemas/IssueTriggerBackpressureConfigs'
+      - $ref: '#/components/schemas/IssueTriggerRequestConfigs'
+      description: Configuration object for the specific issue type selected
+    DestinationConfigHTTPAuthAWSSignature:
+      type: object
+      properties:
+        access_key_id:
+          type: string
+        secret_access_key:
+          type: string
+        region:
+          type: string
+        service:
+          type: string
+      additionalProperties: false
+      x-docs-type: AWS_SIGNATURE
+    AttemptErrorCodes:
+      type: string
+      enum:
+      - BAD_RESPONSE
+      - CANCELLED
+      - TIMEOUT
+      - NOT_FOUND
+      - CANCELLED_PAST_RETENTION
+      - CONNECTION_REFUSED
+      - CONNECTION_RESET
+      - MISSING_URL
+      - CLI
+      - CLI_UNAVAILABLE
+      - SELF_SIGNED_CERT
+      - ERR_TLS_CERT_ALTNAME_INVALID
+      - ERR_SSL_WRONG_VERSION_NUMBER
+      - NETWORK_ERROR
+      - NETWORK_REQUEST_CANCELED
+      - NETWORK_UNREACHABLE
+      - TOO_MANY_REDIRECTS
+      - INVALID_CHARACTER
+      - INVALID_URL
+      - SSL_ERROR_CA_UNKNOWN
+      - DATA_ARCHIVED
+      - SSL_CERT_EXPIRED
+      - BULK_RETRY_CANCELLED
+      - DNS_LOOKUP_FAILED
+      - HOST_UNREACHABLE
+      - INTERNAL_ERROR
+      - PROTOCOL_ERROR
+      - PAYLOAD_MISSING
+      - UNABLE_TO_GET_ISSUER_CERT
+      - SOCKET_CLOSED
+      - OAUTH2_HANDSHAKE_FAILED
+      - Z_DATA_ERROR
+      - UNKNOWN
+      description: Error code of the delivery attempt
+    DestinationConfigMockAPIAuthCustomSHA256HMACSignature:
+      type: object
+      properties:
+        key:
+          type: string
+        signing_secret:
+          type: string
+      additionalProperties: false
+      x-docs-type: CUSTOM_SIGNATURE
+    IssueTriggerBetterUptimeChannel:
+      type: object
+      properties:
+        escalation_policy_id:
+          type: string
+        escalation_policy_name:
+          type: string
+      required:
+      - escalation_policy_id
+      - escalation_policy_name
+      additionalProperties: false
+      description: Channel for a 'Better Uptime' issue trigger
+    TransformationIssue:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Issue ID
+          example: iss_YXKv5OdJXCiVwkPhGy
+        team_id:
+          type: string
+          description: ID of the project
+        status:
+          $ref: '#/components/schemas/IssueStatus'
+        opened_at:
+          type: string
+          format: date-time
+          description: ISO timestamp for when the issue was last opened
+        first_seen_at:
+          type: string
+          format: date-time
+          description: ISO timestamp for when the issue was first opened
+        last_seen_at:
+          type: string
+          format: date-time
+          description: ISO timestamp for when the issue last occured
+        last_updated_by:
+          type: string
+          nullable: true
+          description: Deprecated, will always be set to null
+        dismissed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: ISO timestamp for when the issue was dismissed
+        auto_resolved_at:
+          type: string
+          format: date-time
+          nullable: true
+          x-docs-hide: true
+        merged_with:
+          type: string
+          nullable: true
+          x-docs-hide: true
+        updated_at:
+          type: string
+          description: ISO timestamp for when the issue was last updated
+        created_at:
+          type: string
+          description: ISO timestamp for when the issue was created
+        type:
+          type: string
+          enum:
+          - transformation
+        aggregation_keys:
+          $ref: '#/components/schemas/TransformationIssueAggregationKeys'
+        reference:
+          $ref: '#/components/schemas/TransformationIssueReference'
+      required:
+      - id
+      - team_id
+      - status
+      - opened_at
+      - first_seen_at
+      - last_seen_at
+      - updated_at
+      - created_at
+      - type
+      - aggregation_keys
+      - reference
+      additionalProperties: false
+      description: Transformation issue
+    ShortEventData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: Request path
+        query:
+          type: string
+          nullable: true
+          description: Raw query param string
+        parsed_query:
+          anyOf:
+          - type: string
+            nullable: true
+          - type: object
+            properties: {}
+          nullable: true
+          description: JSON representation of query params
+        headers:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+            additionalProperties:
+              type: string
+              nullable: true
+          nullable: true
+          description: JSON representation of the headers
+        body:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+          - type: array
+            items: {}
+          nullable: true
+          description: JSON or string representation of the body
+        is_large_payload:
+          type: boolean
+          nullable: true
+          description: Whether the payload is considered large payload and not searchable
+      required:
+      - path
+      - query
+      - parsed_query
+      - headers
+      - body
+      additionalProperties: false
+      nullable: true
+      description: Request data
+    DestinationConfigCLIAuthGCPServiceAccount:
+      type: object
+      properties:
+        service_account_key:
+          type: string
+        scope:
+          type: string
+          nullable: true
+      additionalProperties: false
+      x-docs-type: GCP_SERVICE_ACCOUNT
+    IssueTriggerDiscordChannel:
+      type: object
+      properties:
+        channel_name:
+          type: string
+        channel_id:
+          type: string
+        webhook_url:
+          type: string
+      required:
+      - channel_name
+      - channel_id
+      additionalProperties: false
+      description: Channel for a 'Discord' issue trigger
+    DestinationConfigCLIAuthBearerToken:
+      type: object
+      properties:
+        token:
+          type: string
+      additionalProperties: false
+      x-docs-type: BEARER_TOKEN
+    DestinationTypeConfigHTTP:
+      type: object
+      properties:
+        url:
+          type: string
+          format: URL
+        rate_limit:
+          type: number
+          format: float
+          nullable: true
+        rate_limit_period:
+          type: string
+          enum:
+          - second
+          - minute
+          - hour
+          - concurrent
+          nullable: true
+        path_forwarding_disabled:
+          type: boolean
+        http_method:
+          type: string
+          enum:
+          - GET
+          - POST
+          - PUT
+          - PATCH
+          - DELETE
+          nullable: true
+        auth_type:
+          type: string
+          enum:
+          - HOOKDECK_SIGNATURE
+          - CUSTOM_SIGNATURE
+          - BASIC_AUTH
+          - API_KEY
+          - BEARER_TOKEN
+          - OAUTH2_CLIENT_CREDENTIALS
+          - OAUTH2_AUTHORIZATION_CODE
+          - AWS_SIGNATURE
+          - GCP_SERVICE_ACCOUNT
+          nullable: true
+        auth:
+          $ref: '#/components/schemas/DestinationConfigHTTPAuth'
+      required:
+      - url
+      additionalProperties: false
+      description: The type config for HTTP. Requires type to be `HTTP`.
+      x-docs-type: HTTP
