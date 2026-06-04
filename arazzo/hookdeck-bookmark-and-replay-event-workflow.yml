@@ -1,0 +1,109 @@
+arazzo: 1.0.1
+info:
+  title: Hookdeck Bookmark and Replay an Event
+  summary: Find a delivered event, bookmark its payload, then trigger the bookmark to replay it.
+  description: >-
+    Bookmarks let you save a known-good event payload and replay it on demand,
+    which is invaluable for testing changes to a destination. This workflow finds
+    a recent successful event, creates a bookmark from that event's data and
+    connection, then triggers the bookmark to replay the saved payload against
+    all matching connections. Every step spells out its request inline so the
+    flow can be read and executed without opening the underlying OpenAPI
+    description.
+  version: 1.0.0
+sourceDescriptions:
+- name: eventsApi
+  url: ../openapi/hookdeck-events-api-openapi.yml
+  type: openapi
+- name: bookmarksApi
+  url: ../openapi/hookdeck-bookmarks-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: bookmark-and-replay-event
+  summary: Bookmark a successful event's payload and replay it.
+  description: >-
+    Lists successful events, branches when none exist, creates a bookmark from
+    the top event's data and connection, then triggers the bookmark to replay
+    the payload.
+  inputs:
+    type: object
+    required:
+    - bookmarkName
+    - bookmarkLabel
+    properties:
+      bookmarkName:
+        type: string
+        description: A unique name for the bookmark (alphanumeric, dashes, underscores).
+      bookmarkLabel:
+        type: string
+        description: A descriptive label for the bookmark.
+      webhookId:
+        type: string
+        description: Optional connection (webhook) id to scope the event search.
+  steps:
+  - stepId: listSuccessfulEvents
+    description: >-
+      List events with a SUCCESSFUL status, optionally scoped to a single
+      connection, so a known-good payload can be bookmarked.
+    operationId: getEvents
+    parameters:
+    - name: status
+      in: query
+      value: SUCCESSFUL
+    - name: webhook_id
+      in: query
+      value: $inputs.webhookId
+    - name: limit
+      in: query
+      value: 1
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      eventDataId: $response.body#/models/0/event_data_id
+      eventWebhookId: $response.body#/models/0/webhook_id
+    onSuccess:
+    - name: hasEvents
+      type: goto
+      stepId: createBookmark
+      criteria:
+      - context: $response.body
+        condition: $.models.length > 0
+        type: jsonpath
+    - name: noEvents
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.models.length == 0
+        type: jsonpath
+  - stepId: createBookmark
+    description: >-
+      Create a bookmark from the selected event's data id and connection so its
+      payload can be replayed later.
+    operationId: createBookmark
+    requestBody:
+      contentType: application/json
+      payload:
+        event_data_id: $steps.listSuccessfulEvents.outputs.eventDataId
+        webhook_id: $steps.listSuccessfulEvents.outputs.eventWebhookId
+        label: $inputs.bookmarkLabel
+        name: $inputs.bookmarkName
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      bookmarkId: $response.body#/id
+  - stepId: triggerBookmark
+    description: >-
+      Trigger the bookmark, replaying its saved payload against all matching
+      connections and creating new events.
+    operationId: triggerBookmark
+    parameters:
+    - name: id
+      in: path
+      value: $steps.createBookmark.outputs.bookmarkId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      replayedEventId: $response.body#/0/id
+  outputs:
+    bookmarkId: $steps.createBookmark.outputs.bookmarkId
+    replayedEventId: $steps.triggerBookmark.outputs.replayedEventId

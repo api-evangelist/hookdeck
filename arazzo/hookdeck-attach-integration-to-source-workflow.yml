@@ -1,0 +1,105 @@
+arazzo: 1.0.1
+info:
+  title: Hookdeck Attach an Integration to a New Source
+  summary: Create a source, create an authentication integration, then attach the integration to the source.
+  description: >-
+    Integrations carry the verification credentials (HMAC, API key, basic auth)
+    a source uses to authenticate inbound webhooks. This workflow creates a new
+    source, creates an integration for a provider, attaches the integration to
+    the source, and confirms the source picked up the integration. Every step
+    spells out its request inline so the flow can be read and executed without
+    opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: sourcesApi
+  url: ../openapi/hookdeck-sources-api-openapi.yml
+  type: openapi
+- name: integrationsApi
+  url: ../openapi/hookdeck-integrations-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: attach-integration-to-source
+  summary: Provision a source and bind a verification integration to it.
+  description: >-
+    Creates a source, creates an integration for the named provider, attaches the
+    integration to the source, and reads the source back to confirm the
+    integration is associated.
+  inputs:
+    type: object
+    required:
+    - sourceName
+    - integrationLabel
+    - provider
+    properties:
+      sourceName:
+        type: string
+        description: A unique name for the source.
+      integrationLabel:
+        type: string
+        description: A human-friendly label for the integration.
+      provider:
+        type: string
+        description: The integration provider (e.g. HMAC, API_KEY, BASIC_AUTH, STRIPE).
+  steps:
+  - stepId: createSource
+    description: >-
+      Create a WEBHOOK source that the integration will later authenticate.
+    operationId: createSource
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.sourceName
+        type: WEBHOOK
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      sourceId: $response.body#/id
+  - stepId: createIntegration
+    description: >-
+      Create an integration for the named provider that will supply the source's
+      verification credentials.
+    operationId: createIntegration
+    requestBody:
+      contentType: application/json
+      payload:
+        label: $inputs.integrationLabel
+        provider: $inputs.provider
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      integrationId: $response.body#/id
+  - stepId: attachIntegration
+    description: >-
+      Attach the integration to the source so inbound requests are verified
+      against the integration's credentials.
+    operationId: attachIntegrationToSource
+    parameters:
+    - name: id
+      in: path
+      value: $steps.createIntegration.outputs.integrationId
+    - name: source_id
+      in: path
+      value: $steps.createSource.outputs.sourceId
+    successCriteria:
+    - condition: $statusCode == 200
+    - context: $response.body
+      condition: $.success == true
+      type: jsonpath
+    outputs:
+      attached: $response.body#/success
+  - stepId: confirmSource
+    description: >-
+      Read the source back to confirm the integration is now associated with it.
+    operationId: getSource
+    parameters:
+    - name: id
+      in: path
+      value: $steps.createSource.outputs.sourceId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      sourceId: $response.body#/id
+  outputs:
+    sourceId: $steps.confirmSource.outputs.sourceId
+    integrationId: $steps.createIntegration.outputs.integrationId
+    attached: $steps.attachIntegration.outputs.attached

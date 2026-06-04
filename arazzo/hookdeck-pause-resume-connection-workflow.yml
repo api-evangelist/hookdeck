@@ -1,0 +1,76 @@
+arazzo: 1.0.1
+info:
+  title: Hookdeck Pause and Resume a Connection
+  summary: Read a connection, pause it for maintenance, then unpause it to drain held events.
+  description: >-
+    Pausing a connection lets a downstream destination undergo maintenance while
+    Hookdeck holds incoming events instead of failing them. This workflow reads
+    the connection, pauses it, confirms it entered the paused state, then
+    unpauses it so the held events are queued for delivery. Every step spells out
+    its request inline so the flow can be read and executed without opening the
+    underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: connectionsApi
+  url: ../openapi/hookdeck-connections-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: pause-resume-connection
+  summary: Cycle a connection through pause and unpause for maintenance.
+  description: >-
+    Reads a connection, pauses it, verifies the paused timestamp is set, then
+    unpauses it to release held events for delivery.
+  inputs:
+    type: object
+    required:
+    - connectionId
+    properties:
+      connectionId:
+        type: string
+        description: The id of the connection to pause and then resume.
+  steps:
+  - stepId: readConnection
+    description: >-
+      Read the connection to confirm it exists before changing its state.
+    operationId: getConnection
+    parameters:
+    - name: id
+      in: path
+      value: $inputs.connectionId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      connectionId: $response.body#/id
+  - stepId: pauseConnection
+    description: >-
+      Pause the connection so new events are held with a HOLD status instead of
+      being delivered.
+    operationId: pauseConnection
+    parameters:
+    - name: id
+      in: path
+      value: $steps.readConnection.outputs.connectionId
+    successCriteria:
+    - condition: $statusCode == 200
+    - context: $response.body
+      condition: $.paused_at != null
+      type: jsonpath
+    outputs:
+      pausedAt: $response.body#/paused_at
+  - stepId: unpauseConnection
+    description: >-
+      Unpause the connection so any held events are attempted, respecting the
+      destination delivery rate.
+    operationId: unpauseConnection
+    parameters:
+    - name: id
+      in: path
+      value: $steps.readConnection.outputs.connectionId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      connectionId: $response.body#/id
+      pausedAt: $response.body#/paused_at
+  outputs:
+    connectionId: $steps.unpauseConnection.outputs.connectionId
+    pausedAtAfterResume: $steps.unpauseConnection.outputs.pausedAt

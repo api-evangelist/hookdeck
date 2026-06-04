@@ -321,6 +321,51 @@ apis:
       - type: NaftikoCapability
         url: capabilities/hookdeck-notifications.yaml
 common:
+  - type: ArazzoWorkflows
+    url: arazzo/
+    workflows:
+    - url: arazzo/hookdeck-attach-integration-to-source-workflow.yml
+      name: Hookdeck Attach an Integration to a New Source
+      summary: Create a source, create an authentication integration, then attach the integration to the source.
+    - url: arazzo/hookdeck-author-transformation-workflow.yml
+      name: Hookdeck Author and Verify a Transformation
+      summary: Create a transformation, run it against a sample request, then read it back.
+    - url: arazzo/hookdeck-bookmark-and-replay-event-workflow.yml
+      name: Hookdeck Bookmark and Replay an Event
+      summary: Find a delivered event, bookmark its payload, then trigger the bookmark to replay it.
+    - url: arazzo/hookdeck-bulk-retry-failed-events-workflow.yml
+      name: Hookdeck Bulk Retry Failed Events
+      summary: Preview the impact of a bulk retry, start it, then poll until it completes.
+    - url: arazzo/hookdeck-cancel-pending-event-workflow.yml
+      name: Hookdeck Cancel a Pending Event
+      summary: Find a queued event for a connection, inspect it, then cancel its delivery.
+    - url: arazzo/hookdeck-decommission-source-workflow.yml
+      name: Hookdeck Decommission a Source
+      summary: Read a source, disable it to stop ingestion, then delete it.
+    - url: arazzo/hookdeck-inline-connection-workflow.yml
+      name: Hookdeck Create an Inline Connection
+      summary: Create a connection along with its source and destination in a single call.
+    - url: arazzo/hookdeck-investigate-event-attempts-workflow.yml
+      name: Hookdeck Investigate Event Delivery Attempts
+      summary: Resolve an event, list its delivery attempts, then read the latest attempt body.
+    - url: arazzo/hookdeck-pause-resume-connection-workflow.yml
+      name: Hookdeck Pause and Resume a Connection
+      summary: Read a connection, pause it for maintenance, then unpause it to drain held events.
+    - url: arazzo/hookdeck-provision-connection-workflow.yml
+      name: Hookdeck Provision a Connection
+      summary: Create a source, create a destination, then wire them together with a connection.
+    - url: arazzo/hookdeck-replay-request-workflow.yml
+      name: Hookdeck Replay an Inbound Request
+      summary: Find a recent request, inspect it, replay it, then list the events it produced.
+    - url: arazzo/hookdeck-retry-failed-event-workflow.yml
+      name: Hookdeck Retry a Failed Event
+      summary: Find the most recent failed event, inspect it, and retry delivery.
+    - url: arazzo/hookdeck-update-transformation-workflow.yml
+      name: Hookdeck Test Then Update a Transformation
+      summary: Test new code against a sample request before persisting it to an existing transformation.
+    - url: arazzo/hookdeck-upsert-connection-workflow.yml
+      name: Hookdeck Upsert a Connection by Name
+      summary: Idempotently create or update a connection by name, then confirm the result.
   - type: Documentation
     url: https://hookdeck.com/docs
   - type: APIReference

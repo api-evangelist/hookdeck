@@ -1,0 +1,86 @@
+arazzo: 1.0.1
+info:
+  title: Hookdeck Create an Inline Connection
+  summary: Create a connection along with its source and destination in a single call.
+  description: >-
+    Hookdeck lets a connection declare its source and destination inline so the
+    whole pipeline is provisioned with one request. This workflow creates a
+    connection with embedded source and destination objects, then reads the
+    connection back to capture the ids Hookdeck generated for each resource.
+    Every step spells out its request inline so the flow can be read and executed
+    without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: connectionsApi
+  url: ../openapi/hookdeck-connections-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: inline-connection
+  summary: Provision a full source-to-destination pipeline with one connection call.
+  description: >-
+    Creates a connection whose source and destination are declared inline, then
+    confirms the created connection and surfaces the generated source and
+    destination ids.
+  inputs:
+    type: object
+    required:
+    - connectionName
+    - sourceName
+    - destinationName
+    - destinationUrl
+    properties:
+      connectionName:
+        type: string
+        description: A unique name for the connection.
+      sourceName:
+        type: string
+        description: A unique name for the inline source.
+      destinationName:
+        type: string
+        description: A unique name for the inline destination.
+      destinationUrl:
+        type: string
+        description: The HTTP URL the inline destination should deliver events to.
+  steps:
+  - stepId: createConnection
+    description: >-
+      Create a connection with an inline WEBHOOK source and an inline HTTP
+      destination, provisioning all three resources at once.
+    operationId: createConnection
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.connectionName
+        source:
+          name: $inputs.sourceName
+          type: WEBHOOK
+        destination:
+          name: $inputs.destinationName
+          type: HTTP
+          config:
+            url: $inputs.destinationUrl
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      connectionId: $response.body#/id
+      sourceId: $response.body#/source_id
+      destinationId: $response.body#/destination_id
+  - stepId: confirmConnection
+    description: >-
+      Read the connection back to confirm it was created and to capture the
+      final source and destination ids.
+    operationId: getConnection
+    parameters:
+    - name: id
+      in: path
+      value: $steps.createConnection.outputs.connectionId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      connectionId: $response.body#/id
+      sourceId: $response.body#/source_id
+      destinationId: $response.body#/destination_id
+  outputs:
+    connectionId: $steps.confirmConnection.outputs.connectionId
+    sourceId: $steps.confirmConnection.outputs.sourceId
+    destinationId: $steps.confirmConnection.outputs.destinationId

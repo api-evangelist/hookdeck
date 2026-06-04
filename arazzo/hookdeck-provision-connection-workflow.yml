@@ -1,0 +1,113 @@
+arazzo: 1.0.1
+info:
+  title: Hookdeck Provision a Connection
+  summary: Create a source, create a destination, then wire them together with a connection.
+  description: >-
+    The foundational Hookdeck setup pattern. The workflow creates a standalone
+    source to receive inbound webhooks, creates a standalone destination to
+    deliver them to, then creates a connection that binds the two by referencing
+    their ids. A final read confirms the connection resolved both ends. Every
+    step spells out its request inline so the flow can be read and executed
+    without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: sourcesApi
+  url: ../openapi/hookdeck-sources-api-openapi.yml
+  type: openapi
+- name: destinationsApi
+  url: ../openapi/hookdeck-destinations-api-openapi.yml
+  type: openapi
+- name: connectionsApi
+  url: ../openapi/hookdeck-connections-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: provision-connection
+  summary: Stand up a source, a destination, and a connection binding them.
+  description: >-
+    Creates a fresh source and destination, then creates a connection that
+    references both by id and verifies the connection was created.
+  inputs:
+    type: object
+    required:
+    - sourceName
+    - destinationName
+    - destinationUrl
+    - connectionName
+    properties:
+      sourceName:
+        type: string
+        description: A unique name for the source (alphanumeric, dashes, underscores).
+      destinationName:
+        type: string
+        description: A unique name for the destination.
+      destinationUrl:
+        type: string
+        description: The HTTP URL the destination should deliver events to.
+      connectionName:
+        type: string
+        description: A unique name for the connection binding source to destination.
+  steps:
+  - stepId: createSource
+    description: >-
+      Create a WEBHOOK source that will receive inbound requests from the
+      upstream provider.
+    operationId: createSource
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.sourceName
+        type: WEBHOOK
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      sourceId: $response.body#/id
+      sourceUrl: $response.body#/url
+  - stepId: createDestination
+    description: >-
+      Create an HTTP destination pointed at the supplied delivery URL.
+    operationId: createDestination
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.destinationName
+        type: HTTP
+        config:
+          url: $inputs.destinationUrl
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      destinationId: $response.body#/id
+  - stepId: createConnection
+    description: >-
+      Create a connection that binds the new source and destination together by
+      referencing their ids.
+    operationId: createConnection
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.connectionName
+        source_id: $steps.createSource.outputs.sourceId
+        destination_id: $steps.createDestination.outputs.destinationId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      connectionId: $response.body#/id
+  - stepId: confirmConnection
+    description: >-
+      Read the connection back to confirm it resolved both the source and the
+      destination.
+    operationId: getConnection
+    parameters:
+    - name: id
+      in: path
+      value: $steps.createConnection.outputs.connectionId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      connectionId: $response.body#/id
+      resolvedSourceId: $response.body#/source_id
+      resolvedDestinationId: $response.body#/destination_id
+  outputs:
+    sourceId: $steps.createSource.outputs.sourceId
+    destinationId: $steps.createDestination.outputs.destinationId
+    connectionId: $steps.confirmConnection.outputs.connectionId

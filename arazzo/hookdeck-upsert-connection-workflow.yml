@@ -1,0 +1,73 @@
+arazzo: 1.0.1
+info:
+  title: Hookdeck Upsert a Connection by Name
+  summary: Idempotently create or update a connection by name, then confirm the result.
+  description: >-
+    Infrastructure-as-code pipelines need an idempotent way to declare a
+    connection. This workflow upserts a connection by name — creating it if the
+    name is new or updating it otherwise — binding it to existing source and
+    destination ids, then reads the connection back to confirm the final state.
+    Every step spells out its request inline so the flow can be read and executed
+    without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: connectionsApi
+  url: ../openapi/hookdeck-connections-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: upsert-connection
+  summary: Create or update a connection by name and confirm it.
+  description: >-
+    Upserts a connection by name against existing source and destination ids,
+    then reads the connection back to capture its resolved binding.
+  inputs:
+    type: object
+    required:
+    - connectionName
+    - sourceId
+    - destinationId
+    properties:
+      connectionName:
+        type: string
+        description: The unique connection name used as the upsert key.
+      sourceId:
+        type: string
+        description: The id of an existing source to bind to the connection.
+      destinationId:
+        type: string
+        description: The id of an existing destination to bind to the connection.
+  steps:
+  - stepId: upsertConnection
+    description: >-
+      Create the connection if the name is new, or update the matching
+      connection otherwise, binding it to the supplied source and destination.
+    operationId: upsertConnection
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.connectionName
+        source_id: $inputs.sourceId
+        destination_id: $inputs.destinationId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      connectionId: $response.body#/id
+  - stepId: confirmConnection
+    description: >-
+      Read the connection back to confirm the final binding of source and
+      destination.
+    operationId: getConnection
+    parameters:
+    - name: id
+      in: path
+      value: $steps.upsertConnection.outputs.connectionId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      connectionId: $response.body#/id
+      resolvedSourceId: $response.body#/source_id
+      resolvedDestinationId: $response.body#/destination_id
+  outputs:
+    connectionId: $steps.confirmConnection.outputs.connectionId
+    sourceId: $steps.confirmConnection.outputs.resolvedSourceId
+    destinationId: $steps.confirmConnection.outputs.resolvedDestinationId

@@ -1,0 +1,99 @@
+arazzo: 1.0.1
+info:
+  title: Hookdeck Retry a Failed Event
+  summary: Find the most recent failed event, inspect it, and retry delivery.
+  description: >-
+    A core operations flow for recovering from a failed webhook delivery. The
+    workflow lists events filtered to the FAILED status, branches on whether any
+    were found, reads the top failed event to capture its delivery context, then
+    retries it so a new delivery attempt is made to the destination. Every step
+    spells out its request inline so the flow can be read and executed without
+    opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: eventsApi
+  url: ../openapi/hookdeck-events-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: retry-failed-event
+  summary: Locate a failed event and trigger a fresh delivery attempt.
+  description: >-
+    Lists failed events, branches when none exist, otherwise reads the first
+    failed event and retries it, capturing the new attempt id.
+  inputs:
+    type: object
+    properties:
+      webhookId:
+        type: string
+        description: Optional connection (webhook) id to scope the failed-event search.
+      limit:
+        type: integer
+        description: Maximum number of failed events to retrieve.
+        default: 1
+  steps:
+  - stepId: listFailedEvents
+    description: >-
+      List events with a FAILED status, optionally scoped to a single
+      connection, ordered so the most recent failure is first.
+    operationId: getEvents
+    parameters:
+    - name: status
+      in: query
+      value: FAILED
+    - name: webhook_id
+      in: query
+      value: $inputs.webhookId
+    - name: limit
+      in: query
+      value: $inputs.limit
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      failedEventId: $response.body#/models/0/id
+    onSuccess:
+    - name: hasFailures
+      type: goto
+      stepId: readEvent
+      criteria:
+      - context: $response.body
+        condition: $.models.length > 0
+        type: jsonpath
+    - name: noFailures
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.models.length == 0
+        type: jsonpath
+  - stepId: readEvent
+    description: >-
+      Retrieve the failed event to capture its connection, destination, and
+      current attempt count before retrying.
+    operationId: getEvent
+    parameters:
+    - name: id
+      in: path
+      value: $steps.listFailedEvents.outputs.failedEventId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      eventId: $response.body#/id
+      webhookId: $response.body#/webhook_id
+      destinationId: $response.body#/destination_id
+      attempts: $response.body#/attempts
+  - stepId: retryEvent
+    description: >-
+      Retry the event, causing Hookdeck to make a new delivery attempt to the
+      destination.
+    operationId: retryEvent
+    parameters:
+    - name: id
+      in: path
+      value: $steps.readEvent.outputs.eventId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      eventId: $response.body#/id
+      newStatus: $response.body#/status
+  outputs:
+    retriedEventId: $steps.retryEvent.outputs.eventId
+    retriedEventStatus: $steps.retryEvent.outputs.newStatus

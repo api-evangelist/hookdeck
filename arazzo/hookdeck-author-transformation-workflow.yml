@@ -1,0 +1,102 @@
+arazzo: 1.0.1
+info:
+  title: Hookdeck Author and Verify a Transformation
+  summary: Create a transformation, run it against a sample request, then read it back.
+  description: >-
+    Transformations are JavaScript functions that reshape inbound payloads.
+    This workflow creates a transformation from supplied code, immediately tests
+    it against a sample request to confirm it executes cleanly, branches on the
+    execution log level, and reads the stored transformation back. Every step
+    spells out its request inline so the flow can be read and executed without
+    opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: transformationsApi
+  url: ../openapi/hookdeck-transformations-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: author-transformation
+  summary: Create a transformation and validate it against a sample request.
+  description: >-
+    Creates a transformation, tests it with a sample request body, branches when
+    the test reports an error log level, and otherwise reads the stored
+    transformation.
+  inputs:
+    type: object
+    required:
+    - transformationName
+    - code
+    - sampleBody
+    properties:
+      transformationName:
+        type: string
+        description: A unique name for the transformation.
+      code:
+        type: string
+        description: The JavaScript code to execute as the transformation.
+      sampleBody:
+        type: object
+        description: A sample request body to test the transformation against.
+  steps:
+  - stepId: createTransformation
+    description: >-
+      Create the transformation from the supplied name and JavaScript code.
+    operationId: createTransformation
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.transformationName
+        code: $inputs.code
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      transformationId: $response.body#/id
+  - stepId: testTransformation
+    description: >-
+      Run the stored transformation against a sample request to confirm it
+      executes and capture the resulting log level.
+    operationId: testTransformation
+    requestBody:
+      contentType: application/json
+      payload:
+        transformation_id: $steps.createTransformation.outputs.transformationId
+        request:
+          headers:
+            content-type: application/json
+          body: $inputs.sampleBody
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      logLevel: $response.body#/log_level
+      executionId: $response.body#/execution_id
+    onSuccess:
+    - name: testFailed
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.log_level == "error"
+        type: jsonpath
+    - name: testPassed
+      type: goto
+      stepId: readTransformation
+      criteria:
+      - context: $response.body
+        condition: $.log_level != "error"
+        type: jsonpath
+  - stepId: readTransformation
+    description: >-
+      Read the stored transformation back to confirm it was persisted and
+      capture its final code.
+    operationId: getTransformation
+    parameters:
+    - name: id
+      in: path
+      value: $steps.createTransformation.outputs.transformationId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      transformationId: $response.body#/id
+      name: $response.body#/name
+  outputs:
+    transformationId: $steps.createTransformation.outputs.transformationId
+    testLogLevel: $steps.testTransformation.outputs.logLevel

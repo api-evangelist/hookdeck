@@ -1,0 +1,93 @@
+arazzo: 1.0.1
+info:
+  title: Hookdeck Cancel a Pending Event
+  summary: Find a queued event for a connection, inspect it, then cancel its delivery.
+  description: >-
+    Sometimes a queued event should not be delivered at all — for example after
+    a bad deploy. This workflow lists events in the QUEUED state for a
+    connection, branches on whether any exist, reads the top queued event, then
+    cancels it so no further delivery is attempted. Every step spells out its
+    request inline so the flow can be read and executed without opening the
+    underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: eventsApi
+  url: ../openapi/hookdeck-events-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: cancel-pending-event
+  summary: Locate a queued event and cancel its delivery.
+  description: >-
+    Lists queued events for a connection, branches when none exist, reads the
+    first queued event, and cancels it.
+  inputs:
+    type: object
+    required:
+    - webhookId
+    properties:
+      webhookId:
+        type: string
+        description: The connection (webhook) id whose queued events should be considered.
+  steps:
+  - stepId: listQueuedEvents
+    description: >-
+      List events in the QUEUED state for the connection, most recent first.
+    operationId: getEvents
+    parameters:
+    - name: status
+      in: query
+      value: QUEUED
+    - name: webhook_id
+      in: query
+      value: $inputs.webhookId
+    - name: limit
+      in: query
+      value: 1
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      queuedEventId: $response.body#/models/0/id
+    onSuccess:
+    - name: hasQueued
+      type: goto
+      stepId: readEvent
+      criteria:
+      - context: $response.body
+        condition: $.models.length > 0
+        type: jsonpath
+    - name: noQueued
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.models.length == 0
+        type: jsonpath
+  - stepId: readEvent
+    description: >-
+      Retrieve the queued event to confirm its status before cancelling it.
+    operationId: getEvent
+    parameters:
+    - name: id
+      in: path
+      value: $steps.listQueuedEvents.outputs.queuedEventId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      eventId: $response.body#/id
+      status: $response.body#/status
+  - stepId: cancelEvent
+    description: >-
+      Cancel the pending event so no further delivery attempt is made. Only
+      events in QUEUED, SCHEDULED, or HOLD status can be cancelled.
+    operationId: cancelEvent
+    parameters:
+    - name: id
+      in: path
+      value: $steps.readEvent.outputs.eventId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      eventId: $response.body#/id
+      finalStatus: $response.body#/status
+  outputs:
+    cancelledEventId: $steps.cancelEvent.outputs.eventId
+    finalStatus: $steps.cancelEvent.outputs.finalStatus

@@ -1,0 +1,90 @@
+arazzo: 1.0.1
+info:
+  title: Hookdeck Investigate Event Delivery Attempts
+  summary: Resolve an event, list its delivery attempts, then read the latest attempt body.
+  description: >-
+    A debugging flow for understanding why an event delivered the way it did.
+    The workflow reads a single event, lists all of its delivery attempts,
+    branches on whether any attempts exist, and reads the most recent attempt to
+    surface the destination response body. Every step spells out its request
+    inline so the flow can be read and executed without opening the underlying
+    OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: eventsApi
+  url: ../openapi/hookdeck-events-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: investigate-event-attempts
+  summary: Walk from an event to its attempts and the latest attempt's response.
+  description: >-
+    Reads an event, lists its attempts, branches when there are none, and
+    otherwise retrieves the most recent attempt to inspect the destination
+    response.
+  inputs:
+    type: object
+    required:
+    - eventId
+    properties:
+      eventId:
+        type: string
+        description: The id of the event whose attempts should be inspected.
+  steps:
+  - stepId: readEvent
+    description: >-
+      Retrieve the event to confirm it exists and capture its connection and
+      attempt count.
+    operationId: getEvent
+    parameters:
+    - name: id
+      in: path
+      value: $inputs.eventId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      eventId: $response.body#/id
+      attempts: $response.body#/attempts
+  - stepId: listAttempts
+    description: >-
+      List the delivery attempts for the event, most recent first.
+    operationId: getAttempts
+    parameters:
+    - name: event_id
+      in: query
+      value: $steps.readEvent.outputs.eventId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      latestAttemptId: $response.body#/models/0/id
+    onSuccess:
+    - name: hasAttempts
+      type: goto
+      stepId: readLatestAttempt
+      criteria:
+      - context: $response.body
+        condition: $.models.length > 0
+        type: jsonpath
+    - name: noAttempts
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.models.length == 0
+        type: jsonpath
+  - stepId: readLatestAttempt
+    description: >-
+      Retrieve the most recent attempt to inspect the destination response body
+      and status.
+    operationId: getAttempt
+    parameters:
+    - name: id
+      in: path
+      value: $steps.listAttempts.outputs.latestAttemptId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      attemptId: $response.body#/id
+      responseStatus: $response.body#/response_status
+  outputs:
+    eventId: $steps.readEvent.outputs.eventId
+    latestAttemptId: $steps.readLatestAttempt.outputs.attemptId
+    latestAttemptResponseStatus: $steps.readLatestAttempt.outputs.responseStatus

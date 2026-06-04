@@ -1,0 +1,100 @@
+arazzo: 1.0.1
+info:
+  title: Hookdeck Bulk Retry Failed Events
+  summary: Preview the impact of a bulk retry, start it, then poll until it completes.
+  description: >-
+    When a destination outage causes many failures, a bulk retry recovers them
+    in one operation. The workflow first generates a plan that estimates how many
+    events match the query, branches on whether any were matched, starts the bulk
+    retry, then polls the operation until it is no longer in progress. Every step
+    spells out its request inline so the flow can be read and executed without
+    opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: bulkOperationsApi
+  url: ../openapi/hookdeck-bulk-operations-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: bulk-retry-failed-events
+  summary: Estimate, launch, and monitor a bulk retry of failed events.
+  description: >-
+    Generates a bulk retry plan for failed events scoped to a connection,
+    branches when nothing matches, creates the bulk retry, and polls the
+    operation until it finishes.
+  inputs:
+    type: object
+    required:
+    - webhookId
+    properties:
+      webhookId:
+        type: string
+        description: The connection (webhook) id whose failed events should be retried.
+  steps:
+  - stepId: planRetry
+    description: >-
+      Estimate how many failed events match the connection before committing to
+      a bulk retry.
+    operationId: generateEventBulkRetryPlan
+    requestBody:
+      contentType: application/json
+      payload:
+        query:
+          status: FAILED
+          webhook_id: $inputs.webhookId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      estimatedCount: $response.body#/estimated_count
+    onSuccess:
+    - name: hasMatches
+      type: goto
+      stepId: startRetry
+      criteria:
+      - context: $response.body
+        condition: $.estimated_count > 0
+        type: jsonpath
+    - name: nothingToRetry
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.estimated_count == 0
+        type: jsonpath
+  - stepId: startRetry
+    description: >-
+      Create and start the bulk retry for the failed events matching the
+      connection.
+    operationId: createEventBulkRetry
+    requestBody:
+      contentType: application/json
+      payload:
+        query:
+          status: FAILED
+          webhook_id: $inputs.webhookId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      bulkRetryId: $response.body#/id
+      inProgress: $response.body#/in_progress
+  - stepId: pollRetry
+    description: >-
+      Poll the bulk retry operation until it is no longer in progress, retrying
+      the read while the operation is still running.
+    operationId: getEventBulkRetry
+    parameters:
+    - name: id
+      in: path
+      value: $steps.startRetry.outputs.bulkRetryId
+    successCriteria:
+    - condition: $statusCode == 200
+    - context: $response.body
+      condition: $.in_progress == false
+      type: jsonpath
+    retryAfter: 5
+    retryLimit: 30
+    outputs:
+      bulkRetryId: $response.body#/id
+      completedAt: $response.body#/completed_at
+      progress: $response.body#/progress
+  outputs:
+    bulkRetryId: $steps.pollRetry.outputs.bulkRetryId
+    completedAt: $steps.pollRetry.outputs.completedAt

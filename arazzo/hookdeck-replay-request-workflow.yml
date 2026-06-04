@@ -1,0 +1,107 @@
+arazzo: 1.0.1
+info:
+  title: Hookdeck Replay an Inbound Request
+  summary: Find a recent request, inspect it, replay it, then list the events it produced.
+  description: >-
+    A request is the raw inbound payload Hookdeck received; replaying it re-runs
+    the connection logic and produces fresh events. This workflow lists recent
+    requests for a source, branches on whether any exist, reads the top request,
+    retries it, then lists the events that retry created. Every step spells out
+    its request inline so the flow can be read and executed without opening the
+    underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: requestsApi
+  url: ../openapi/hookdeck-requests-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: replay-request
+  summary: Replay an inbound request and inspect the events it generates.
+  description: >-
+    Lists recent requests for a source, branches when none exist, reads the top
+    request, retries it across all matching connections, and lists the resulting
+    events.
+  inputs:
+    type: object
+    required:
+    - sourceId
+    properties:
+      sourceId:
+        type: string
+        description: The source id whose recent requests should be replayed.
+  steps:
+  - stepId: listRequests
+    description: >-
+      List recent requests received by the source so one can be selected for
+      replay.
+    operationId: getRequests
+    parameters:
+    - name: source_id
+      in: query
+      value: $inputs.sourceId
+    - name: limit
+      in: query
+      value: 1
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      requestId: $response.body#/models/0/id
+    onSuccess:
+    - name: hasRequests
+      type: goto
+      stepId: readRequest
+      criteria:
+      - context: $response.body
+        condition: $.models.length > 0
+        type: jsonpath
+    - name: noRequests
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.models.length == 0
+        type: jsonpath
+  - stepId: readRequest
+    description: >-
+      Retrieve the request to confirm it exists before replaying it.
+    operationId: getRequest
+    parameters:
+    - name: id
+      in: path
+      value: $steps.listRequests.outputs.requestId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      requestId: $response.body#/id
+  - stepId: retryRequest
+    description: >-
+      Retry the request, re-running the connection logic and creating new events
+      for all matching connections.
+    operationId: retryRequest
+    parameters:
+    - name: id
+      in: path
+      value: $steps.readRequest.outputs.requestId
+    requestBody:
+      contentType: application/json
+      payload: {}
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      requestId: $response.body#/request/id
+  - stepId: listRequestEvents
+    description: >-
+      List the events created as a result of the request retry to confirm the
+      replay produced deliveries.
+    operationId: getRequestEvents
+    parameters:
+    - name: id
+      in: path
+      value: $steps.retryRequest.outputs.requestId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      eventCount: $response.body#/count
+      firstEventId: $response.body#/models/0/id
+  outputs:
+    requestId: $steps.retryRequest.outputs.requestId
+    replayedEventCount: $steps.listRequestEvents.outputs.eventCount

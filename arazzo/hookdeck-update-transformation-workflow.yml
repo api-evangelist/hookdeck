@@ -1,0 +1,105 @@
+arazzo: 1.0.1
+info:
+  title: Hookdeck Test Then Update a Transformation
+  summary: Test new code against a sample request before persisting it to an existing transformation.
+  description: >-
+    Safely evolving a transformation means validating the new code before it
+    goes live. This workflow reads an existing transformation, runs the proposed
+    code against a sample request, branches on the execution log level, and only
+    persists the update when the test did not error. Every step spells out its
+    request inline so the flow can be read and executed without opening the
+    underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: transformationsApi
+  url: ../openapi/hookdeck-transformations-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: update-transformation
+  summary: Validate proposed transformation code, then apply it only if the test passes.
+  description: >-
+    Reads an existing transformation, tests the proposed code against a sample
+    request, ends without changes when the test errors, and otherwise updates the
+    transformation with the new code.
+  inputs:
+    type: object
+    required:
+    - transformationId
+    - newCode
+    - sampleBody
+    properties:
+      transformationId:
+        type: string
+        description: The id of the transformation to update.
+      newCode:
+        type: string
+        description: The proposed JavaScript code to validate and apply.
+      sampleBody:
+        type: object
+        description: A sample request body to test the proposed code against.
+  steps:
+  - stepId: readTransformation
+    description: >-
+      Read the existing transformation to confirm it exists before proposing a
+      code change.
+    operationId: getTransformation
+    parameters:
+    - name: id
+      in: path
+      value: $inputs.transformationId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      transformationId: $response.body#/id
+      currentCode: $response.body#/code
+  - stepId: testNewCode
+    description: >-
+      Run the proposed code against a sample request to confirm it executes
+      cleanly before persisting it.
+    operationId: testTransformation
+    requestBody:
+      contentType: application/json
+      payload:
+        code: $inputs.newCode
+        request:
+          headers:
+            content-type: application/json
+          body: $inputs.sampleBody
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      logLevel: $response.body#/log_level
+    onSuccess:
+    - name: testErrored
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.log_level == "error"
+        type: jsonpath
+    - name: testClean
+      type: goto
+      stepId: applyUpdate
+      criteria:
+      - context: $response.body
+        condition: $.log_level != "error"
+        type: jsonpath
+  - stepId: applyUpdate
+    description: >-
+      Persist the validated code to the transformation.
+    operationId: updateTransformation
+    parameters:
+    - name: id
+      in: path
+      value: $steps.readTransformation.outputs.transformationId
+    requestBody:
+      contentType: application/json
+      payload:
+        code: $inputs.newCode
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      transformationId: $response.body#/id
+      updatedAt: $response.body#/updated_at
+  outputs:
+    transformationId: $steps.applyUpdate.outputs.transformationId
+    updatedAt: $steps.applyUpdate.outputs.updatedAt
