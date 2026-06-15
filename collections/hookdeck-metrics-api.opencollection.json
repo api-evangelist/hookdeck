@@ -1,0 +1,290 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Hookdeck Metrics API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Metrics",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Query request metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hookdeck.com/2025-07-01/metrics/requests",
+            "params": [
+              {
+                "name": "date_range",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "granularity",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "filters",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "measures",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dimensions",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Query aggregated request metrics with time-based grouping and filtering"
+        },
+        {
+          "info": {
+            "name": "Query event metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hookdeck.com/2025-07-01/metrics/events",
+            "params": [
+              {
+                "name": "date_range",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "granularity",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "filters",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "measures",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dimensions",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Query aggregated event metrics with time-based grouping and filtering"
+        },
+        {
+          "info": {
+            "name": "Query attempt metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hookdeck.com/2025-07-01/metrics/attempts",
+            "params": [
+              {
+                "name": "date_range",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "granularity",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "filters",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "measures",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dimensions",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Query aggregated attempt metrics with time-based grouping and filtering"
+        },
+        {
+          "info": {
+            "name": "Query event metrics grouped by individual issue",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hookdeck.com/2025-07-01/metrics/events-by-issue",
+            "params": [
+              {
+                "name": "date_range",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "granularity",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "filters",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "measures",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dimensions",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns metrics for events broken down by individual issue IDs. Uses arrayJoin to create one row per issue per event, enabling per-issue analytics. Useful for tracking which issues affect the most events over time."
+        },
+        {
+          "info": {
+            "name": "Query queue depth metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hookdeck.com/2025-07-01/metrics/queue-depth",
+            "params": [
+              {
+                "name": "date_range",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "granularity",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "filters",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "measures",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dimensions",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Query queue depth metrics for destinations (pending events count and age)"
+        },
+        {
+          "info": {
+            "name": "Query transformation execution metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hookdeck.com/2025-07-01/metrics/transformations",
+            "params": [
+              {
+                "name": "date_range",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "granularity",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "filters",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "measures",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dimensions",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Query aggregated transformation execution metrics with time-based grouping and filtering"
+        },
+        {
+          "info": {
+            "name": "Query events pending timeseries metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hookdeck.com/2025-07-01/metrics/events-pending-timeseries",
+            "params": [
+              {
+                "name": "date_range",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "granularity",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "filters",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "measures",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dimensions",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Query aggregated events pending timeseries metrics with time-based grouping and filtering"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

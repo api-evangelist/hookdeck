@@ -1,0 +1,83 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Hookdeck Notifications API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Notifications",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Webhook Notifications",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hookdeck.com/2025-07-01/notifications/webhooks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint enables or disables webhook notifications for the project, and sets the topics and source to deliver them to."
+        },
+        {
+          "info": {
+            "name": "List all custom domains and their verification statuses for the project",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hookdeck.com/2025-07-01/teams/current/custom_domains"
+          },
+          "docs": "List all custom domains and their verification statuses for the project"
+        },
+        {
+          "info": {
+            "name": "Add a custom domain to the project",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hookdeck.com/2025-07-01/teams/current/custom_domains",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add a custom domain to the project"
+        },
+        {
+          "info": {
+            "name": "Removes a custom domain from the project",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hookdeck.com/2025-07-01/teams/current/custom_domains/:domain_id",
+            "params": [
+              {
+                "name": "domain_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Removes a custom domain from the project"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

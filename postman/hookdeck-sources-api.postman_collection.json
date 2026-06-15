@@ -1,0 +1,2206 @@
+{
+  "info": {
+    "_postman_id": "4f4ca0ee-27a3-4326-91bf-eafbeeb15657",
+    "name": "Hookdeck Sources API",
+    "description": "Manage sources \u2014 the upstream endpoints (webhook senders or push channels) that ingest events into Hookdeck. Supports source-type configuration, verification, allowed HTTP methods, and custom response.\n\nContact Support:\n Name: Hookdeck Support\n Email: info@hookdeck.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T15:09:46.000Z",
+    "updatedAt": "2026-06-05T15:09:46.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-4f4ca0ee-27a3-4326-91bf-eafbeeb15657"
+  },
+  "item": [
+    {
+      "name": "sources",
+      "item": [
+        {
+          "name": "count",
+          "item": [
+            {
+              "name": "Count sources",
+              "id": "d2609551-e584-4df4-8d62-1b24c89ff761",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/sources/count",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sources",
+                    "count"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "573aef04-cf3a-468d-b10c-3b8724171f07",
+                  "name": "Count of sources",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/sources/count",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sources",
+                        "count"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"count\": \"<float>\"\n}",
+                  "createdAt": "2026-06-05T15:09:46.000Z",
+                  "updatedAt": "2026-06-05T15:09:46.000Z",
+                  "uid": "35240-573aef04-cf3a-468d-b10c-3b8724171f07"
+                },
+                {
+                  "id": "0a30db9f-c853-42d0-9aa1-471a9ca19ad9",
+                  "name": "Bad Request",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/sources/count",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sources",
+                        "count"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T15:09:46.000Z",
+                  "updatedAt": "2026-06-05T15:09:46.000Z",
+                  "uid": "35240-0a30db9f-c853-42d0-9aa1-471a9ca19ad9"
+                },
+                {
+                  "id": "0c7685b0-4461-4f45-9d47-fc87d065567a",
+                  "name": "Unprocessable Entity",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/sources/count",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sources",
+                        "count"
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T15:09:46.000Z",
+                  "updatedAt": "2026-06-05T15:09:46.000Z",
+                  "uid": "35240-0c7685b0-4461-4f45-9d47-fc87d065567a"
+                }
+              ],
+              "createdAt": "2026-06-05T15:09:46.000Z",
+              "updatedAt": "2026-06-05T15:09:46.000Z",
+              "uid": "35240-d2609551-e584-4df4-8d62-1b24c89ff761"
+            }
+          ],
+          "id": "e38fff4a-6054-48f6-b9c9-056fa23cf900",
+          "createdAt": "2026-06-05T15:09:46.000Z",
+          "updatedAt": "2026-06-05T15:09:46.000Z",
+          "uid": "35240-e38fff4a-6054-48f6-b9c9-056fa23cf900"
+        },
+        {
+          "name": "{id}",
+          "item": [
+            {
+              "name": "disable",
+              "item": [
+                {
+                  "name": "Disable a source",
+                  "id": "55f799c0-5dbc-4aaf-9e69-cc5868ba162d",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/sources/:id/disable",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sources",
+                        ":id",
+                        "disable"
+                      ],
+                      "variable": [
+                        {
+                          "id": "7ecd3897-6d00-4861-89f3-5969aaf02e26",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "This endpoint disables a source. A disabled source will no longer receive any events, and all connections associated with this source will also be disabled."
+                  },
+                  "response": [
+                    {
+                      "id": "c3486b57-9e44-4a81-89ad-3259afeea964",
+                      "name": "A single source",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/sources/:id/disable",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "sources",
+                            ":id",
+                            "disable"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"team_id\": \"<string>\",\n  \"url\": \"<string>\",\n  \"type\": \"FIREFLIES\",\n  \"authenticated\": \"<boolean>\",\n  \"disabled_at\": \"<dateTime>\",\n  \"updated_at\": \"<dateTime>\",\n  \"created_at\": \"<dateTime>\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"auth\": {\n      \"webhook_secret_key\": \"<string>\"\n    },\n    \"allowed_http_methods\": [\n      \"PUT\",\n      \"POST\"\n    ],\n    \"custom_response\": {\n      \"content_type\": \"json\",\n      \"body\": \"<string>\"\n    }\n  }\n}",
+                      "createdAt": "2026-06-05T15:09:46.000Z",
+                      "updatedAt": "2026-06-05T15:09:46.000Z",
+                      "uid": "35240-c3486b57-9e44-4a81-89ad-3259afeea964"
+                    },
+                    {
+                      "id": "597ff41c-772d-4f3f-9b56-7d21e4b84b82",
+                      "name": "Not Found",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/sources/:id/disable",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "sources",
+                            ":id",
+                            "disable"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                      "createdAt": "2026-06-05T15:09:46.000Z",
+                      "updatedAt": "2026-06-05T15:09:46.000Z",
+                      "uid": "35240-597ff41c-772d-4f3f-9b56-7d21e4b84b82"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:09:46.000Z",
+                  "updatedAt": "2026-06-05T15:09:46.000Z",
+                  "uid": "35240-55f799c0-5dbc-4aaf-9e69-cc5868ba162d"
+                }
+              ],
+              "id": "3e6d3722-329d-41cd-b12d-dfcb517413a7",
+              "createdAt": "2026-06-05T15:09:46.000Z",
+              "updatedAt": "2026-06-05T15:09:46.000Z",
+              "uid": "35240-3e6d3722-329d-41cd-b12d-dfcb517413a7"
+            },
+            {
+              "name": "archive",
+              "item": [
+                {
+                  "name": "Disable a source",
+                  "id": "d4eba59f-e3db-43d8-bb09-d0936b8707c3",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/sources/:id/archive",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sources",
+                        ":id",
+                        "archive"
+                      ],
+                      "variable": [
+                        {
+                          "id": "9ab628ab-7f68-44c7-bbeb-218a30ab8fed",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "This endpoint disables a source. A disabled source will no longer receive any events, and all connections associated with this source will also be disabled."
+                  },
+                  "response": [
+                    {
+                      "id": "57fd246c-048a-45f6-a3b0-d05d0b538e22",
+                      "name": "A single source",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/sources/:id/archive",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "sources",
+                            ":id",
+                            "archive"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"team_id\": \"<string>\",\n  \"url\": \"<string>\",\n  \"type\": \"FIREFLIES\",\n  \"authenticated\": \"<boolean>\",\n  \"disabled_at\": \"<dateTime>\",\n  \"updated_at\": \"<dateTime>\",\n  \"created_at\": \"<dateTime>\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"auth\": {\n      \"webhook_secret_key\": \"<string>\"\n    },\n    \"allowed_http_methods\": [\n      \"PUT\",\n      \"POST\"\n    ],\n    \"custom_response\": {\n      \"content_type\": \"json\",\n      \"body\": \"<string>\"\n    }\n  }\n}",
+                      "createdAt": "2026-06-05T15:09:46.000Z",
+                      "updatedAt": "2026-06-05T15:09:46.000Z",
+                      "uid": "35240-57fd246c-048a-45f6-a3b0-d05d0b538e22"
+                    },
+                    {
+                      "id": "af4acf69-fa7e-480c-95ec-9d9358326bc7",
+                      "name": "Not Found",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/sources/:id/archive",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "sources",
+                            ":id",
+                            "archive"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                      "createdAt": "2026-06-05T15:09:46.000Z",
+                      "updatedAt": "2026-06-05T15:09:46.000Z",
+                      "uid": "35240-af4acf69-fa7e-480c-95ec-9d9358326bc7"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:09:46.000Z",
+                  "updatedAt": "2026-06-05T15:09:46.000Z",
+                  "uid": "35240-d4eba59f-e3db-43d8-bb09-d0936b8707c3"
+                }
+              ],
+              "id": "4cacaf80-401b-4377-bd5e-70d74336e44c",
+              "createdAt": "2026-06-05T15:09:46.000Z",
+              "updatedAt": "2026-06-05T15:09:46.000Z",
+              "uid": "35240-4cacaf80-401b-4377-bd5e-70d74336e44c"
+            },
+            {
+              "name": "enable",
+              "item": [
+                {
+                  "name": "Enable a source",
+                  "id": "ee67dd4b-3ae0-4c12-ae15-211600112a14",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/sources/:id/enable",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sources",
+                        ":id",
+                        "enable"
+                      ],
+                      "variable": [
+                        {
+                          "id": "278b8d83-87f4-470f-9ca2-02d43f9e6680",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "This endpoint enables a source that was previously disabled."
+                  },
+                  "response": [
+                    {
+                      "id": "da142996-c6a7-42be-b6e5-b5648b6b0d1d",
+                      "name": "A single source",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/sources/:id/enable",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "sources",
+                            ":id",
+                            "enable"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"team_id\": \"<string>\",\n  \"url\": \"<string>\",\n  \"type\": \"FIREFLIES\",\n  \"authenticated\": \"<boolean>\",\n  \"disabled_at\": \"<dateTime>\",\n  \"updated_at\": \"<dateTime>\",\n  \"created_at\": \"<dateTime>\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"auth\": {\n      \"webhook_secret_key\": \"<string>\"\n    },\n    \"allowed_http_methods\": [\n      \"PUT\",\n      \"POST\"\n    ],\n    \"custom_response\": {\n      \"content_type\": \"json\",\n      \"body\": \"<string>\"\n    }\n  }\n}",
+                      "createdAt": "2026-06-05T15:09:46.000Z",
+                      "updatedAt": "2026-06-05T15:09:46.000Z",
+                      "uid": "35240-da142996-c6a7-42be-b6e5-b5648b6b0d1d"
+                    },
+                    {
+                      "id": "d45a2aea-6a3e-4a93-9dff-fc2001f66a8a",
+                      "name": "Not Found",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/sources/:id/enable",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "sources",
+                            ":id",
+                            "enable"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                      "createdAt": "2026-06-05T15:09:46.000Z",
+                      "updatedAt": "2026-06-05T15:09:46.000Z",
+                      "uid": "35240-d45a2aea-6a3e-4a93-9dff-fc2001f66a8a"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:09:46.000Z",
+                  "updatedAt": "2026-06-05T15:09:46.000Z",
+                  "uid": "35240-ee67dd4b-3ae0-4c12-ae15-211600112a14"
+                }
+              ],
+              "id": "8745418a-ce30-47b0-9d02-568e54ac0cb4",
+              "createdAt": "2026-06-05T15:09:46.000Z",
+              "updatedAt": "2026-06-05T15:09:46.000Z",
+              "uid": "35240-8745418a-ce30-47b0-9d02-568e54ac0cb4"
+            },
+            {
+              "name": "unarchive",
+              "item": [
+                {
+                  "name": "Enable a source",
+                  "id": "93945dd6-6d81-4bca-acdb-b69b7d5e7922",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/sources/:id/unarchive",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sources",
+                        ":id",
+                        "unarchive"
+                      ],
+                      "variable": [
+                        {
+                          "id": "c1ac71c2-0863-448f-b5d6-7a469397400d",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "This endpoint enables a source that was previously disabled."
+                  },
+                  "response": [
+                    {
+                      "id": "aad3eea3-be66-4360-b9f4-f80e6b6028e0",
+                      "name": "A single source",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/sources/:id/unarchive",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "sources",
+                            ":id",
+                            "unarchive"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"team_id\": \"<string>\",\n  \"url\": \"<string>\",\n  \"type\": \"FIREFLIES\",\n  \"authenticated\": \"<boolean>\",\n  \"disabled_at\": \"<dateTime>\",\n  \"updated_at\": \"<dateTime>\",\n  \"created_at\": \"<dateTime>\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"auth\": {\n      \"webhook_secret_key\": \"<string>\"\n    },\n    \"allowed_http_methods\": [\n      \"PUT\",\n      \"POST\"\n    ],\n    \"custom_response\": {\n      \"content_type\": \"json\",\n      \"body\": \"<string>\"\n    }\n  }\n}",
+                      "createdAt": "2026-06-05T15:09:46.000Z",
+                      "updatedAt": "2026-06-05T15:09:46.000Z",
+                      "uid": "35240-aad3eea3-be66-4360-b9f4-f80e6b6028e0"
+                    },
+                    {
+                      "id": "d13367bb-97ed-48cd-acb0-e041c35646bd",
+                      "name": "Not Found",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/sources/:id/unarchive",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "sources",
+                            ":id",
+                            "unarchive"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                      "createdAt": "2026-06-05T15:09:46.000Z",
+                      "updatedAt": "2026-06-05T15:09:46.000Z",
+                      "uid": "35240-d13367bb-97ed-48cd-acb0-e041c35646bd"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:09:46.000Z",
+                  "updatedAt": "2026-06-05T15:09:46.000Z",
+                  "uid": "35240-93945dd6-6d81-4bca-acdb-b69b7d5e7922"
+                }
+              ],
+              "id": "142fabd8-aa58-4e8f-bb67-f57c1b0daa16",
+              "createdAt": "2026-06-05T15:09:46.000Z",
+              "updatedAt": "2026-06-05T15:09:46.000Z",
+              "uid": "35240-142fabd8-aa58-4e8f-bb67-f57c1b0daa16"
+            },
+            {
+              "name": "Retrieve a source",
+              "id": "322fe171-f108-4517-aa43-1068ed990e0a",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/sources/:id?include=config.auth",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sources",
+                    ":id"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "config.auth"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "id": "905aedd4-e6e4-4c4a-ad14-7abd635dc9f4",
+                      "key": "id",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "This endpoint retrieves a specific source."
+              },
+              "response": [
+                {
+                  "id": "d5e55e5e-cfe0-403e-927a-63bec3c59f86",
+                  "name": "A single source",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/sources/:id?include=config.auth",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sources",
+                        ":id"
+                      ],
+                      "query": [
+                        {
+                          "key": "include",
+                          "value": "config.auth"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"team_id\": \"<string>\",\n  \"url\": \"<string>\",\n  \"type\": \"FIREFLIES\",\n  \"authenticated\": \"<boolean>\",\n  \"disabled_at\": \"<dateTime>\",\n  \"updated_at\": \"<dateTime>\",\n  \"created_at\": \"<dateTime>\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"auth\": {\n      \"webhook_secret_key\": \"<string>\"\n    },\n    \"allowed_http_methods\": [\n      \"PUT\",\n      \"POST\"\n    ],\n    \"custom_response\": {\n      \"content_type\": \"json\",\n      \"body\": \"<string>\"\n    }\n  }\n}",
+                  "createdAt": "2026-06-05T15:09:46.000Z",
+                  "updatedAt": "2026-06-05T15:09:46.000Z",
+                  "uid": "35240-d5e55e5e-cfe0-403e-927a-63bec3c59f86"
+                },
+                {
+                  "id": "0da74f7a-1238-419e-888c-f80bc46a5a53",
+                  "name": "Not Found",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/sources/:id?include=config.auth",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sources",
+                        ":id"
+                      ],
+                      "query": [
+                        {
+                          "key": "include",
+                          "value": "config.auth"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T15:09:46.000Z",
+                  "updatedAt": "2026-06-05T15:09:46.000Z",
+                  "uid": "35240-0da74f7a-1238-419e-888c-f80bc46a5a53"
+                },
+                {
+                  "id": "db3bc2e3-a9e6-4e6a-a333-04b46ba269e7",
+                  "name": "Gone",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/sources/:id?include=config.auth",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sources",
+                        ":id"
+                      ],
+                      "query": [
+                        {
+                          "key": "include",
+                          "value": "config.auth"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Gone",
+                  "code": 410,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T15:09:46.000Z",
+                  "updatedAt": "2026-06-05T15:09:46.000Z",
+                  "uid": "35240-db3bc2e3-a9e6-4e6a-a333-04b46ba269e7"
+                }
+              ],
+              "createdAt": "2026-06-05T15:09:46.000Z",
+              "updatedAt": "2026-06-05T15:09:46.000Z",
+              "uid": "35240-322fe171-f108-4517-aa43-1068ed990e0a"
+            },
+            {
+              "name": "Update a source",
+              "id": "9bf2ce7e-6f70-461f-b496-7fd4990fd584",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"x9J64MK\",\n  \"type\": \"RESEND\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"auth\": {\n      \"webhook_secret_key\": \"<string>\"\n    },\n    \"allowed_http_methods\": [\n      \"PUT\",\n      \"GET\"\n    ],\n    \"custom_response\": {\n      \"content_type\": \"xml\",\n      \"body\": \"<string>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/sources/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sources",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "36ff0669-a093-46bc-bacc-f77a1daf7b6a",
+                      "key": "id",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "This endpoint updates a source."
+              },
+              "response": [
+                {
+                  "id": "49bb36c1-9f22-4751-a17d-1d4edd9cce35",
+                  "name": "A single source",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"x9J64MK\",\n  \"type\": \"RESEND\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"auth\": {\n      \"webhook_secret_key\": \"<string>\"\n    },\n    \"allowed_http_methods\": [\n      \"PUT\",\n      \"GET\"\n    ],\n    \"custom_response\": {\n      \"content_type\": \"xml\",\n      \"body\": \"<string>\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/sources/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sources",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"team_id\": \"<string>\",\n  \"url\": \"<string>\",\n  \"type\": \"FIREFLIES\",\n  \"authenticated\": \"<boolean>\",\n  \"disabled_at\": \"<dateTime>\",\n  \"updated_at\": \"<dateTime>\",\n  \"created_at\": \"<dateTime>\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"auth\": {\n      \"webhook_secret_key\": \"<string>\"\n    },\n    \"allowed_http_methods\": [\n      \"PUT\",\n      \"POST\"\n    ],\n    \"custom_response\": {\n      \"content_type\": \"json\",\n      \"body\": \"<string>\"\n    }\n  }\n}",
+                  "createdAt": "2026-06-05T15:09:46.000Z",
+                  "updatedAt": "2026-06-05T15:09:46.000Z",
+                  "uid": "35240-49bb36c1-9f22-4751-a17d-1d4edd9cce35"
+                },
+                {
+                  "id": "adea3d94-3bfd-4a66-a74a-f68fb9765adb",
+                  "name": "Bad Request",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"x9J64MK\",\n  \"type\": \"RESEND\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"auth\": {\n      \"webhook_secret_key\": \"<string>\"\n    },\n    \"allowed_http_methods\": [\n      \"PUT\",\n      \"GET\"\n    ],\n    \"custom_response\": {\n      \"content_type\": \"xml\",\n      \"body\": \"<string>\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/sources/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sources",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T15:09:46.000Z",
+                  "updatedAt": "2026-06-05T15:09:46.000Z",
+                  "uid": "35240-adea3d94-3bfd-4a66-a74a-f68fb9765adb"
+                },
+                {
+                  "id": "1fcc7fcd-0394-49ca-bfd7-fa8a855d79c9",
+                  "name": "Not Found",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"x9J64MK\",\n  \"type\": \"RESEND\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"auth\": {\n      \"webhook_secret_key\": \"<string>\"\n    },\n    \"allowed_http_methods\": [\n      \"PUT\",\n      \"GET\"\n    ],\n    \"custom_response\": {\n      \"content_type\": \"xml\",\n      \"body\": \"<string>\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/sources/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sources",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T15:09:46.000Z",
+                  "updatedAt": "2026-06-05T15:09:46.000Z",
+                  "uid": "35240-1fcc7fcd-0394-49ca-bfd7-fa8a855d79c9"
+                },
+                {
+                  "id": "3741eecf-b572-4305-9a8e-d7955c12f544",
+                  "name": "Unprocessable Entity",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"x9J64MK\",\n  \"type\": \"RESEND\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"auth\": {\n      \"webhook_secret_key\": \"<string>\"\n    },\n    \"allowed_http_methods\": [\n      \"PUT\",\n      \"GET\"\n    ],\n    \"custom_response\": {\n      \"content_type\": \"xml\",\n      \"body\": \"<string>\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/sources/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sources",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T15:09:46.000Z",
+                  "updatedAt": "2026-06-05T15:09:46.000Z",
+                  "uid": "35240-3741eecf-b572-4305-9a8e-d7955c12f544"
+                }
+              ],
+              "createdAt": "2026-06-05T15:09:46.000Z",
+              "updatedAt": "2026-06-05T15:09:46.000Z",
+              "uid": "35240-9bf2ce7e-6f70-461f-b496-7fd4990fd584"
+            },
+            {
+              "name": "Delete a source",
+              "id": "4b4201c6-3d6a-4e32-8a46-05a7b03504e1",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/sources/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sources",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "89056671-5325-4c5e-8175-6588b540c437",
+                      "key": "id",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "This endpoint permanently deletes a source. This action cannot be undone."
+              },
+              "response": [
+                {
+                  "id": "d243ac52-e093-4cb0-a0b0-9afa6445c434",
+                  "name": "A single source",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/sources/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sources",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\"\n}",
+                  "createdAt": "2026-06-05T15:09:46.000Z",
+                  "updatedAt": "2026-06-05T15:09:46.000Z",
+                  "uid": "35240-d243ac52-e093-4cb0-a0b0-9afa6445c434"
+                },
+                {
+                  "id": "98c5fbf2-a9b0-4f01-b17c-aa508cbddca0",
+                  "name": "Not Found",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/sources/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sources",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T15:09:46.000Z",
+                  "updatedAt": "2026-06-05T15:09:46.000Z",
+                  "uid": "35240-98c5fbf2-a9b0-4f01-b17c-aa508cbddca0"
+                }
+              ],
+              "createdAt": "2026-06-05T15:09:46.000Z",
+              "updatedAt": "2026-06-05T15:09:46.000Z",
+              "uid": "35240-4b4201c6-3d6a-4e32-8a46-05a7b03504e1"
+            }
+          ],
+          "id": "34e3bb21-d085-4a1e-af71-5d4af4eef160",
+          "createdAt": "2026-06-05T15:09:46.000Z",
+          "updatedAt": "2026-06-05T15:09:46.000Z",
+          "uid": "35240-34e3bb21-d085-4a1e-af71-5d4af4eef160"
+        },
+        {
+          "name": "Retrieve sources",
+          "id": "ba54838f-7f04-4097-b3d5-2129b282ba98",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/sources?id=<string>&name=Q[QY&type=NUVEMSHOP&disabled=<boolean>&disabled_at=<dateTime>&order_by=updated_at&dir=desc&limit=<integer>&next=<string>&prev=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sources"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "name",
+                  "value": "Q[QY"
+                },
+                {
+                  "key": "type",
+                  "value": "NUVEMSHOP"
+                },
+                {
+                  "key": "disabled",
+                  "value": "<boolean>"
+                },
+                {
+                  "key": "disabled_at",
+                  "value": "<dateTime>"
+                },
+                {
+                  "key": "order_by",
+                  "value": "updated_at"
+                },
+                {
+                  "key": "dir",
+                  "value": "desc"
+                },
+                {
+                  "key": "limit",
+                  "value": "<integer>"
+                },
+                {
+                  "key": "next",
+                  "value": "<string>"
+                },
+                {
+                  "key": "prev",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "This endpoint lists sources, or a subset of sources."
+          },
+          "response": [
+            {
+              "id": "a7ce5d70-89ba-4829-801a-b69eafb027ba",
+              "name": "List of sources",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/sources?id=<string>&name=Q[QY&type=NUVEMSHOP&disabled=<boolean>&disabled_at=<dateTime>&order_by=updated_at&dir=desc&limit=<integer>&next=<string>&prev=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sources"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "name",
+                      "value": "Q[QY"
+                    },
+                    {
+                      "key": "type",
+                      "value": "NUVEMSHOP"
+                    },
+                    {
+                      "key": "disabled",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "disabled_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "updated_at"
+                    },
+                    {
+                      "key": "dir",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "next",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "prev",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"pagination\": {\n    \"order_by\": \"<string>\",\n    \"dir\": \"asc\",\n    \"limit\": \"<integer>\",\n    \"prev\": \"<string>\",\n    \"next\": \"<string>\"\n  },\n  \"count\": \"<integer>\",\n  \"models\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"team_id\": \"<string>\",\n      \"url\": \"<string>\",\n      \"type\": \"BONDSMITH\",\n      \"authenticated\": \"<boolean>\",\n      \"disabled_at\": \"<dateTime>\",\n      \"updated_at\": \"<dateTime>\",\n      \"created_at\": \"<dateTime>\",\n      \"description\": \"<string>\",\n      \"config\": {\n        \"auth\": {\n          \"webhook_secret_key\": \"<string>\"\n        },\n        \"allowed_http_methods\": [\n          \"PATCH\",\n          \"PUT\"\n        ],\n        \"custom_response\": {\n          \"content_type\": \"json\",\n          \"body\": \"<string>\"\n        }\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"team_id\": \"<string>\",\n      \"url\": \"<string>\",\n      \"type\": \"CURSOR\",\n      \"authenticated\": \"<boolean>\",\n      \"disabled_at\": \"<dateTime>\",\n      \"updated_at\": \"<dateTime>\",\n      \"created_at\": \"<dateTime>\",\n      \"description\": \"<string>\",\n      \"config\": {\n        \"auth\": {\n          \"webhook_secret_key\": \"<string>\"\n        },\n        \"allowed_http_methods\": [\n          \"DELETE\",\n          \"DELETE\"\n        ],\n        \"custom_response\": {\n          \"content_type\": \"xml\",\n          \"body\": \"<string>\"\n        }\n      }\n    }\n  ]\n}",
+              "createdAt": "2026-06-05T15:09:46.000Z",
+              "updatedAt": "2026-06-05T15:09:46.000Z",
+              "uid": "35240-a7ce5d70-89ba-4829-801a-b69eafb027ba"
+            },
+            {
+              "id": "a4d4a179-6bc2-4e7f-9a39-96422dc9cef9",
+              "name": "Bad Request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/sources?id=<string>&name=Q[QY&type=NUVEMSHOP&disabled=<boolean>&disabled_at=<dateTime>&order_by=updated_at&dir=desc&limit=<integer>&next=<string>&prev=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sources"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "name",
+                      "value": "Q[QY"
+                    },
+                    {
+                      "key": "type",
+                      "value": "NUVEMSHOP"
+                    },
+                    {
+                      "key": "disabled",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "disabled_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "updated_at"
+                    },
+                    {
+                      "key": "dir",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "next",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "prev",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+              "createdAt": "2026-06-05T15:09:46.000Z",
+              "updatedAt": "2026-06-05T15:09:46.000Z",
+              "uid": "35240-a4d4a179-6bc2-4e7f-9a39-96422dc9cef9"
+            },
+            {
+              "id": "c2fc0213-09d4-476b-9657-9dc6620ab6d6",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/sources?id=<string>&name=Q[QY&type=NUVEMSHOP&disabled=<boolean>&disabled_at=<dateTime>&order_by=updated_at&dir=desc&limit=<integer>&next=<string>&prev=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sources"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "name",
+                      "value": "Q[QY"
+                    },
+                    {
+                      "key": "type",
+                      "value": "NUVEMSHOP"
+                    },
+                    {
+                      "key": "disabled",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "disabled_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "updated_at"
+                    },
+                    {
+                      "key": "dir",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "next",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "prev",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+              "createdAt": "2026-06-05T15:09:46.000Z",
+              "updatedAt": "2026-06-05T15:09:46.000Z",
+              "uid": "35240-c2fc0213-09d4-476b-9657-9dc6620ab6d6"
+            }
+          ],
+          "createdAt": "2026-06-05T15:09:46.000Z",
+          "updatedAt": "2026-06-05T15:09:46.000Z",
+          "uid": "35240-ba54838f-7f04-4097-b3d5-2129b282ba98"
+        },
+        {
+          "name": "Create a source",
+          "id": "48cb76e4-baca-4f69-8216-ed4a24c3af44",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"ZQ2`e\",\n  \"type\": \"WEBHOOK\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"auth\": {\n      \"webhook_secret_key\": \"<string>\"\n    },\n    \"allowed_http_methods\": [\n      \"PATCH\",\n      \"POST\"\n    ],\n    \"custom_response\": {\n      \"content_type\": \"text\",\n      \"body\": \"<string>\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/sources",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sources"
+              ]
+            },
+            "description": "This endpoint creates a source."
+          },
+          "response": [
+            {
+              "id": "5f214cbb-d51a-4d05-ae06-de6192cc4a51",
+              "name": "A single source",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"ZQ2`e\",\n  \"type\": \"WEBHOOK\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"auth\": {\n      \"webhook_secret_key\": \"<string>\"\n    },\n    \"allowed_http_methods\": [\n      \"PATCH\",\n      \"POST\"\n    ],\n    \"custom_response\": {\n      \"content_type\": \"text\",\n      \"body\": \"<string>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/sources",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sources"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"team_id\": \"<string>\",\n  \"url\": \"<string>\",\n  \"type\": \"FIREFLIES\",\n  \"authenticated\": \"<boolean>\",\n  \"disabled_at\": \"<dateTime>\",\n  \"updated_at\": \"<dateTime>\",\n  \"created_at\": \"<dateTime>\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"auth\": {\n      \"webhook_secret_key\": \"<string>\"\n    },\n    \"allowed_http_methods\": [\n      \"PUT\",\n      \"POST\"\n    ],\n    \"custom_response\": {\n      \"content_type\": \"json\",\n      \"body\": \"<string>\"\n    }\n  }\n}",
+              "createdAt": "2026-06-05T15:09:46.000Z",
+              "updatedAt": "2026-06-05T15:09:46.000Z",
+              "uid": "35240-5f214cbb-d51a-4d05-ae06-de6192cc4a51"
+            },
+            {
+              "id": "d3ad40bc-a250-41d8-8cda-aefb3b5e0953",
+              "name": "Bad Request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"ZQ2`e\",\n  \"type\": \"WEBHOOK\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"auth\": {\n      \"webhook_secret_key\": \"<string>\"\n    },\n    \"allowed_http_methods\": [\n      \"PATCH\",\n      \"POST\"\n    ],\n    \"custom_response\": {\n      \"content_type\": \"text\",\n      \"body\": \"<string>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/sources",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sources"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+              "createdAt": "2026-06-05T15:09:46.000Z",
+              "updatedAt": "2026-06-05T15:09:46.000Z",
+              "uid": "35240-d3ad40bc-a250-41d8-8cda-aefb3b5e0953"
+            },
+            {
+              "id": "c08b6334-89a4-4d44-8284-633fc96b8886",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"ZQ2`e\",\n  \"type\": \"WEBHOOK\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"auth\": {\n      \"webhook_secret_key\": \"<string>\"\n    },\n    \"allowed_http_methods\": [\n      \"PATCH\",\n      \"POST\"\n    ],\n    \"custom_response\": {\n      \"content_type\": \"text\",\n      \"body\": \"<string>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/sources",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sources"
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+              "createdAt": "2026-06-05T15:09:46.000Z",
+              "updatedAt": "2026-06-05T15:09:46.000Z",
+              "uid": "35240-c08b6334-89a4-4d44-8284-633fc96b8886"
+            }
+          ],
+          "createdAt": "2026-06-05T15:09:46.000Z",
+          "updatedAt": "2026-06-05T15:09:46.000Z",
+          "uid": "35240-48cb76e4-baca-4f69-8216-ed4a24c3af44"
+        },
+        {
+          "name": "Create/Update a source",
+          "id": "c9fe7c29-fd36-4e39-993f-fca69dd16d17",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"ZQ2`e\",\n  \"type\": \"WEBHOOK\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"auth\": {\n      \"webhook_secret_key\": \"<string>\"\n    },\n    \"allowed_http_methods\": [\n      \"PATCH\",\n      \"POST\"\n    ],\n    \"custom_response\": {\n      \"content_type\": \"text\",\n      \"body\": \"<string>\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/sources",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sources"
+              ]
+            },
+            "description": "This endpoint creates a source, or updates an existing source by name."
+          },
+          "response": [
+            {
+              "id": "37bd0ca8-56f5-476c-9303-7c9c4781b577",
+              "name": "A single source",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"ZQ2`e\",\n  \"type\": \"WEBHOOK\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"auth\": {\n      \"webhook_secret_key\": \"<string>\"\n    },\n    \"allowed_http_methods\": [\n      \"PATCH\",\n      \"POST\"\n    ],\n    \"custom_response\": {\n      \"content_type\": \"text\",\n      \"body\": \"<string>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/sources",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sources"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"team_id\": \"<string>\",\n  \"url\": \"<string>\",\n  \"type\": \"FIREFLIES\",\n  \"authenticated\": \"<boolean>\",\n  \"disabled_at\": \"<dateTime>\",\n  \"updated_at\": \"<dateTime>\",\n  \"created_at\": \"<dateTime>\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"auth\": {\n      \"webhook_secret_key\": \"<string>\"\n    },\n    \"allowed_http_methods\": [\n      \"PUT\",\n      \"POST\"\n    ],\n    \"custom_response\": {\n      \"content_type\": \"json\",\n      \"body\": \"<string>\"\n    }\n  }\n}",
+              "createdAt": "2026-06-05T15:09:46.000Z",
+              "updatedAt": "2026-06-05T15:09:46.000Z",
+              "uid": "35240-37bd0ca8-56f5-476c-9303-7c9c4781b577"
+            },
+            {
+              "id": "a7d10f37-d6e9-4642-814f-4fb22ba4bc47",
+              "name": "Bad Request",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"ZQ2`e\",\n  \"type\": \"WEBHOOK\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"auth\": {\n      \"webhook_secret_key\": \"<string>\"\n    },\n    \"allowed_http_methods\": [\n      \"PATCH\",\n      \"POST\"\n    ],\n    \"custom_response\": {\n      \"content_type\": \"text\",\n      \"body\": \"<string>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/sources",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sources"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+              "createdAt": "2026-06-05T15:09:46.000Z",
+              "updatedAt": "2026-06-05T15:09:46.000Z",
+              "uid": "35240-a7d10f37-d6e9-4642-814f-4fb22ba4bc47"
+            },
+            {
+              "id": "ea75d53a-b1dc-4484-ba55-efaf30fbed52",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"ZQ2`e\",\n  \"type\": \"WEBHOOK\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"auth\": {\n      \"webhook_secret_key\": \"<string>\"\n    },\n    \"allowed_http_methods\": [\n      \"PATCH\",\n      \"POST\"\n    ],\n    \"custom_response\": {\n      \"content_type\": \"text\",\n      \"body\": \"<string>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/sources",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sources"
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+              "createdAt": "2026-06-05T15:09:46.000Z",
+              "updatedAt": "2026-06-05T15:09:46.000Z",
+              "uid": "35240-ea75d53a-b1dc-4484-ba55-efaf30fbed52"
+            }
+          ],
+          "createdAt": "2026-06-05T15:09:46.000Z",
+          "updatedAt": "2026-06-05T15:09:46.000Z",
+          "uid": "35240-c9fe7c29-fd36-4e39-993f-fca69dd16d17"
+        }
+      ],
+      "id": "cddc2bf0-ada8-4627-865c-9ade2c485f6c",
+      "createdAt": "2026-06-05T15:09:46.000Z",
+      "updatedAt": "2026-06-05T15:09:46.000Z",
+      "uid": "35240-cddc2bf0-ada8-4627-865c-9ade2c485f6c"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.hookdeck.com/2025-07-01"
+    }
+  ]
+}

@@ -1,0 +1,201 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Hookdeck Bookmarks API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Bookmarks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve bookmarks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hookdeck.com/2025-07-01/bookmarks",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "webhook_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "event_data_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "label",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "last_used_at",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order_by",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dir",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "next",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "prev",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "This endpoint lists bookmarks, or a subset of bookmarks."
+        },
+        {
+          "info": {
+            "name": "Create a bookmark",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hookdeck.com/2025-07-01/bookmarks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint creates a bookmark from a specific event."
+        },
+        {
+          "info": {
+            "name": "Retrieve a bookmark",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hookdeck.com/2025-07-01/bookmarks/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This endpoint retrieves a specific bookmark."
+        },
+        {
+          "info": {
+            "name": "Update a bookmark",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hookdeck.com/2025-07-01/bookmarks/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint updates a bookmark."
+        },
+        {
+          "info": {
+            "name": "Delete a bookmark",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hookdeck.com/2025-07-01/bookmarks/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This endpoint permanently deletes a bookmark. This action cannot be undone."
+        },
+        {
+          "info": {
+            "name": "Get a bookmark raw body data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hookdeck.com/2025-07-01/bookmarks/:id/raw_body",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a bookmark raw body data"
+        },
+        {
+          "info": {
+            "name": "Trigger a bookmark",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hookdeck.com/2025-07-01/bookmarks/:id/trigger",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This endpoint triggers a bookmark, replaying its associated event against all matching connections."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

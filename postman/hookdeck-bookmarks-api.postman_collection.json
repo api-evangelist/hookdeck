@@ -1,0 +1,1569 @@
+{
+  "info": {
+    "_postman_id": "124c9bfd-96a6-4018-9c30-8dd57b488407",
+    "name": "Hookdeck Bookmarks API",
+    "description": "Save bookmarked events for quick replay and convenient one-click testing during development.\n\nContact Support:\n Name: Hookdeck Support\n Email: info@hookdeck.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T15:09:56.000Z",
+    "updatedAt": "2026-06-05T15:09:56.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-124c9bfd-96a6-4018-9c30-8dd57b488407"
+  },
+  "item": [
+    {
+      "name": "bookmarks",
+      "item": [
+        {
+          "name": "{id}",
+          "item": [
+            {
+              "name": "raw_body",
+              "item": [
+                {
+                  "name": "Get a bookmark raw body data",
+                  "id": "8c2bc7df-97f2-44a1-bf7f-5194eecd8263",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/bookmarks/:id/raw_body",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "bookmarks",
+                        ":id",
+                        "raw_body"
+                      ],
+                      "variable": [
+                        {
+                          "id": "54308795-0d6f-459a-b672-2150406af3d4",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "15c22a94-30c5-4fd5-988e-d0ca9c543067",
+                      "name": "A request raw body data",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/bookmarks/:id/raw_body",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "bookmarks",
+                            ":id",
+                            "raw_body"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"body\": \"<string>\"\n}",
+                      "createdAt": "2026-06-05T15:09:57.000Z",
+                      "updatedAt": "2026-06-05T15:09:57.000Z",
+                      "uid": "35240-15c22a94-30c5-4fd5-988e-d0ca9c543067"
+                    },
+                    {
+                      "id": "40f75ef4-8364-42d9-8bca-7511e5fb801a",
+                      "name": "Not Found",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/bookmarks/:id/raw_body",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "bookmarks",
+                            ":id",
+                            "raw_body"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                      "createdAt": "2026-06-05T15:09:57.000Z",
+                      "updatedAt": "2026-06-05T15:09:57.000Z",
+                      "uid": "35240-40f75ef4-8364-42d9-8bca-7511e5fb801a"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:09:57.000Z",
+                  "updatedAt": "2026-06-05T15:09:57.000Z",
+                  "uid": "35240-8c2bc7df-97f2-44a1-bf7f-5194eecd8263"
+                }
+              ],
+              "id": "f04bb28c-d803-47b7-a283-512ddb8ffc57",
+              "createdAt": "2026-06-05T15:09:57.000Z",
+              "updatedAt": "2026-06-05T15:09:57.000Z",
+              "uid": "35240-f04bb28c-d803-47b7-a283-512ddb8ffc57"
+            },
+            {
+              "name": "trigger",
+              "item": [
+                {
+                  "name": "Trigger a bookmark",
+                  "id": "b589c49d-5cbe-4a39-a2a1-952eeebfa8c9",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/bookmarks/:id/trigger",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "bookmarks",
+                        ":id",
+                        "trigger"
+                      ],
+                      "variable": [
+                        {
+                          "id": "3d65b6ab-5705-46a6-a238-e4178a1437e1",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "This endpoint triggers a bookmark, replaying its associated event against all matching connections."
+                  },
+                  "response": [
+                    {
+                      "id": "c875ec79-24d0-4d87-a913-491b25890884",
+                      "name": "Array of created events",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/bookmarks/:id/trigger",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "bookmarks",
+                            ":id",
+                            "trigger"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "[\n  {\n    \"id\": \"<string>\",\n    \"team_id\": \"<string>\",\n    \"webhook_id\": \"<string>\",\n    \"source_id\": \"<string>\",\n    \"destination_id\": \"<string>\",\n    \"event_data_id\": \"<string>\",\n    \"request_id\": \"<string>\",\n    \"attempts\": \"<integer>\",\n    \"last_attempt_at\": \"<dateTime>\",\n    \"next_attempt_at\": \"<dateTime>\",\n    \"status\": \"QUEUED\",\n    \"successful_at\": \"<dateTime>\",\n    \"cli_id\": \"<string>\",\n    \"updated_at\": \"<dateTime>\",\n    \"created_at\": \"<dateTime>\",\n    \"response_status\": \"<integer>\",\n    \"error_code\": \"BULK_RETRY_CANCELLED\",\n    \"data\": {\n      \"url\": \"<string>\",\n      \"method\": \"<string>\",\n      \"path\": \"<string>\",\n      \"query\": \"<string>\",\n      \"parsed_query\": \"<string>\",\n      \"headers\": \"<string>\",\n      \"body\": \"<string>\",\n      \"appended_headers\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"is_large_payload\": \"<boolean>\"\n    }\n  },\n  {\n    \"id\": \"<string>\",\n    \"team_id\": \"<string>\",\n    \"webhook_id\": \"<string>\",\n    \"source_id\": \"<string>\",\n    \"destination_id\": \"<string>\",\n    \"event_data_id\": \"<string>\",\n    \"request_id\": \"<string>\",\n    \"attempts\": \"<integer>\",\n    \"last_attempt_at\": \"<dateTime>\",\n    \"next_attempt_at\": \"<dateTime>\",\n    \"status\": \"SUCCESSFUL\",\n    \"successful_at\": \"<dateTime>\",\n    \"cli_id\": \"<string>\",\n    \"updated_at\": \"<dateTime>\",\n    \"created_at\": \"<dateTime>\",\n    \"response_status\": \"<integer>\",\n    \"error_code\": \"SSL_ERROR_CA_UNKNOWN\",\n    \"data\": {\n      \"url\": \"<string>\",\n      \"method\": \"<string>\",\n      \"path\": \"<string>\",\n      \"query\": \"<string>\",\n      \"parsed_query\": \"<string>\",\n      \"headers\": \"<string>\",\n      \"body\": \"<string>\",\n      \"appended_headers\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"is_large_payload\": \"<boolean>\"\n    }\n  }\n]",
+                      "createdAt": "2026-06-05T15:09:57.000Z",
+                      "updatedAt": "2026-06-05T15:09:57.000Z",
+                      "uid": "35240-c875ec79-24d0-4d87-a913-491b25890884"
+                    },
+                    {
+                      "id": "6324e22a-8d46-4394-8ea4-380398549d9f",
+                      "name": "Bad Request",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/bookmarks/:id/trigger",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "bookmarks",
+                            ":id",
+                            "trigger"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                      "createdAt": "2026-06-05T15:09:57.000Z",
+                      "updatedAt": "2026-06-05T15:09:57.000Z",
+                      "uid": "35240-6324e22a-8d46-4394-8ea4-380398549d9f"
+                    },
+                    {
+                      "id": "cec3cd53-e9bb-4631-8ad4-214686196c87",
+                      "name": "Not Found",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/bookmarks/:id/trigger",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "bookmarks",
+                            ":id",
+                            "trigger"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                      "createdAt": "2026-06-05T15:09:57.000Z",
+                      "updatedAt": "2026-06-05T15:09:57.000Z",
+                      "uid": "35240-cec3cd53-e9bb-4631-8ad4-214686196c87"
+                    },
+                    {
+                      "id": "b9a5c9bc-2c87-4367-a57a-73e907cd2782",
+                      "name": "Unprocessable Entity",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/bookmarks/:id/trigger",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "bookmarks",
+                            ":id",
+                            "trigger"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                      "code": 422,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                      "createdAt": "2026-06-05T15:09:57.000Z",
+                      "updatedAt": "2026-06-05T15:09:57.000Z",
+                      "uid": "35240-b9a5c9bc-2c87-4367-a57a-73e907cd2782"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:09:57.000Z",
+                  "updatedAt": "2026-06-05T15:09:57.000Z",
+                  "uid": "35240-b589c49d-5cbe-4a39-a2a1-952eeebfa8c9"
+                }
+              ],
+              "id": "5e27835b-206c-408f-a953-08c5e07a8932",
+              "createdAt": "2026-06-05T15:09:57.000Z",
+              "updatedAt": "2026-06-05T15:09:57.000Z",
+              "uid": "35240-5e27835b-206c-408f-a953-08c5e07a8932"
+            },
+            {
+              "name": "Retrieve a bookmark",
+              "id": "dde65cdb-395d-4552-8ec8-b7d13998c073",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/bookmarks/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "bookmarks",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "794f9947-2499-43f2-bcba-084df9422d97",
+                      "key": "id",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "This endpoint retrieves a specific bookmark."
+              },
+              "response": [
+                {
+                  "id": "373facce-1ca8-4200-bfb3-44c0519c9cc3",
+                  "name": "A single bookmark",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/bookmarks/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "bookmarks",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"team_id\": \"<string>\",\n  \"webhook_id\": \"<string>\",\n  \"event_data_id\": \"<string>\",\n  \"label\": \"<string>\",\n  \"updated_at\": \"<dateTime>\",\n  \"created_at\": \"<dateTime>\",\n  \"alias\": \"<string>\",\n  \"data\": {\n    \"path\": \"<string>\",\n    \"query\": \"<string>\",\n    \"parsed_query\": \"<string>\",\n    \"headers\": \"<string>\",\n    \"body\": \"<string>\",\n    \"is_large_payload\": \"<boolean>\"\n  },\n  \"last_used_at\": \"<dateTime>\"\n}",
+                  "createdAt": "2026-06-05T15:09:57.000Z",
+                  "updatedAt": "2026-06-05T15:09:57.000Z",
+                  "uid": "35240-373facce-1ca8-4200-bfb3-44c0519c9cc3"
+                },
+                {
+                  "id": "78b7a49c-5c8d-4575-9ab3-78a662d96cda",
+                  "name": "Not Found",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/bookmarks/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "bookmarks",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T15:09:57.000Z",
+                  "updatedAt": "2026-06-05T15:09:57.000Z",
+                  "uid": "35240-78b7a49c-5c8d-4575-9ab3-78a662d96cda"
+                }
+              ],
+              "createdAt": "2026-06-05T15:09:57.000Z",
+              "updatedAt": "2026-06-05T15:09:57.000Z",
+              "uid": "35240-dde65cdb-395d-4552-8ec8-b7d13998c073"
+            },
+            {
+              "name": "Update a bookmark",
+              "id": "5f897fd6-869b-44fa-86be-b96e92a33bd2",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"event_data_id\": \"<string>\",\n  \"webhook_id\": \"<string>\",\n  \"label\": \"<string>\",\n  \"name\": \"VJ4tr]5ZuvJ\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/bookmarks/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "bookmarks",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "50eda226-fa3c-4c63-acee-e089e6a288d2",
+                      "key": "id",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "This endpoint updates a bookmark."
+              },
+              "response": [
+                {
+                  "id": "a5a902f7-20cd-468b-a195-53e20406ae56",
+                  "name": "A single bookmark",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"event_data_id\": \"<string>\",\n  \"webhook_id\": \"<string>\",\n  \"label\": \"<string>\",\n  \"name\": \"VJ4tr]5ZuvJ\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/bookmarks/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "bookmarks",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"team_id\": \"<string>\",\n  \"webhook_id\": \"<string>\",\n  \"event_data_id\": \"<string>\",\n  \"label\": \"<string>\",\n  \"updated_at\": \"<dateTime>\",\n  \"created_at\": \"<dateTime>\",\n  \"alias\": \"<string>\",\n  \"data\": {\n    \"path\": \"<string>\",\n    \"query\": \"<string>\",\n    \"parsed_query\": \"<string>\",\n    \"headers\": \"<string>\",\n    \"body\": \"<string>\",\n    \"is_large_payload\": \"<boolean>\"\n  },\n  \"last_used_at\": \"<dateTime>\"\n}",
+                  "createdAt": "2026-06-05T15:09:57.000Z",
+                  "updatedAt": "2026-06-05T15:09:57.000Z",
+                  "uid": "35240-a5a902f7-20cd-468b-a195-53e20406ae56"
+                },
+                {
+                  "id": "838df821-642a-48a3-aca1-212bf336e0f3",
+                  "name": "Bad Request",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"event_data_id\": \"<string>\",\n  \"webhook_id\": \"<string>\",\n  \"label\": \"<string>\",\n  \"name\": \"VJ4tr]5ZuvJ\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/bookmarks/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "bookmarks",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T15:09:57.000Z",
+                  "updatedAt": "2026-06-05T15:09:57.000Z",
+                  "uid": "35240-838df821-642a-48a3-aca1-212bf336e0f3"
+                },
+                {
+                  "id": "54d6bf0d-441a-4bfe-a564-d60b336a64aa",
+                  "name": "Not Found",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"event_data_id\": \"<string>\",\n  \"webhook_id\": \"<string>\",\n  \"label\": \"<string>\",\n  \"name\": \"VJ4tr]5ZuvJ\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/bookmarks/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "bookmarks",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T15:09:57.000Z",
+                  "updatedAt": "2026-06-05T15:09:57.000Z",
+                  "uid": "35240-54d6bf0d-441a-4bfe-a564-d60b336a64aa"
+                },
+                {
+                  "id": "6a65ed94-b647-4fdb-8817-c2f0a906e1e8",
+                  "name": "Unprocessable Entity",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"event_data_id\": \"<string>\",\n  \"webhook_id\": \"<string>\",\n  \"label\": \"<string>\",\n  \"name\": \"VJ4tr]5ZuvJ\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/bookmarks/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "bookmarks",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T15:09:57.000Z",
+                  "updatedAt": "2026-06-05T15:09:57.000Z",
+                  "uid": "35240-6a65ed94-b647-4fdb-8817-c2f0a906e1e8"
+                }
+              ],
+              "createdAt": "2026-06-05T15:09:57.000Z",
+              "updatedAt": "2026-06-05T15:09:57.000Z",
+              "uid": "35240-5f897fd6-869b-44fa-86be-b96e92a33bd2"
+            },
+            {
+              "name": "Delete a bookmark",
+              "id": "ac426b4f-5ee1-40b2-a95a-bcfa82bfe169",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/bookmarks/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "bookmarks",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "f4a49849-7710-447d-854c-d1b740835d7a",
+                      "key": "id",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "This endpoint permanently deletes a bookmark. This action cannot be undone."
+              },
+              "response": [
+                {
+                  "id": "41d23059-0cdf-4d8b-9614-8fa9a3850053",
+                  "name": "An object with deleted bookmark's id",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/bookmarks/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "bookmarks",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\"\n}",
+                  "createdAt": "2026-06-05T15:09:57.000Z",
+                  "updatedAt": "2026-06-05T15:09:57.000Z",
+                  "uid": "35240-41d23059-0cdf-4d8b-9614-8fa9a3850053"
+                },
+                {
+                  "id": "29e2888a-24bb-4f96-a419-b8da893f44ef",
+                  "name": "Not Found",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/bookmarks/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "bookmarks",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T15:09:57.000Z",
+                  "updatedAt": "2026-06-05T15:09:57.000Z",
+                  "uid": "35240-29e2888a-24bb-4f96-a419-b8da893f44ef"
+                }
+              ],
+              "createdAt": "2026-06-05T15:09:57.000Z",
+              "updatedAt": "2026-06-05T15:09:57.000Z",
+              "uid": "35240-ac426b4f-5ee1-40b2-a95a-bcfa82bfe169"
+            }
+          ],
+          "id": "eb8b4977-fcec-4e60-953d-b3fcd2d5c742",
+          "createdAt": "2026-06-05T15:09:57.000Z",
+          "updatedAt": "2026-06-05T15:09:57.000Z",
+          "uid": "35240-eb8b4977-fcec-4e60-953d-b3fcd2d5c742"
+        },
+        {
+          "name": "Retrieve bookmarks",
+          "id": "25634c8b-9d59-4a24-8226-5843fe791bf8",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/bookmarks?id=<string>&name=0DI&webhook_id=<string>&event_data_id=<string>&label=<string>&last_used_at=<dateTime>&order_by=created_at&dir=desc&limit=<integer>&next=<string>&prev=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "bookmarks"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "name",
+                  "value": "0DI"
+                },
+                {
+                  "key": "webhook_id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "event_data_id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "label",
+                  "value": "<string>"
+                },
+                {
+                  "key": "last_used_at",
+                  "value": "<dateTime>"
+                },
+                {
+                  "key": "order_by",
+                  "value": "created_at"
+                },
+                {
+                  "key": "dir",
+                  "value": "desc"
+                },
+                {
+                  "key": "limit",
+                  "value": "<integer>"
+                },
+                {
+                  "key": "next",
+                  "value": "<string>"
+                },
+                {
+                  "key": "prev",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "This endpoint lists bookmarks, or a subset of bookmarks."
+          },
+          "response": [
+            {
+              "id": "2cffa3d3-1fce-43d6-a506-5706778c45c5",
+              "name": "List of bookmarks",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/bookmarks?id=<string>&name=0DI&webhook_id=<string>&event_data_id=<string>&label=<string>&last_used_at=<dateTime>&order_by=created_at&dir=desc&limit=<integer>&next=<string>&prev=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "bookmarks"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "name",
+                      "value": "0DI"
+                    },
+                    {
+                      "key": "webhook_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "event_data_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "label",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "last_used_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "created_at"
+                    },
+                    {
+                      "key": "dir",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "next",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "prev",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"pagination\": {\n    \"order_by\": \"<string>\",\n    \"dir\": \"asc\",\n    \"limit\": \"<integer>\",\n    \"prev\": \"<string>\",\n    \"next\": \"<string>\"\n  },\n  \"count\": \"<integer>\",\n  \"models\": [\n    {\n      \"id\": \"<string>\",\n      \"team_id\": \"<string>\",\n      \"webhook_id\": \"<string>\",\n      \"event_data_id\": \"<string>\",\n      \"label\": \"<string>\",\n      \"updated_at\": \"<dateTime>\",\n      \"created_at\": \"<dateTime>\",\n      \"alias\": \"<string>\",\n      \"data\": {\n        \"path\": \"<string>\",\n        \"query\": \"<string>\",\n        \"parsed_query\": \"<string>\",\n        \"headers\": \"<string>\",\n        \"body\": \"<string>\",\n        \"is_large_payload\": \"<boolean>\"\n      },\n      \"last_used_at\": \"<dateTime>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"team_id\": \"<string>\",\n      \"webhook_id\": \"<string>\",\n      \"event_data_id\": \"<string>\",\n      \"label\": \"<string>\",\n      \"updated_at\": \"<dateTime>\",\n      \"created_at\": \"<dateTime>\",\n      \"alias\": \"<string>\",\n      \"data\": {\n        \"path\": \"<string>\",\n        \"query\": \"<string>\",\n        \"parsed_query\": \"<string>\",\n        \"headers\": \"<string>\",\n        \"body\": \"<string>\",\n        \"is_large_payload\": \"<boolean>\"\n      },\n      \"last_used_at\": \"<dateTime>\"\n    }\n  ]\n}",
+              "createdAt": "2026-06-05T15:09:57.000Z",
+              "updatedAt": "2026-06-05T15:09:57.000Z",
+              "uid": "35240-2cffa3d3-1fce-43d6-a506-5706778c45c5"
+            },
+            {
+              "id": "20e0d7ce-cdae-4006-8967-c3392cd83635",
+              "name": "Bad Request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/bookmarks?id=<string>&name=0DI&webhook_id=<string>&event_data_id=<string>&label=<string>&last_used_at=<dateTime>&order_by=created_at&dir=desc&limit=<integer>&next=<string>&prev=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "bookmarks"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "name",
+                      "value": "0DI"
+                    },
+                    {
+                      "key": "webhook_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "event_data_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "label",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "last_used_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "created_at"
+                    },
+                    {
+                      "key": "dir",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "next",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "prev",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+              "createdAt": "2026-06-05T15:09:57.000Z",
+              "updatedAt": "2026-06-05T15:09:57.000Z",
+              "uid": "35240-20e0d7ce-cdae-4006-8967-c3392cd83635"
+            },
+            {
+              "id": "2acde987-e63f-454c-b7a1-d3023b0a7988",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/bookmarks?id=<string>&name=0DI&webhook_id=<string>&event_data_id=<string>&label=<string>&last_used_at=<dateTime>&order_by=created_at&dir=desc&limit=<integer>&next=<string>&prev=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "bookmarks"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "name",
+                      "value": "0DI"
+                    },
+                    {
+                      "key": "webhook_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "event_data_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "label",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "last_used_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "created_at"
+                    },
+                    {
+                      "key": "dir",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "next",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "prev",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+              "createdAt": "2026-06-05T15:09:57.000Z",
+              "updatedAt": "2026-06-05T15:09:57.000Z",
+              "uid": "35240-2acde987-e63f-454c-b7a1-d3023b0a7988"
+            }
+          ],
+          "createdAt": "2026-06-05T15:09:57.000Z",
+          "updatedAt": "2026-06-05T15:09:57.000Z",
+          "uid": "35240-25634c8b-9d59-4a24-8226-5843fe791bf8"
+        },
+        {
+          "name": "Create a bookmark",
+          "id": "b0d2da4a-92ae-4a58-8b09-08eda1788418",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event_data_id\": \"<string>\",\n  \"webhook_id\": \"<string>\",\n  \"label\": \"<string>\",\n  \"name\": \"bP^\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/bookmarks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "bookmarks"
+              ]
+            },
+            "description": "This endpoint creates a bookmark from a specific event."
+          },
+          "response": [
+            {
+              "id": "30e51ab8-9f92-480c-96cf-6d25e1d5767a",
+              "name": "A single bookmark",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"event_data_id\": \"<string>\",\n  \"webhook_id\": \"<string>\",\n  \"label\": \"<string>\",\n  \"name\": \"bP^\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/bookmarks",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "bookmarks"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"id\": \"<string>\",\n  \"team_id\": \"<string>\",\n  \"webhook_id\": \"<string>\",\n  \"event_data_id\": \"<string>\",\n  \"label\": \"<string>\",\n  \"updated_at\": \"<dateTime>\",\n  \"created_at\": \"<dateTime>\",\n  \"alias\": \"<string>\",\n  \"data\": {\n    \"path\": \"<string>\",\n    \"query\": \"<string>\",\n    \"parsed_query\": \"<string>\",\n    \"headers\": \"<string>\",\n    \"body\": \"<string>\",\n    \"is_large_payload\": \"<boolean>\"\n  },\n  \"last_used_at\": \"<dateTime>\"\n}",
+              "createdAt": "2026-06-05T15:09:57.000Z",
+              "updatedAt": "2026-06-05T15:09:57.000Z",
+              "uid": "35240-30e51ab8-9f92-480c-96cf-6d25e1d5767a"
+            },
+            {
+              "id": "fd4e86cc-6f36-4826-a48c-feb194c44cd8",
+              "name": "Bad Request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"event_data_id\": \"<string>\",\n  \"webhook_id\": \"<string>\",\n  \"label\": \"<string>\",\n  \"name\": \"bP^\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/bookmarks",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "bookmarks"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+              "createdAt": "2026-06-05T15:09:57.000Z",
+              "updatedAt": "2026-06-05T15:09:57.000Z",
+              "uid": "35240-fd4e86cc-6f36-4826-a48c-feb194c44cd8"
+            },
+            {
+              "id": "7c972e7b-65e4-4ec4-8b19-a20c4dcf74e4",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"event_data_id\": \"<string>\",\n  \"webhook_id\": \"<string>\",\n  \"label\": \"<string>\",\n  \"name\": \"bP^\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/bookmarks",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "bookmarks"
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+              "createdAt": "2026-06-05T15:09:57.000Z",
+              "updatedAt": "2026-06-05T15:09:57.000Z",
+              "uid": "35240-7c972e7b-65e4-4ec4-8b19-a20c4dcf74e4"
+            }
+          ],
+          "createdAt": "2026-06-05T15:09:57.000Z",
+          "updatedAt": "2026-06-05T15:09:57.000Z",
+          "uid": "35240-b0d2da4a-92ae-4a58-8b09-08eda1788418"
+        }
+      ],
+      "id": "b0d0ed36-42f6-448c-9b11-76320b6725b4",
+      "createdAt": "2026-06-05T15:09:57.000Z",
+      "updatedAt": "2026-06-05T15:09:57.000Z",
+      "uid": "35240-b0d0ed36-42f6-448c-9b11-76320b6725b4"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.hookdeck.com/2025-07-01"
+    }
+  ]
+}

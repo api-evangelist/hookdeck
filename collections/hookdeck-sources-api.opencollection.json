@@ -1,0 +1,263 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Hookdeck Sources API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Sources",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve sources",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hookdeck.com/2025-07-01/sources",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "disabled",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "disabled_at",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order_by",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dir",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "next",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "prev",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "This endpoint lists sources, or a subset of sources."
+        },
+        {
+          "info": {
+            "name": "Create a source",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hookdeck.com/2025-07-01/sources",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint creates a source."
+        },
+        {
+          "info": {
+            "name": "Create/Update a source",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hookdeck.com/2025-07-01/sources",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint creates a source, or updates an existing source by name."
+        },
+        {
+          "info": {
+            "name": "Count sources",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hookdeck.com/2025-07-01/sources/count"
+          },
+          "docs": "Count sources"
+        },
+        {
+          "info": {
+            "name": "Retrieve a source",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hookdeck.com/2025-07-01/sources/:id",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This endpoint retrieves a specific source."
+        },
+        {
+          "info": {
+            "name": "Update a source",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hookdeck.com/2025-07-01/sources/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint updates a source."
+        },
+        {
+          "info": {
+            "name": "Delete a source",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hookdeck.com/2025-07-01/sources/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This endpoint permanently deletes a source. This action cannot be undone."
+        },
+        {
+          "info": {
+            "name": "Disable a source",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hookdeck.com/2025-07-01/sources/:id/disable",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This endpoint disables a source. A disabled source will no longer receive any events, and all connections associated with this source will also be disabled."
+        },
+        {
+          "info": {
+            "name": "Disable a source",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hookdeck.com/2025-07-01/sources/:id/archive",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This endpoint disables a source. A disabled source will no longer receive any events, and all connections associated with this source will also be disabled."
+        },
+        {
+          "info": {
+            "name": "Enable a source",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hookdeck.com/2025-07-01/sources/:id/enable",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This endpoint enables a source that was previously disabled."
+        },
+        {
+          "info": {
+            "name": "Enable a source",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hookdeck.com/2025-07-01/sources/:id/unarchive",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This endpoint enables a source that was previously disabled."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

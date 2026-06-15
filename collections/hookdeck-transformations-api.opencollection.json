@@ -1,0 +1,272 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Hookdeck Transformations API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Transformations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve transformations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hookdeck.com/2025-07-01/transformations",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order_by",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dir",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "next",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "prev",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "This endpoint lists transformations, or a subset of transformations."
+        },
+        {
+          "info": {
+            "name": "Create a transformation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hookdeck.com/2025-07-01/transformations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint creates a transformation."
+        },
+        {
+          "info": {
+            "name": "Create/Update a transformation",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hookdeck.com/2025-07-01/transformations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint creates a transformation, or updates an existing transformation by name."
+        },
+        {
+          "info": {
+            "name": "Get transformations count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hookdeck.com/2025-07-01/transformations/count"
+          },
+          "docs": "Get transformations count"
+        },
+        {
+          "info": {
+            "name": "Retrieve a transformation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hookdeck.com/2025-07-01/transformations/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This endpoint retrieves a specific transformation."
+        },
+        {
+          "info": {
+            "name": "Update a transformation",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hookdeck.com/2025-07-01/transformations/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint updates a transformation."
+        },
+        {
+          "info": {
+            "name": "Delete a transformation",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hookdeck.com/2025-07-01/transformations/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This endpoint permanently deletes a transformation. This action cannot be undone."
+        },
+        {
+          "info": {
+            "name": "Test a transformation",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hookdeck.com/2025-07-01/transformations/run",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint executes a transformation against a sample request payload and returns the transformed result without persisting anything."
+        },
+        {
+          "info": {
+            "name": "Get transformation executions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hookdeck.com/2025-07-01/transformations/:id/executions",
+            "params": [
+              {
+                "name": "log_level",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "webhook_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "issue_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "created_at",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order_by",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dir",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "next",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "prev",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get transformation executions"
+        },
+        {
+          "info": {
+            "name": "Get a transformation execution",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hookdeck.com/2025-07-01/transformations/:id/executions/:execution_id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "execution_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a transformation execution"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

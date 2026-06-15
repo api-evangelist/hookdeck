@@ -1,0 +1,2614 @@
+{
+  "info": {
+    "_postman_id": "9f717c29-3657-4ef9-a256-dd23d289fe5d",
+    "name": "Hookdeck Connections API",
+    "description": "Create, update, list, archive, pause, and unpause connections. A connection routes events from a source to a destination and may carry rules (retry, alert, transform, filter, delay).\n\nContact Support:\n Name: Hookdeck Support\n Email: info@hookdeck.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T15:09:44.000Z",
+    "updatedAt": "2026-06-05T15:09:44.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-9f717c29-3657-4ef9-a256-dd23d289fe5d"
+  },
+  "item": [
+    {
+      "name": "connections",
+      "item": [
+        {
+          "name": "count",
+          "item": [
+            {
+              "name": "Count connections",
+              "id": "f2c9ecb6-136d-41d6-9239-3fdabc03c9ea",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/connections/count?destination_id=<string>&source_id=<string>&disabled=<boolean>&disabled_at=<dateTime>&paused_at=<dateTime>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "connections",
+                    "count"
+                  ],
+                  "query": [
+                    {
+                      "key": "destination_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "source_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "disabled",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "disabled_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "paused_at",
+                      "value": "<dateTime>"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "4dfed04e-894a-41c2-8844-2045842dbd4a",
+                  "name": "Count of connections",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/connections/count?destination_id=<string>&source_id=<string>&disabled=<boolean>&disabled_at=<dateTime>&paused_at=<dateTime>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "connections",
+                        "count"
+                      ],
+                      "query": [
+                        {
+                          "key": "destination_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "source_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "disabled",
+                          "value": "<boolean>"
+                        },
+                        {
+                          "key": "disabled_at",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "key": "paused_at",
+                          "value": "<dateTime>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"count\": \"<float>\"\n}",
+                  "createdAt": "2026-06-05T15:09:44.000Z",
+                  "updatedAt": "2026-06-05T15:09:44.000Z",
+                  "uid": "35240-4dfed04e-894a-41c2-8844-2045842dbd4a"
+                },
+                {
+                  "id": "abb88b02-e531-4e0c-9a1f-6126fc005121",
+                  "name": "Bad Request",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/connections/count?destination_id=<string>&source_id=<string>&disabled=<boolean>&disabled_at=<dateTime>&paused_at=<dateTime>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "connections",
+                        "count"
+                      ],
+                      "query": [
+                        {
+                          "key": "destination_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "source_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "disabled",
+                          "value": "<boolean>"
+                        },
+                        {
+                          "key": "disabled_at",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "key": "paused_at",
+                          "value": "<dateTime>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T15:09:44.000Z",
+                  "updatedAt": "2026-06-05T15:09:44.000Z",
+                  "uid": "35240-abb88b02-e531-4e0c-9a1f-6126fc005121"
+                },
+                {
+                  "id": "3bdfb4e2-879c-4b14-8b8d-1caf9db79438",
+                  "name": "Unprocessable Entity",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/connections/count?destination_id=<string>&source_id=<string>&disabled=<boolean>&disabled_at=<dateTime>&paused_at=<dateTime>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "connections",
+                        "count"
+                      ],
+                      "query": [
+                        {
+                          "key": "destination_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "source_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "disabled",
+                          "value": "<boolean>"
+                        },
+                        {
+                          "key": "disabled_at",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "key": "paused_at",
+                          "value": "<dateTime>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T15:09:44.000Z",
+                  "updatedAt": "2026-06-05T15:09:44.000Z",
+                  "uid": "35240-3bdfb4e2-879c-4b14-8b8d-1caf9db79438"
+                }
+              ],
+              "createdAt": "2026-06-05T15:09:44.000Z",
+              "updatedAt": "2026-06-05T15:09:44.000Z",
+              "uid": "35240-f2c9ecb6-136d-41d6-9239-3fdabc03c9ea"
+            }
+          ],
+          "id": "351df200-b2c8-4852-b364-d56e5f7952b5",
+          "createdAt": "2026-06-05T15:09:44.000Z",
+          "updatedAt": "2026-06-05T15:09:44.000Z",
+          "uid": "35240-351df200-b2c8-4852-b364-d56e5f7952b5"
+        },
+        {
+          "name": "{id}",
+          "item": [
+            {
+              "name": "disable",
+              "item": [
+                {
+                  "name": "Disable a connection",
+                  "id": "8948d30f-aa87-49e9-8776-db105a12d3c1",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/connections/:id/disable",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "connections",
+                        ":id",
+                        "disable"
+                      ],
+                      "variable": [
+                        {
+                          "id": "6df13683-7f89-472c-89a1-4d4f2fc4a7b4",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "This endpoint disables a connection. Notice that a connection is enabled by default when created. A disabled connection will no longer receive or deliver any events."
+                  },
+                  "response": [
+                    {
+                      "id": "dc87b81d-8cd7-4714-9bf0-ec3045885bee",
+                      "name": "A single connection",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/connections/:id/disable",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "connections",
+                            ":id",
+                            "disable"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"full_name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"team_id\": \"<string>\",\n  \"destination\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"team_id\": \"<string>\",\n    \"type\": \"CLI\",\n    \"disabled_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"created_at\": \"<dateTime>\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"url\": \"<string>\",\n      \"rate_limit\": \"<float>\",\n      \"rate_limit_period\": \"minute\",\n      \"path_forwarding_disabled\": \"<boolean>\",\n      \"http_method\": \"DELETE\",\n      \"auth_type\": \"AWS_SIGNATURE\",\n      \"auth\": {}\n    }\n  },\n  \"source\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"team_id\": \"<string>\",\n    \"url\": \"<string>\",\n    \"type\": \"LINEAR\",\n    \"authenticated\": \"<boolean>\",\n    \"disabled_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"created_at\": \"<dateTime>\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"auth\": {\n        \"webhook_secret_key\": \"<string>\"\n      },\n      \"allowed_http_methods\": [\n        \"POST\",\n        \"GET\"\n      ],\n      \"custom_response\": {\n        \"content_type\": \"json\",\n        \"body\": \"<string>\"\n      }\n    }\n  },\n  \"rules\": [\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"linear\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"=409\"\n      ]\n    },\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"exponential\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \">=513\"\n      ]\n    }\n  ],\n  \"disabled_at\": \"<dateTime>\",\n  \"paused_at\": \"<dateTime>\",\n  \"updated_at\": \"<dateTime>\",\n  \"created_at\": \"<dateTime>\"\n}",
+                      "createdAt": "2026-06-05T15:09:44.000Z",
+                      "updatedAt": "2026-06-05T15:09:44.000Z",
+                      "uid": "35240-dc87b81d-8cd7-4714-9bf0-ec3045885bee"
+                    },
+                    {
+                      "id": "9a5bfa49-779a-4e40-bdf6-0b569506e108",
+                      "name": "Not Found",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/connections/:id/disable",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "connections",
+                            ":id",
+                            "disable"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                      "createdAt": "2026-06-05T15:09:44.000Z",
+                      "updatedAt": "2026-06-05T15:09:44.000Z",
+                      "uid": "35240-9a5bfa49-779a-4e40-bdf6-0b569506e108"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:09:44.000Z",
+                  "updatedAt": "2026-06-05T15:09:44.000Z",
+                  "uid": "35240-8948d30f-aa87-49e9-8776-db105a12d3c1"
+                }
+              ],
+              "id": "675dcbd7-8c63-49c8-84ca-fab97ac316f4",
+              "createdAt": "2026-06-05T15:09:44.000Z",
+              "updatedAt": "2026-06-05T15:09:44.000Z",
+              "uid": "35240-675dcbd7-8c63-49c8-84ca-fab97ac316f4"
+            },
+            {
+              "name": "archive",
+              "item": [
+                {
+                  "name": "Disable a connection",
+                  "id": "0321c917-9557-42cd-a439-9bf8f6c95642",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/connections/:id/archive",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "connections",
+                        ":id",
+                        "archive"
+                      ],
+                      "variable": [
+                        {
+                          "id": "2d8fd624-b565-4fcb-a0fb-5413238562a6",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "This endpoint disables a connection. Notice that a connection is enabled by default when created. A disabled connection will no longer receive or deliver any events."
+                  },
+                  "response": [
+                    {
+                      "id": "f179827d-d728-4779-9c1a-0ea063902acb",
+                      "name": "A single connection",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/connections/:id/archive",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "connections",
+                            ":id",
+                            "archive"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"full_name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"team_id\": \"<string>\",\n  \"destination\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"team_id\": \"<string>\",\n    \"type\": \"CLI\",\n    \"disabled_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"created_at\": \"<dateTime>\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"url\": \"<string>\",\n      \"rate_limit\": \"<float>\",\n      \"rate_limit_period\": \"minute\",\n      \"path_forwarding_disabled\": \"<boolean>\",\n      \"http_method\": \"DELETE\",\n      \"auth_type\": \"AWS_SIGNATURE\",\n      \"auth\": {}\n    }\n  },\n  \"source\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"team_id\": \"<string>\",\n    \"url\": \"<string>\",\n    \"type\": \"LINEAR\",\n    \"authenticated\": \"<boolean>\",\n    \"disabled_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"created_at\": \"<dateTime>\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"auth\": {\n        \"webhook_secret_key\": \"<string>\"\n      },\n      \"allowed_http_methods\": [\n        \"POST\",\n        \"GET\"\n      ],\n      \"custom_response\": {\n        \"content_type\": \"json\",\n        \"body\": \"<string>\"\n      }\n    }\n  },\n  \"rules\": [\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"linear\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"=409\"\n      ]\n    },\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"exponential\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \">=513\"\n      ]\n    }\n  ],\n  \"disabled_at\": \"<dateTime>\",\n  \"paused_at\": \"<dateTime>\",\n  \"updated_at\": \"<dateTime>\",\n  \"created_at\": \"<dateTime>\"\n}",
+                      "createdAt": "2026-06-05T15:09:44.000Z",
+                      "updatedAt": "2026-06-05T15:09:44.000Z",
+                      "uid": "35240-f179827d-d728-4779-9c1a-0ea063902acb"
+                    },
+                    {
+                      "id": "c0563c74-08a3-4999-aa22-5261cf705301",
+                      "name": "Not Found",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/connections/:id/archive",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "connections",
+                            ":id",
+                            "archive"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                      "createdAt": "2026-06-05T15:09:44.000Z",
+                      "updatedAt": "2026-06-05T15:09:44.000Z",
+                      "uid": "35240-c0563c74-08a3-4999-aa22-5261cf705301"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:09:44.000Z",
+                  "updatedAt": "2026-06-05T15:09:44.000Z",
+                  "uid": "35240-0321c917-9557-42cd-a439-9bf8f6c95642"
+                }
+              ],
+              "id": "970c790f-8a09-4b1f-aba2-4abfdb06165a",
+              "createdAt": "2026-06-05T15:09:44.000Z",
+              "updatedAt": "2026-06-05T15:09:44.000Z",
+              "uid": "35240-970c790f-8a09-4b1f-aba2-4abfdb06165a"
+            },
+            {
+              "name": "enable",
+              "item": [
+                {
+                  "name": "Enable a connection",
+                  "id": "e5694a1d-2b17-4c69-a037-c6e9c68ea5f5",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/connections/:id/enable",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "connections",
+                        ":id",
+                        "enable"
+                      ],
+                      "variable": [
+                        {
+                          "id": "dcce7f21-755b-448a-acca-49eb86f4885c",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "This endpoint enables a connection that has been previously disabled. The associated source and destination will also be enabled if they were previously disabled."
+                  },
+                  "response": [
+                    {
+                      "id": "20fc32a5-3f2e-41d4-bd76-bfc77c672672",
+                      "name": "A single connection",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/connections/:id/enable",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "connections",
+                            ":id",
+                            "enable"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"full_name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"team_id\": \"<string>\",\n  \"destination\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"team_id\": \"<string>\",\n    \"type\": \"CLI\",\n    \"disabled_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"created_at\": \"<dateTime>\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"url\": \"<string>\",\n      \"rate_limit\": \"<float>\",\n      \"rate_limit_period\": \"minute\",\n      \"path_forwarding_disabled\": \"<boolean>\",\n      \"http_method\": \"DELETE\",\n      \"auth_type\": \"AWS_SIGNATURE\",\n      \"auth\": {}\n    }\n  },\n  \"source\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"team_id\": \"<string>\",\n    \"url\": \"<string>\",\n    \"type\": \"LINEAR\",\n    \"authenticated\": \"<boolean>\",\n    \"disabled_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"created_at\": \"<dateTime>\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"auth\": {\n        \"webhook_secret_key\": \"<string>\"\n      },\n      \"allowed_http_methods\": [\n        \"POST\",\n        \"GET\"\n      ],\n      \"custom_response\": {\n        \"content_type\": \"json\",\n        \"body\": \"<string>\"\n      }\n    }\n  },\n  \"rules\": [\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"linear\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"=409\"\n      ]\n    },\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"exponential\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \">=513\"\n      ]\n    }\n  ],\n  \"disabled_at\": \"<dateTime>\",\n  \"paused_at\": \"<dateTime>\",\n  \"updated_at\": \"<dateTime>\",\n  \"created_at\": \"<dateTime>\"\n}",
+                      "createdAt": "2026-06-05T15:09:44.000Z",
+                      "updatedAt": "2026-06-05T15:09:44.000Z",
+                      "uid": "35240-20fc32a5-3f2e-41d4-bd76-bfc77c672672"
+                    },
+                    {
+                      "id": "c9bb4480-6b32-4d54-9bf9-370583ab217f",
+                      "name": "Not Found",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/connections/:id/enable",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "connections",
+                            ":id",
+                            "enable"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                      "createdAt": "2026-06-05T15:09:44.000Z",
+                      "updatedAt": "2026-06-05T15:09:44.000Z",
+                      "uid": "35240-c9bb4480-6b32-4d54-9bf9-370583ab217f"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:09:44.000Z",
+                  "updatedAt": "2026-06-05T15:09:44.000Z",
+                  "uid": "35240-e5694a1d-2b17-4c69-a037-c6e9c68ea5f5"
+                }
+              ],
+              "id": "156fd514-c8ff-4bd2-a07d-fac9d460e814",
+              "createdAt": "2026-06-05T15:09:44.000Z",
+              "updatedAt": "2026-06-05T15:09:44.000Z",
+              "uid": "35240-156fd514-c8ff-4bd2-a07d-fac9d460e814"
+            },
+            {
+              "name": "unarchive",
+              "item": [
+                {
+                  "name": "Enable a connection",
+                  "id": "cbc5aa39-d346-49c9-a7e1-773b0f708125",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/connections/:id/unarchive",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "connections",
+                        ":id",
+                        "unarchive"
+                      ],
+                      "variable": [
+                        {
+                          "id": "65b3833f-cd06-4b9f-b61f-9011017d22e6",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "This endpoint enables a connection that has been previously disabled. The associated source and destination will also be enabled if they were previously disabled."
+                  },
+                  "response": [
+                    {
+                      "id": "fe6bed32-6cc1-4b60-9efe-3de6d61c460a",
+                      "name": "A single connection",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/connections/:id/unarchive",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "connections",
+                            ":id",
+                            "unarchive"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"full_name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"team_id\": \"<string>\",\n  \"destination\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"team_id\": \"<string>\",\n    \"type\": \"CLI\",\n    \"disabled_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"created_at\": \"<dateTime>\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"url\": \"<string>\",\n      \"rate_limit\": \"<float>\",\n      \"rate_limit_period\": \"minute\",\n      \"path_forwarding_disabled\": \"<boolean>\",\n      \"http_method\": \"DELETE\",\n      \"auth_type\": \"AWS_SIGNATURE\",\n      \"auth\": {}\n    }\n  },\n  \"source\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"team_id\": \"<string>\",\n    \"url\": \"<string>\",\n    \"type\": \"LINEAR\",\n    \"authenticated\": \"<boolean>\",\n    \"disabled_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"created_at\": \"<dateTime>\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"auth\": {\n        \"webhook_secret_key\": \"<string>\"\n      },\n      \"allowed_http_methods\": [\n        \"POST\",\n        \"GET\"\n      ],\n      \"custom_response\": {\n        \"content_type\": \"json\",\n        \"body\": \"<string>\"\n      }\n    }\n  },\n  \"rules\": [\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"linear\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"=409\"\n      ]\n    },\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"exponential\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \">=513\"\n      ]\n    }\n  ],\n  \"disabled_at\": \"<dateTime>\",\n  \"paused_at\": \"<dateTime>\",\n  \"updated_at\": \"<dateTime>\",\n  \"created_at\": \"<dateTime>\"\n}",
+                      "createdAt": "2026-06-05T15:09:44.000Z",
+                      "updatedAt": "2026-06-05T15:09:44.000Z",
+                      "uid": "35240-fe6bed32-6cc1-4b60-9efe-3de6d61c460a"
+                    },
+                    {
+                      "id": "6b32d7cb-6043-4eaa-917f-d3fac0e28c9a",
+                      "name": "Not Found",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/connections/:id/unarchive",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "connections",
+                            ":id",
+                            "unarchive"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                      "createdAt": "2026-06-05T15:09:44.000Z",
+                      "updatedAt": "2026-06-05T15:09:44.000Z",
+                      "uid": "35240-6b32d7cb-6043-4eaa-917f-d3fac0e28c9a"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:09:44.000Z",
+                  "updatedAt": "2026-06-05T15:09:44.000Z",
+                  "uid": "35240-cbc5aa39-d346-49c9-a7e1-773b0f708125"
+                }
+              ],
+              "id": "d1b38427-635c-4ca8-8512-e8f0785c067c",
+              "createdAt": "2026-06-05T15:09:44.000Z",
+              "updatedAt": "2026-06-05T15:09:44.000Z",
+              "uid": "35240-d1b38427-635c-4ca8-8512-e8f0785c067c"
+            },
+            {
+              "name": "pause",
+              "item": [
+                {
+                  "name": "Pause a connection",
+                  "id": "71d15f03-e6e0-47a0-9236-c53c0dd9f99b",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/connections/:id/pause",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "connections",
+                        ":id",
+                        "pause"
+                      ],
+                      "variable": [
+                        {
+                          "id": "d4bae3d6-da9f-4cdb-83e7-9b14125d8bc8",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "This endpoint pauses a connection. A paused connection will still receive events, but those events will be marked with a status of `HOLD` and will be delivered only once the connection is unpaused."
+                  },
+                  "response": [
+                    {
+                      "id": "2f337e1c-472b-4c64-90ac-710d8f156553",
+                      "name": "A single connection",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/connections/:id/pause",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "connections",
+                            ":id",
+                            "pause"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"full_name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"team_id\": \"<string>\",\n  \"destination\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"team_id\": \"<string>\",\n    \"type\": \"CLI\",\n    \"disabled_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"created_at\": \"<dateTime>\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"url\": \"<string>\",\n      \"rate_limit\": \"<float>\",\n      \"rate_limit_period\": \"minute\",\n      \"path_forwarding_disabled\": \"<boolean>\",\n      \"http_method\": \"DELETE\",\n      \"auth_type\": \"AWS_SIGNATURE\",\n      \"auth\": {}\n    }\n  },\n  \"source\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"team_id\": \"<string>\",\n    \"url\": \"<string>\",\n    \"type\": \"LINEAR\",\n    \"authenticated\": \"<boolean>\",\n    \"disabled_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"created_at\": \"<dateTime>\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"auth\": {\n        \"webhook_secret_key\": \"<string>\"\n      },\n      \"allowed_http_methods\": [\n        \"POST\",\n        \"GET\"\n      ],\n      \"custom_response\": {\n        \"content_type\": \"json\",\n        \"body\": \"<string>\"\n      }\n    }\n  },\n  \"rules\": [\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"linear\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"=409\"\n      ]\n    },\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"exponential\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \">=513\"\n      ]\n    }\n  ],\n  \"disabled_at\": \"<dateTime>\",\n  \"paused_at\": \"<dateTime>\",\n  \"updated_at\": \"<dateTime>\",\n  \"created_at\": \"<dateTime>\"\n}",
+                      "createdAt": "2026-06-05T15:09:44.000Z",
+                      "updatedAt": "2026-06-05T15:09:44.000Z",
+                      "uid": "35240-2f337e1c-472b-4c64-90ac-710d8f156553"
+                    },
+                    {
+                      "id": "bae66943-a2b4-468d-b9ef-c3877e4987d7",
+                      "name": "Not Found",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/connections/:id/pause",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "connections",
+                            ":id",
+                            "pause"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                      "createdAt": "2026-06-05T15:09:44.000Z",
+                      "updatedAt": "2026-06-05T15:09:44.000Z",
+                      "uid": "35240-bae66943-a2b4-468d-b9ef-c3877e4987d7"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:09:44.000Z",
+                  "updatedAt": "2026-06-05T15:09:44.000Z",
+                  "uid": "35240-71d15f03-e6e0-47a0-9236-c53c0dd9f99b"
+                }
+              ],
+              "id": "ce2d0e75-b820-4e2f-ba0a-ebc775559e9e",
+              "createdAt": "2026-06-05T15:09:44.000Z",
+              "updatedAt": "2026-06-05T15:09:44.000Z",
+              "uid": "35240-ce2d0e75-b820-4e2f-ba0a-ebc775559e9e"
+            },
+            {
+              "name": "unpause",
+              "item": [
+                {
+                  "name": "Unpause a connection",
+                  "id": "b43e1328-f14c-46d4-875c-3a73c8669928",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/connections/:id/unpause",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "connections",
+                        ":id",
+                        "unpause"
+                      ],
+                      "variable": [
+                        {
+                          "id": "b2c108cc-a790-4850-9281-a2eba40d6be1",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "This endpoint unpauses a connection. Any event with a status of `HOLD` will be attempted. Destination delivery rate will be respected. This operation is asynchronous, so it may take some time for all events to be `QUEUED` for delivery."
+                  },
+                  "response": [
+                    {
+                      "id": "b34e4fa2-e59f-45ac-940e-927d9d7ce023",
+                      "name": "A single connection",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/connections/:id/unpause",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "connections",
+                            ":id",
+                            "unpause"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"full_name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"team_id\": \"<string>\",\n  \"destination\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"team_id\": \"<string>\",\n    \"type\": \"CLI\",\n    \"disabled_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"created_at\": \"<dateTime>\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"url\": \"<string>\",\n      \"rate_limit\": \"<float>\",\n      \"rate_limit_period\": \"minute\",\n      \"path_forwarding_disabled\": \"<boolean>\",\n      \"http_method\": \"DELETE\",\n      \"auth_type\": \"AWS_SIGNATURE\",\n      \"auth\": {}\n    }\n  },\n  \"source\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"team_id\": \"<string>\",\n    \"url\": \"<string>\",\n    \"type\": \"LINEAR\",\n    \"authenticated\": \"<boolean>\",\n    \"disabled_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"created_at\": \"<dateTime>\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"auth\": {\n        \"webhook_secret_key\": \"<string>\"\n      },\n      \"allowed_http_methods\": [\n        \"POST\",\n        \"GET\"\n      ],\n      \"custom_response\": {\n        \"content_type\": \"json\",\n        \"body\": \"<string>\"\n      }\n    }\n  },\n  \"rules\": [\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"linear\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"=409\"\n      ]\n    },\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"exponential\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \">=513\"\n      ]\n    }\n  ],\n  \"disabled_at\": \"<dateTime>\",\n  \"paused_at\": \"<dateTime>\",\n  \"updated_at\": \"<dateTime>\",\n  \"created_at\": \"<dateTime>\"\n}",
+                      "createdAt": "2026-06-05T15:09:44.000Z",
+                      "updatedAt": "2026-06-05T15:09:44.000Z",
+                      "uid": "35240-b34e4fa2-e59f-45ac-940e-927d9d7ce023"
+                    },
+                    {
+                      "id": "19d74feb-b470-4f8b-a860-578132f81dd1",
+                      "name": "Not Found",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/connections/:id/unpause",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "connections",
+                            ":id",
+                            "unpause"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                      "createdAt": "2026-06-05T15:09:44.000Z",
+                      "updatedAt": "2026-06-05T15:09:44.000Z",
+                      "uid": "35240-19d74feb-b470-4f8b-a860-578132f81dd1"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:09:44.000Z",
+                  "updatedAt": "2026-06-05T15:09:44.000Z",
+                  "uid": "35240-b43e1328-f14c-46d4-875c-3a73c8669928"
+                }
+              ],
+              "id": "b821e5b1-900b-4cf8-8805-984ddef0bc5a",
+              "createdAt": "2026-06-05T15:09:44.000Z",
+              "updatedAt": "2026-06-05T15:09:44.000Z",
+              "uid": "35240-b821e5b1-900b-4cf8-8805-984ddef0bc5a"
+            },
+            {
+              "name": "Retrieve a connection",
+              "id": "3e7252af-5c8f-41c5-b941-e9e7cd6a0460",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/connections/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "connections",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "2fa2c5cb-817b-45a0-aa2c-472ed080eedf",
+                      "key": "id",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "This endpoint retrieves a specific connection."
+              },
+              "response": [
+                {
+                  "id": "03192031-8529-4dd2-9727-42ed21c95ebd",
+                  "name": "A single connection",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/connections/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "connections",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"full_name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"team_id\": \"<string>\",\n  \"destination\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"team_id\": \"<string>\",\n    \"type\": \"CLI\",\n    \"disabled_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"created_at\": \"<dateTime>\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"url\": \"<string>\",\n      \"rate_limit\": \"<float>\",\n      \"rate_limit_period\": \"minute\",\n      \"path_forwarding_disabled\": \"<boolean>\",\n      \"http_method\": \"DELETE\",\n      \"auth_type\": \"AWS_SIGNATURE\",\n      \"auth\": {}\n    }\n  },\n  \"source\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"team_id\": \"<string>\",\n    \"url\": \"<string>\",\n    \"type\": \"LINEAR\",\n    \"authenticated\": \"<boolean>\",\n    \"disabled_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"created_at\": \"<dateTime>\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"auth\": {\n        \"webhook_secret_key\": \"<string>\"\n      },\n      \"allowed_http_methods\": [\n        \"POST\",\n        \"GET\"\n      ],\n      \"custom_response\": {\n        \"content_type\": \"json\",\n        \"body\": \"<string>\"\n      }\n    }\n  },\n  \"rules\": [\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"linear\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"=409\"\n      ]\n    },\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"exponential\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \">=513\"\n      ]\n    }\n  ],\n  \"disabled_at\": \"<dateTime>\",\n  \"paused_at\": \"<dateTime>\",\n  \"updated_at\": \"<dateTime>\",\n  \"created_at\": \"<dateTime>\"\n}",
+                  "createdAt": "2026-06-05T15:09:44.000Z",
+                  "updatedAt": "2026-06-05T15:09:44.000Z",
+                  "uid": "35240-03192031-8529-4dd2-9727-42ed21c95ebd"
+                },
+                {
+                  "id": "eda9d341-cf12-4268-b543-5663b1b26b6f",
+                  "name": "Not Found",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/connections/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "connections",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T15:09:44.000Z",
+                  "updatedAt": "2026-06-05T15:09:44.000Z",
+                  "uid": "35240-eda9d341-cf12-4268-b543-5663b1b26b6f"
+                },
+                {
+                  "id": "d915c270-3e4d-4c19-8024-7e85508b7d89",
+                  "name": "Gone",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/connections/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "connections",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Gone",
+                  "code": 410,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T15:09:44.000Z",
+                  "updatedAt": "2026-06-05T15:09:44.000Z",
+                  "uid": "35240-d915c270-3e4d-4c19-8024-7e85508b7d89"
+                }
+              ],
+              "createdAt": "2026-06-05T15:09:44.000Z",
+              "updatedAt": "2026-06-05T15:09:44.000Z",
+              "uid": "35240-3e7252af-5c8f-41c5-b941-e9e7cd6a0460"
+            },
+            {
+              "name": "Update a connection",
+              "id": "b34eed5a-55c9-4bf8-97db-f675cc2caf73",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"aE8`zU3muE\\\\\",\n  \"description\": \"<string>\",\n  \"rules\": [\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"exponential\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"<>369\"\n      ]\n    },\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"linear\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"<<393\"\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/connections/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "connections",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "6ec638dd-4c15-4798-80bc-2497fc470d1d",
+                      "key": "id",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "This endpoint updates a connection."
+              },
+              "response": [
+                {
+                  "id": "7e9230ff-3917-443c-891a-145cd10978b1",
+                  "name": "A single connection",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"aE8`zU3muE\\\\\",\n  \"description\": \"<string>\",\n  \"rules\": [\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"exponential\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"<>369\"\n      ]\n    },\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"linear\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"<<393\"\n      ]\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/connections/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "connections",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"full_name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"team_id\": \"<string>\",\n  \"destination\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"team_id\": \"<string>\",\n    \"type\": \"CLI\",\n    \"disabled_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"created_at\": \"<dateTime>\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"url\": \"<string>\",\n      \"rate_limit\": \"<float>\",\n      \"rate_limit_period\": \"minute\",\n      \"path_forwarding_disabled\": \"<boolean>\",\n      \"http_method\": \"DELETE\",\n      \"auth_type\": \"AWS_SIGNATURE\",\n      \"auth\": {}\n    }\n  },\n  \"source\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"team_id\": \"<string>\",\n    \"url\": \"<string>\",\n    \"type\": \"LINEAR\",\n    \"authenticated\": \"<boolean>\",\n    \"disabled_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"created_at\": \"<dateTime>\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"auth\": {\n        \"webhook_secret_key\": \"<string>\"\n      },\n      \"allowed_http_methods\": [\n        \"POST\",\n        \"GET\"\n      ],\n      \"custom_response\": {\n        \"content_type\": \"json\",\n        \"body\": \"<string>\"\n      }\n    }\n  },\n  \"rules\": [\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"linear\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"=409\"\n      ]\n    },\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"exponential\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \">=513\"\n      ]\n    }\n  ],\n  \"disabled_at\": \"<dateTime>\",\n  \"paused_at\": \"<dateTime>\",\n  \"updated_at\": \"<dateTime>\",\n  \"created_at\": \"<dateTime>\"\n}",
+                  "createdAt": "2026-06-05T15:09:44.000Z",
+                  "updatedAt": "2026-06-05T15:09:44.000Z",
+                  "uid": "35240-7e9230ff-3917-443c-891a-145cd10978b1"
+                },
+                {
+                  "id": "42f87980-51f5-4445-9f05-63ad29dd606b",
+                  "name": "Bad Request",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"aE8`zU3muE\\\\\",\n  \"description\": \"<string>\",\n  \"rules\": [\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"exponential\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"<>369\"\n      ]\n    },\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"linear\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"<<393\"\n      ]\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/connections/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "connections",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T15:09:44.000Z",
+                  "updatedAt": "2026-06-05T15:09:44.000Z",
+                  "uid": "35240-42f87980-51f5-4445-9f05-63ad29dd606b"
+                },
+                {
+                  "id": "b633f794-33b2-487a-a3ea-daa9654d6ff9",
+                  "name": "Not Found",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"aE8`zU3muE\\\\\",\n  \"description\": \"<string>\",\n  \"rules\": [\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"exponential\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"<>369\"\n      ]\n    },\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"linear\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"<<393\"\n      ]\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/connections/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "connections",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T15:09:44.000Z",
+                  "updatedAt": "2026-06-05T15:09:44.000Z",
+                  "uid": "35240-b633f794-33b2-487a-a3ea-daa9654d6ff9"
+                },
+                {
+                  "id": "89c13906-ed51-4408-8197-17d817d353e4",
+                  "name": "Unprocessable Entity",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"aE8`zU3muE\\\\\",\n  \"description\": \"<string>\",\n  \"rules\": [\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"exponential\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"<>369\"\n      ]\n    },\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"linear\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"<<393\"\n      ]\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/connections/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "connections",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T15:09:44.000Z",
+                  "updatedAt": "2026-06-05T15:09:44.000Z",
+                  "uid": "35240-89c13906-ed51-4408-8197-17d817d353e4"
+                }
+              ],
+              "createdAt": "2026-06-05T15:09:44.000Z",
+              "updatedAt": "2026-06-05T15:09:44.000Z",
+              "uid": "35240-b34eed5a-55c9-4bf8-97db-f675cc2caf73"
+            },
+            {
+              "name": "Delete a connection",
+              "id": "b805586a-691f-481f-b343-65ea9935ce91",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/connections/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "connections",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "0641435d-43ff-47d3-9caa-1fd61a80a5d0",
+                      "key": "id",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "This endpoint permanently deletes a connection. This action cannot be undone."
+              },
+              "response": [
+                {
+                  "id": "b120acc6-25df-4b29-af96-53c240b18444",
+                  "name": "A single connection",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/connections/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "connections",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\"\n}",
+                  "createdAt": "2026-06-05T15:09:44.000Z",
+                  "updatedAt": "2026-06-05T15:09:44.000Z",
+                  "uid": "35240-b120acc6-25df-4b29-af96-53c240b18444"
+                },
+                {
+                  "id": "2a73373a-8416-4901-ab9e-ec6bcfa48072",
+                  "name": "Not Found",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/connections/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "connections",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T15:09:44.000Z",
+                  "updatedAt": "2026-06-05T15:09:44.000Z",
+                  "uid": "35240-2a73373a-8416-4901-ab9e-ec6bcfa48072"
+                }
+              ],
+              "createdAt": "2026-06-05T15:09:44.000Z",
+              "updatedAt": "2026-06-05T15:09:44.000Z",
+              "uid": "35240-b805586a-691f-481f-b343-65ea9935ce91"
+            }
+          ],
+          "id": "8ce0d703-b3c9-4f2a-a14e-e1d86adaac90",
+          "createdAt": "2026-06-05T15:09:44.000Z",
+          "updatedAt": "2026-06-05T15:09:44.000Z",
+          "uid": "35240-8ce0d703-b3c9-4f2a-a14e-e1d86adaac90"
+        },
+        {
+          "name": "Retrieve connections",
+          "id": "8cece3ec-12e1-4807-9fc7-11a42f521830",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/connections?id=<string>&name=`&destination_id=<string>&source_id=<string>&disabled=<boolean>&disabled_at=<dateTime>&full_name=\u1680npw7z-\u2028\u202fvt&paused_at=<dateTime>&order_by=updated_at&dir=desc&limit=<integer>&next=<string>&prev=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "connections"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "name",
+                  "value": "`"
+                },
+                {
+                  "key": "destination_id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "source_id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "disabled",
+                  "value": "<boolean>"
+                },
+                {
+                  "key": "disabled_at",
+                  "value": "<dateTime>"
+                },
+                {
+                  "key": "full_name",
+                  "value": "\u1680npw7z-\u2028\u202fvt"
+                },
+                {
+                  "key": "paused_at",
+                  "value": "<dateTime>"
+                },
+                {
+                  "key": "order_by",
+                  "value": "updated_at"
+                },
+                {
+                  "key": "dir",
+                  "value": "desc"
+                },
+                {
+                  "key": "limit",
+                  "value": "<integer>"
+                },
+                {
+                  "key": "next",
+                  "value": "<string>"
+                },
+                {
+                  "key": "prev",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "This endpoint lists connections, or a subset of connections."
+          },
+          "response": [
+            {
+              "id": "bc8fb597-ac0f-4994-9314-f1fe9b2d90f4",
+              "name": "List of connections",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/connections?id=<string>&name=`&destination_id=<string>&source_id=<string>&disabled=<boolean>&disabled_at=<dateTime>&full_name=\u1680npw7z-\u2028\u202fvt&paused_at=<dateTime>&order_by=updated_at&dir=desc&limit=<integer>&next=<string>&prev=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "connections"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "name",
+                      "value": "`"
+                    },
+                    {
+                      "key": "destination_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "source_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "disabled",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "disabled_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "full_name",
+                      "value": "\u1680npw7z-\u2028\u202fvt"
+                    },
+                    {
+                      "key": "paused_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "updated_at"
+                    },
+                    {
+                      "key": "dir",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "next",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "prev",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"pagination\": {\n    \"order_by\": \"<string>\",\n    \"dir\": \"asc\",\n    \"limit\": \"<integer>\",\n    \"prev\": \"<string>\",\n    \"next\": \"<string>\"\n  },\n  \"count\": \"<integer>\",\n  \"models\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"full_name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"team_id\": \"<string>\",\n      \"destination\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"team_id\": \"<string>\",\n        \"type\": \"MOCK_API\",\n        \"disabled_at\": \"<dateTime>\",\n        \"updated_at\": \"<dateTime>\",\n        \"created_at\": \"<dateTime>\",\n        \"description\": \"<string>\",\n        \"config\": {\n          \"url\": \"<string>\",\n          \"rate_limit\": \"<float>\",\n          \"rate_limit_period\": \"second\",\n          \"path_forwarding_disabled\": \"<boolean>\",\n          \"http_method\": \"PATCH\",\n          \"auth_type\": \"AWS_SIGNATURE\",\n          \"auth\": {}\n        }\n      },\n      \"source\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"team_id\": \"<string>\",\n        \"url\": \"<string>\",\n        \"type\": \"FIREBLOCKS\",\n        \"authenticated\": \"<boolean>\",\n        \"disabled_at\": \"<dateTime>\",\n        \"updated_at\": \"<dateTime>\",\n        \"created_at\": \"<dateTime>\",\n        \"description\": \"<string>\",\n        \"config\": {\n          \"auth\": {\n            \"webhook_secret_key\": \"<string>\"\n          },\n          \"allowed_http_methods\": [\n            \"GET\",\n            \"GET\"\n          ],\n          \"custom_response\": {\n            \"content_type\": \"xml\",\n            \"body\": \"<string>\"\n          }\n        }\n      },\n      \"rules\": [\n        {\n          \"type\": \"retry\",\n          \"strategy\": \"linear\",\n          \"interval\": \"<integer>\",\n          \"count\": \"<integer>\",\n          \"response_status_codes\": [\n            \"412-300\"\n          ]\n        },\n        {\n          \"type\": \"retry\",\n          \"strategy\": \"linear\",\n          \"interval\": \"<integer>\",\n          \"count\": \"<integer>\",\n          \"response_status_codes\": [\n            \">>366\"\n          ]\n        }\n      ],\n      \"disabled_at\": \"<dateTime>\",\n      \"paused_at\": \"<dateTime>\",\n      \"updated_at\": \"<dateTime>\",\n      \"created_at\": \"<dateTime>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"full_name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"team_id\": \"<string>\",\n      \"destination\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"team_id\": \"<string>\",\n        \"type\": \"CLI\",\n        \"disabled_at\": \"<dateTime>\",\n        \"updated_at\": \"<dateTime>\",\n        \"created_at\": \"<dateTime>\",\n        \"description\": \"<string>\",\n        \"config\": {\n          \"url\": \"<string>\",\n          \"rate_limit\": \"<float>\",\n          \"rate_limit_period\": \"minute\",\n          \"path_forwarding_disabled\": \"<boolean>\",\n          \"http_method\": \"PUT\",\n          \"auth_type\": \"CUSTOM_SIGNATURE\",\n          \"auth\": {}\n        }\n      },\n      \"source\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"team_id\": \"<string>\",\n        \"url\": \"<string>\",\n        \"type\": \"FUSIONAUTH\",\n        \"authenticated\": \"<boolean>\",\n        \"disabled_at\": \"<dateTime>\",\n        \"updated_at\": \"<dateTime>\",\n        \"created_at\": \"<dateTime>\",\n        \"description\": \"<string>\",\n        \"config\": {\n          \"auth\": {\n            \"webhook_secret_key\": \"<string>\"\n          },\n          \"allowed_http_methods\": [\n            \"PUT\",\n            \"POST\"\n          ],\n          \"custom_response\": {\n            \"content_type\": \"xml\",\n            \"body\": \"<string>\"\n          }\n        }\n      },\n      \"rules\": [\n        {\n          \"type\": \"retry\",\n          \"strategy\": \"linear\",\n          \"interval\": \"<integer>\",\n          \"count\": \"<integer>\",\n          \"response_status_codes\": [\n            \"<406\"\n          ]\n        },\n        {\n          \"type\": \"retry\",\n          \"strategy\": \"exponential\",\n          \"interval\": \"<integer>\",\n          \"count\": \"<integer>\",\n          \"response_status_codes\": [\n            \"499\"\n          ]\n        }\n      ],\n      \"disabled_at\": \"<dateTime>\",\n      \"paused_at\": \"<dateTime>\",\n      \"updated_at\": \"<dateTime>\",\n      \"created_at\": \"<dateTime>\"\n    }\n  ]\n}",
+              "createdAt": "2026-06-05T15:09:44.000Z",
+              "updatedAt": "2026-06-05T15:09:44.000Z",
+              "uid": "35240-bc8fb597-ac0f-4994-9314-f1fe9b2d90f4"
+            },
+            {
+              "id": "6a81356f-eec7-45ca-ba53-0731c69df4a3",
+              "name": "Bad Request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/connections?id=<string>&name=`&destination_id=<string>&source_id=<string>&disabled=<boolean>&disabled_at=<dateTime>&full_name=\u1680npw7z-\u2028\u202fvt&paused_at=<dateTime>&order_by=updated_at&dir=desc&limit=<integer>&next=<string>&prev=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "connections"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "name",
+                      "value": "`"
+                    },
+                    {
+                      "key": "destination_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "source_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "disabled",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "disabled_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "full_name",
+                      "value": "\u1680npw7z-\u2028\u202fvt"
+                    },
+                    {
+                      "key": "paused_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "updated_at"
+                    },
+                    {
+                      "key": "dir",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "next",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "prev",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+              "createdAt": "2026-06-05T15:09:44.000Z",
+              "updatedAt": "2026-06-05T15:09:44.000Z",
+              "uid": "35240-6a81356f-eec7-45ca-ba53-0731c69df4a3"
+            },
+            {
+              "id": "0333b474-1596-462c-a71a-2fed1201e090",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/connections?id=<string>&name=`&destination_id=<string>&source_id=<string>&disabled=<boolean>&disabled_at=<dateTime>&full_name=\u1680npw7z-\u2028\u202fvt&paused_at=<dateTime>&order_by=updated_at&dir=desc&limit=<integer>&next=<string>&prev=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "connections"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "name",
+                      "value": "`"
+                    },
+                    {
+                      "key": "destination_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "source_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "disabled",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "disabled_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "full_name",
+                      "value": "\u1680npw7z-\u2028\u202fvt"
+                    },
+                    {
+                      "key": "paused_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "updated_at"
+                    },
+                    {
+                      "key": "dir",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "next",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "prev",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+              "createdAt": "2026-06-05T15:09:44.000Z",
+              "updatedAt": "2026-06-05T15:09:44.000Z",
+              "uid": "35240-0333b474-1596-462c-a71a-2fed1201e090"
+            }
+          ],
+          "createdAt": "2026-06-05T15:09:44.000Z",
+          "updatedAt": "2026-06-05T15:09:44.000Z",
+          "uid": "35240-8cece3ec-12e1-4807-9fc7-11a42f521830"
+        },
+        {
+          "name": "Create a connection",
+          "id": "8b518a23-ca05-412e-b479-396350433839",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"C\",\n  \"description\": \"<string>\",\n  \"destination_id\": \"<string>\",\n  \"source_id\": \"<string>\",\n  \"destination\": {\n    \"name\": \"Jov14AS[\",\n    \"type\": \"HTTP\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"url\": \"<string>\",\n      \"rate_limit\": \"<float>\",\n      \"rate_limit_period\": \"second\",\n      \"path_forwarding_disabled\": \"<boolean>\",\n      \"http_method\": \"GET\",\n      \"auth_type\": \"OAUTH2_AUTHORIZATION_CODE\",\n      \"auth\": {}\n    }\n  },\n  \"source\": {\n    \"name\": \"y07-KqP\",\n    \"type\": \"WEBHOOK\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"auth\": {\n        \"webhook_secret_key\": \"<string>\"\n      },\n      \"allowed_http_methods\": [\n        \"GET\",\n        \"POST\"\n      ],\n      \"custom_response\": {\n        \"content_type\": \"json\",\n        \"body\": \"<string>\"\n      }\n    }\n  },\n  \"rules\": [\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"linear\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"509\"\n      ]\n    },\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"linear\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"!230\"\n      ]\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/connections",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "connections"
+              ]
+            },
+            "description": "This endpoint creates a connection. You can create a connection's underlying source, destination, and rules with a single call by declaring an object for any of those resources. You can reuse a source or destination by referencing their ID."
+          },
+          "response": [
+            {
+              "id": "77ab82aa-66f9-49e7-bb50-562f9f5bf780",
+              "name": "A single connection",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"C\",\n  \"description\": \"<string>\",\n  \"destination_id\": \"<string>\",\n  \"source_id\": \"<string>\",\n  \"destination\": {\n    \"name\": \"Jov14AS[\",\n    \"type\": \"HTTP\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"url\": \"<string>\",\n      \"rate_limit\": \"<float>\",\n      \"rate_limit_period\": \"second\",\n      \"path_forwarding_disabled\": \"<boolean>\",\n      \"http_method\": \"GET\",\n      \"auth_type\": \"OAUTH2_AUTHORIZATION_CODE\",\n      \"auth\": {}\n    }\n  },\n  \"source\": {\n    \"name\": \"y07-KqP\",\n    \"type\": \"WEBHOOK\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"auth\": {\n        \"webhook_secret_key\": \"<string>\"\n      },\n      \"allowed_http_methods\": [\n        \"GET\",\n        \"POST\"\n      ],\n      \"custom_response\": {\n        \"content_type\": \"json\",\n        \"body\": \"<string>\"\n      }\n    }\n  },\n  \"rules\": [\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"linear\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"509\"\n      ]\n    },\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"linear\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"!230\"\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/connections",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "connections"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"full_name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"team_id\": \"<string>\",\n  \"destination\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"team_id\": \"<string>\",\n    \"type\": \"CLI\",\n    \"disabled_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"created_at\": \"<dateTime>\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"url\": \"<string>\",\n      \"rate_limit\": \"<float>\",\n      \"rate_limit_period\": \"minute\",\n      \"path_forwarding_disabled\": \"<boolean>\",\n      \"http_method\": \"DELETE\",\n      \"auth_type\": \"AWS_SIGNATURE\",\n      \"auth\": {}\n    }\n  },\n  \"source\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"team_id\": \"<string>\",\n    \"url\": \"<string>\",\n    \"type\": \"LINEAR\",\n    \"authenticated\": \"<boolean>\",\n    \"disabled_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"created_at\": \"<dateTime>\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"auth\": {\n        \"webhook_secret_key\": \"<string>\"\n      },\n      \"allowed_http_methods\": [\n        \"POST\",\n        \"GET\"\n      ],\n      \"custom_response\": {\n        \"content_type\": \"json\",\n        \"body\": \"<string>\"\n      }\n    }\n  },\n  \"rules\": [\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"linear\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"=409\"\n      ]\n    },\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"exponential\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \">=513\"\n      ]\n    }\n  ],\n  \"disabled_at\": \"<dateTime>\",\n  \"paused_at\": \"<dateTime>\",\n  \"updated_at\": \"<dateTime>\",\n  \"created_at\": \"<dateTime>\"\n}",
+              "createdAt": "2026-06-05T15:09:44.000Z",
+              "updatedAt": "2026-06-05T15:09:44.000Z",
+              "uid": "35240-77ab82aa-66f9-49e7-bb50-562f9f5bf780"
+            },
+            {
+              "id": "bf93d43d-568e-4cb3-976c-6c7a4a773c91",
+              "name": "Bad Request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"C\",\n  \"description\": \"<string>\",\n  \"destination_id\": \"<string>\",\n  \"source_id\": \"<string>\",\n  \"destination\": {\n    \"name\": \"Jov14AS[\",\n    \"type\": \"HTTP\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"url\": \"<string>\",\n      \"rate_limit\": \"<float>\",\n      \"rate_limit_period\": \"second\",\n      \"path_forwarding_disabled\": \"<boolean>\",\n      \"http_method\": \"GET\",\n      \"auth_type\": \"OAUTH2_AUTHORIZATION_CODE\",\n      \"auth\": {}\n    }\n  },\n  \"source\": {\n    \"name\": \"y07-KqP\",\n    \"type\": \"WEBHOOK\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"auth\": {\n        \"webhook_secret_key\": \"<string>\"\n      },\n      \"allowed_http_methods\": [\n        \"GET\",\n        \"POST\"\n      ],\n      \"custom_response\": {\n        \"content_type\": \"json\",\n        \"body\": \"<string>\"\n      }\n    }\n  },\n  \"rules\": [\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"linear\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"509\"\n      ]\n    },\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"linear\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"!230\"\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/connections",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "connections"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+              "createdAt": "2026-06-05T15:09:44.000Z",
+              "updatedAt": "2026-06-05T15:09:44.000Z",
+              "uid": "35240-bf93d43d-568e-4cb3-976c-6c7a4a773c91"
+            },
+            {
+              "id": "919dca65-0bba-47ae-b2fe-9a17ac510be1",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"C\",\n  \"description\": \"<string>\",\n  \"destination_id\": \"<string>\",\n  \"source_id\": \"<string>\",\n  \"destination\": {\n    \"name\": \"Jov14AS[\",\n    \"type\": \"HTTP\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"url\": \"<string>\",\n      \"rate_limit\": \"<float>\",\n      \"rate_limit_period\": \"second\",\n      \"path_forwarding_disabled\": \"<boolean>\",\n      \"http_method\": \"GET\",\n      \"auth_type\": \"OAUTH2_AUTHORIZATION_CODE\",\n      \"auth\": {}\n    }\n  },\n  \"source\": {\n    \"name\": \"y07-KqP\",\n    \"type\": \"WEBHOOK\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"auth\": {\n        \"webhook_secret_key\": \"<string>\"\n      },\n      \"allowed_http_methods\": [\n        \"GET\",\n        \"POST\"\n      ],\n      \"custom_response\": {\n        \"content_type\": \"json\",\n        \"body\": \"<string>\"\n      }\n    }\n  },\n  \"rules\": [\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"linear\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"509\"\n      ]\n    },\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"linear\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"!230\"\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/connections",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "connections"
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+              "createdAt": "2026-06-05T15:09:44.000Z",
+              "updatedAt": "2026-06-05T15:09:44.000Z",
+              "uid": "35240-919dca65-0bba-47ae-b2fe-9a17ac510be1"
+            }
+          ],
+          "createdAt": "2026-06-05T15:09:44.000Z",
+          "updatedAt": "2026-06-05T15:09:44.000Z",
+          "uid": "35240-8b518a23-ca05-412e-b479-396350433839"
+        },
+        {
+          "name": "Create/Update a connection",
+          "id": "639b9cfe-6c83-4c88-b704-0742f51fe8af",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"C\",\n  \"description\": \"<string>\",\n  \"destination_id\": \"<string>\",\n  \"source_id\": \"<string>\",\n  \"destination\": {\n    \"name\": \"Jov14AS[\",\n    \"type\": \"HTTP\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"url\": \"<string>\",\n      \"rate_limit\": \"<float>\",\n      \"rate_limit_period\": \"second\",\n      \"path_forwarding_disabled\": \"<boolean>\",\n      \"http_method\": \"GET\",\n      \"auth_type\": \"OAUTH2_AUTHORIZATION_CODE\",\n      \"auth\": {}\n    }\n  },\n  \"source\": {\n    \"name\": \"y07-KqP\",\n    \"type\": \"WEBHOOK\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"auth\": {\n        \"webhook_secret_key\": \"<string>\"\n      },\n      \"allowed_http_methods\": [\n        \"GET\",\n        \"POST\"\n      ],\n      \"custom_response\": {\n        \"content_type\": \"json\",\n        \"body\": \"<string>\"\n      }\n    }\n  },\n  \"rules\": [\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"linear\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"509\"\n      ]\n    },\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"linear\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"!230\"\n      ]\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/connections",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "connections"
+              ]
+            },
+            "description": "This endpoint creates a connection, or updates an existing connection by name. A connection's source and destination cannot be updated."
+          },
+          "response": [
+            {
+              "id": "45912d14-6454-4382-b855-760b501ed582",
+              "name": "A single connection",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"C\",\n  \"description\": \"<string>\",\n  \"destination_id\": \"<string>\",\n  \"source_id\": \"<string>\",\n  \"destination\": {\n    \"name\": \"Jov14AS[\",\n    \"type\": \"HTTP\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"url\": \"<string>\",\n      \"rate_limit\": \"<float>\",\n      \"rate_limit_period\": \"second\",\n      \"path_forwarding_disabled\": \"<boolean>\",\n      \"http_method\": \"GET\",\n      \"auth_type\": \"OAUTH2_AUTHORIZATION_CODE\",\n      \"auth\": {}\n    }\n  },\n  \"source\": {\n    \"name\": \"y07-KqP\",\n    \"type\": \"WEBHOOK\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"auth\": {\n        \"webhook_secret_key\": \"<string>\"\n      },\n      \"allowed_http_methods\": [\n        \"GET\",\n        \"POST\"\n      ],\n      \"custom_response\": {\n        \"content_type\": \"json\",\n        \"body\": \"<string>\"\n      }\n    }\n  },\n  \"rules\": [\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"linear\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"509\"\n      ]\n    },\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"linear\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"!230\"\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/connections",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "connections"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"full_name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"team_id\": \"<string>\",\n  \"destination\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"team_id\": \"<string>\",\n    \"type\": \"CLI\",\n    \"disabled_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"created_at\": \"<dateTime>\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"url\": \"<string>\",\n      \"rate_limit\": \"<float>\",\n      \"rate_limit_period\": \"minute\",\n      \"path_forwarding_disabled\": \"<boolean>\",\n      \"http_method\": \"DELETE\",\n      \"auth_type\": \"AWS_SIGNATURE\",\n      \"auth\": {}\n    }\n  },\n  \"source\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"team_id\": \"<string>\",\n    \"url\": \"<string>\",\n    \"type\": \"LINEAR\",\n    \"authenticated\": \"<boolean>\",\n    \"disabled_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"created_at\": \"<dateTime>\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"auth\": {\n        \"webhook_secret_key\": \"<string>\"\n      },\n      \"allowed_http_methods\": [\n        \"POST\",\n        \"GET\"\n      ],\n      \"custom_response\": {\n        \"content_type\": \"json\",\n        \"body\": \"<string>\"\n      }\n    }\n  },\n  \"rules\": [\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"linear\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"=409\"\n      ]\n    },\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"exponential\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \">=513\"\n      ]\n    }\n  ],\n  \"disabled_at\": \"<dateTime>\",\n  \"paused_at\": \"<dateTime>\",\n  \"updated_at\": \"<dateTime>\",\n  \"created_at\": \"<dateTime>\"\n}",
+              "createdAt": "2026-06-05T15:09:44.000Z",
+              "updatedAt": "2026-06-05T15:09:44.000Z",
+              "uid": "35240-45912d14-6454-4382-b855-760b501ed582"
+            },
+            {
+              "id": "07c71447-d329-4522-bc69-01f8098efa6a",
+              "name": "Bad Request",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"C\",\n  \"description\": \"<string>\",\n  \"destination_id\": \"<string>\",\n  \"source_id\": \"<string>\",\n  \"destination\": {\n    \"name\": \"Jov14AS[\",\n    \"type\": \"HTTP\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"url\": \"<string>\",\n      \"rate_limit\": \"<float>\",\n      \"rate_limit_period\": \"second\",\n      \"path_forwarding_disabled\": \"<boolean>\",\n      \"http_method\": \"GET\",\n      \"auth_type\": \"OAUTH2_AUTHORIZATION_CODE\",\n      \"auth\": {}\n    }\n  },\n  \"source\": {\n    \"name\": \"y07-KqP\",\n    \"type\": \"WEBHOOK\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"auth\": {\n        \"webhook_secret_key\": \"<string>\"\n      },\n      \"allowed_http_methods\": [\n        \"GET\",\n        \"POST\"\n      ],\n      \"custom_response\": {\n        \"content_type\": \"json\",\n        \"body\": \"<string>\"\n      }\n    }\n  },\n  \"rules\": [\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"linear\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"509\"\n      ]\n    },\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"linear\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"!230\"\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/connections",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "connections"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+              "createdAt": "2026-06-05T15:09:44.000Z",
+              "updatedAt": "2026-06-05T15:09:44.000Z",
+              "uid": "35240-07c71447-d329-4522-bc69-01f8098efa6a"
+            },
+            {
+              "id": "adb06842-3fe0-4ac7-99c9-0d81f677da8f",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"C\",\n  \"description\": \"<string>\",\n  \"destination_id\": \"<string>\",\n  \"source_id\": \"<string>\",\n  \"destination\": {\n    \"name\": \"Jov14AS[\",\n    \"type\": \"HTTP\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"url\": \"<string>\",\n      \"rate_limit\": \"<float>\",\n      \"rate_limit_period\": \"second\",\n      \"path_forwarding_disabled\": \"<boolean>\",\n      \"http_method\": \"GET\",\n      \"auth_type\": \"OAUTH2_AUTHORIZATION_CODE\",\n      \"auth\": {}\n    }\n  },\n  \"source\": {\n    \"name\": \"y07-KqP\",\n    \"type\": \"WEBHOOK\",\n    \"description\": \"<string>\",\n    \"config\": {\n      \"auth\": {\n        \"webhook_secret_key\": \"<string>\"\n      },\n      \"allowed_http_methods\": [\n        \"GET\",\n        \"POST\"\n      ],\n      \"custom_response\": {\n        \"content_type\": \"json\",\n        \"body\": \"<string>\"\n      }\n    }\n  },\n  \"rules\": [\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"linear\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"509\"\n      ]\n    },\n    {\n      \"type\": \"retry\",\n      \"strategy\": \"linear\",\n      \"interval\": \"<integer>\",\n      \"count\": \"<integer>\",\n      \"response_status_codes\": [\n        \"!230\"\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/connections",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "connections"
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+              "createdAt": "2026-06-05T15:09:44.000Z",
+              "updatedAt": "2026-06-05T15:09:44.000Z",
+              "uid": "35240-adb06842-3fe0-4ac7-99c9-0d81f677da8f"
+            }
+          ],
+          "createdAt": "2026-06-05T15:09:44.000Z",
+          "updatedAt": "2026-06-05T15:09:44.000Z",
+          "uid": "35240-639b9cfe-6c83-4c88-b704-0742f51fe8af"
+        }
+      ],
+      "id": "045c4a5c-e0d8-474a-aeb4-48f0278a163e",
+      "createdAt": "2026-06-05T15:09:44.000Z",
+      "updatedAt": "2026-06-05T15:09:44.000Z",
+      "uid": "35240-045c4a5c-e0d8-474a-aeb4-48f0278a163e"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.hookdeck.com/2025-07-01"
+    }
+  ]
+}

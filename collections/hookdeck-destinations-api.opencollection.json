@@ -1,0 +1,285 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Hookdeck Destinations API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Destinations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve destinations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hookdeck.com/2025-07-01/destinations",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "disabled",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "disabled_at",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order_by",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dir",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "next",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "prev",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "This endpoint lists destinations, or a subset of destinations."
+        },
+        {
+          "info": {
+            "name": "Create a destination",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hookdeck.com/2025-07-01/destinations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint creates a destination."
+        },
+        {
+          "info": {
+            "name": "Create/Update a destination",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hookdeck.com/2025-07-01/destinations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint creates a destination, or updates an existing destination by name."
+        },
+        {
+          "info": {
+            "name": "Count destinations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hookdeck.com/2025-07-01/destinations/count",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "disabled",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "disabled_at",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Count destinations"
+        },
+        {
+          "info": {
+            "name": "Retrieve a destination",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hookdeck.com/2025-07-01/destinations/:id",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This endpoint retrieves a specific destination."
+        },
+        {
+          "info": {
+            "name": "Update a destination",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hookdeck.com/2025-07-01/destinations/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint updates a destination."
+        },
+        {
+          "info": {
+            "name": "Delete a destination",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hookdeck.com/2025-07-01/destinations/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This endpoint permanently deletes a destination. This action cannot be undone."
+        },
+        {
+          "info": {
+            "name": "Disable a destination",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hookdeck.com/2025-07-01/destinations/:id/disable",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This endpoint disables a destination. A disabled destination will no longer deliver any events."
+        },
+        {
+          "info": {
+            "name": "Disable a destination",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hookdeck.com/2025-07-01/destinations/:id/archive",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This endpoint disables a destination. A disabled destination will no longer deliver any events."
+        },
+        {
+          "info": {
+            "name": "Enable a destination",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hookdeck.com/2025-07-01/destinations/:id/enable",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This endpoint enables a destination that was previously disabled."
+        },
+        {
+          "info": {
+            "name": "Enable a destination",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hookdeck.com/2025-07-01/destinations/:id/unarchive",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This endpoint enables a destination that was previously disabled."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

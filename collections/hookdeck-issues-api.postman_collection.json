@@ -1,0 +1,3111 @@
+{
+  "item": [
+    {
+      "id": "28028e57-9727-4edd-8d45-ed7d2f5737d9",
+      "name": "Issues",
+      "description": {
+        "content": "Issues lets you track problems in your project and communicate resolution steps with your team.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "3a7daa06-479c-44b8-ab17-3a39fa892b37",
+          "name": "Retrieve issues",
+          "request": {
+            "name": "Retrieve issues",
+            "description": {
+              "content": "This endpoint lists issues, or a subset of issues.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "issues"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "issue_trigger_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "merged_with",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "webhook_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "response_status",
+                  "value": "<float>"
+                },
+                {
+                  "disabled": false,
+                  "key": "error_code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "transformation_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "log_level",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "destination_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "delay",
+                  "value": "<float>"
+                },
+                {
+                  "disabled": false,
+                  "key": "source_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "rejection_cause",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "created_at",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "first_seen_at",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "last_seen_at",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dismissed_at",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "order_by",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dir",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "next",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "prev",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "300f3936-353a-431a-86cf-a4a2ca9a6566",
+              "name": "List of issues",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issues"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "iss_YXKv5OdJXCiVwkPhGy"
+                    },
+                    {
+                      "key": "issue_trigger_id",
+                      "value": "it_BXKv5OdJXCiVwkPhGy"
+                    },
+                    {
+                      "key": "type",
+                      "value": "delivery"
+                    },
+                    {
+                      "key": "status",
+                      "value": "OPENED"
+                    },
+                    {
+                      "key": "merged_with",
+                      "value": "iss_AXKv3OdJXCiKlkPhDz"
+                    },
+                    {
+                      "key": "webhook_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "response_status",
+                      "value": "<float>"
+                    },
+                    {
+                      "key": "error_code",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "transformation_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "log_level",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "destination_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "delay",
+                      "value": "<float>"
+                    },
+                    {
+                      "key": "source_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "rejection_cause",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "created_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "first_seen_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "last_seen_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "dismissed_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dir",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "next",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "prev",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"pagination\": {\n    \"order_by\": \"string\",\n    \"dir\": \"string\",\n    \"limit\": 6826,\n    \"prev\": \"string\",\n    \"next\": \"string\"\n  },\n  \"count\": 352,\n  \"models\": [\n    {\n      \"id\": \"iss_YXKv5OdJXCiVwkPhGy\",\n      \"team_id\": \"string\",\n      \"status\": \"OPENED\",\n      \"opened_at\": \"1996-10-10T23:40:03.856Z\",\n      \"first_seen_at\": \"1969-08-18T04:01:25.392Z\",\n      \"last_seen_at\": \"1948-03-10T01:18:23.131Z\",\n      \"updated_at\": \"string\",\n      \"created_at\": \"string\",\n      \"type\": \"delivery\",\n      \"aggregation_keys\": {\n        \"webhook_id\": [\n          \"string\",\n          \"string\"\n        ],\n        \"response_status\": [\n          4899.313719887058,\n          8257.684842608167\n        ],\n        \"error_code\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ]\n      },\n      \"reference\": {\n        \"event_id\": \"string\",\n        \"attempt_id\": \"string\"\n      },\n      \"last_updated_by\": \"string\",\n      \"dismissed_at\": \"1953-06-08T17:03:27.930Z\",\n      \"auto_resolved_at\": \"2008-05-24T08:20:02.086Z\",\n      \"merged_with\": \"string\",\n      \"data\": {\n        \"trigger_event\": {\n          \"id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"team_id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"webhook_id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"source_id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"destination_id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"event_data_id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"request_id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"attempts\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"last_attempt_at\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"next_attempt_at\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"status\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"successful_at\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"cli_id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"updated_at\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"created_at\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"response_status\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"error_code\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"data\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"trigger_attempt\": {\n          \"id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"team_id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"event_id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"destination_id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"status\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"updated_at\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"created_at\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"response_status\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"attempt_number\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"trigger\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"error_code\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"body\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"requested_url\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"http_method\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"bulk_retry_id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"successful_at\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"delivered_at\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"responded_at\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"delivery_latency\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"response_latency\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    },\n    {\n      \"id\": \"iss_YXKv5OdJXCiVwkPhGy\",\n      \"team_id\": \"string\",\n      \"status\": \"RESOLVED\",\n      \"opened_at\": \"1980-09-23T02:37:26.656Z\",\n      \"first_seen_at\": \"1955-01-12T08:37:40.348Z\",\n      \"last_seen_at\": \"2020-03-21T19:00:49.169Z\",\n      \"updated_at\": \"string\",\n      \"created_at\": \"string\",\n      \"type\": \"delivery\",\n      \"aggregation_keys\": {\n        \"webhook_id\": [\n          \"string\",\n          \"string\"\n        ],\n        \"response_status\": [\n          9405.745013800168,\n          9649.075411589523\n        ],\n        \"error_code\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ]\n      },\n      \"reference\": {\n        \"event_id\": \"string\",\n        \"attempt_id\": \"string\"\n      },\n      \"last_updated_by\": \"string\",\n      \"dismissed_at\": \"2024-06-29T19:25:21.263Z\",\n      \"auto_resolved_at\": \"1950-04-30T12:58:39.967Z\",\n      \"merged_with\": \"string\",\n      \"data\": {\n        \"trigger_event\": {\n          \"id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"team_id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"webhook_id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"source_id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"destination_id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"event_data_id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"request_id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"attempts\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"last_attempt_at\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"next_attempt_at\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"status\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"successful_at\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"cli_id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"updated_at\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"created_at\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"response_status\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"error_code\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"data\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"trigger_attempt\": {\n          \"id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"team_id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"event_id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"destination_id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"status\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"updated_at\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"created_at\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"response_status\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"attempt_number\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"trigger\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"error_code\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"body\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"requested_url\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"http_method\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"bulk_retry_id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"successful_at\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"delivered_at\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"responded_at\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"delivery_latency\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"response_latency\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "75caf214-14ab-463e-bfdb-d87ab98a998f",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issues"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "iss_YXKv5OdJXCiVwkPhGy"
+                    },
+                    {
+                      "key": "issue_trigger_id",
+                      "value": "it_BXKv5OdJXCiVwkPhGy"
+                    },
+                    {
+                      "key": "type",
+                      "value": "delivery"
+                    },
+                    {
+                      "key": "status",
+                      "value": "OPENED"
+                    },
+                    {
+                      "key": "merged_with",
+                      "value": "iss_AXKv3OdJXCiKlkPhDz"
+                    },
+                    {
+                      "key": "webhook_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "response_status",
+                      "value": "<float>"
+                    },
+                    {
+                      "key": "error_code",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "transformation_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "log_level",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "destination_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "delay",
+                      "value": "<float>"
+                    },
+                    {
+                      "key": "source_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "rejection_cause",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "created_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "first_seen_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "last_seen_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "dismissed_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dir",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "next",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "prev",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 430.1880430237936,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "edbef0bc-c7e6-4ad8-a2ee-ddaa30aa807a",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issues"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "iss_YXKv5OdJXCiVwkPhGy"
+                    },
+                    {
+                      "key": "issue_trigger_id",
+                      "value": "it_BXKv5OdJXCiVwkPhGy"
+                    },
+                    {
+                      "key": "type",
+                      "value": "delivery"
+                    },
+                    {
+                      "key": "status",
+                      "value": "OPENED"
+                    },
+                    {
+                      "key": "merged_with",
+                      "value": "iss_AXKv3OdJXCiKlkPhDz"
+                    },
+                    {
+                      "key": "webhook_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "response_status",
+                      "value": "<float>"
+                    },
+                    {
+                      "key": "error_code",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "transformation_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "log_level",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "destination_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "delay",
+                      "value": "<float>"
+                    },
+                    {
+                      "key": "source_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "rejection_cause",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "created_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "first_seen_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "last_seen_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "dismissed_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dir",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "next",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "prev",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 430.1880430237936,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9d6ca215-3dd2-48ef-a802-075108724e39",
+          "name": "Get the number of issues",
+          "request": {
+            "name": "Get the number of issues",
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "issues",
+                "count"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "issue_trigger_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "merged_with",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "webhook_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "response_status",
+                  "value": "<float>"
+                },
+                {
+                  "disabled": false,
+                  "key": "error_code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "transformation_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "log_level",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "destination_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "delay",
+                  "value": "<float>"
+                },
+                {
+                  "disabled": false,
+                  "key": "source_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "rejection_cause",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "created_at",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "first_seen_at",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "last_seen_at",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dismissed_at",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "order_by",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dir",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "next",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "prev",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "38201e10-c2d5-488d-80b2-afd2625a499f",
+              "name": "Issue count",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issues",
+                    "count"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "iss_YXKv5OdJXCiVwkPhGy"
+                    },
+                    {
+                      "key": "issue_trigger_id",
+                      "value": "it_BXKv5OdJXCiVwkPhGy"
+                    },
+                    {
+                      "key": "type",
+                      "value": "delivery"
+                    },
+                    {
+                      "key": "status",
+                      "value": "OPENED"
+                    },
+                    {
+                      "key": "merged_with",
+                      "value": "iss_AXKv3OdJXCiKlkPhDz"
+                    },
+                    {
+                      "key": "webhook_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "response_status",
+                      "value": "<float>"
+                    },
+                    {
+                      "key": "error_code",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "transformation_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "log_level",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "destination_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "delay",
+                      "value": "<float>"
+                    },
+                    {
+                      "key": "source_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "rejection_cause",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "created_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "first_seen_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "last_seen_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "dismissed_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dir",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "next",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "prev",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 5\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0e94d5e8-1d85-4808-ba23-ac9b48ada6d2",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issues",
+                    "count"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "iss_YXKv5OdJXCiVwkPhGy"
+                    },
+                    {
+                      "key": "issue_trigger_id",
+                      "value": "it_BXKv5OdJXCiVwkPhGy"
+                    },
+                    {
+                      "key": "type",
+                      "value": "delivery"
+                    },
+                    {
+                      "key": "status",
+                      "value": "OPENED"
+                    },
+                    {
+                      "key": "merged_with",
+                      "value": "iss_AXKv3OdJXCiKlkPhDz"
+                    },
+                    {
+                      "key": "webhook_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "response_status",
+                      "value": "<float>"
+                    },
+                    {
+                      "key": "error_code",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "transformation_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "log_level",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "destination_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "delay",
+                      "value": "<float>"
+                    },
+                    {
+                      "key": "source_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "rejection_cause",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "created_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "first_seen_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "last_seen_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "dismissed_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dir",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "next",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "prev",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 430.1880430237936,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2566c835-39dd-4b53-8f3c-e629c6c17c64",
+          "name": "Retrieve an issue",
+          "request": {
+            "name": "Retrieve an issue",
+            "description": {
+              "content": "This endpoint retrieves a specific issue.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "issues",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3b34740b-9fd7-46e1-a0f6-e40453c99dba",
+              "name": "A single issue",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issues",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"iss_YXKv5OdJXCiVwkPhGy\",\n  \"team_id\": \"string\",\n  \"status\": \"OPENED\",\n  \"opened_at\": \"1985-01-01T21:36:20.797Z\",\n  \"first_seen_at\": \"2013-02-10T05:39:32.078Z\",\n  \"last_seen_at\": \"1967-11-28T15:26:48.785Z\",\n  \"updated_at\": \"string\",\n  \"created_at\": \"string\",\n  \"type\": \"delivery\",\n  \"aggregation_keys\": {\n    \"webhook_id\": [\n      \"string\",\n      \"string\"\n    ],\n    \"response_status\": [\n      3484.47857041849,\n      3365.733761082368\n    ],\n    \"error_code\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"reference\": {\n    \"event_id\": \"string\",\n    \"attempt_id\": \"string\"\n  },\n  \"last_updated_by\": \"string\",\n  \"dismissed_at\": \"1990-08-13T23:41:12.502Z\",\n  \"auto_resolved_at\": \"1978-06-25T07:04:59.940Z\",\n  \"merged_with\": \"string\",\n  \"data\": {\n    \"trigger_event\": {\n      \"id\": \"string\",\n      \"team_id\": \"string\",\n      \"webhook_id\": \"string\",\n      \"source_id\": \"string\",\n      \"destination_id\": \"string\",\n      \"event_data_id\": \"string\",\n      \"request_id\": \"string\",\n      \"attempts\": 3355,\n      \"last_attempt_at\": \"1984-02-03T01:44:12.118Z\",\n      \"next_attempt_at\": \"1974-06-30T22:16:27.637Z\",\n      \"status\": \"HOLD\",\n      \"successful_at\": \"1990-01-24T15:19:26.105Z\",\n      \"cli_id\": \"string\",\n      \"updated_at\": \"1963-03-07T21:38:35.174Z\",\n      \"created_at\": \"1966-11-10T22:06:17.522Z\",\n      \"response_status\": 2461,\n      \"error_code\": \"<string>\",\n      \"data\": {\n        \"url\": \"string\",\n        \"method\": \"string\",\n        \"path\": \"string\",\n        \"query\": \"string\",\n        \"parsed_query\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"headers\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"body\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"appended_headers\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"is_large_payload\": false\n      }\n    },\n    \"trigger_attempt\": {\n      \"id\": \"string\",\n      \"team_id\": \"string\",\n      \"event_id\": \"string\",\n      \"destination_id\": \"string\",\n      \"status\": \"SUCCESSFUL\",\n      \"updated_at\": \"1951-07-22T17:29:29.698Z\",\n      \"created_at\": \"1960-06-04T01:03:00.392Z\",\n      \"response_status\": 9389,\n      \"attempt_number\": 6543,\n      \"trigger\": \"AUTOMATIC\",\n      \"error_code\": \"<string>\",\n      \"body\": {},\n      \"requested_url\": \"string\",\n      \"http_method\": \"POST\",\n      \"bulk_retry_id\": \"string\",\n      \"successful_at\": \"2013-05-23T07:38:47.215Z\",\n      \"delivered_at\": \"1983-12-30T07:17:14.452Z\",\n      \"responded_at\": \"1961-11-17T05:18:01.053Z\",\n      \"delivery_latency\": 9643,\n      \"response_latency\": 1782\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "554a3b7d-dd11-4162-ac3e-b6245de52494",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issues",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 430.1880430237936,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "25be1b3b-bd88-4186-b14f-425c719e049c",
+          "name": "Update an issue",
+          "request": {
+            "name": "Update an issue",
+            "description": {
+              "content": "This endpoint updates an issue's status.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "issues",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "14ea2334-81aa-4107-9f2a-ccaa84db1663",
+              "name": "Updated issue",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issues",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"iss_YXKv5OdJXCiVwkPhGy\",\n  \"team_id\": \"string\",\n  \"status\": \"ACKNOWLEDGED\",\n  \"opened_at\": \"1972-10-14T14:10:54.514Z\",\n  \"first_seen_at\": \"2009-01-31T07:27:21.759Z\",\n  \"last_seen_at\": \"1954-05-30T03:58:13.770Z\",\n  \"updated_at\": \"string\",\n  \"created_at\": \"string\",\n  \"type\": \"delivery\",\n  \"aggregation_keys\": {\n    \"webhook_id\": [\n      \"string\",\n      \"string\"\n    ],\n    \"response_status\": [\n      4468.86457779088,\n      7045.2014047381035\n    ],\n    \"error_code\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"reference\": {\n    \"event_id\": \"string\",\n    \"attempt_id\": \"string\"\n  },\n  \"last_updated_by\": \"string\",\n  \"dismissed_at\": \"1998-12-09T16:17:34.918Z\",\n  \"auto_resolved_at\": \"1950-06-23T19:24:45.644Z\",\n  \"merged_with\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5581b3cb-6705-4de6-8691-ec227f3be56b",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issues",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 430.1880430237936,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "648b1f27-2336-4da5-a92a-bd46514abfa2",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issues",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 430.1880430237936,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f22d2573-397c-43d5-9cd0-1724dd64be7f",
+          "name": "Dismiss an issue",
+          "request": {
+            "name": "Dismiss an issue",
+            "description": {
+              "content": "This endpoint dismisses an issue.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "issues",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7786488c-426e-4834-838f-2b90b969e456",
+              "name": "Dismissed issue",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issues",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"iss_YXKv5OdJXCiVwkPhGy\",\n  \"team_id\": \"string\",\n  \"status\": \"ACKNOWLEDGED\",\n  \"opened_at\": \"1972-10-14T14:10:54.514Z\",\n  \"first_seen_at\": \"2009-01-31T07:27:21.759Z\",\n  \"last_seen_at\": \"1954-05-30T03:58:13.770Z\",\n  \"updated_at\": \"string\",\n  \"created_at\": \"string\",\n  \"type\": \"delivery\",\n  \"aggregation_keys\": {\n    \"webhook_id\": [\n      \"string\",\n      \"string\"\n    ],\n    \"response_status\": [\n      4468.86457779088,\n      7045.2014047381035\n    ],\n    \"error_code\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"reference\": {\n    \"event_id\": \"string\",\n    \"attempt_id\": \"string\"\n  },\n  \"last_updated_by\": \"string\",\n  \"dismissed_at\": \"1998-12-09T16:17:34.918Z\",\n  \"auto_resolved_at\": \"1950-06-23T19:24:45.644Z\",\n  \"merged_with\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6b64b549-7faa-4666-99c8-24d4cf738308",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issues",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 430.1880430237936,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "dfe83467-e27a-41b7-a917-d7e4b66ed62f",
+      "name": "Issue Triggers",
+      "description": {
+        "content": "Issue Triggers lets you setup rules that trigger issues when certain conditions are met.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "2a812437-8f9e-4bc9-a25e-9a6fa150df23",
+          "name": "Retrieve issue triggers",
+          "request": {
+            "name": "Retrieve issue triggers",
+            "description": {
+              "content": "This endpoint lists issue triggers.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "issue-triggers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "disabled_at",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "order_by",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dir",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "next",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "prev",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c0fd9dec-687b-458d-8faa-409f7d3ef0f7",
+              "name": "List of issue triggers",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue-triggers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "disabled_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dir",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "next",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "prev",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"pagination\": {\n    \"order_by\": \"string\",\n    \"dir\": \"string\",\n    \"limit\": 4685,\n    \"prev\": \"string\",\n    \"next\": \"string\"\n  },\n  \"count\": 6513,\n  \"models\": [\n    {\n      \"id\": \"string\",\n      \"type\": \"<string>\",\n      \"configs\": {\n        \"strategy\": \"final_attempt\",\n        \"connections\": \"string\"\n      },\n      \"updated_at\": \"2014-04-11T21:50:51.456Z\",\n      \"created_at\": \"2019-03-06T23:39:06.733Z\",\n      \"team_id\": \"string\",\n      \"name\": \"string\",\n      \"channels\": {\n        \"slack\": {\n          \"channel_name\": \"string\"\n        },\n        \"microsoft_teams\": {\n          \"channel_name\": \"string\"\n        },\n        \"discord\": {\n          \"channel_name\": \"string\",\n          \"channel_id\": \"string\",\n          \"webhook_url\": \"string\"\n        },\n        \"betteruptime\": {\n          \"escalation_policy_id\": \"string\",\n          \"escalation_policy_name\": \"string\"\n        },\n        \"pagerduty\": {},\n        \"opsgenie\": {},\n        \"email\": {}\n      },\n      \"disabled_at\": \"2002-09-16T08:34:51.911Z\",\n      \"deleted_at\": \"1967-11-20T18:36:23.409Z\"\n    },\n    {\n      \"id\": \"string\",\n      \"type\": \"<string>\",\n      \"configs\": {\n        \"strategy\": \"first_attempt\",\n        \"connections\": \"string\"\n      },\n      \"updated_at\": \"1956-08-14T00:59:21.674Z\",\n      \"created_at\": \"1991-08-24T11:03:52.737Z\",\n      \"team_id\": \"string\",\n      \"name\": \"string\",\n      \"channels\": {\n        \"slack\": {\n          \"channel_name\": \"string\"\n        },\n        \"microsoft_teams\": {\n          \"channel_name\": \"string\"\n        },\n        \"discord\": {\n          \"channel_name\": \"string\",\n          \"channel_id\": \"string\",\n          \"webhook_url\": \"string\"\n        },\n        \"betteruptime\": {\n          \"escalation_policy_id\": \"string\",\n          \"escalation_policy_name\": \"string\"\n        },\n        \"pagerduty\": {},\n        \"opsgenie\": {},\n        \"email\": {}\n      },\n      \"disabled_at\": \"1973-03-29T13:12:00.234Z\",\n      \"deleted_at\": \"1984-02-05T11:37:22.344Z\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "769e5481-aff3-4bb9-84f6-858292a67a8f",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue-triggers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "disabled_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dir",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "next",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "prev",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 430.1880430237936,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0c1d13c7-a935-4b79-86cc-6f7ddeea12ab",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue-triggers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "disabled_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dir",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "next",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "prev",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 430.1880430237936,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "191a205e-18a6-46ba-ab71-699df493fadb",
+          "name": "Create an issue trigger",
+          "request": {
+            "name": "Create an issue trigger",
+            "description": {
+              "content": "This endpoint creates an issue trigger.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "issue-triggers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"<string>\",\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  },\n  \"name\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5c0c9b8d-2c07-41cd-b2f9-644035b6be8b",
+              "name": "A single issue trigger",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue-triggers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"<string>\",\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  },\n  \"name\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"type\": \"<string>\",\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  },\n  \"updated_at\": \"2012-01-31T16:05:41.089Z\",\n  \"created_at\": \"2003-08-02T23:06:55.639Z\",\n  \"team_id\": \"string\",\n  \"name\": \"string\",\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"disabled_at\": \"2002-01-23T22:45:57.999Z\",\n  \"deleted_at\": \"1983-04-22T02:37:41.326Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8397e9b2-9fcc-44f9-88d4-fa6fc30a3d9e",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue-triggers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"<string>\",\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  },\n  \"name\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 430.1880430237936,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "58661802-e95f-4077-aaa2-c2498bebe024",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue-triggers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"<string>\",\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  },\n  \"name\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 430.1880430237936,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9fc7aa20-d6b7-4bca-94d5-947d488e28a0",
+          "name": "Create/Update an issue trigger",
+          "request": {
+            "name": "Create/Update an issue trigger",
+            "description": {
+              "content": "This endpoint creates an issue trigger, or updates an existing issue trigger by name.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "issue-triggers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"<string>\",\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"name\": \"<string>\",\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7060146a-b91d-44f3-9046-e13002d6b3a5",
+              "name": "A single issue trigger",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue-triggers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"<string>\",\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"name\": \"<string>\",\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"type\": \"<string>\",\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  },\n  \"updated_at\": \"2012-01-31T16:05:41.089Z\",\n  \"created_at\": \"2003-08-02T23:06:55.639Z\",\n  \"team_id\": \"string\",\n  \"name\": \"string\",\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"disabled_at\": \"2002-01-23T22:45:57.999Z\",\n  \"deleted_at\": \"1983-04-22T02:37:41.326Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cce4dcf0-8d4e-4352-8d0d-d731ff15e179",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue-triggers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"<string>\",\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"name\": \"<string>\",\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 430.1880430237936,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "adfdc592-a30f-4750-9c07-c19e61fe8b6b",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue-triggers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"<string>\",\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"name\": \"<string>\",\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 430.1880430237936,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7dc8fa9e-4f9a-4b4a-8182-0a48b23ec85f",
+          "name": "Retrieve an issue trigger",
+          "request": {
+            "name": "Retrieve an issue trigger",
+            "description": {
+              "content": "This endpoint retrieves a specific issue trigger.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "issue-triggers",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "25a939cf-2623-4d7b-8b5c-c96738233faa",
+              "name": "A single issue trigger",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue-triggers",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"type\": \"<string>\",\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  },\n  \"updated_at\": \"2012-01-31T16:05:41.089Z\",\n  \"created_at\": \"2003-08-02T23:06:55.639Z\",\n  \"team_id\": \"string\",\n  \"name\": \"string\",\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"disabled_at\": \"2002-01-23T22:45:57.999Z\",\n  \"deleted_at\": \"1983-04-22T02:37:41.326Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "96894f03-fc4f-4cbb-b4db-6f349913b981",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue-triggers",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 430.1880430237936,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "eef2d18b-3b3a-45d1-b8f2-0d16dcf7ae75",
+          "name": "Update an issue trigger",
+          "request": {
+            "name": "Update an issue trigger",
+            "description": {
+              "content": "This endpoint updates an issue trigger.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "issue-triggers",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  },\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"disabled_at\": \"<dateTime>\",\n  \"name\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "62ce47cc-bb46-42a9-8776-2420d600d79f",
+              "name": "A single issue trigger",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue-triggers",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  },\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"disabled_at\": \"<dateTime>\",\n  \"name\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"type\": \"<string>\",\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  },\n  \"updated_at\": \"2012-01-31T16:05:41.089Z\",\n  \"created_at\": \"2003-08-02T23:06:55.639Z\",\n  \"team_id\": \"string\",\n  \"name\": \"string\",\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"disabled_at\": \"2002-01-23T22:45:57.999Z\",\n  \"deleted_at\": \"1983-04-22T02:37:41.326Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0129eb14-7e4c-439d-8d26-6b79f52d6bf3",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue-triggers",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  },\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"disabled_at\": \"<dateTime>\",\n  \"name\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 430.1880430237936,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a4fbfedf-1e53-43ec-8fa0-1910c5ad2fe3",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue-triggers",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  },\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"disabled_at\": \"<dateTime>\",\n  \"name\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 430.1880430237936,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "643236a0-f2fe-4444-9dc4-acd000bf24ef",
+          "name": "Delete an issue trigger",
+          "request": {
+            "name": "Delete an issue trigger",
+            "description": {
+              "content": "This endpoint permanently deletes an issue trigger. This action cannot be undone.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "issue-triggers",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f587de0d-297c-40e7-8f96-c5abb7d7e245",
+              "name": "An object with deleted issue trigger's id",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue-triggers",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7caf8d8c-9a4a-4698-8bec-66f4101697aa",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue-triggers",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 430.1880430237936,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a191be61-6309-41ef-8301-7f676a9a2206",
+          "name": "Disable an issue trigger",
+          "request": {
+            "name": "Disable an issue trigger",
+            "description": {
+              "content": "This endpoint disables an issue trigger so it stops producing issues.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "issue-triggers",
+                ":id",
+                "disable"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3f857e17-6913-446b-851e-4270bd1a143d",
+              "name": "A single issue trigger",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue-triggers",
+                    ":id",
+                    "disable"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"type\": \"<string>\",\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  },\n  \"updated_at\": \"2012-01-31T16:05:41.089Z\",\n  \"created_at\": \"2003-08-02T23:06:55.639Z\",\n  \"team_id\": \"string\",\n  \"name\": \"string\",\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"disabled_at\": \"2002-01-23T22:45:57.999Z\",\n  \"deleted_at\": \"1983-04-22T02:37:41.326Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4724e669-c804-41b5-8a9b-b30dc80b60f3",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue-triggers",
+                    ":id",
+                    "disable"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 430.1880430237936,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "60edb2b2-7218-415e-9626-74f0d0cf3066",
+          "name": "Enable an issue trigger",
+          "request": {
+            "name": "Enable an issue trigger",
+            "description": {
+              "content": "This endpoint enables a previously disabled issue trigger.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "issue-triggers",
+                ":id",
+                "enable"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7c4d7e20-1c92-4ffe-9307-b439a37cf7b1",
+              "name": "A single issue trigger",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue-triggers",
+                    ":id",
+                    "enable"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"type\": \"<string>\",\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  },\n  \"updated_at\": \"2012-01-31T16:05:41.089Z\",\n  \"created_at\": \"2003-08-02T23:06:55.639Z\",\n  \"team_id\": \"string\",\n  \"name\": \"string\",\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"disabled_at\": \"2002-01-23T22:45:57.999Z\",\n  \"deleted_at\": \"1983-04-22T02:37:41.326Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7aa3d8c7-60be-4df0-a7ba-c93cbe39a515",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue-triggers",
+                    ":id",
+                    "enable"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 430.1880430237936,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.hookdeck.com/2025-07-01",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "e7ceb9f3-12d4-4b67-8329-d34b6d8e8729",
+    "name": "Hookdeck Issues API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Track issues that occur on events, requests, and backpressure, and manage the triggers (rules) that open and route issues to Slack, Email, Teams, Discord, BetterUptime, and other channels.\n\nContact Support:\n Name: Hookdeck Support\n Email: info@hookdeck.com",
+      "type": "text/plain"
+    }
+  }
+}

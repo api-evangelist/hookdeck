@@ -1,0 +1,1299 @@
+{
+  "item": [
+    {
+      "id": "e2e6cd5c-4d98-499c-a198-f1a2809b770a",
+      "name": "Metrics",
+      "description": {
+        "content": "Query aggregated metrics for events, requests, and attempts with time-based grouping and filtering.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "90d9ba8e-d603-46a0-a30d-9cce70ccde8d",
+          "name": "Query request metrics",
+          "request": {
+            "name": "Query request metrics",
+            "description": {
+              "content": "Query aggregated request metrics with time-based grouping and filtering",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "metrics",
+                "requests"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "start",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "end",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "granularity",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "source_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "rejection_cause",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "bulk_retry_ids",
+                  "value": "[\"<string>\",\"<string>\"]"
+                },
+                {
+                  "disabled": false,
+                  "key": "events_count",
+                  "value": "{\"min\":\"<integer>\",\"max\":\"<integer>\"}"
+                },
+                {
+                  "disabled": false,
+                  "key": "ignored_count",
+                  "value": "{\"min\":\"<integer>\",\"max\":\"<integer>\"}"
+                },
+                {
+                  "disabled": false,
+                  "key": "measures",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dimensions",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dimensions",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f2c7d02c-8f20-49e9-83d2-f1ee317ddaf1",
+              "name": "Request metrics results",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "metrics",
+                    "requests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "granularity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "source_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "rejection_cause",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "bulk_retry_ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "events_count",
+                      "value": "[object Object]"
+                    },
+                    {
+                      "key": "ignored_count",
+                      "value": "[object Object]"
+                    },
+                    {
+                      "key": "measures",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dimensions",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dimensions",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 5733.714620813279,\n        \"key_1\": 6348.155992502177\n      }\n    },\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 3320.880028958201\n      }\n    }\n  ],\n  \"metadata\": {\n    \"granularity\": \"string\",\n    \"query_time_ms\": 9874.48237955731,\n    \"row_count\": 5665.040196804762,\n    \"row_limit\": 966.624789902698,\n    \"truncated\": false,\n    \"warning\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f7ab857c-2da7-4ae5-8768-d226c1b9c20c",
+          "name": "Query event metrics",
+          "request": {
+            "name": "Query event metrics",
+            "description": {
+              "content": "Query aggregated event metrics with time-based grouping and filtering",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "metrics",
+                "events"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "start",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "end",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "granularity",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "source_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "webhook_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "destination_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "error_code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "issue_ids",
+                  "value": "[\"<string>\",\"<string>\"]"
+                },
+                {
+                  "disabled": false,
+                  "key": "bulk_retry_ids",
+                  "value": "[\"<string>\",\"<string>\"]"
+                },
+                {
+                  "disabled": false,
+                  "key": "event_data_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "cli_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "cli_user_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "attempts",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "response_status",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "measures",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dimensions",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dimensions",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "503ed285-0fb4-4c1c-9197-57d8cd8a473a",
+              "name": "Event metrics results",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "metrics",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "granularity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "source_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "webhook_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "destination_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "error_code",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "issue_ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "bulk_retry_ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "event_data_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cli_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cli_user_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "attempts",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "response_status",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "measures",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dimensions",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dimensions",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 2888.414780205598,\n        \"key_1\": 7361.613645917065\n      }\n    },\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 1307.4371717564848,\n        \"key_1\": 4933.183874110997,\n        \"key_2\": 3595.2521278518425\n      }\n    }\n  ],\n  \"metadata\": {\n    \"granularity\": \"string\",\n    \"query_time_ms\": 9573.172618754108,\n    \"row_count\": 7374.489457045907,\n    \"row_limit\": 6792.970735118173,\n    \"truncated\": false,\n    \"warning\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d1b6b455-75b4-48f9-a8b2-35e22e8ed97b",
+          "name": "Query attempt metrics",
+          "request": {
+            "name": "Query attempt metrics",
+            "description": {
+              "content": "Query aggregated attempt metrics with time-based grouping and filtering",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "metrics",
+                "attempts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "start",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "end",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "granularity",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "destination_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "event_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "error_code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "bulk_retry_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "trigger",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "measures",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dimensions",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dimensions",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "bf391046-da83-4655-b2e5-87086ed91248",
+              "name": "Attempt metrics results",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "metrics",
+                    "attempts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "granularity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "destination_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "event_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "error_code",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "bulk_retry_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "trigger",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "measures",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dimensions",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dimensions",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 2888.414780205598,\n        \"key_1\": 7361.613645917065\n      }\n    },\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 1307.4371717564848,\n        \"key_1\": 4933.183874110997,\n        \"key_2\": 3595.2521278518425\n      }\n    }\n  ],\n  \"metadata\": {\n    \"granularity\": \"string\",\n    \"query_time_ms\": 9573.172618754108,\n    \"row_count\": 7374.489457045907,\n    \"row_limit\": 6792.970735118173,\n    \"truncated\": false,\n    \"warning\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d5a00b28-fbdc-4bd5-a4eb-be4c0ef551fc",
+          "name": "Query event metrics grouped by individual issue",
+          "request": {
+            "name": "Query event metrics grouped by individual issue",
+            "description": {
+              "content": "Returns metrics for events broken down by individual issue IDs. Uses arrayJoin to create one row per issue per event, enabling per-issue analytics. Useful for tracking which issues affect the most events over time.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "metrics",
+                "events-by-issue"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "start",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "end",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "granularity",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "issue_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "source_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "destination_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "webhook_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "measures",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dimensions",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dimensions",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7f01e04c-5208-4a30-99c1-2892608109f5",
+              "name": "Events by issue metrics results",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "metrics",
+                    "events-by-issue"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "granularity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "issue_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "source_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "destination_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "webhook_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "measures",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dimensions",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dimensions",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 2888.414780205598,\n        \"key_1\": 7361.613645917065\n      }\n    },\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 1307.4371717564848,\n        \"key_1\": 4933.183874110997,\n        \"key_2\": 3595.2521278518425\n      }\n    }\n  ],\n  \"metadata\": {\n    \"granularity\": \"string\",\n    \"query_time_ms\": 9573.172618754108,\n    \"row_count\": 7374.489457045907,\n    \"row_limit\": 6792.970735118173,\n    \"truncated\": false,\n    \"warning\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a4fd39f8-2945-4f32-a794-1206f6702013",
+          "name": "Query queue depth metrics",
+          "request": {
+            "name": "Query queue depth metrics",
+            "description": {
+              "content": "Query queue depth metrics for destinations (pending events count and age)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "metrics",
+                "queue-depth"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "start",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "end",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "granularity",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "destination_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "measures",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dimensions",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dimensions",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "bc2e9bb6-f8cc-4d89-a3c7-2d44e9763e2a",
+              "name": "Queue depth metrics results",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "metrics",
+                    "queue-depth"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "granularity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "destination_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "measures",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dimensions",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dimensions",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 2888.414780205598,\n        \"key_1\": 7361.613645917065\n      }\n    },\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 1307.4371717564848,\n        \"key_1\": 4933.183874110997,\n        \"key_2\": 3595.2521278518425\n      }\n    }\n  ],\n  \"metadata\": {\n    \"granularity\": \"string\",\n    \"query_time_ms\": 9573.172618754108,\n    \"row_count\": 7374.489457045907,\n    \"row_limit\": 6792.970735118173,\n    \"truncated\": false,\n    \"warning\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1603cbae-f666-4efd-8d0c-8cdf51cd7659",
+          "name": "Query transformation execution metrics",
+          "request": {
+            "name": "Query transformation execution metrics",
+            "description": {
+              "content": "Query aggregated transformation execution metrics with time-based grouping and filtering",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "metrics",
+                "transformations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "start",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "end",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "granularity",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "transformation_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "webhook_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "log_level",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "issue_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "measures",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dimensions",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dimensions",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "68cbcd4e-2564-4a91-b04b-ef083f802640",
+              "name": "Transformation metrics results",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "metrics",
+                    "transformations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "granularity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "transformation_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "webhook_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "log_level",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "issue_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "measures",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dimensions",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dimensions",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 2888.414780205598,\n        \"key_1\": 7361.613645917065\n      }\n    },\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 1307.4371717564848,\n        \"key_1\": 4933.183874110997,\n        \"key_2\": 3595.2521278518425\n      }\n    }\n  ],\n  \"metadata\": {\n    \"granularity\": \"string\",\n    \"query_time_ms\": 9573.172618754108,\n    \"row_count\": 7374.489457045907,\n    \"row_limit\": 6792.970735118173,\n    \"truncated\": false,\n    \"warning\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "86224e68-dddb-4167-9cfc-39c16ad31582",
+          "name": "Query events pending timeseries metrics",
+          "request": {
+            "name": "Query events pending timeseries metrics",
+            "description": {
+              "content": "Query aggregated events pending timeseries metrics with time-based grouping and filtering",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "metrics",
+                "events-pending-timeseries"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "start",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "end",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "granularity",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "destination_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "measures",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dimensions",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dimensions",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1444d81a-866a-452b-b380-15f04c432997",
+              "name": "Events pending timeseries metrics results",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "metrics",
+                    "events-pending-timeseries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "granularity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "destination_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "measures",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dimensions",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dimensions",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 2888.414780205598,\n        \"key_1\": 7361.613645917065\n      }\n    },\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 1307.4371717564848,\n        \"key_1\": 4933.183874110997,\n        \"key_2\": 3595.2521278518425\n      }\n    }\n  ],\n  \"metadata\": {\n    \"granularity\": \"string\",\n    \"query_time_ms\": 9573.172618754108,\n    \"row_count\": 7374.489457045907,\n    \"row_limit\": 6792.970735118173,\n    \"truncated\": false,\n    \"warning\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.hookdeck.com/2025-07-01",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "4b4bf54c-e653-429f-8a60-873ac688a870",
+    "name": "Hookdeck Metrics API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Query aggregated metrics for events, requests, and attempts — success counts, failure counts, response time, throughput, and SLA bands grouped by source, destination, or connection.\n\nContact Support:\n Name: Hookdeck Support\n Email: info@hookdeck.com",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,427 @@
+{
+  "item": [
+    {
+      "id": "0e955320-9733-4a39-96ae-cd38a9e113c4",
+      "name": "Notifications",
+      "description": {
+        "content": "Notifications let your team receive alerts anytime an issue changes.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c41f5e16-101e-486c-bba9-91195f887b51",
+          "name": "Webhook Notifications",
+          "request": {
+            "name": "Webhook Notifications",
+            "description": {
+              "content": "This endpoint enables or disables webhook notifications for the project, and sets the topics and source to deliver them to.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "notifications",
+                "webhooks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"enabled\": \"<boolean>\",\n  \"topics\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"source_id\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "4069c593-dc8b-4b90-bb40-85704a217aa6",
+              "name": "Toggle operation status response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "notifications",
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"enabled\": \"<boolean>\",\n  \"topics\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"source_id\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"enabled\": true,\n  \"source_id\": \"string\",\n  \"topics\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3230be3f-4b23-4a70-b22d-14ff0ce3de2e",
+          "name": "Add a custom domain to the project",
+          "request": {
+            "name": "Add a custom domain to the project",
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "teams",
+                "current",
+                "custom_domains"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"hostname\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "9577ffa2-303e-4078-b33b-150e01954c73",
+              "name": "Custom domain successfuly added",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "teams",
+                    "current",
+                    "custom_domains"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"hostname\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"hostname\": \"<string>\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "77ca579a-497f-43f1-98e8-afb1cd3d0009",
+          "name": "List all custom domains and their verification statuses for the project",
+          "request": {
+            "name": "List all custom domains and their verification statuses for the project",
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "teams",
+                "current",
+                "custom_domains"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5072d932-839b-4a90-a7ca-3aecf6b9976f",
+              "name": "List of custom domains",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "teams",
+                    "current",
+                    "custom_domains"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"string\",\n    \"hostname\": \"string\",\n    \"status\": \"string\",\n    \"ssl\": {\n      \"id\": \"string\",\n      \"type\": \"string\",\n      \"method\": \"string\",\n      \"status\": \"string\",\n      \"txt_name\": \"string\",\n      \"txt_value\": \"string\",\n      \"validation_records\": [\n        {\n          \"status\": \"string\",\n          \"txt_name\": \"string\",\n          \"txt_value\": \"string\"\n        },\n        {\n          \"status\": \"string\",\n          \"txt_name\": \"string\",\n          \"txt_value\": \"string\"\n        }\n      ],\n      \"dcv_delegation_records\": [\n        {\n          \"cname\": \"string\",\n          \"cname_target\": \"string\"\n        },\n        {\n          \"cname\": \"string\",\n          \"cname_target\": \"string\"\n        }\n      ],\n      \"settings\": {\n        \"min_tls_version\": \"string\"\n      },\n      \"bundle_method\": \"string\",\n      \"wildcard\": true,\n      \"certificate_authority\": \"string\"\n    },\n    \"verification_errors\": [\n      \"string\",\n      \"string\"\n    ],\n    \"ownership_verification\": {\n      \"type\": \"string\",\n      \"name\": \"string\",\n      \"value\": \"string\"\n    },\n    \"created_at\": \"string\"\n  },\n  {\n    \"id\": \"string\",\n    \"hostname\": \"string\",\n    \"status\": \"string\",\n    \"ssl\": {\n      \"id\": \"string\",\n      \"type\": \"string\",\n      \"method\": \"string\",\n      \"status\": \"string\",\n      \"txt_name\": \"string\",\n      \"txt_value\": \"string\",\n      \"validation_records\": [\n        {\n          \"status\": \"string\",\n          \"txt_name\": \"string\",\n          \"txt_value\": \"string\"\n        },\n        {\n          \"status\": \"string\",\n          \"txt_name\": \"string\",\n          \"txt_value\": \"string\"\n        }\n      ],\n      \"dcv_delegation_records\": [\n        {\n          \"cname\": \"string\",\n          \"cname_target\": \"string\"\n        },\n        {\n          \"cname\": \"string\",\n          \"cname_target\": \"string\"\n        }\n      ],\n      \"settings\": {\n        \"min_tls_version\": \"string\"\n      },\n      \"bundle_method\": \"string\",\n      \"wildcard\": false,\n      \"certificate_authority\": \"string\"\n    },\n    \"verification_errors\": [\n      \"string\",\n      \"string\"\n    ],\n    \"ownership_verification\": {\n      \"type\": \"string\",\n      \"name\": \"string\",\n      \"value\": \"string\"\n    },\n    \"created_at\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d58aa678-d140-4005-9bc6-a0d02047f4a4",
+          "name": "Removes a custom domain from the project",
+          "request": {
+            "name": "Removes a custom domain from the project",
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "teams",
+                "current",
+                "custom_domains",
+                ":domain_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "domain_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3e217f65-10ae-4c05-9376-72dba051fb07",
+              "name": "Custom domain successfuly removed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "teams",
+                    "current",
+                    "custom_domains",
+                    ":domain_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "domain_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.hookdeck.com/2025-07-01",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "a6da321b-370d-40ab-80d4-457deddcf15b",
+    "name": "Hookdeck Notifications API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Manage how your team is notified when issues occur — channel routing, mute windows, and per-team subscriptions.\n\nContact Support:\n Name: Hookdeck Support\n Email: info@hookdeck.com",
+      "type": "text/plain"
+    }
+  }
+}

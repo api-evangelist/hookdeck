@@ -1,0 +1,421 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Hookdeck Requests API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Requests",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve requests",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hookdeck.com/2025-07-01/requests",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "rejection_cause",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "source_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "verified",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search_term",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "headers",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "body",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "parsed_query",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "path",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ignored_count",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "events_count",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cli_events_count",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "created_at",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ingested_at",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "bulk_retry_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "progressive",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order_by",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dir",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "next",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "prev",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "This endpoint lists requests, or a subset of requests."
+        },
+        {
+          "info": {
+            "name": "Retrieve a request",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hookdeck.com/2025-07-01/requests/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This endpoint retrieves a specific request."
+        },
+        {
+          "info": {
+            "name": "Get a request raw body data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hookdeck.com/2025-07-01/requests/:id/raw_body",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a request raw body data"
+        },
+        {
+          "info": {
+            "name": "Retry a request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hookdeck.com/2025-07-01/requests/:id/retry",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint retries a specific request. Retrying a request creates new events based on the request for the specified connections (or all matching connections if none specified)."
+        },
+        {
+          "info": {
+            "name": "Retrieve request events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hookdeck.com/2025-07-01/requests/:id/events",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "webhook_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "destination_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "source_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "attempts",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "response_status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "successful_at",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "created_at",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "error_code",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cli_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "last_attempt_at",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "next_attempt_at",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search_term",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "headers",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "body",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "parsed_query",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "path",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cli_user_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "issue_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "event_data_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "bulk_retry_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "progressive",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order_by",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dir",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "next",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "prev",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This endpoint retrieves all events that were created as a result of the specified request."
+        },
+        {
+          "info": {
+            "name": "Retrieve request ignored events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hookdeck.com/2025-07-01/requests/:id/ignored_events",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order_by",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dir",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "next",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "prev",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This endpoint retrieves all events that were ignored (filtered out) for the specified request."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

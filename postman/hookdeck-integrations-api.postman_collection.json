@@ -1,0 +1,1475 @@
+{
+  "info": {
+    "_postman_id": "fc373053-dc40-48e8-8ace-5c3df88d90a2",
+    "name": "Hookdeck Integrations API",
+    "description": "Configure platform integrations that adapt Hookdeck behavior for specific source platforms \u2014 including signature verification, header normalization, and platform-aware retries.\n\nContact Support:\n Name: Hookdeck Support\n Email: info@hookdeck.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T15:10:03.000Z",
+    "updatedAt": "2026-06-05T15:10:03.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-fc373053-dc40-48e8-8ace-5c3df88d90a2"
+  },
+  "item": [
+    {
+      "name": "integrations",
+      "item": [
+        {
+          "name": "{id}",
+          "item": [
+            {
+              "name": "attach",
+              "item": [
+                {
+                  "name": "{source_id}",
+                  "item": [
+                    {
+                      "name": "Attach an integration to a source",
+                      "id": "7eae2006-348c-436f-aac4-70cecc5b9978",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/integrations/:id/attach/:source_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "integrations",
+                            ":id",
+                            "attach",
+                            ":source_id"
+                          ],
+                          "variable": [
+                            {
+                              "id": "f8e1df76-919e-4be7-b554-6fd79515a5fa",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            },
+                            {
+                              "id": "e60a5187-a70b-4055-86fa-c73a133c3639",
+                              "key": "source_id",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "2dce6854-c0c1-4596-abc6-8f3a40ddcb6e",
+                          "name": "Attach operation success status",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/integrations/:id/attach/:source_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "integrations",
+                                ":id",
+                                "attach",
+                                ":source_id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                },
+                                {
+                                  "key": "source_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\"\n}",
+                          "createdAt": "2026-06-05T15:10:03.000Z",
+                          "updatedAt": "2026-06-05T15:10:03.000Z",
+                          "uid": "35240-2dce6854-c0c1-4596-abc6-8f3a40ddcb6e"
+                        },
+                        {
+                          "id": "f6eb839b-e13e-4131-89a4-dd49879e4e3b",
+                          "name": "Bad Request",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/integrations/:id/attach/:source_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "integrations",
+                                ":id",
+                                "attach",
+                                ":source_id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                },
+                                {
+                                  "key": "source_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                          "createdAt": "2026-06-05T15:10:03.000Z",
+                          "updatedAt": "2026-06-05T15:10:03.000Z",
+                          "uid": "35240-f6eb839b-e13e-4131-89a4-dd49879e4e3b"
+                        },
+                        {
+                          "id": "49a7739b-bf8b-4fb6-b62e-0f46db4c10d3",
+                          "name": "Not Found",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/integrations/:id/attach/:source_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "integrations",
+                                ":id",
+                                "attach",
+                                ":source_id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                },
+                                {
+                                  "key": "source_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                          "createdAt": "2026-06-05T15:10:03.000Z",
+                          "updatedAt": "2026-06-05T15:10:03.000Z",
+                          "uid": "35240-49a7739b-bf8b-4fb6-b62e-0f46db4c10d3"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T15:10:03.000Z",
+                      "updatedAt": "2026-06-05T15:10:03.000Z",
+                      "uid": "35240-7eae2006-348c-436f-aac4-70cecc5b9978"
+                    }
+                  ],
+                  "id": "153df1b1-ab24-4a4b-a2d7-fffb2423ef16",
+                  "createdAt": "2026-06-05T15:10:03.000Z",
+                  "updatedAt": "2026-06-05T15:10:03.000Z",
+                  "uid": "35240-153df1b1-ab24-4a4b-a2d7-fffb2423ef16"
+                }
+              ],
+              "id": "d3603f55-fc18-4bbb-a232-1a7b06bc4eed",
+              "createdAt": "2026-06-05T15:10:03.000Z",
+              "updatedAt": "2026-06-05T15:10:03.000Z",
+              "uid": "35240-d3603f55-fc18-4bbb-a232-1a7b06bc4eed"
+            },
+            {
+              "name": "detach",
+              "item": [
+                {
+                  "name": "{source_id}",
+                  "item": [
+                    {
+                      "name": "Detach an integration from a source",
+                      "id": "03e9eddb-0fc5-4694-92dc-6061414993a9",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/integrations/:id/detach/:source_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "integrations",
+                            ":id",
+                            "detach",
+                            ":source_id"
+                          ],
+                          "variable": [
+                            {
+                              "id": "e8893c15-f89f-465c-9cda-8c9955c34bae",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            },
+                            {
+                              "id": "90c8a91c-3066-4484-8699-d00dd68bf4bc",
+                              "key": "source_id",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "bf21238e-b304-481c-ba5b-01eff7be0c9a",
+                          "name": "Detach operation success status",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/integrations/:id/detach/:source_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "integrations",
+                                ":id",
+                                "detach",
+                                ":source_id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                },
+                                {
+                                  "key": "source_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{}",
+                          "createdAt": "2026-06-05T15:10:03.000Z",
+                          "updatedAt": "2026-06-05T15:10:03.000Z",
+                          "uid": "35240-bf21238e-b304-481c-ba5b-01eff7be0c9a"
+                        },
+                        {
+                          "id": "b9f91d25-c0cf-4f21-86da-4cc3dbd8c922",
+                          "name": "Bad Request",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/integrations/:id/detach/:source_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "integrations",
+                                ":id",
+                                "detach",
+                                ":source_id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                },
+                                {
+                                  "key": "source_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                          "createdAt": "2026-06-05T15:10:03.000Z",
+                          "updatedAt": "2026-06-05T15:10:03.000Z",
+                          "uid": "35240-b9f91d25-c0cf-4f21-86da-4cc3dbd8c922"
+                        },
+                        {
+                          "id": "c409fdec-a059-4ea7-a584-6bef7453ec69",
+                          "name": "Not Found",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/integrations/:id/detach/:source_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "integrations",
+                                ":id",
+                                "detach",
+                                ":source_id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                },
+                                {
+                                  "key": "source_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                          "createdAt": "2026-06-05T15:10:03.000Z",
+                          "updatedAt": "2026-06-05T15:10:03.000Z",
+                          "uid": "35240-c409fdec-a059-4ea7-a584-6bef7453ec69"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T15:10:03.000Z",
+                      "updatedAt": "2026-06-05T15:10:03.000Z",
+                      "uid": "35240-03e9eddb-0fc5-4694-92dc-6061414993a9"
+                    }
+                  ],
+                  "id": "68068306-f8dc-48ce-889e-c9055d24033e",
+                  "createdAt": "2026-06-05T15:10:03.000Z",
+                  "updatedAt": "2026-06-05T15:10:03.000Z",
+                  "uid": "35240-68068306-f8dc-48ce-889e-c9055d24033e"
+                }
+              ],
+              "id": "55968b89-61d0-48ff-8ded-a0eb7593fb8e",
+              "createdAt": "2026-06-05T15:10:03.000Z",
+              "updatedAt": "2026-06-05T15:10:03.000Z",
+              "uid": "35240-55968b89-61d0-48ff-8ded-a0eb7593fb8e"
+            },
+            {
+              "name": "Get an integration",
+              "id": "5a68ed66-d870-440e-806f-3309dd519e29",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/integrations/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "integrations",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "892524f6-df26-4e9a-ba72-5a9813d9bec2",
+                      "key": "id",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "a7f128b9-618f-44e8-be9c-40a6f4948fcf",
+                  "name": "A single integration",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/integrations/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "integrations",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"team_id\": \"<string>\",\n  \"label\": \"<string>\",\n  \"provider\": \"LINEAR\",\n  \"features\": [\n    \"HANDSHAKE\",\n    \"VERIFICATION\"\n  ],\n  \"configs\": {\n    \"webhook_secret_key\": \"<string>\",\n    \"algorithm\": \"sha1\",\n    \"header_key\": \"<string>\",\n    \"encoding\": \"hex\"\n  },\n  \"sources\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"updated_at\": \"<dateTime>\",\n  \"created_at\": \"<dateTime>\"\n}",
+                  "createdAt": "2026-06-05T15:10:03.000Z",
+                  "updatedAt": "2026-06-05T15:10:03.000Z",
+                  "uid": "35240-a7f128b9-618f-44e8-be9c-40a6f4948fcf"
+                },
+                {
+                  "id": "ad57ff53-9aef-4b92-a1a6-4175e2f5cc16",
+                  "name": "Not Found",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/integrations/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "integrations",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T15:10:03.000Z",
+                  "updatedAt": "2026-06-05T15:10:03.000Z",
+                  "uid": "35240-ad57ff53-9aef-4b92-a1a6-4175e2f5cc16"
+                }
+              ],
+              "createdAt": "2026-06-05T15:10:03.000Z",
+              "updatedAt": "2026-06-05T15:10:03.000Z",
+              "uid": "35240-5a68ed66-d870-440e-806f-3309dd519e29"
+            },
+            {
+              "name": "Update an integration",
+              "id": "ccd45b64-f182-40f3-8795-e9cbda5bbbae",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"label\": \"<string>\",\n  \"configs\": {\n    \"webhook_secret_key\": \"<string>\",\n    \"algorithm\": \"sha256\",\n    \"header_key\": \"<string>\",\n    \"encoding\": \"base64\"\n  },\n  \"provider\": \"TALLY\",\n  \"features\": [\n    \"VERIFICATION\",\n    \"HANDSHAKE\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/integrations/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "integrations",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "0c940ecb-4d39-4fcd-8f62-ee55170a94f0",
+                      "key": "id",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "d828cd81-59b1-4d49-820c-b6fb45f71459",
+                  "name": "A single integration",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"label\": \"<string>\",\n  \"configs\": {\n    \"webhook_secret_key\": \"<string>\",\n    \"algorithm\": \"sha256\",\n    \"header_key\": \"<string>\",\n    \"encoding\": \"base64\"\n  },\n  \"provider\": \"TALLY\",\n  \"features\": [\n    \"VERIFICATION\",\n    \"HANDSHAKE\"\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/integrations/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "integrations",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"team_id\": \"<string>\",\n  \"label\": \"<string>\",\n  \"provider\": \"LINEAR\",\n  \"features\": [\n    \"HANDSHAKE\",\n    \"VERIFICATION\"\n  ],\n  \"configs\": {\n    \"webhook_secret_key\": \"<string>\",\n    \"algorithm\": \"sha1\",\n    \"header_key\": \"<string>\",\n    \"encoding\": \"hex\"\n  },\n  \"sources\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"updated_at\": \"<dateTime>\",\n  \"created_at\": \"<dateTime>\"\n}",
+                  "createdAt": "2026-06-05T15:10:03.000Z",
+                  "updatedAt": "2026-06-05T15:10:03.000Z",
+                  "uid": "35240-d828cd81-59b1-4d49-820c-b6fb45f71459"
+                },
+                {
+                  "id": "cf6ba288-8542-4558-903a-cf4afce784e3",
+                  "name": "Bad Request",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"label\": \"<string>\",\n  \"configs\": {\n    \"webhook_secret_key\": \"<string>\",\n    \"algorithm\": \"sha256\",\n    \"header_key\": \"<string>\",\n    \"encoding\": \"base64\"\n  },\n  \"provider\": \"TALLY\",\n  \"features\": [\n    \"VERIFICATION\",\n    \"HANDSHAKE\"\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/integrations/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "integrations",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T15:10:03.000Z",
+                  "updatedAt": "2026-06-05T15:10:03.000Z",
+                  "uid": "35240-cf6ba288-8542-4558-903a-cf4afce784e3"
+                },
+                {
+                  "id": "36d1f99a-c33a-436e-85b2-d9d11d0660a2",
+                  "name": "Not Found",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"label\": \"<string>\",\n  \"configs\": {\n    \"webhook_secret_key\": \"<string>\",\n    \"algorithm\": \"sha256\",\n    \"header_key\": \"<string>\",\n    \"encoding\": \"base64\"\n  },\n  \"provider\": \"TALLY\",\n  \"features\": [\n    \"VERIFICATION\",\n    \"HANDSHAKE\"\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/integrations/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "integrations",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T15:10:03.000Z",
+                  "updatedAt": "2026-06-05T15:10:03.000Z",
+                  "uid": "35240-36d1f99a-c33a-436e-85b2-d9d11d0660a2"
+                },
+                {
+                  "id": "022fd291-5069-4c93-ae29-13e9b303179c",
+                  "name": "Unprocessable Entity",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"label\": \"<string>\",\n  \"configs\": {\n    \"webhook_secret_key\": \"<string>\",\n    \"algorithm\": \"sha256\",\n    \"header_key\": \"<string>\",\n    \"encoding\": \"base64\"\n  },\n  \"provider\": \"TALLY\",\n  \"features\": [\n    \"VERIFICATION\",\n    \"HANDSHAKE\"\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/integrations/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "integrations",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T15:10:03.000Z",
+                  "updatedAt": "2026-06-05T15:10:03.000Z",
+                  "uid": "35240-022fd291-5069-4c93-ae29-13e9b303179c"
+                }
+              ],
+              "createdAt": "2026-06-05T15:10:03.000Z",
+              "updatedAt": "2026-06-05T15:10:03.000Z",
+              "uid": "35240-ccd45b64-f182-40f3-8795-e9cbda5bbbae"
+            },
+            {
+              "name": "Delete an integration",
+              "id": "bbffa559-bec5-4b8b-bff1-69aaba6dabfb",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/integrations/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "integrations",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "225b9afd-a90b-4d21-af66-c00de4c72ccc",
+                      "key": "id",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "c98c98d5-5401-4d60-9cf4-c4457a521b4d",
+                  "name": "An object with deleted integration id",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/integrations/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "integrations",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\"\n}",
+                  "createdAt": "2026-06-05T15:10:03.000Z",
+                  "updatedAt": "2026-06-05T15:10:03.000Z",
+                  "uid": "35240-c98c98d5-5401-4d60-9cf4-c4457a521b4d"
+                },
+                {
+                  "id": "d29bff05-cc30-41cb-9870-97a81b1a9995",
+                  "name": "Not Found",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/integrations/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "integrations",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T15:10:03.000Z",
+                  "updatedAt": "2026-06-05T15:10:03.000Z",
+                  "uid": "35240-d29bff05-cc30-41cb-9870-97a81b1a9995"
+                }
+              ],
+              "createdAt": "2026-06-05T15:10:03.000Z",
+              "updatedAt": "2026-06-05T15:10:03.000Z",
+              "uid": "35240-bbffa559-bec5-4b8b-bff1-69aaba6dabfb"
+            }
+          ],
+          "id": "230810d8-0d95-4f4f-b86f-355f1f79ccbf",
+          "createdAt": "2026-06-05T15:10:03.000Z",
+          "updatedAt": "2026-06-05T15:10:03.000Z",
+          "uid": "35240-230810d8-0d95-4f4f-b86f-355f1f79ccbf"
+        },
+        {
+          "name": "Get integrations",
+          "id": "ce52b01b-a834-4b03-9c13-c4fa29af66b4",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/integrations?label=<string>&provider=LINEAR",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "integrations"
+              ],
+              "query": [
+                {
+                  "key": "label",
+                  "value": "<string>"
+                },
+                {
+                  "key": "provider",
+                  "value": "LINEAR"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "da3fd262-7bf5-44d6-8eea-d7b28e36b25c",
+              "name": "List of integrations",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/integrations?label=<string>&provider=LINEAR",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "integrations"
+                  ],
+                  "query": [
+                    {
+                      "key": "label",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "provider",
+                      "value": "LINEAR"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"pagination\": {\n    \"order_by\": \"<string>\",\n    \"dir\": \"asc\",\n    \"limit\": \"<integer>\",\n    \"prev\": \"<string>\",\n    \"next\": \"<string>\"\n  },\n  \"count\": \"<integer>\",\n  \"models\": [\n    {\n      \"id\": \"<string>\",\n      \"team_id\": \"<string>\",\n      \"label\": \"<string>\",\n      \"provider\": \"PADDLE\",\n      \"features\": [\n        \"HANDSHAKE\",\n        \"VERIFICATION\"\n      ],\n      \"configs\": {\n        \"webhook_secret_key\": \"<string>\",\n        \"algorithm\": \"sha256\",\n        \"header_key\": \"<string>\",\n        \"encoding\": \"base64\"\n      },\n      \"sources\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"updated_at\": \"<dateTime>\",\n      \"created_at\": \"<dateTime>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"team_id\": \"<string>\",\n      \"label\": \"<string>\",\n      \"provider\": \"VERCEL_LOG_DRAINS\",\n      \"features\": [\n        \"VERIFICATION\",\n        \"HANDSHAKE\"\n      ],\n      \"configs\": {\n        \"webhook_secret_key\": \"<string>\",\n        \"algorithm\": \"sha1\",\n        \"header_key\": \"<string>\",\n        \"encoding\": \"hex\"\n      },\n      \"sources\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"updated_at\": \"<dateTime>\",\n      \"created_at\": \"<dateTime>\"\n    }\n  ]\n}",
+              "createdAt": "2026-06-05T15:10:03.000Z",
+              "updatedAt": "2026-06-05T15:10:03.000Z",
+              "uid": "35240-da3fd262-7bf5-44d6-8eea-d7b28e36b25c"
+            },
+            {
+              "id": "1c608b9a-e572-4766-bf3e-8aad80b6c8e9",
+              "name": "Bad Request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/integrations?label=<string>&provider=LINEAR",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "integrations"
+                  ],
+                  "query": [
+                    {
+                      "key": "label",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "provider",
+                      "value": "LINEAR"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+              "createdAt": "2026-06-05T15:10:03.000Z",
+              "updatedAt": "2026-06-05T15:10:03.000Z",
+              "uid": "35240-1c608b9a-e572-4766-bf3e-8aad80b6c8e9"
+            },
+            {
+              "id": "5385602a-7fac-409b-8329-d973f32e5208",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/integrations?label=<string>&provider=LINEAR",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "integrations"
+                  ],
+                  "query": [
+                    {
+                      "key": "label",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "provider",
+                      "value": "LINEAR"
+                    }
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+              "createdAt": "2026-06-05T15:10:03.000Z",
+              "updatedAt": "2026-06-05T15:10:03.000Z",
+              "uid": "35240-5385602a-7fac-409b-8329-d973f32e5208"
+            }
+          ],
+          "createdAt": "2026-06-05T15:10:03.000Z",
+          "updatedAt": "2026-06-05T15:10:03.000Z",
+          "uid": "35240-ce52b01b-a834-4b03-9c13-c4fa29af66b4"
+        },
+        {
+          "name": "Create an integration",
+          "id": "bd557205-8e17-49b3-bae1-a8c3a4c433ff",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"label\": \"<string>\",\n  \"configs\": {\n    \"webhook_secret_key\": \"<string>\",\n    \"algorithm\": \"sha256\",\n    \"header_key\": \"<string>\",\n    \"encoding\": \"base64\"\n  },\n  \"provider\": \"TALLY\",\n  \"features\": [\n    \"VERIFICATION\",\n    \"HANDSHAKE\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/integrations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "integrations"
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "2e228c35-411a-479b-a99c-8ea1501b78f1",
+              "name": "A single integration",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"label\": \"<string>\",\n  \"configs\": {\n    \"webhook_secret_key\": \"<string>\",\n    \"algorithm\": \"sha256\",\n    \"header_key\": \"<string>\",\n    \"encoding\": \"base64\"\n  },\n  \"provider\": \"TALLY\",\n  \"features\": [\n    \"VERIFICATION\",\n    \"HANDSHAKE\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/integrations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "integrations"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"id\": \"<string>\",\n  \"team_id\": \"<string>\",\n  \"label\": \"<string>\",\n  \"provider\": \"LINEAR\",\n  \"features\": [\n    \"HANDSHAKE\",\n    \"VERIFICATION\"\n  ],\n  \"configs\": {\n    \"webhook_secret_key\": \"<string>\",\n    \"algorithm\": \"sha1\",\n    \"header_key\": \"<string>\",\n    \"encoding\": \"hex\"\n  },\n  \"sources\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"updated_at\": \"<dateTime>\",\n  \"created_at\": \"<dateTime>\"\n}",
+              "createdAt": "2026-06-05T15:10:03.000Z",
+              "updatedAt": "2026-06-05T15:10:03.000Z",
+              "uid": "35240-2e228c35-411a-479b-a99c-8ea1501b78f1"
+            },
+            {
+              "id": "763b941c-4948-4c93-b33b-51099fc9a273",
+              "name": "Bad Request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"label\": \"<string>\",\n  \"configs\": {\n    \"webhook_secret_key\": \"<string>\",\n    \"algorithm\": \"sha256\",\n    \"header_key\": \"<string>\",\n    \"encoding\": \"base64\"\n  },\n  \"provider\": \"TALLY\",\n  \"features\": [\n    \"VERIFICATION\",\n    \"HANDSHAKE\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/integrations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "integrations"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+              "createdAt": "2026-06-05T15:10:03.000Z",
+              "updatedAt": "2026-06-05T15:10:03.000Z",
+              "uid": "35240-763b941c-4948-4c93-b33b-51099fc9a273"
+            },
+            {
+              "id": "111846fa-ee16-4382-9580-1e755c35b4f0",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"label\": \"<string>\",\n  \"configs\": {\n    \"webhook_secret_key\": \"<string>\",\n    \"algorithm\": \"sha256\",\n    \"header_key\": \"<string>\",\n    \"encoding\": \"base64\"\n  },\n  \"provider\": \"TALLY\",\n  \"features\": [\n    \"VERIFICATION\",\n    \"HANDSHAKE\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/integrations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "integrations"
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+              "createdAt": "2026-06-05T15:10:03.000Z",
+              "updatedAt": "2026-06-05T15:10:03.000Z",
+              "uid": "35240-111846fa-ee16-4382-9580-1e755c35b4f0"
+            }
+          ],
+          "createdAt": "2026-06-05T15:10:03.000Z",
+          "updatedAt": "2026-06-05T15:10:03.000Z",
+          "uid": "35240-bd557205-8e17-49b3-bae1-a8c3a4c433ff"
+        }
+      ],
+      "id": "63de93dd-d197-4e69-a78e-17f304613b7e",
+      "createdAt": "2026-06-05T15:10:03.000Z",
+      "updatedAt": "2026-06-05T15:10:03.000Z",
+      "uid": "35240-63de93dd-d197-4e69-a78e-17f304613b7e"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.hookdeck.com/2025-07-01"
+    }
+  ]
+}

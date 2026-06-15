@@ -3,12 +3,13 @@
   "feeds": [
     {
       "source": "https://hookdeck.com/blog",
-      "feed_url": "",
-      "title": "",
+      "feed_url": "https://hookdeck.com/blog",
+      "title": "Hookdeck Blog",
       "saved": 0,
-      "error": "no_feed"
+      "method": "html",
+      "note": "No posts found in June 1-7 2026 range"
     }
   ],
-  "fetched": "2026-05-17T20:48:52Z",
-  "post_count": 0
+  "post_count": 0,
+  "fetched": "2026-06-07T00:00:00Z"
 }

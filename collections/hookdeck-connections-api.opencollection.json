@@ -1,0 +1,336 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Hookdeck Connections API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Connections",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve connections",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hookdeck.com/2025-07-01/connections",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "destination_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "source_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "disabled",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "disabled_at",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "full_name",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "paused_at",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order_by",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dir",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "next",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "prev",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "This endpoint lists connections, or a subset of connections."
+        },
+        {
+          "info": {
+            "name": "Create a connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hookdeck.com/2025-07-01/connections",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint creates a connection. You can create a connection's underlying source, destination, and rules with a single call by declaring an object for any of those resources. You can reuse a source or destination by referencing their ID."
+        },
+        {
+          "info": {
+            "name": "Create/Update a connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hookdeck.com/2025-07-01/connections",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint creates a connection, or updates an existing connection by name. A connection's source and destination cannot be updated."
+        },
+        {
+          "info": {
+            "name": "Count connections",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hookdeck.com/2025-07-01/connections/count",
+            "params": [
+              {
+                "name": "destination_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "source_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "disabled",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "disabled_at",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "paused_at",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Count connections"
+        },
+        {
+          "info": {
+            "name": "Retrieve a connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hookdeck.com/2025-07-01/connections/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This endpoint retrieves a specific connection."
+        },
+        {
+          "info": {
+            "name": "Update a connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hookdeck.com/2025-07-01/connections/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint updates a connection."
+        },
+        {
+          "info": {
+            "name": "Delete a connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hookdeck.com/2025-07-01/connections/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This endpoint permanently deletes a connection. This action cannot be undone."
+        },
+        {
+          "info": {
+            "name": "Disable a connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hookdeck.com/2025-07-01/connections/:id/disable",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This endpoint disables a connection. Notice that a connection is enabled by default when created. A disabled connection will no longer receive or deliver any events."
+        },
+        {
+          "info": {
+            "name": "Disable a connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hookdeck.com/2025-07-01/connections/:id/archive",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This endpoint disables a connection. Notice that a connection is enabled by default when created. A disabled connection will no longer receive or deliver any events."
+        },
+        {
+          "info": {
+            "name": "Enable a connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hookdeck.com/2025-07-01/connections/:id/enable",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This endpoint enables a connection that has been previously disabled. The associated source and destination will also be enabled if they were previously disabled."
+        },
+        {
+          "info": {
+            "name": "Enable a connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hookdeck.com/2025-07-01/connections/:id/unarchive",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This endpoint enables a connection that has been previously disabled. The associated source and destination will also be enabled if they were previously disabled."
+        },
+        {
+          "info": {
+            "name": "Pause a connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hookdeck.com/2025-07-01/connections/:id/pause",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This endpoint pauses a connection. A paused connection will still receive events, but those events will be marked with a status of `HOLD` and will be delivered only once the connection is unpaused."
+        },
+        {
+          "info": {
+            "name": "Unpause a connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hookdeck.com/2025-07-01/connections/:id/unpause",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This endpoint unpauses a connection. Any event with a status of `HOLD` will be attempted. Destination delivery rate will be respected. This operation is asynchronous, so it may take some time for all events to be `QUEUED` for delivery."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

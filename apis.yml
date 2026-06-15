@@ -2,13 +2,10 @@ aid: hookdeck
 url: https://raw.githubusercontent.com/api-evangelist/hookdeck/refs/heads/main/apis.yml
 name: Hookdeck
 description: >-
-  Hookdeck is a Toronto-based webhook and event-infrastructure platform. The
-  Hookdeck Event Gateway sits between webhook senders and your services to
-  receive, verify, queue, retry, transform, filter, route, and observe events
-  reliably at scale. Hookdeck exposes a fully versioned REST Admin API, a CLI
-  for local development, language SDKs (TypeScript, Go, Python, .NET), a
-  Terraform provider, and the open-source Outpost project for self-hostable
-  outbound webhook delivery.
+  Hookdeck is a Toronto-based webhook and event-infrastructure platform. The Hookdeck Event Gateway sits between webhook
+  senders and your services to receive, verify, queue, retry, transform, filter, route, and observe events reliably at
+  scale. Hookdeck exposes a fully versioned REST Admin API, a CLI for local development, language SDKs (TypeScript, Go,
+  Python, .NET), a Terraform provider, and the open-source Outpost project for self-hostable outbound webhook delivery.
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 type: Index
 access: 3rd-Party
@@ -41,10 +38,9 @@ apis:
     baseURL: https://api.hookdeck.com/2025-07-01
     humanURL: https://hookdeck.com/docs/api
     description: >-
-      Create, update, list, archive, pause, and unpause connections. A
-      connection routes events from a Source to a Destination and may carry
-      rules (retry, alert, transform, filter, delay) that determine how the
-      gateway processes events along that path.
+      Create, update, list, archive, pause, and unpause connections. A connection routes events from a Source to a
+      Destination and may carry rules (retry, alert, transform, filter, delay) that determine how the gateway processes
+      events along that path.
     properties:
       - type: Documentation
         url: https://hookdeck.com/docs/api
@@ -52,10 +48,6 @@ apis:
         url: openapi/hookdeck-connections-api-openapi.yml
       - type: JSONSchema
         url: json-schema/hookdeck-connection-schema.json
-      - type: NaftikoCapability
-        url: capabilities/hookdeck-connections.yaml
-      - type: NaftikoCapability
-        url: capabilities/hookdeck-connections-topology.yaml
   - aid: hookdeck:hookdeck-sources-api
     name: Hookdeck Sources API
     tags:
@@ -65,11 +57,9 @@ apis:
     baseURL: https://api.hookdeck.com/2025-07-01
     humanURL: https://hookdeck.com/docs/sources
     description: >-
-      Manage sources — the upstream endpoints (webhook senders or push
-      channels) that ingest events into Hookdeck. Sources support
-      platform-specific verification (Stripe, GitHub, Twilio, Shopify, and
-      many more), allowed HTTP methods, allowed content types, allowed IPs,
-      and a configurable custom response returned to the caller.
+      Manage sources — the upstream endpoints (webhook senders or push channels) that ingest events into Hookdeck.
+      Sources support platform-specific verification (Stripe, GitHub, Twilio, Shopify, and many more), allowed HTTP
+      methods, allowed content types, allowed IPs, and a configurable custom response returned to the caller.
     properties:
       - type: Documentation
         url: https://hookdeck.com/docs/sources
@@ -77,10 +67,6 @@ apis:
         url: openapi/hookdeck-sources-api-openapi.yml
       - type: JSONSchema
         url: json-schema/hookdeck-source-schema.json
-      - type: NaftikoCapability
-        url: capabilities/hookdeck-sources.yaml
-      - type: NaftikoCapability
-        url: capabilities/hookdeck-sources-discovery.yaml
   - aid: hookdeck:hookdeck-destinations-api
     name: Hookdeck Destinations API
     tags:
@@ -90,10 +76,9 @@ apis:
     baseURL: https://api.hookdeck.com/2025-07-01
     humanURL: https://hookdeck.com/docs/destinations
     description: >-
-      Manage destinations — the downstream targets (HTTP endpoints, AWS SQS,
-      Azure Service Bus, GCP Pub/Sub, Kafka, RabbitMQ, MongoDB, and more)
-      where Hookdeck delivers events. Supports configurable auth methods,
-      rate limiting, path forwarding, archival, and pause/disable controls.
+      Manage destinations — the downstream targets (HTTP endpoints, AWS SQS, Azure Service Bus, GCP Pub/Sub, Kafka,
+      RabbitMQ, MongoDB, and more) where Hookdeck delivers events. Supports configurable auth methods, rate limiting,
+      path forwarding, archival, and pause/disable controls.
     properties:
       - type: Documentation
         url: https://hookdeck.com/docs/destinations
@@ -101,12 +86,6 @@ apis:
         url: openapi/hookdeck-destinations-api-openapi.yml
       - type: JSONSchema
         url: json-schema/hookdeck-destination-schema.json
-      - type: NaftikoCapability
-        url: capabilities/hookdeck-destinations.yaml
-      - type: NaftikoCapability
-        url: capabilities/hookdeck-destinations-registry.yaml
-      - type: NaftikoCapability
-        url: capabilities/hookdeck-spec-driven-destination.yaml
   - aid: hookdeck:hookdeck-events-api
     name: Hookdeck Events API
     tags:
@@ -117,10 +96,9 @@ apis:
     baseURL: https://api.hookdeck.com/2025-07-01
     humanURL: https://hookdeck.com/docs/events
     description: >-
-      List, retrieve, retry, mute, and inspect events and their delivery
-      attempts. An event is any request Hookdeck received from a source; an
-      attempt is each delivery try against a destination, including status,
-      response body, response time, and error code.
+      List, retrieve, retry, mute, and inspect events and their delivery attempts. An event is any request Hookdeck
+      received from a source; an attempt is each delivery try against a destination, including status, response body,
+      response time, and error code.
     properties:
       - type: Documentation
         url: https://hookdeck.com/docs/events
@@ -130,12 +108,6 @@ apis:
         url: json-schema/hookdeck-event-schema.json
       - type: JSONSchema
         url: json-schema/hookdeck-attempt-schema.json
-      - type: NaftikoCapability
-        url: capabilities/hookdeck-events.yaml
-      - type: NaftikoCapability
-        url: capabilities/hookdeck-events-replay.yaml
-      - type: NaftikoCapability
-        url: capabilities/hookdeck-attempts.yaml
   - aid: hookdeck:hookdeck-requests-api
     name: Hookdeck Requests API
     tags:
@@ -145,10 +117,8 @@ apis:
     baseURL: https://api.hookdeck.com/2025-07-01
     humanURL: https://hookdeck.com/docs/requests
     description: >-
-      List and inspect raw requests received by Hookdeck. A request precedes
-      events and is what gets accepted at the gateway boundary before
-      verification, fan-out, transformation, and routing produce one or more
-      downstream events.
+      List and inspect raw requests received by Hookdeck. A request precedes events and is what gets accepted at the
+      gateway boundary before verification, fan-out, transformation, and routing produce one or more downstream events.
     properties:
       - type: Documentation
         url: https://hookdeck.com/docs/requests
@@ -156,8 +126,6 @@ apis:
         url: openapi/hookdeck-requests-api-openapi.yml
       - type: JSONSchema
         url: json-schema/hookdeck-request-schema.json
-      - type: NaftikoCapability
-        url: capabilities/hookdeck-requests.yaml
   - aid: hookdeck:hookdeck-transformations-api
     name: Hookdeck Transformations API
     tags:
@@ -167,10 +135,9 @@ apis:
     baseURL: https://api.hookdeck.com/2025-07-01
     humanURL: https://hookdeck.com/docs/transformations
     description: >-
-      Manage transformations — sandboxed JavaScript executed against events
-      to mutate headers, body, path, or query string before delivery. Also
-      includes a sandboxed run endpoint for testing transformation code
-      against sample event payloads.
+      Manage transformations — sandboxed JavaScript executed against events to mutate headers, body, path, or query
+      string before delivery. Also includes a sandboxed run endpoint for testing transformation code against sample
+      event payloads.
     properties:
       - type: Documentation
         url: https://hookdeck.com/docs/transformations
@@ -178,10 +145,6 @@ apis:
         url: openapi/hookdeck-transformations-api-openapi.yml
       - type: JSONSchema
         url: json-schema/hookdeck-transformation-schema.json
-      - type: NaftikoCapability
-        url: capabilities/hookdeck-transformations.yaml
-      - type: NaftikoCapability
-        url: capabilities/hookdeck-transformations-author.yaml
   - aid: hookdeck:hookdeck-bookmarks-api
     name: Hookdeck Bookmarks API
     tags:
@@ -191,18 +154,13 @@ apis:
     baseURL: https://api.hookdeck.com/2025-07-01
     humanURL: https://hookdeck.com/docs/bookmarks
     description: >-
-      Save bookmarked events for quick replay and one-click testing during
-      development. Bookmarks let your team capture canonical event payloads
-      and trigger them on demand into any destination.
+      Save bookmarked events for quick replay and one-click testing during development. Bookmarks let your team capture
+      canonical event payloads and trigger them on demand into any destination.
     properties:
       - type: Documentation
         url: https://hookdeck.com/docs/bookmarks
       - type: OpenAPI
         url: openapi/hookdeck-bookmarks-api-openapi.yml
-      - type: NaftikoCapability
-        url: capabilities/hookdeck-bookmarks.yaml
-      - type: NaftikoCapability
-        url: capabilities/hookdeck-bookmarks-snapshot.yaml
   - aid: hookdeck:hookdeck-bulk-operations-api
     name: Hookdeck Bulk Operations API
     tags:
@@ -212,25 +170,13 @@ apis:
     baseURL: https://api.hookdeck.com/2025-07-01
     humanURL: https://hookdeck.com/docs/bulk-retries
     description: >-
-      Plan, schedule, and cancel bulk operations that retry or cancel many
-      events, requests, or ignored events at once. Each bulk operation
-      reports per-batch counts, total scope, and live progress, and can be
-      cancelled mid-run.
+      Plan, schedule, and cancel bulk operations that retry or cancel many events, requests, or ignored events at once.
+      Each bulk operation reports per-batch counts, total scope, and live progress, and can be cancelled mid-run.
     properties:
       - type: Documentation
         url: https://hookdeck.com/docs/bulk-retries
       - type: OpenAPI
         url: openapi/hookdeck-bulk-operations-api-openapi.yml
-      - type: NaftikoCapability
-        url: capabilities/hookdeck-bulk-retry-events.yaml
-      - type: NaftikoCapability
-        url: capabilities/hookdeck-bulk-retry-ignored-events.yaml
-      - type: NaftikoCapability
-        url: capabilities/hookdeck-bulk-retry-requests.yaml
-      - type: NaftikoCapability
-        url: capabilities/hookdeck-bulk-cancel-events.yaml
-      - type: NaftikoCapability
-        url: capabilities/hookdeck-bulk-retry-orchestrator.yaml
   - aid: hookdeck:hookdeck-issues-api
     name: Hookdeck Issues API
     tags:
@@ -240,9 +186,8 @@ apis:
     baseURL: https://api.hookdeck.com/2025-07-01
     humanURL: https://hookdeck.com/docs/issues
     description: >-
-      Track issues that occur on events, requests, and backpressure, and
-      manage the triggers (rules) that open and route issues to Slack,
-      Email, Microsoft Teams, Discord, BetterUptime, and other channels.
+      Track issues that occur on events, requests, and backpressure, and manage the triggers (rules) that open and route
+      issues to Slack, Email, Microsoft Teams, Discord, BetterUptime, and other channels.
     properties:
       - type: Documentation
         url: https://hookdeck.com/docs/issues
@@ -250,14 +195,6 @@ apis:
         url: openapi/hookdeck-issues-api-openapi.yml
       - type: JSONSchema
         url: json-schema/hookdeck-issue-schema.json
-      - type: NaftikoCapability
-        url: capabilities/hookdeck-issues.yaml
-      - type: NaftikoCapability
-        url: capabilities/hookdeck-issue-triggers.yaml
-      - type: NaftikoCapability
-        url: capabilities/hookdeck-issues-triage.yaml
-      - type: NaftikoCapability
-        url: capabilities/hookdeck-issue-trigger-author.yaml
   - aid: hookdeck:hookdeck-metrics-api
     name: Hookdeck Metrics API
     tags:
@@ -267,19 +204,14 @@ apis:
     baseURL: https://api.hookdeck.com/2025-07-01
     humanURL: https://hookdeck.com/docs/metrics
     description: >-
-      Query aggregated metrics for events, requests, and attempts — success
-      counts, failure counts, response time, throughput, and SLA bands
-      grouped by source, destination, or connection. Backs the dashboard
-      analytics and downstream observability bridges.
+      Query aggregated metrics for events, requests, and attempts — success counts, failure counts, response time,
+      throughput, and SLA bands grouped by source, destination, or connection. Backs the dashboard analytics and
+      downstream observability bridges.
     properties:
       - type: Documentation
         url: https://hookdeck.com/docs/metrics
       - type: OpenAPI
         url: openapi/hookdeck-metrics-api-openapi.yml
-      - type: NaftikoCapability
-        url: capabilities/hookdeck-metrics.yaml
-      - type: NaftikoCapability
-        url: capabilities/hookdeck-metrics-bridge.yaml
   - aid: hookdeck:hookdeck-integrations-api
     name: Hookdeck Integrations API
     tags:
@@ -289,19 +221,14 @@ apis:
     baseURL: https://api.hookdeck.com/2025-07-01
     humanURL: https://hookdeck.com/docs/integrations
     description: >-
-      Configure platform integrations that adapt Hookdeck behavior for
-      specific source platforms — including signature verification, header
-      normalization, allowed event types, and platform-aware retries (e.g.,
-      Stripe, GitHub, Twilio, Shopify, Linear).
+      Configure platform integrations that adapt Hookdeck behavior for specific source platforms — including signature
+      verification, header normalization, allowed event types, and platform-aware retries (e.g., Stripe, GitHub, Twilio,
+      Shopify, Linear).
     properties:
       - type: Documentation
         url: https://hookdeck.com/docs/integrations
       - type: OpenAPI
         url: openapi/hookdeck-integrations-api-openapi.yml
-      - type: NaftikoCapability
-        url: capabilities/hookdeck-integrations.yaml
-      - type: NaftikoCapability
-        url: capabilities/hookdeck-integrations-catalog.yaml
   - aid: hookdeck:hookdeck-notifications-api
     name: Hookdeck Notifications API
     tags:
@@ -310,62 +237,61 @@ apis:
     baseURL: https://api.hookdeck.com/2025-07-01
     humanURL: https://hookdeck.com/docs/notifications
     description: >-
-      Manage how your team is notified when issues occur — channel routing,
-      mute windows, per-team subscriptions, and the templates rendered to
-      Slack, Email, Microsoft Teams, and Discord.
+      Manage how your team is notified when issues occur — channel routing, mute windows, per-team subscriptions, and
+      the templates rendered to Slack, Email, Microsoft Teams, and Discord.
     properties:
       - type: Documentation
         url: https://hookdeck.com/docs/notifications
       - type: OpenAPI
         url: openapi/hookdeck-notifications-api-openapi.yml
-      - type: NaftikoCapability
-        url: capabilities/hookdeck-notifications.yaml
 common:
+  - type: PostmanWorkspace
+    url: https://www.postman.com/kinlaneapi/hookdeck/overview
   - type: ArazzoWorkflows
     url: arazzo/
     workflows:
-    - url: arazzo/hookdeck-attach-integration-to-source-workflow.yml
-      name: Hookdeck Attach an Integration to a New Source
-      summary: Create a source, create an authentication integration, then attach the integration to the source.
-    - url: arazzo/hookdeck-author-transformation-workflow.yml
-      name: Hookdeck Author and Verify a Transformation
-      summary: Create a transformation, run it against a sample request, then read it back.
-    - url: arazzo/hookdeck-bookmark-and-replay-event-workflow.yml
-      name: Hookdeck Bookmark and Replay an Event
-      summary: Find a delivered event, bookmark its payload, then trigger the bookmark to replay it.
-    - url: arazzo/hookdeck-bulk-retry-failed-events-workflow.yml
-      name: Hookdeck Bulk Retry Failed Events
-      summary: Preview the impact of a bulk retry, start it, then poll until it completes.
-    - url: arazzo/hookdeck-cancel-pending-event-workflow.yml
-      name: Hookdeck Cancel a Pending Event
-      summary: Find a queued event for a connection, inspect it, then cancel its delivery.
-    - url: arazzo/hookdeck-decommission-source-workflow.yml
-      name: Hookdeck Decommission a Source
-      summary: Read a source, disable it to stop ingestion, then delete it.
-    - url: arazzo/hookdeck-inline-connection-workflow.yml
-      name: Hookdeck Create an Inline Connection
-      summary: Create a connection along with its source and destination in a single call.
-    - url: arazzo/hookdeck-investigate-event-attempts-workflow.yml
-      name: Hookdeck Investigate Event Delivery Attempts
-      summary: Resolve an event, list its delivery attempts, then read the latest attempt body.
-    - url: arazzo/hookdeck-pause-resume-connection-workflow.yml
-      name: Hookdeck Pause and Resume a Connection
-      summary: Read a connection, pause it for maintenance, then unpause it to drain held events.
-    - url: arazzo/hookdeck-provision-connection-workflow.yml
-      name: Hookdeck Provision a Connection
-      summary: Create a source, create a destination, then wire them together with a connection.
-    - url: arazzo/hookdeck-replay-request-workflow.yml
-      name: Hookdeck Replay an Inbound Request
-      summary: Find a recent request, inspect it, replay it, then list the events it produced.
-    - url: arazzo/hookdeck-retry-failed-event-workflow.yml
-      name: Hookdeck Retry a Failed Event
-      summary: Find the most recent failed event, inspect it, and retry delivery.
-    - url: arazzo/hookdeck-update-transformation-workflow.yml
-      name: Hookdeck Test Then Update a Transformation
-      summary: Test new code against a sample request before persisting it to an existing transformation.
-    - url: arazzo/hookdeck-upsert-connection-workflow.yml
-      name: Hookdeck Upsert a Connection by Name
-      summary: Idempotently create or update a connection by name, then confirm the result.
+      - url: arazzo/hookdeck-attach-integration-to-source-workflow.yml
+        name: Hookdeck Attach an Integration to a New Source
+        summary: Create a source, create an authentication integration, then attach the integration to the source.
+      - url: arazzo/hookdeck-author-transformation-workflow.yml
+        name: Hookdeck Author and Verify a Transformation
+        summary: Create a transformation, run it against a sample request, then read it back.
+      - url: arazzo/hookdeck-bookmark-and-replay-event-workflow.yml
+        name: Hookdeck Bookmark and Replay an Event
+        summary: Find a delivered event, bookmark its payload, then trigger the bookmark to replay it.
+      - url: arazzo/hookdeck-bulk-retry-failed-events-workflow.yml
+        name: Hookdeck Bulk Retry Failed Events
+        summary: Preview the impact of a bulk retry, start it, then poll until it completes.
+      - url: arazzo/hookdeck-cancel-pending-event-workflow.yml
+        name: Hookdeck Cancel a Pending Event
+        summary: Find a queued event for a connection, inspect it, then cancel its delivery.
+      - url: arazzo/hookdeck-decommission-source-workflow.yml
+        name: Hookdeck Decommission a Source
+        summary: Read a source, disable it to stop ingestion, then delete it.
+      - url: arazzo/hookdeck-inline-connection-workflow.yml
+        name: Hookdeck Create an Inline Connection
+        summary: Create a connection along with its source and destination in a single call.
+      - url: arazzo/hookdeck-investigate-event-attempts-workflow.yml
+        name: Hookdeck Investigate Event Delivery Attempts
+        summary: Resolve an event, list its delivery attempts, then read the latest attempt body.
+      - url: arazzo/hookdeck-pause-resume-connection-workflow.yml
+        name: Hookdeck Pause and Resume a Connection
+        summary: Read a connection, pause it for maintenance, then unpause it to drain held events.
+      - url: arazzo/hookdeck-provision-connection-workflow.yml
+        name: Hookdeck Provision a Connection
+        summary: Create a source, create a destination, then wire them together with a connection.
+      - url: arazzo/hookdeck-replay-request-workflow.yml
+        name: Hookdeck Replay an Inbound Request
+        summary: Find a recent request, inspect it, replay it, then list the events it produced.
+      - url: arazzo/hookdeck-retry-failed-event-workflow.yml
+        name: Hookdeck Retry a Failed Event
+        summary: Find the most recent failed event, inspect it, and retry delivery.
+      - url: arazzo/hookdeck-update-transformation-workflow.yml
+        name: Hookdeck Test Then Update a Transformation
+        summary: Test new code against a sample request before persisting it to an existing transformation.
+      - url: arazzo/hookdeck-upsert-connection-workflow.yml
+        name: Hookdeck Upsert a Connection by Name
+        summary: Idempotently create or update a connection by name, then confirm the result.
   - type: Documentation
     url: https://hookdeck.com/docs
   - type: APIReference

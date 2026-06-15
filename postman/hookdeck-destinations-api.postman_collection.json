@@ -1,0 +1,2278 @@
+{
+  "info": {
+    "_postman_id": "054e02af-b7c4-4db2-bc2a-f6a8d00eec81",
+    "name": "Hookdeck Destinations API",
+    "description": "Manage destinations \u2014 the downstream targets (HTTP endpoints, AWS, Azure, GCP, queues) where Hookdeck delivers events. Supports auth methods, rate limiting, and path forwarding.\n\nContact Support:\n Name: Hookdeck Support\n Email: info@hookdeck.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T15:09:48.000Z",
+    "updatedAt": "2026-06-05T15:09:49.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-054e02af-b7c4-4db2-bc2a-f6a8d00eec81"
+  },
+  "item": [
+    {
+      "name": "destinations",
+      "item": [
+        {
+          "name": "count",
+          "item": [
+            {
+              "name": "Count destinations",
+              "id": "ee4b6a86-5e2c-4811-973c-d81b6de362eb",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/destinations/count?id=<string>&name=<string>&disabled=<boolean>&disabled_at=<dateTime>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "destinations",
+                    "count"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "disabled",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "disabled_at",
+                      "value": "<dateTime>"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "1bdeadb5-804a-4246-bfcb-18013fc6ce15",
+                  "name": "Count of destinations",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/destinations/count?id=<string>&name=<string>&disabled=<boolean>&disabled_at=<dateTime>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "destinations",
+                        "count"
+                      ],
+                      "query": [
+                        {
+                          "key": "id",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "name",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "disabled",
+                          "value": "<boolean>"
+                        },
+                        {
+                          "key": "disabled_at",
+                          "value": "<dateTime>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"count\": \"<float>\"\n}",
+                  "createdAt": "2026-06-05T15:09:49.000Z",
+                  "updatedAt": "2026-06-05T15:09:49.000Z",
+                  "uid": "35240-1bdeadb5-804a-4246-bfcb-18013fc6ce15"
+                },
+                {
+                  "id": "e333be90-d894-4d17-9cc4-4be06924f73e",
+                  "name": "Bad Request",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/destinations/count?id=<string>&name=<string>&disabled=<boolean>&disabled_at=<dateTime>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "destinations",
+                        "count"
+                      ],
+                      "query": [
+                        {
+                          "key": "id",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "name",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "disabled",
+                          "value": "<boolean>"
+                        },
+                        {
+                          "key": "disabled_at",
+                          "value": "<dateTime>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T15:09:49.000Z",
+                  "updatedAt": "2026-06-05T15:09:49.000Z",
+                  "uid": "35240-e333be90-d894-4d17-9cc4-4be06924f73e"
+                },
+                {
+                  "id": "9a85d90d-e97e-4ec3-9a93-0d868f0836fe",
+                  "name": "Unprocessable Entity",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/destinations/count?id=<string>&name=<string>&disabled=<boolean>&disabled_at=<dateTime>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "destinations",
+                        "count"
+                      ],
+                      "query": [
+                        {
+                          "key": "id",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "name",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "disabled",
+                          "value": "<boolean>"
+                        },
+                        {
+                          "key": "disabled_at",
+                          "value": "<dateTime>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T15:09:49.000Z",
+                  "updatedAt": "2026-06-05T15:09:49.000Z",
+                  "uid": "35240-9a85d90d-e97e-4ec3-9a93-0d868f0836fe"
+                }
+              ],
+              "createdAt": "2026-06-05T15:09:49.000Z",
+              "updatedAt": "2026-06-05T15:09:49.000Z",
+              "uid": "35240-ee4b6a86-5e2c-4811-973c-d81b6de362eb"
+            }
+          ],
+          "id": "ae166326-2df0-4731-bded-edee22478bd9",
+          "createdAt": "2026-06-05T15:09:49.000Z",
+          "updatedAt": "2026-06-05T15:09:49.000Z",
+          "uid": "35240-ae166326-2df0-4731-bded-edee22478bd9"
+        },
+        {
+          "name": "{id}",
+          "item": [
+            {
+              "name": "disable",
+              "item": [
+                {
+                  "name": "Disable a destination",
+                  "id": "c52db459-617c-4aa5-80b6-51bd9bac60c1",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/destinations/:id/disable",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "destinations",
+                        ":id",
+                        "disable"
+                      ],
+                      "variable": [
+                        {
+                          "id": "40d143e2-5328-4be6-8f8d-76a03069a3bb",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "This endpoint disables a destination. A disabled destination will no longer deliver any events."
+                  },
+                  "response": [
+                    {
+                      "id": "bef1aba7-c568-42b4-9892-e41997f415ab",
+                      "name": "A single destination",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/destinations/:id/disable",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "destinations",
+                            ":id",
+                            "disable"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"team_id\": \"<string>\",\n  \"type\": \"MOCK_API\",\n  \"disabled_at\": \"<dateTime>\",\n  \"updated_at\": \"<dateTime>\",\n  \"created_at\": \"<dateTime>\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"url\": \"<string>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"second\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"POST\",\n    \"auth_type\": \"GCP_SERVICE_ACCOUNT\",\n    \"auth\": {}\n  }\n}",
+                      "createdAt": "2026-06-05T15:09:49.000Z",
+                      "updatedAt": "2026-06-05T15:09:49.000Z",
+                      "uid": "35240-bef1aba7-c568-42b4-9892-e41997f415ab"
+                    },
+                    {
+                      "id": "9eb03166-0857-4a30-aa1a-e8bc7a851dc7",
+                      "name": "Not Found",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/destinations/:id/disable",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "destinations",
+                            ":id",
+                            "disable"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                      "createdAt": "2026-06-05T15:09:49.000Z",
+                      "updatedAt": "2026-06-05T15:09:49.000Z",
+                      "uid": "35240-9eb03166-0857-4a30-aa1a-e8bc7a851dc7"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:09:49.000Z",
+                  "updatedAt": "2026-06-05T15:09:49.000Z",
+                  "uid": "35240-c52db459-617c-4aa5-80b6-51bd9bac60c1"
+                }
+              ],
+              "id": "ab7771e2-72b8-49e5-8eb2-3d0241f4bd70",
+              "createdAt": "2026-06-05T15:09:49.000Z",
+              "updatedAt": "2026-06-05T15:09:49.000Z",
+              "uid": "35240-ab7771e2-72b8-49e5-8eb2-3d0241f4bd70"
+            },
+            {
+              "name": "archive",
+              "item": [
+                {
+                  "name": "Disable a destination",
+                  "id": "096858aa-d87e-422a-9b98-ed1a7d6512f0",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/destinations/:id/archive",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "destinations",
+                        ":id",
+                        "archive"
+                      ],
+                      "variable": [
+                        {
+                          "id": "108aaff3-dc7d-4387-b8b7-b7e2fbe005b3",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "This endpoint disables a destination. A disabled destination will no longer deliver any events."
+                  },
+                  "response": [
+                    {
+                      "id": "67661637-6ad2-4dd9-8774-c009d334f960",
+                      "name": "A single destination",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/destinations/:id/archive",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "destinations",
+                            ":id",
+                            "archive"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"team_id\": \"<string>\",\n  \"type\": \"MOCK_API\",\n  \"disabled_at\": \"<dateTime>\",\n  \"updated_at\": \"<dateTime>\",\n  \"created_at\": \"<dateTime>\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"url\": \"<string>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"second\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"POST\",\n    \"auth_type\": \"GCP_SERVICE_ACCOUNT\",\n    \"auth\": {}\n  }\n}",
+                      "createdAt": "2026-06-05T15:09:49.000Z",
+                      "updatedAt": "2026-06-05T15:09:49.000Z",
+                      "uid": "35240-67661637-6ad2-4dd9-8774-c009d334f960"
+                    },
+                    {
+                      "id": "7be23a5d-5a68-4347-b533-4ef381cbab6e",
+                      "name": "Not Found",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/destinations/:id/archive",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "destinations",
+                            ":id",
+                            "archive"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                      "createdAt": "2026-06-05T15:09:49.000Z",
+                      "updatedAt": "2026-06-05T15:09:49.000Z",
+                      "uid": "35240-7be23a5d-5a68-4347-b533-4ef381cbab6e"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:09:49.000Z",
+                  "updatedAt": "2026-06-05T15:09:49.000Z",
+                  "uid": "35240-096858aa-d87e-422a-9b98-ed1a7d6512f0"
+                }
+              ],
+              "id": "7446f6d1-d60f-48aa-b00a-341218e3bc70",
+              "createdAt": "2026-06-05T15:09:49.000Z",
+              "updatedAt": "2026-06-05T15:09:49.000Z",
+              "uid": "35240-7446f6d1-d60f-48aa-b00a-341218e3bc70"
+            },
+            {
+              "name": "enable",
+              "item": [
+                {
+                  "name": "Enable a destination",
+                  "id": "5b0b3b85-cc8e-4a4b-9870-10710f837d93",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/destinations/:id/enable",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "destinations",
+                        ":id",
+                        "enable"
+                      ],
+                      "variable": [
+                        {
+                          "id": "aa80d409-f37d-479c-af26-45a75ad5aac7",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "This endpoint enables a destination that was previously disabled."
+                  },
+                  "response": [
+                    {
+                      "id": "30003858-a712-4e52-83b1-6534ffcefb3e",
+                      "name": "A single destination",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/destinations/:id/enable",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "destinations",
+                            ":id",
+                            "enable"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"team_id\": \"<string>\",\n  \"type\": \"MOCK_API\",\n  \"disabled_at\": \"<dateTime>\",\n  \"updated_at\": \"<dateTime>\",\n  \"created_at\": \"<dateTime>\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"url\": \"<string>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"second\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"POST\",\n    \"auth_type\": \"GCP_SERVICE_ACCOUNT\",\n    \"auth\": {}\n  }\n}",
+                      "createdAt": "2026-06-05T15:09:49.000Z",
+                      "updatedAt": "2026-06-05T15:09:49.000Z",
+                      "uid": "35240-30003858-a712-4e52-83b1-6534ffcefb3e"
+                    },
+                    {
+                      "id": "43c59e68-3359-4416-91db-1f47d59421b5",
+                      "name": "Not Found",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/destinations/:id/enable",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "destinations",
+                            ":id",
+                            "enable"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                      "createdAt": "2026-06-05T15:09:49.000Z",
+                      "updatedAt": "2026-06-05T15:09:49.000Z",
+                      "uid": "35240-43c59e68-3359-4416-91db-1f47d59421b5"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:09:49.000Z",
+                  "updatedAt": "2026-06-05T15:09:49.000Z",
+                  "uid": "35240-5b0b3b85-cc8e-4a4b-9870-10710f837d93"
+                }
+              ],
+              "id": "60ad082a-7ff4-46f6-ad39-158457395e23",
+              "createdAt": "2026-06-05T15:09:49.000Z",
+              "updatedAt": "2026-06-05T15:09:49.000Z",
+              "uid": "35240-60ad082a-7ff4-46f6-ad39-158457395e23"
+            },
+            {
+              "name": "unarchive",
+              "item": [
+                {
+                  "name": "Enable a destination",
+                  "id": "8434dad2-3f66-4300-b06d-17f53431a702",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/destinations/:id/unarchive",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "destinations",
+                        ":id",
+                        "unarchive"
+                      ],
+                      "variable": [
+                        {
+                          "id": "bf0aad89-a09f-45ea-a3fd-f1c4ddcd685b",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "This endpoint enables a destination that was previously disabled."
+                  },
+                  "response": [
+                    {
+                      "id": "bd4e7dde-89f9-4609-9165-9aa35d8f8cec",
+                      "name": "A single destination",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/destinations/:id/unarchive",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "destinations",
+                            ":id",
+                            "unarchive"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"team_id\": \"<string>\",\n  \"type\": \"MOCK_API\",\n  \"disabled_at\": \"<dateTime>\",\n  \"updated_at\": \"<dateTime>\",\n  \"created_at\": \"<dateTime>\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"url\": \"<string>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"second\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"POST\",\n    \"auth_type\": \"GCP_SERVICE_ACCOUNT\",\n    \"auth\": {}\n  }\n}",
+                      "createdAt": "2026-06-05T15:09:49.000Z",
+                      "updatedAt": "2026-06-05T15:09:49.000Z",
+                      "uid": "35240-bd4e7dde-89f9-4609-9165-9aa35d8f8cec"
+                    },
+                    {
+                      "id": "fd25bb07-e248-4978-a4ad-e2017c9b3f25",
+                      "name": "Not Found",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/destinations/:id/unarchive",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "destinations",
+                            ":id",
+                            "unarchive"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                      "createdAt": "2026-06-05T15:09:49.000Z",
+                      "updatedAt": "2026-06-05T15:09:49.000Z",
+                      "uid": "35240-fd25bb07-e248-4978-a4ad-e2017c9b3f25"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:09:49.000Z",
+                  "updatedAt": "2026-06-05T15:09:49.000Z",
+                  "uid": "35240-8434dad2-3f66-4300-b06d-17f53431a702"
+                }
+              ],
+              "id": "b842b6f6-0913-49d6-8f30-1006a2226a71",
+              "createdAt": "2026-06-05T15:09:49.000Z",
+              "updatedAt": "2026-06-05T15:09:49.000Z",
+              "uid": "35240-b842b6f6-0913-49d6-8f30-1006a2226a71"
+            },
+            {
+              "name": "Retrieve a destination",
+              "id": "1e3a393f-f299-46ce-8da4-62ea1a1f4a19",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/destinations/:id?include=config.auth",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "destinations",
+                    ":id"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "config.auth"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "id": "3a8a00c7-17c3-453c-8c9d-60a0015f6e04",
+                      "key": "id",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "This endpoint retrieves a specific destination."
+              },
+              "response": [
+                {
+                  "id": "65c3daf1-93dc-480a-8b56-f9e939c675b1",
+                  "name": "A single destination",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/destinations/:id?include=config.auth",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "destinations",
+                        ":id"
+                      ],
+                      "query": [
+                        {
+                          "key": "include",
+                          "value": "config.auth"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"team_id\": \"<string>\",\n  \"type\": \"MOCK_API\",\n  \"disabled_at\": \"<dateTime>\",\n  \"updated_at\": \"<dateTime>\",\n  \"created_at\": \"<dateTime>\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"url\": \"<string>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"second\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"POST\",\n    \"auth_type\": \"GCP_SERVICE_ACCOUNT\",\n    \"auth\": {}\n  }\n}",
+                  "createdAt": "2026-06-05T15:09:49.000Z",
+                  "updatedAt": "2026-06-05T15:09:49.000Z",
+                  "uid": "35240-65c3daf1-93dc-480a-8b56-f9e939c675b1"
+                },
+                {
+                  "id": "9e872669-ee9e-4599-8506-25fd9ce741a5",
+                  "name": "Not Found",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/destinations/:id?include=config.auth",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "destinations",
+                        ":id"
+                      ],
+                      "query": [
+                        {
+                          "key": "include",
+                          "value": "config.auth"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T15:09:49.000Z",
+                  "updatedAt": "2026-06-05T15:09:49.000Z",
+                  "uid": "35240-9e872669-ee9e-4599-8506-25fd9ce741a5"
+                },
+                {
+                  "id": "57a6f111-3047-4056-b6f1-cd3cd3effa91",
+                  "name": "Gone",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/destinations/:id?include=config.auth",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "destinations",
+                        ":id"
+                      ],
+                      "query": [
+                        {
+                          "key": "include",
+                          "value": "config.auth"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Gone",
+                  "code": 410,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T15:09:49.000Z",
+                  "updatedAt": "2026-06-05T15:09:49.000Z",
+                  "uid": "35240-57a6f111-3047-4056-b6f1-cd3cd3effa91"
+                }
+              ],
+              "createdAt": "2026-06-05T15:09:49.000Z",
+              "updatedAt": "2026-06-05T15:09:49.000Z",
+              "uid": "35240-1e3a393f-f299-46ce-8da4-62ea1a1f4a19"
+            },
+            {
+              "name": "Update a destination",
+              "id": "1f5a5720-3abe-4ccb-9a78-7ff0f991401f",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"FPW28`qY\",\n  \"type\": \"CLI\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"url\": \"<string>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"second\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"PUT\",\n    \"auth_type\": \"HOOKDECK_SIGNATURE\",\n    \"auth\": {}\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/destinations/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "destinations",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "499fdf47-c0c9-4dc3-a812-10e324f1131d",
+                      "key": "id",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "This endpoint updates a destination."
+              },
+              "response": [
+                {
+                  "id": "6e73e147-a721-4571-85f2-7d86728188fb",
+                  "name": "A single destination",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"FPW28`qY\",\n  \"type\": \"CLI\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"url\": \"<string>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"second\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"PUT\",\n    \"auth_type\": \"HOOKDECK_SIGNATURE\",\n    \"auth\": {}\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/destinations/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "destinations",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"team_id\": \"<string>\",\n  \"type\": \"MOCK_API\",\n  \"disabled_at\": \"<dateTime>\",\n  \"updated_at\": \"<dateTime>\",\n  \"created_at\": \"<dateTime>\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"url\": \"<string>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"second\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"POST\",\n    \"auth_type\": \"GCP_SERVICE_ACCOUNT\",\n    \"auth\": {}\n  }\n}",
+                  "createdAt": "2026-06-05T15:09:49.000Z",
+                  "updatedAt": "2026-06-05T15:09:49.000Z",
+                  "uid": "35240-6e73e147-a721-4571-85f2-7d86728188fb"
+                },
+                {
+                  "id": "180be9e8-14e2-45c1-bda9-da33d248a4ec",
+                  "name": "Bad Request",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"FPW28`qY\",\n  \"type\": \"CLI\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"url\": \"<string>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"second\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"PUT\",\n    \"auth_type\": \"HOOKDECK_SIGNATURE\",\n    \"auth\": {}\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/destinations/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "destinations",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T15:09:49.000Z",
+                  "updatedAt": "2026-06-05T15:09:49.000Z",
+                  "uid": "35240-180be9e8-14e2-45c1-bda9-da33d248a4ec"
+                },
+                {
+                  "id": "929fa79c-1176-49e8-82a0-24c7c72c8819",
+                  "name": "Not Found",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"FPW28`qY\",\n  \"type\": \"CLI\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"url\": \"<string>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"second\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"PUT\",\n    \"auth_type\": \"HOOKDECK_SIGNATURE\",\n    \"auth\": {}\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/destinations/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "destinations",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T15:09:49.000Z",
+                  "updatedAt": "2026-06-05T15:09:49.000Z",
+                  "uid": "35240-929fa79c-1176-49e8-82a0-24c7c72c8819"
+                },
+                {
+                  "id": "7a080938-4930-483a-88d3-47ca966c7b90",
+                  "name": "Unprocessable Entity",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"FPW28`qY\",\n  \"type\": \"CLI\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"url\": \"<string>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"second\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"PUT\",\n    \"auth_type\": \"HOOKDECK_SIGNATURE\",\n    \"auth\": {}\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/destinations/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "destinations",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T15:09:49.000Z",
+                  "updatedAt": "2026-06-05T15:09:49.000Z",
+                  "uid": "35240-7a080938-4930-483a-88d3-47ca966c7b90"
+                }
+              ],
+              "createdAt": "2026-06-05T15:09:49.000Z",
+              "updatedAt": "2026-06-05T15:09:49.000Z",
+              "uid": "35240-1f5a5720-3abe-4ccb-9a78-7ff0f991401f"
+            },
+            {
+              "name": "Delete a destination",
+              "id": "a674a778-a8a6-41de-9508-9f456fa32ef4",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/destinations/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "destinations",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "e141e497-3d61-44cd-8ce5-f8fdf25a70ac",
+                      "key": "id",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "This endpoint permanently deletes a destination. This action cannot be undone."
+              },
+              "response": [
+                {
+                  "id": "87cd66fa-11fa-4a0f-bac4-e9fc8712dc35",
+                  "name": "A single destination",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/destinations/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "destinations",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\"\n}",
+                  "createdAt": "2026-06-05T15:09:49.000Z",
+                  "updatedAt": "2026-06-05T15:09:49.000Z",
+                  "uid": "35240-87cd66fa-11fa-4a0f-bac4-e9fc8712dc35"
+                },
+                {
+                  "id": "1d6d737e-0e90-496d-9703-adaa51cd3a74",
+                  "name": "Not Found",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/destinations/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "destinations",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T15:09:49.000Z",
+                  "updatedAt": "2026-06-05T15:09:49.000Z",
+                  "uid": "35240-1d6d737e-0e90-496d-9703-adaa51cd3a74"
+                }
+              ],
+              "createdAt": "2026-06-05T15:09:49.000Z",
+              "updatedAt": "2026-06-05T15:09:49.000Z",
+              "uid": "35240-a674a778-a8a6-41de-9508-9f456fa32ef4"
+            }
+          ],
+          "id": "2a3e3588-2df2-4951-bb4a-c9cc0be32926",
+          "createdAt": "2026-06-05T15:09:49.000Z",
+          "updatedAt": "2026-06-05T15:09:49.000Z",
+          "uid": "35240-2a3e3588-2df2-4951-bb4a-c9cc0be32926"
+        },
+        {
+          "name": "Retrieve destinations",
+          "id": "0c6c203c-9609-4705-aed8-b2a8b7530645",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/destinations?id=<string>&name=HIDlVHx3K&type=MOCK_API&disabled=<boolean>&disabled_at=<dateTime>&order_by=updated_at&dir=desc&limit=<integer>&next=<string>&prev=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "destinations"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "name",
+                  "value": "HIDlVHx3K"
+                },
+                {
+                  "key": "type",
+                  "value": "MOCK_API"
+                },
+                {
+                  "key": "disabled",
+                  "value": "<boolean>"
+                },
+                {
+                  "key": "disabled_at",
+                  "value": "<dateTime>"
+                },
+                {
+                  "key": "order_by",
+                  "value": "updated_at"
+                },
+                {
+                  "key": "dir",
+                  "value": "desc"
+                },
+                {
+                  "key": "limit",
+                  "value": "<integer>"
+                },
+                {
+                  "key": "next",
+                  "value": "<string>"
+                },
+                {
+                  "key": "prev",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "This endpoint lists destinations, or a subset of destinations."
+          },
+          "response": [
+            {
+              "id": "b20a8add-76a1-431e-9b6b-840f7ab07fa5",
+              "name": "List of destinations",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/destinations?id=<string>&name=HIDlVHx3K&type=MOCK_API&disabled=<boolean>&disabled_at=<dateTime>&order_by=updated_at&dir=desc&limit=<integer>&next=<string>&prev=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "destinations"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "name",
+                      "value": "HIDlVHx3K"
+                    },
+                    {
+                      "key": "type",
+                      "value": "MOCK_API"
+                    },
+                    {
+                      "key": "disabled",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "disabled_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "updated_at"
+                    },
+                    {
+                      "key": "dir",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "next",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "prev",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"pagination\": {\n    \"order_by\": \"<string>\",\n    \"dir\": \"asc\",\n    \"limit\": \"<integer>\",\n    \"prev\": \"<string>\",\n    \"next\": \"<string>\"\n  },\n  \"count\": \"<integer>\",\n  \"models\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"team_id\": \"<string>\",\n      \"type\": \"MOCK_API\",\n      \"disabled_at\": \"<dateTime>\",\n      \"updated_at\": \"<dateTime>\",\n      \"created_at\": \"<dateTime>\",\n      \"description\": \"<string>\",\n      \"config\": {\n        \"url\": \"<string>\",\n        \"rate_limit\": \"<float>\",\n        \"rate_limit_period\": \"minute\",\n        \"path_forwarding_disabled\": \"<boolean>\",\n        \"http_method\": \"POST\",\n        \"auth_type\": \"HOOKDECK_SIGNATURE\",\n        \"auth\": {}\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"team_id\": \"<string>\",\n      \"type\": \"HTTP\",\n      \"disabled_at\": \"<dateTime>\",\n      \"updated_at\": \"<dateTime>\",\n      \"created_at\": \"<dateTime>\",\n      \"description\": \"<string>\",\n      \"config\": {\n        \"url\": \"<string>\",\n        \"rate_limit\": \"<float>\",\n        \"rate_limit_period\": \"hour\",\n        \"path_forwarding_disabled\": \"<boolean>\",\n        \"http_method\": \"DELETE\",\n        \"auth_type\": \"OAUTH2_AUTHORIZATION_CODE\",\n        \"auth\": {}\n      }\n    }\n  ]\n}",
+              "createdAt": "2026-06-05T15:09:49.000Z",
+              "updatedAt": "2026-06-05T15:09:49.000Z",
+              "uid": "35240-b20a8add-76a1-431e-9b6b-840f7ab07fa5"
+            },
+            {
+              "id": "e3bd7373-f84f-41ce-b3f9-9beb20b0166a",
+              "name": "Bad Request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/destinations?id=<string>&name=HIDlVHx3K&type=MOCK_API&disabled=<boolean>&disabled_at=<dateTime>&order_by=updated_at&dir=desc&limit=<integer>&next=<string>&prev=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "destinations"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "name",
+                      "value": "HIDlVHx3K"
+                    },
+                    {
+                      "key": "type",
+                      "value": "MOCK_API"
+                    },
+                    {
+                      "key": "disabled",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "disabled_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "updated_at"
+                    },
+                    {
+                      "key": "dir",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "next",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "prev",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+              "createdAt": "2026-06-05T15:09:49.000Z",
+              "updatedAt": "2026-06-05T15:09:49.000Z",
+              "uid": "35240-e3bd7373-f84f-41ce-b3f9-9beb20b0166a"
+            },
+            {
+              "id": "05344178-567f-45ce-8552-c2bec2af516b",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/destinations?id=<string>&name=HIDlVHx3K&type=MOCK_API&disabled=<boolean>&disabled_at=<dateTime>&order_by=updated_at&dir=desc&limit=<integer>&next=<string>&prev=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "destinations"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "name",
+                      "value": "HIDlVHx3K"
+                    },
+                    {
+                      "key": "type",
+                      "value": "MOCK_API"
+                    },
+                    {
+                      "key": "disabled",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "disabled_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "updated_at"
+                    },
+                    {
+                      "key": "dir",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "next",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "prev",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+              "createdAt": "2026-06-05T15:09:49.000Z",
+              "updatedAt": "2026-06-05T15:09:49.000Z",
+              "uid": "35240-05344178-567f-45ce-8552-c2bec2af516b"
+            }
+          ],
+          "createdAt": "2026-06-05T15:09:49.000Z",
+          "updatedAt": "2026-06-05T15:09:49.000Z",
+          "uid": "35240-0c6c203c-9609-4705-aed8-b2a8b7530645"
+        },
+        {
+          "name": "Create a destination",
+          "id": "1f4c5562-fffb-42f1-9ef7-5fff468f521e",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"EwhM\",\n  \"type\": \"HTTP\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"url\": \"<string>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"hour\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"GET\",\n    \"auth_type\": \"HOOKDECK_SIGNATURE\",\n    \"auth\": {}\n  }\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/destinations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "destinations"
+              ]
+            },
+            "description": "This endpoint creates a destination."
+          },
+          "response": [
+            {
+              "id": "d093423f-3166-4184-8a4a-3872c606799f",
+              "name": "A single destination",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"EwhM\",\n  \"type\": \"HTTP\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"url\": \"<string>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"hour\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"GET\",\n    \"auth_type\": \"HOOKDECK_SIGNATURE\",\n    \"auth\": {}\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/destinations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "destinations"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"team_id\": \"<string>\",\n  \"type\": \"MOCK_API\",\n  \"disabled_at\": \"<dateTime>\",\n  \"updated_at\": \"<dateTime>\",\n  \"created_at\": \"<dateTime>\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"url\": \"<string>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"second\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"POST\",\n    \"auth_type\": \"GCP_SERVICE_ACCOUNT\",\n    \"auth\": {}\n  }\n}",
+              "createdAt": "2026-06-05T15:09:49.000Z",
+              "updatedAt": "2026-06-05T15:09:49.000Z",
+              "uid": "35240-d093423f-3166-4184-8a4a-3872c606799f"
+            },
+            {
+              "id": "03c35623-a041-47cd-b54a-4b3d0a8e9a27",
+              "name": "Bad Request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"EwhM\",\n  \"type\": \"HTTP\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"url\": \"<string>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"hour\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"GET\",\n    \"auth_type\": \"HOOKDECK_SIGNATURE\",\n    \"auth\": {}\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/destinations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "destinations"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+              "createdAt": "2026-06-05T15:09:49.000Z",
+              "updatedAt": "2026-06-05T15:09:49.000Z",
+              "uid": "35240-03c35623-a041-47cd-b54a-4b3d0a8e9a27"
+            },
+            {
+              "id": "eb02c78d-c7f2-4cec-bcff-37a919e7ab99",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"EwhM\",\n  \"type\": \"HTTP\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"url\": \"<string>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"hour\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"GET\",\n    \"auth_type\": \"HOOKDECK_SIGNATURE\",\n    \"auth\": {}\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/destinations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "destinations"
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+              "createdAt": "2026-06-05T15:09:49.000Z",
+              "updatedAt": "2026-06-05T15:09:49.000Z",
+              "uid": "35240-eb02c78d-c7f2-4cec-bcff-37a919e7ab99"
+            }
+          ],
+          "createdAt": "2026-06-05T15:09:49.000Z",
+          "updatedAt": "2026-06-05T15:09:49.000Z",
+          "uid": "35240-1f4c5562-fffb-42f1-9ef7-5fff468f521e"
+        },
+        {
+          "name": "Create/Update a destination",
+          "id": "969857ea-1f35-4bfe-ba64-14c3f2c1b653",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"EwhM\",\n  \"type\": \"HTTP\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"url\": \"<string>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"hour\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"GET\",\n    \"auth_type\": \"HOOKDECK_SIGNATURE\",\n    \"auth\": {}\n  }\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/destinations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "destinations"
+              ]
+            },
+            "description": "This endpoint creates a destination, or updates an existing destination by name."
+          },
+          "response": [
+            {
+              "id": "d504f633-4793-4bf1-bbba-bf8471fd9ea9",
+              "name": "A single destination",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"EwhM\",\n  \"type\": \"HTTP\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"url\": \"<string>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"hour\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"GET\",\n    \"auth_type\": \"HOOKDECK_SIGNATURE\",\n    \"auth\": {}\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/destinations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "destinations"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"team_id\": \"<string>\",\n  \"type\": \"MOCK_API\",\n  \"disabled_at\": \"<dateTime>\",\n  \"updated_at\": \"<dateTime>\",\n  \"created_at\": \"<dateTime>\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"url\": \"<string>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"second\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"POST\",\n    \"auth_type\": \"GCP_SERVICE_ACCOUNT\",\n    \"auth\": {}\n  }\n}",
+              "createdAt": "2026-06-05T15:09:49.000Z",
+              "updatedAt": "2026-06-05T15:09:49.000Z",
+              "uid": "35240-d504f633-4793-4bf1-bbba-bf8471fd9ea9"
+            },
+            {
+              "id": "7373fc42-fa8c-41c4-b794-0dd224a77e8e",
+              "name": "Bad Request",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"EwhM\",\n  \"type\": \"HTTP\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"url\": \"<string>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"hour\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"GET\",\n    \"auth_type\": \"HOOKDECK_SIGNATURE\",\n    \"auth\": {}\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/destinations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "destinations"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+              "createdAt": "2026-06-05T15:09:49.000Z",
+              "updatedAt": "2026-06-05T15:09:49.000Z",
+              "uid": "35240-7373fc42-fa8c-41c4-b794-0dd224a77e8e"
+            },
+            {
+              "id": "07842d8c-5e5c-4c5f-9cd7-d5b38c927f9c",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"EwhM\",\n  \"type\": \"HTTP\",\n  \"description\": \"<string>\",\n  \"config\": {\n    \"url\": \"<string>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"hour\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"GET\",\n    \"auth_type\": \"HOOKDECK_SIGNATURE\",\n    \"auth\": {}\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/destinations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "destinations"
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"status\": \"<float>\",\n  \"message\": \"<string>\",\n  \"data\": {}\n}",
+              "createdAt": "2026-06-05T15:09:49.000Z",
+              "updatedAt": "2026-06-05T15:09:49.000Z",
+              "uid": "35240-07842d8c-5e5c-4c5f-9cd7-d5b38c927f9c"
+            }
+          ],
+          "createdAt": "2026-06-05T15:09:49.000Z",
+          "updatedAt": "2026-06-05T15:09:49.000Z",
+          "uid": "35240-969857ea-1f35-4bfe-ba64-14c3f2c1b653"
+        }
+      ],
+      "id": "8b365f47-670c-4302-93a7-26c2fb3133ee",
+      "createdAt": "2026-06-05T15:09:49.000Z",
+      "updatedAt": "2026-06-05T15:09:49.000Z",
+      "uid": "35240-8b365f47-670c-4302-93a7-26c2fb3133ee"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.hookdeck.com/2025-07-01"
+    }
+  ]
+}
