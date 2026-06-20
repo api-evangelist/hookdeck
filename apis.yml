@@ -6,7 +6,7 @@ description: >-
   senders and your services to receive, verify, queue, retry, transform, filter, route, and observe events reliably at
   scale. Hookdeck exposes a fully versioned REST Admin API, a CLI for local development, language SDKs (TypeScript, Go,
   Python, .NET), a Terraform provider, and the open-source Outpost project for self-hostable outbound webhook delivery.
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 type: Index
 access: 3rd-Party
 position: Consumer
