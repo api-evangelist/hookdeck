@@ -5,11 +5,11 @@
       "source": "https://hookdeck.com/blog",
       "feed_url": "https://hookdeck.com/blog",
       "title": "Hookdeck Blog",
-      "saved": 0,
+      "saved": 2,
       "method": "html",
-      "note": "No posts found in June 1-7 2026 range"
+      "note": "No RSS/Atom feed; scraped HTML listing"
     }
   ],
-  "post_count": 0,
-  "fetched": "2026-06-07T00:00:00Z"
+  "post_count": 2,
+  "fetched": "2026-06-21T17:00:00Z"
 }
