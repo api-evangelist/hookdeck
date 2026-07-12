@@ -245,6 +245,10 @@ apis:
       - type: OpenAPI
         url: openapi/hookdeck-notifications-api-openapi.yml
 common:
+  - type: DomainSecurity
+    url: security/hookdeck-domain-security.yml
+  - type: Authentication
+    url: authentication/hookdeck-authentication.yml
   - type: PostmanWorkspace
     url: https://www.postman.com/kinlaneapi/hookdeck/overview
   - type: Arazzo

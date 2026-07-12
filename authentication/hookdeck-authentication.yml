@@ -1,0 +1,43 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/hookdeck-bookmarks-api-openapi.yml, openapi/hookdeck-bulk-operations-api-openapi.yml,
+  openapi/hookdeck-connections-api-openapi.yml, openapi/hookdeck-destinations-api-openapi.yml,
+  openapi/hookdeck-events-api-openapi.yml, openapi/hookdeck-integrations-api-openapi.yml, openapi/hookdeck-issues-api-openapi.yml,
+  openapi/hookdeck-metrics-api-openapi.yml, openapi/hookdeck-notifications-api-openapi.yml,
+  openapi/hookdeck-requests-api-openapi.yml, openapi/hookdeck-sources-api-openapi.yml, openapi/hookdeck-transformations-api-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  sources:
+  - openapi/hookdeck-bookmarks-api-openapi.yml
+  - openapi/hookdeck-bulk-operations-api-openapi.yml
+  - openapi/hookdeck-connections-api-openapi.yml
+  - openapi/hookdeck-destinations-api-openapi.yml
+  - openapi/hookdeck-events-api-openapi.yml
+  - openapi/hookdeck-integrations-api-openapi.yml
+  - openapi/hookdeck-issues-api-openapi.yml
+  - openapi/hookdeck-metrics-api-openapi.yml
+  - openapi/hookdeck-notifications-api-openapi.yml
+  - openapi/hookdeck-requests-api-openapi.yml
+  - openapi/hookdeck-sources-api-openapi.yml
+  - openapi/hookdeck-transformations-api-openapi.yml
+- name: basicAuth
+  type: http
+  scheme: basic
+  sources:
+  - openapi/hookdeck-bookmarks-api-openapi.yml
+  - openapi/hookdeck-bulk-operations-api-openapi.yml
+  - openapi/hookdeck-connections-api-openapi.yml
+  - openapi/hookdeck-destinations-api-openapi.yml
+  - openapi/hookdeck-events-api-openapi.yml
+  - openapi/hookdeck-integrations-api-openapi.yml
+  - openapi/hookdeck-issues-api-openapi.yml
+  - openapi/hookdeck-metrics-api-openapi.yml
+  - openapi/hookdeck-notifications-api-openapi.yml
+  - openapi/hookdeck-requests-api-openapi.yml
+  - openapi/hookdeck-sources-api-openapi.yml
+  - openapi/hookdeck-transformations-api-openapi.yml
