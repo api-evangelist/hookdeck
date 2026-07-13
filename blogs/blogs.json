@@ -5,11 +5,12 @@
       "source": "https://hookdeck.com/blog",
       "feed_url": "https://hookdeck.com/blog",
       "title": "Hookdeck Blog",
-      "saved": 2,
+      "saved": 0,
       "method": "html",
-      "note": "No RSS/Atom feed; scraped HTML listing"
+      "note": "No RSS/Atom feed; scraped HTML listing",
+      "error": "parse_failed"
     }
   ],
   "post_count": 2,
-  "fetched": "2026-06-21T17:00:00Z"
+  "fetched": "2026-07-11T11:43:46Z"
 }
