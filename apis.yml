@@ -245,6 +245,8 @@ apis:
       - type: OpenAPI
         url: openapi/hookdeck-notifications-api-openapi.yml
 common:
+  - type: AgenticAccess
+    url: agentic-access/hookdeck-agentic-access.yml
   - type: DomainSecurity
     url: security/hookdeck-domain-security.yml
   - type: Authentication
