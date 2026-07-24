@@ -1,0 +1,378 @@
+openapi: 3.0.1
+info:
+  title: Hookdeck Bookmarks Attempts API
+  version: 1.0.0
+  description: Save bookmarked events for quick replay and convenient one-click testing during development.
+  contact:
+    name: Hookdeck Support
+    url: https://hookdeck.com/contact-us
+    email: info@hookdeck.com
+servers:
+- url: https://api.hookdeck.com/2025-07-01
+  description: Production API
+security:
+- bearerAuth: []
+- basicAuth: []
+tags:
+- name: Attempts
+  description: An attempt is any request that Hookdeck makes on behalf of an event.
+paths:
+  /attempts:
+    get:
+      operationId: getAttempts
+      summary: Retrieve attempts
+      description: This endpoint lists attempts, or a subset of attempts.
+      tags:
+      - Attempts
+      responses:
+        '200':
+          description: List of attempts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventAttemptPaginatedResult'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: query
+        name: id
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+            description: Attempt ID
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+              description: Attempt ID
+          description: ID of the attempt
+      - in: query
+        name: event_id
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+            description: Event ID
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+              description: Event ID
+          description: Event the attempt is associated with
+      - in: query
+        name: order_by
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+            enum:
+            - created_at
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+              enum:
+              - created_at
+            minItems: 2
+            maxItems: 2
+          description: Sort key(s)
+      - in: query
+        name: dir
+        schema:
+          anyOf:
+          - type: string
+            enum:
+            - asc
+            - desc
+          - type: array
+            items:
+              type: string
+              enum:
+              - asc
+              - desc
+            minItems: 2
+            maxItems: 2
+          description: Sort direction(s)
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          minimum: 0
+          maximum: 255
+          description: Result set size
+      - in: query
+        name: next
+        schema:
+          type: string
+          maxLength: 255
+          description: The ID to provide in the query to get the next set of results
+      - in: query
+        name: prev
+        schema:
+          type: string
+          maxLength: 255
+          description: The ID to provide in the query to get the previous set of results
+  /attempts/{id}:
+    get:
+      operationId: getAttempt
+      summary: Retrieve an attempt
+      description: This endpoint retrieves a specific attempt. When retrieving a completed attempt, the response will contain the `body` of the destination's response. If the `body` is not yet available in our backend service the `body` will be set to `NOT_AVAILABLE_YET`.
+      tags:
+      - Attempts
+      responses:
+        '200':
+          description: A single attempt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventAttempt'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Attempt ID
+        required: true
+components:
+  schemas:
+    AttemptTrigger:
+      type: string
+      enum:
+      - INITIAL
+      - MANUAL
+      - BULK_RETRY
+      - UNPAUSE
+      - AUTOMATIC
+      nullable: true
+      description: How the attempt was triggered
+    EventAttemptPaginatedResult:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventAttempt'
+      additionalProperties: false
+    AttemptStatus:
+      type: string
+      enum:
+      - FAILED
+      - SUCCESSFUL
+      description: Attempt status
+    APIErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        status:
+          type: number
+          format: float
+          description: Status code
+        message:
+          type: string
+          description: Error description
+        data:
+          type: object
+          properties: {}
+          nullable: true
+      required:
+      - code
+      - status
+      - message
+      additionalProperties: false
+      description: Error response model
+    OrderByDirection:
+      anyOf:
+      - enum:
+        - asc
+      - enum:
+        - desc
+      - enum:
+        - ASC
+      - enum:
+        - DESC
+    AttemptErrorCodes:
+      type: string
+      enum:
+      - BAD_RESPONSE
+      - CANCELLED
+      - TIMEOUT
+      - NOT_FOUND
+      - CANCELLED_PAST_RETENTION
+      - CONNECTION_REFUSED
+      - CONNECTION_RESET
+      - MISSING_URL
+      - CLI
+      - CLI_UNAVAILABLE
+      - SELF_SIGNED_CERT
+      - ERR_TLS_CERT_ALTNAME_INVALID
+      - ERR_SSL_WRONG_VERSION_NUMBER
+      - NETWORK_ERROR
+      - NETWORK_REQUEST_CANCELED
+      - NETWORK_UNREACHABLE
+      - TOO_MANY_REDIRECTS
+      - INVALID_CHARACTER
+      - INVALID_URL
+      - SSL_ERROR_CA_UNKNOWN
+      - DATA_ARCHIVED
+      - SSL_CERT_EXPIRED
+      - BULK_RETRY_CANCELLED
+      - DNS_LOOKUP_FAILED
+      - HOST_UNREACHABLE
+      - INTERNAL_ERROR
+      - PROTOCOL_ERROR
+      - PAYLOAD_MISSING
+      - UNABLE_TO_GET_ISSUER_CERT
+      - SOCKET_CLOSED
+      - OAUTH2_HANDSHAKE_FAILED
+      - Z_DATA_ERROR
+      - UNKNOWN
+      description: Error code of the delivery attempt
+    EventAttempt:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Attempt ID
+        team_id:
+          type: string
+          description: ID of the project
+        event_id:
+          type: string
+          description: Event ID
+        destination_id:
+          type: string
+          description: Destination ID
+        response_status:
+          type: integer
+          nullable: true
+          description: Attempt's HTTP response code
+        attempt_number:
+          type: integer
+          nullable: true
+          description: Sequential number of attempts (up to and including this one) made for the associated event
+        trigger:
+          $ref: '#/components/schemas/AttemptTrigger'
+        error_code:
+          $ref: '#/components/schemas/AttemptErrorCodes'
+        body:
+          anyOf:
+          - type: object
+            properties: {}
+            nullable: true
+            description: Response body from the destination
+          - type: string
+            nullable: true
+            description: Response body from the destination
+        requested_url:
+          type: string
+          nullable: true
+          description: URL of the destination where delivery was attempted
+        http_method:
+          type: string
+          enum:
+          - GET
+          - POST
+          - PUT
+          - PATCH
+          - DELETE
+          nullable: true
+          description: HTTP method used to deliver the attempt
+        bulk_retry_id:
+          type: string
+          nullable: true
+          description: ID of associated bulk retry
+        status:
+          $ref: '#/components/schemas/AttemptStatus'
+        successful_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date the attempt was successful
+        delivered_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date the attempt was delivered
+        responded_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date the destination responded to this attempt
+        delivery_latency:
+          type: integer
+          nullable: true
+          description: Time elapsed between attempt initiation and final delivery (in ms)
+        response_latency:
+          type: integer
+          nullable: true
+          description: Time elapsed between attempt initiation and a response from the destination (in ms)
+        updated_at:
+          type: string
+          format: date-time
+          description: Date the attempt was last updated
+        created_at:
+          type: string
+          format: date-time
+          description: Date the attempt was created
+      required:
+      - id
+      - team_id
+      - event_id
+      - destination_id
+      - status
+      - updated_at
+      - created_at
+      additionalProperties: false
+      nullable: true
+    SeekPagination:
+      type: object
+      properties:
+        order_by:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        dir:
+          anyOf:
+          - $ref: '#/components/schemas/OrderByDirection'
+          - type: array
+            items:
+              $ref: '#/components/schemas/OrderByDirection'
+        limit:
+          type: integer
+        prev:
+          type: string
+        next:
+          type: string
+      additionalProperties: false
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    basicAuth:
+      type: http
+      scheme: basic

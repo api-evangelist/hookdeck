@@ -1,9 +1,8 @@
 openapi: 3.0.1
 info:
-  title: Hookdeck Events API
+  title: Hookdeck Bookmarks Attempts Events API
   version: 1.0.0
-  description: List, retrieve, retry, mute, and inspect events and their delivery attempts. An event is any request Hookdeck
-    received from a source; an attempt is each delivery try against a destination.
+  description: Save bookmarked events for quick replay and convenient one-click testing during development.
   contact:
     name: Hookdeck Support
     url: https://hookdeck.com/contact-us
@@ -17,144 +16,7 @@ security:
 tags:
 - name: Events
   description: An event is any request that Hookdeck receives from a source.
-- name: Attempts
-  description: An attempt is any request that Hookdeck makes on behalf of an event.
 paths:
-  /attempts:
-    get:
-      operationId: getAttempts
-      summary: Retrieve attempts
-      description: This endpoint lists attempts, or a subset of attempts.
-      tags:
-      - Attempts
-      responses:
-        '200':
-          description: List of attempts
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EventAttemptPaginatedResult'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/APIErrorResponse'
-        '422':
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/APIErrorResponse'
-      parameters:
-      - in: query
-        name: id
-        schema:
-          anyOf:
-          - type: string
-            maxLength: 255
-            description: Attempt ID
-          - type: array
-            items:
-              type: string
-              maxLength: 255
-              description: Attempt ID
-          description: ID of the attempt
-      - in: query
-        name: event_id
-        schema:
-          anyOf:
-          - type: string
-            maxLength: 255
-            description: Event ID
-          - type: array
-            items:
-              type: string
-              maxLength: 255
-              description: Event ID
-          description: Event the attempt is associated with
-      - in: query
-        name: order_by
-        schema:
-          anyOf:
-          - type: string
-            maxLength: 255
-            enum:
-            - created_at
-          - type: array
-            items:
-              type: string
-              maxLength: 255
-              enum:
-              - created_at
-            minItems: 2
-            maxItems: 2
-          description: Sort key(s)
-      - in: query
-        name: dir
-        schema:
-          anyOf:
-          - type: string
-            enum:
-            - asc
-            - desc
-          - type: array
-            items:
-              type: string
-              enum:
-              - asc
-              - desc
-            minItems: 2
-            maxItems: 2
-          description: Sort direction(s)
-      - in: query
-        name: limit
-        schema:
-          type: integer
-          minimum: 0
-          maximum: 255
-          description: Result set size
-      - in: query
-        name: next
-        schema:
-          type: string
-          maxLength: 255
-          description: The ID to provide in the query to get the next set of results
-      - in: query
-        name: prev
-        schema:
-          type: string
-          maxLength: 255
-          description: The ID to provide in the query to get the previous set of results
-  /attempts/{id}:
-    get:
-      operationId: getAttempt
-      summary: Retrieve an attempt
-      description: This endpoint retrieves a specific attempt. When retrieving a completed attempt, the response will contain
-        the `body` of the destination's response. If the `body` is not yet available in our backend service the `body` will
-        be set to `NOT_AVAILABLE_YET`.
-      tags:
-      - Attempts
-      responses:
-        '200':
-          description: A single attempt
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EventAttempt'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/APIErrorResponse'
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: string
-          description: Attempt ID
-        required: true
   /events:
     get:
       operationId: getEvents
@@ -470,8 +332,7 @@ paths:
     get:
       operationId: getEvent
       summary: Retrieve an event
-      description: This endpoint retrieves a specific event. The response contains the `data` object with the properties `body`
-        and `headers`, representing the original data for that request.
+      description: This endpoint retrieves a specific event. The response contains the `data` object with the properties `body` and `headers`, representing the original data for that request.
       tags:
       - Events
       responses:
@@ -525,8 +386,7 @@ paths:
     post:
       operationId: retryEvent
       summary: Retry an event
-      description: This endpoint retries a specific event. Retrying an event will cause a new attempt to be made to deliver
-        it to the destination.
+      description: This endpoint retries a specific event. Retrying an event will cause a new attempt to be made to deliver it to the destination.
       tags:
       - Events
       responses:
@@ -553,8 +413,7 @@ paths:
     put:
       operationId: cancelEvent
       summary: Cancel an event
-      description: This endpoint cancels a pending event. Only events with a status of `QUEUED`, `SCHEDULED`, or `HOLD` can
-        be cancelled.
+      description: This endpoint cancels a pending event. Only events with a status of `QUEUED`, `SCHEDULED`, or `HOLD` can be cancelled.
       tags:
       - Events
       responses:
@@ -587,8 +446,7 @@ paths:
     put:
       operationId: cancelEvent_mute
       summary: Cancel an event
-      description: This endpoint cancels a pending event. Only events with a status of `QUEUED`, `SCHEDULED`, or `HOLD` can
-        be cancelled.
+      description: This endpoint cancels a pending event. Only events with a status of `QUEUED`, `SCHEDULED`, or `HOLD` can be cancelled.
       tags:
       - Events
       responses:
@@ -618,169 +476,7 @@ paths:
           description: Event ID
         required: true
 components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-    basicAuth:
-      type: http
-      scheme: basic
   schemas:
-    AttemptStatus:
-      type: string
-      enum:
-      - FAILED
-      - SUCCESSFUL
-      description: Attempt status
-    RetriedEvent:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the event
-        team_id:
-          type: string
-          description: ID of the project
-        webhook_id:
-          type: string
-          description: ID of the associated connection (webhook)
-        source_id:
-          type: string
-          description: ID of the associated source
-        destination_id:
-          type: string
-          description: ID of the associated destination
-        event_data_id:
-          type: string
-          description: ID of the event data
-        request_id:
-          type: string
-          description: ID of the request that created the event
-        attempts:
-          type: integer
-          description: Number of delivery attempts made
-        last_attempt_at:
-          type: string
-          format: date-time
-          nullable: true
-          description: Date of the most recently attempted retry
-        next_attempt_at:
-          type: string
-          format: date-time
-          nullable: true
-          description: Date of the next scheduled retry
-        response_status:
-          type: integer
-          nullable: true
-          description: Event status
-        error_code:
-          $ref: '#/components/schemas/AttemptErrorCodes'
-        status:
-          $ref: '#/components/schemas/EventStatus'
-        successful_at:
-          type: string
-          format: date-time
-          nullable: true
-          description: Date of the latest successful attempt
-        cli_id:
-          type: string
-          nullable: true
-          description: ID of the CLI the event is sent to
-        updated_at:
-          type: string
-          format: date-time
-          description: Date the event was last updated
-        created_at:
-          type: string
-          format: date-time
-          description: Date the event was created
-        data:
-          $ref: '#/components/schemas/EventData'
-      required:
-      - id
-      - team_id
-      - webhook_id
-      - source_id
-      - destination_id
-      - event_data_id
-      - request_id
-      - attempts
-      - last_attempt_at
-      - next_attempt_at
-      - status
-      - successful_at
-      - cli_id
-      - updated_at
-      - created_at
-      additionalProperties: false
-    OrderByDirection:
-      anyOf:
-      - enum:
-        - asc
-      - enum:
-        - desc
-      - enum:
-        - ASC
-      - enum:
-        - DESC
-    Operators:
-      type: object
-      properties:
-        gt:
-          type: string
-          format: date-time
-          nullable: true
-        gte:
-          type: string
-          format: date-time
-          nullable: true
-        le:
-          type: string
-          format: date-time
-          nullable: true
-        lte:
-          type: string
-          format: date-time
-          nullable: true
-        any:
-          type: boolean
-        all:
-          type: boolean
-      additionalProperties: false
-    SeekPagination:
-      type: object
-      properties:
-        order_by:
-          anyOf:
-          - type: string
-          - type: array
-            items:
-              type: string
-        dir:
-          anyOf:
-          - $ref: '#/components/schemas/OrderByDirection'
-          - type: array
-            items:
-              $ref: '#/components/schemas/OrderByDirection'
-        limit:
-          type: integer
-        prev:
-          type: string
-        next:
-          type: string
-      additionalProperties: false
-    EventAttemptPaginatedResult:
-      type: object
-      properties:
-        pagination:
-          $ref: '#/components/schemas/SeekPagination'
-        count:
-          type: integer
-        models:
-          type: array
-          items:
-            $ref: '#/components/schemas/EventAttempt'
-      additionalProperties: false
     EventData:
       type: object
       properties:
@@ -842,6 +538,15 @@ components:
       additionalProperties: false
       nullable: true
       description: Event data if included
+    EventStatus:
+      type: string
+      enum:
+      - SCHEDULED
+      - QUEUED
+      - HOLD
+      - SUCCESSFUL
+      - FAILED
+      - CANCELLED
     Event:
       type: object
       properties:
@@ -923,6 +628,71 @@ components:
       - updated_at
       - created_at
       additionalProperties: false
+    APIErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        status:
+          type: number
+          format: float
+          description: Status code
+        message:
+          type: string
+          description: Error description
+        data:
+          type: object
+          properties: {}
+          nullable: true
+      required:
+      - code
+      - status
+      - message
+      additionalProperties: false
+      description: Error response model
+    Operators:
+      type: object
+      properties:
+        gt:
+          type: string
+          format: date-time
+          nullable: true
+        gte:
+          type: string
+          format: date-time
+          nullable: true
+        le:
+          type: string
+          format: date-time
+          nullable: true
+        lte:
+          type: string
+          format: date-time
+          nullable: true
+        any:
+          type: boolean
+        all:
+          type: boolean
+      additionalProperties: false
+    OrderByDirection:
+      anyOf:
+      - enum:
+        - asc
+      - enum:
+        - desc
+      - enum:
+        - ASC
+      - enum:
+        - DESC
+    RawBody:
+      type: object
+      properties:
+        body:
+          type: string
+      required:
+      - body
+      additionalProperties: false
     AttemptErrorCodes:
       type: string
       enum:
@@ -960,145 +730,6 @@ components:
       - Z_DATA_ERROR
       - UNKNOWN
       description: Error code of the delivery attempt
-    AttemptTrigger:
-      type: string
-      enum:
-      - INITIAL
-      - MANUAL
-      - BULK_RETRY
-      - UNPAUSE
-      - AUTOMATIC
-      nullable: true
-      description: How the attempt was triggered
-    EventStatus:
-      type: string
-      enum:
-      - SCHEDULED
-      - QUEUED
-      - HOLD
-      - SUCCESSFUL
-      - FAILED
-      - CANCELLED
-    EventAttempt:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Attempt ID
-        team_id:
-          type: string
-          description: ID of the project
-        event_id:
-          type: string
-          description: Event ID
-        destination_id:
-          type: string
-          description: Destination ID
-        response_status:
-          type: integer
-          nullable: true
-          description: Attempt's HTTP response code
-        attempt_number:
-          type: integer
-          nullable: true
-          description: Sequential number of attempts (up to and including this one) made for the associated event
-        trigger:
-          $ref: '#/components/schemas/AttemptTrigger'
-        error_code:
-          $ref: '#/components/schemas/AttemptErrorCodes'
-        body:
-          anyOf:
-          - type: object
-            properties: {}
-            nullable: true
-            description: Response body from the destination
-          - type: string
-            nullable: true
-            description: Response body from the destination
-        requested_url:
-          type: string
-          nullable: true
-          description: URL of the destination where delivery was attempted
-        http_method:
-          type: string
-          enum:
-          - GET
-          - POST
-          - PUT
-          - PATCH
-          - DELETE
-          nullable: true
-          description: HTTP method used to deliver the attempt
-        bulk_retry_id:
-          type: string
-          nullable: true
-          description: ID of associated bulk retry
-        status:
-          $ref: '#/components/schemas/AttemptStatus'
-        successful_at:
-          type: string
-          format: date-time
-          nullable: true
-          description: Date the attempt was successful
-        delivered_at:
-          type: string
-          format: date-time
-          nullable: true
-          description: Date the attempt was delivered
-        responded_at:
-          type: string
-          format: date-time
-          nullable: true
-          description: Date the destination responded to this attempt
-        delivery_latency:
-          type: integer
-          nullable: true
-          description: Time elapsed between attempt initiation and final delivery (in ms)
-        response_latency:
-          type: integer
-          nullable: true
-          description: Time elapsed between attempt initiation and a response from the destination (in ms)
-        updated_at:
-          type: string
-          format: date-time
-          description: Date the attempt was last updated
-        created_at:
-          type: string
-          format: date-time
-          description: Date the attempt was created
-      required:
-      - id
-      - team_id
-      - event_id
-      - destination_id
-      - status
-      - updated_at
-      - created_at
-      additionalProperties: false
-      nullable: true
-    APIErrorResponse:
-      type: object
-      properties:
-        code:
-          type: string
-          description: Error code
-        status:
-          type: number
-          format: float
-          description: Status code
-        message:
-          type: string
-          description: Error description
-        data:
-          type: object
-          properties: {}
-          nullable: true
-      required:
-      - code
-      - status
-      - message
-      additionalProperties: false
-      description: Error response model
     EventPaginatedResult:
       type: object
       properties:
@@ -1111,11 +742,113 @@ components:
           items:
             $ref: '#/components/schemas/Event'
       additionalProperties: false
-    RawBody:
+    RetriedEvent:
       type: object
       properties:
-        body:
+        id:
           type: string
+          description: ID of the event
+        team_id:
+          type: string
+          description: ID of the project
+        webhook_id:
+          type: string
+          description: ID of the associated connection (webhook)
+        source_id:
+          type: string
+          description: ID of the associated source
+        destination_id:
+          type: string
+          description: ID of the associated destination
+        event_data_id:
+          type: string
+          description: ID of the event data
+        request_id:
+          type: string
+          description: ID of the request that created the event
+        attempts:
+          type: integer
+          description: Number of delivery attempts made
+        last_attempt_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date of the most recently attempted retry
+        next_attempt_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date of the next scheduled retry
+        response_status:
+          type: integer
+          nullable: true
+          description: Event status
+        error_code:
+          $ref: '#/components/schemas/AttemptErrorCodes'
+        status:
+          $ref: '#/components/schemas/EventStatus'
+        successful_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date of the latest successful attempt
+        cli_id:
+          type: string
+          nullable: true
+          description: ID of the CLI the event is sent to
+        updated_at:
+          type: string
+          format: date-time
+          description: Date the event was last updated
+        created_at:
+          type: string
+          format: date-time
+          description: Date the event was created
+        data:
+          $ref: '#/components/schemas/EventData'
       required:
-      - body
+      - id
+      - team_id
+      - webhook_id
+      - source_id
+      - destination_id
+      - event_data_id
+      - request_id
+      - attempts
+      - last_attempt_at
+      - next_attempt_at
+      - status
+      - successful_at
+      - cli_id
+      - updated_at
+      - created_at
       additionalProperties: false
+    SeekPagination:
+      type: object
+      properties:
+        order_by:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        dir:
+          anyOf:
+          - $ref: '#/components/schemas/OrderByDirection'
+          - type: array
+            items:
+              $ref: '#/components/schemas/OrderByDirection'
+        limit:
+          type: integer
+        prev:
+          type: string
+        next:
+          type: string
+      additionalProperties: false
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    basicAuth:
+      type: http
+      scheme: basic

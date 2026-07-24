@@ -1,9 +1,8 @@
 openapi: 3.0.1
 info:
-  title: Hookdeck Transformations API
+  title: Hookdeck Bookmarks Attempts Transformations API
   version: 1.0.0
-  description: Manage JavaScript transformations executed against events to mutate headers, body, path, or query string before
-    delivery, and run them in a test sandbox.
+  description: Save bookmarked events for quick replay and convenient one-click testing during development.
   contact:
     name: Hookdeck Support
     url: https://hookdeck.com/contact-us
@@ -16,8 +15,7 @@ security:
 - basicAuth: []
 tags:
 - name: Transformations
-  description: A transformation represents JavaScript code that will be executed on a connection's requests. Transformations
-    are applied to connections using Rules.
+  description: A transformation represents JavaScript code that will be executed on a connection's requests. Transformations are applied to connections using Rules.
 paths:
   /transformations:
     get:
@@ -365,8 +363,7 @@ paths:
     put:
       operationId: testTransformation
       summary: Test a transformation
-      description: This endpoint executes a transformation against a sample request payload and returns the transformed result
-        without persisting anything.
+      description: This endpoint executes a transformation against a sample request payload and returns the transformed result without persisting anything.
       tags:
       - Transformations
       responses:
@@ -628,15 +625,8 @@ paths:
           description: Execution ID
         required: true
 components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-    basicAuth:
-      type: http
-      scheme: basic
   schemas:
-    TransformationExecutionPaginatedResult:
+    TransformationPaginatedResult:
       type: object
       properties:
         pagination:
@@ -646,65 +636,17 @@ components:
         models:
           type: array
           items:
-            $ref: '#/components/schemas/TransformationExecution'
+            $ref: '#/components/schemas/Transformation'
       additionalProperties: false
-    OrderByDirection:
-      anyOf:
-      - enum:
-        - asc
-      - enum:
-        - desc
-      - enum:
-        - ASC
-      - enum:
-        - DESC
-    Operators:
-      type: object
-      properties:
-        gt:
-          type: string
-          format: date-time
-          nullable: true
-        gte:
-          type: string
-          format: date-time
-          nullable: true
-        le:
-          type: string
-          format: date-time
-          nullable: true
-        lte:
-          type: string
-          format: date-time
-          nullable: true
-        any:
-          type: boolean
-        all:
-          type: boolean
-      additionalProperties: false
-    APIErrorResponse:
-      type: object
-      properties:
-        code:
-          type: string
-          description: Error code
-        status:
-          type: number
-          format: float
-          description: Status code
-        message:
-          type: string
-          description: Error description
-        data:
-          type: object
-          properties: {}
-          nullable: true
-      required:
-      - code
-      - status
-      - message
-      additionalProperties: false
-      description: Error response model
+    TransformationExecutionLogLevel:
+      type: string
+      enum:
+      - debug
+      - info
+      - warn
+      - error
+      - fatal
+      description: The minimum log level to open the issue on
     TransformationExecution:
       type: object
       properties:
@@ -753,75 +695,56 @@ components:
       - updated_at
       - created_at
       additionalProperties: false
-    Transformation:
+    ShortEventData:
       type: object
       properties:
-        id:
+        path:
           type: string
-          description: ID of the transformation
-        team_id:
-          type: string
-          description: ID of the project
-        name:
-          type: string
-          description: A unique, human-friendly name for the transformation
-        code:
-          type: string
-          description: JavaScript code to be executed
-        encrypted_env:
+          description: Request path
+        query:
           type: string
           nullable: true
-          x-docs-hide: true
-        iv:
-          type: string
-          nullable: true
-          x-docs-hide: true
-        env:
-          type: object
-          properties: {}
-          additionalProperties:
-            type: string
-          nullable: true
-          description: Key-value environment variables to be passed to the transformation
-          x-docs-force-simple-type: true
-        updated_at:
-          type: string
-          format: date-time
-          description: Date the transformation was last updated
-        created_at:
-          type: string
-          format: date-time
-          description: Date the transformation was created
-      required:
-      - id
-      - team_id
-      - name
-      - code
-      - updated_at
-      - created_at
-      additionalProperties: false
-    SeekPagination:
-      type: object
-      properties:
-        order_by:
+          description: Raw query param string
+        parsed_query:
           anyOf:
           - type: string
-          - type: array
-            items:
-              type: string
-        dir:
+            nullable: true
+          - type: object
+            properties: {}
+          nullable: true
+          description: JSON representation of query params
+        headers:
           anyOf:
-          - $ref: '#/components/schemas/OrderByDirection'
+          - type: string
+          - type: object
+            properties: {}
+            additionalProperties:
+              type: string
+              nullable: true
+          nullable: true
+          description: JSON representation of the headers
+        body:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
           - type: array
-            items:
-              $ref: '#/components/schemas/OrderByDirection'
-        limit:
-          type: integer
-        prev:
-          type: string
-        next:
-          type: string
+            items: {}
+          nullable: true
+          description: JSON or string representation of the body
+        is_large_payload:
+          type: boolean
+          nullable: true
+          description: Whether the payload is considered large payload and not searchable
+      required:
+      - path
+      - query
+      - parsed_query
+      - headers
+      - body
       additionalProperties: false
+      nullable: true
+      description: Request data
     TransformationExecutorOutput:
       type: object
       properties:
@@ -885,6 +808,110 @@ components:
       required:
       - log_level
       additionalProperties: false
+    APIErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        status:
+          type: number
+          format: float
+          description: Status code
+        message:
+          type: string
+          description: Error description
+        data:
+          type: object
+          properties: {}
+          nullable: true
+      required:
+      - code
+      - status
+      - message
+      additionalProperties: false
+      description: Error response model
+    Operators:
+      type: object
+      properties:
+        gt:
+          type: string
+          format: date-time
+          nullable: true
+        gte:
+          type: string
+          format: date-time
+          nullable: true
+        le:
+          type: string
+          format: date-time
+          nullable: true
+        lte:
+          type: string
+          format: date-time
+          nullable: true
+        any:
+          type: boolean
+        all:
+          type: boolean
+      additionalProperties: false
+    OrderByDirection:
+      anyOf:
+      - enum:
+        - asc
+      - enum:
+        - desc
+      - enum:
+        - ASC
+      - enum:
+        - DESC
+    Transformation:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the transformation
+        team_id:
+          type: string
+          description: ID of the project
+        name:
+          type: string
+          description: A unique, human-friendly name for the transformation
+        code:
+          type: string
+          description: JavaScript code to be executed
+        encrypted_env:
+          type: string
+          nullable: true
+          x-docs-hide: true
+        iv:
+          type: string
+          nullable: true
+          x-docs-hide: true
+        env:
+          type: object
+          properties: {}
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Key-value environment variables to be passed to the transformation
+          x-docs-force-simple-type: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Date the transformation was last updated
+        created_at:
+          type: string
+          format: date-time
+          description: Date the transformation was created
+      required:
+      - id
+      - team_id
+      - name
+      - code
+      - updated_at
+      - created_at
+      additionalProperties: false
     ConsoleLine:
       type: object
       properties:
@@ -902,57 +929,7 @@ components:
       - type
       - message
       additionalProperties: false
-    ShortEventData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: Request path
-        query:
-          type: string
-          nullable: true
-          description: Raw query param string
-        parsed_query:
-          anyOf:
-          - type: string
-            nullable: true
-          - type: object
-            properties: {}
-          nullable: true
-          description: JSON representation of query params
-        headers:
-          anyOf:
-          - type: string
-          - type: object
-            properties: {}
-            additionalProperties:
-              type: string
-              nullable: true
-          nullable: true
-          description: JSON representation of the headers
-        body:
-          anyOf:
-          - type: string
-          - type: object
-            properties: {}
-          - type: array
-            items: {}
-          nullable: true
-          description: JSON or string representation of the body
-        is_large_payload:
-          type: boolean
-          nullable: true
-          description: Whether the payload is considered large payload and not searchable
-      required:
-      - path
-      - query
-      - parsed_query
-      - headers
-      - body
-      additionalProperties: false
-      nullable: true
-      description: Request data
-    TransformationPaginatedResult:
+    TransformationExecutionPaginatedResult:
       type: object
       properties:
         pagination:
@@ -962,14 +939,34 @@ components:
         models:
           type: array
           items:
-            $ref: '#/components/schemas/Transformation'
+            $ref: '#/components/schemas/TransformationExecution'
       additionalProperties: false
-    TransformationExecutionLogLevel:
-      type: string
-      enum:
-      - debug
-      - info
-      - warn
-      - error
-      - fatal
-      description: The minimum log level to open the issue on
+    SeekPagination:
+      type: object
+      properties:
+        order_by:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        dir:
+          anyOf:
+          - $ref: '#/components/schemas/OrderByDirection'
+          - type: array
+            items:
+              $ref: '#/components/schemas/OrderByDirection'
+        limit:
+          type: integer
+        prev:
+          type: string
+        next:
+          type: string
+      additionalProperties: false
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    basicAuth:
+      type: http
+      scheme: basic

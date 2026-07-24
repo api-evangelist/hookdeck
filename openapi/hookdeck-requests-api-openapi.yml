@@ -1,9 +1,8 @@
 openapi: 3.0.1
 info:
-  title: Hookdeck Requests API
+  title: Hookdeck Bookmarks Attempts Requests API
   version: 1.0.0
-  description: List and inspect raw requests Hookdeck has received. A request precedes events and is what gets accepted at
-    the gateway.
+  description: Save bookmarked events for quick replay and convenient one-click testing during development.
   contact:
     name: Hookdeck Support
     url: https://hookdeck.com/contact-us
@@ -311,8 +310,7 @@ paths:
     post:
       operationId: retryRequest
       summary: Retry a request
-      description: This endpoint retries a specific request. Retrying a request creates new events based on the request for
-        the specified connections (or all matching connections if none specified).
+      description: This endpoint retries a specific request. Retrying a request creates new events based on the request for the specified connections (or all matching connections if none specified).
       tags:
       - Requests
       responses:
@@ -360,8 +358,7 @@ paths:
                     type: string
                     maxLength: 255
                     description: Connection (webhook) IDs
-                  description: Subset of connection (webhook) IDs to re-run the event logic on. Useful to retry only specific
-                    ignored_events. If left empty, all connection (webhook) IDs will be considered.
+                  description: Subset of connection (webhook) IDs to re-run the event logic on. Useful to retry only specific ignored_events. If left empty, all connection (webhook) IDs will be considered.
               additionalProperties: false
   /requests/{id}/events:
     get:
@@ -792,52 +789,31 @@ paths:
           description: Request ID
         required: true
 components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-    basicAuth:
-      type: http
-      scheme: basic
   schemas:
-    SeekPagination:
-      type: object
-      properties:
-        order_by:
-          anyOf:
-          - type: string
-          - type: array
-            items:
-              type: string
-        dir:
-          anyOf:
-          - $ref: '#/components/schemas/OrderByDirection'
-          - type: array
-            items:
-              $ref: '#/components/schemas/OrderByDirection'
-        limit:
-          type: integer
-        prev:
-          type: string
-        next:
-          type: string
-      additionalProperties: false
-    EventStatus:
+    RequestRejectionCause:
       type: string
       enum:
-      - SCHEDULED
-      - QUEUED
-      - HOLD
-      - SUCCESSFUL
-      - FAILED
-      - CANCELLED
-    TransformationFailedMeta:
+      - SOURCE_DISABLED
+      - NO_CONNECTION
+      - VERIFICATION_FAILED
+      - UNSUPPORTED_HTTP_METHOD
+      - UNSUPPORTED_CONTENT_TYPE
+      - UNPARSABLE_JSON
+      - PAYLOAD_TOO_LARGE
+      - INGESTION_FATAL
+      - UNKNOWN
+      x-docs-type: string
+    IgnoredEventPaginatedResult:
       type: object
       properties:
-        transformation_id:
-          type: string
-      required:
-      - transformation_id
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/IgnoredEvent'
       additionalProperties: false
     Request:
       type: object
@@ -902,147 +878,73 @@ components:
       - updated_at
       - created_at
       additionalProperties: false
-    RequestPaginatedResult:
+    RetryRequest:
       type: object
       properties:
-        pagination:
-          $ref: '#/components/schemas/SeekPagination'
-        count:
-          type: integer
-        models:
-          type: array
-          items:
-            $ref: '#/components/schemas/Request'
-      additionalProperties: false
-    IgnoredEvent:
-      type: object
-      properties:
-        id:
-          type: string
-        team_id:
-          type: string
-          description: ID of the project
-        webhook_id:
-          type: string
-          description: ID of the associated connection (webhook)
-        cause:
-          $ref: '#/components/schemas/IgnoredEventCause'
-        request_id:
-          type: string
-        meta:
-          anyOf:
-          - $ref: '#/components/schemas/FilteredMeta'
-          - $ref: '#/components/schemas/TransformationFailedMeta'
-          nullable: true
-        created_at:
-          type: string
-          format: date-time
-      required:
-      - id
-      - team_id
-      - webhook_id
-      - cause
-      - request_id
-      - created_at
-      additionalProperties: false
-    EventPaginatedResult:
-      type: object
-      properties:
-        pagination:
-          $ref: '#/components/schemas/SeekPagination'
-        count:
-          type: integer
-        models:
+        request:
+          $ref: '#/components/schemas/Request'
+        events:
           type: array
           items:
             $ref: '#/components/schemas/Event'
+          nullable: true
+      required:
+      - request
       additionalProperties: false
-    RequestRejectionCause:
-      type: string
-      enum:
-      - SOURCE_DISABLED
-      - NO_CONNECTION
-      - VERIFICATION_FAILED
-      - UNSUPPORTED_HTTP_METHOD
-      - UNSUPPORTED_CONTENT_TYPE
-      - UNPARSABLE_JSON
-      - PAYLOAD_TOO_LARGE
-      - INGESTION_FATAL
-      - UNKNOWN
-      x-docs-type: string
-    EventData:
+    RawBody:
       type: object
       properties:
-        url:
-          type: string
-        method:
-          type: string
-        path:
-          type: string
-          nullable: true
-          description: Raw path string
-        query:
-          type: string
-          nullable: true
-          description: Raw query param string
-        parsed_query:
-          anyOf:
-          - type: string
-            nullable: true
-          - type: object
-            properties: {}
-          nullable: true
-          description: JSON representation of query params
-        headers:
-          anyOf:
-          - type: string
-          - type: object
-            properties: {}
-            additionalProperties:
-              type: string
-              nullable: true
-          nullable: true
-          description: JSON representation of the headers
-        appended_headers:
-          type: array
-          items:
-            type: string
-          description: List of headers that were added by Hookdeck
         body:
-          anyOf:
-          - type: string
-          - type: object
-            properties: {}
-          - type: array
-            items: {}
-          nullable: true
-          description: JSON or string representation of the body
-        is_large_payload:
-          type: boolean
-          description: Whether the payload is considered large payload and not searchable
+          type: string
       required:
-      - url
-      - method
-      - path
-      - query
-      - parsed_query
-      - headers
       - body
       additionalProperties: false
-      nullable: true
-      description: Event data if included
-    IgnoredEventPaginatedResult:
-      type: object
-      properties:
-        pagination:
-          $ref: '#/components/schemas/SeekPagination'
-        count:
-          type: integer
-        models:
-          type: array
-          items:
-            $ref: '#/components/schemas/IgnoredEvent'
-      additionalProperties: false
+    AttemptErrorCodes:
+      type: string
+      enum:
+      - BAD_RESPONSE
+      - CANCELLED
+      - TIMEOUT
+      - NOT_FOUND
+      - CANCELLED_PAST_RETENTION
+      - CONNECTION_REFUSED
+      - CONNECTION_RESET
+      - MISSING_URL
+      - CLI
+      - CLI_UNAVAILABLE
+      - SELF_SIGNED_CERT
+      - ERR_TLS_CERT_ALTNAME_INVALID
+      - ERR_SSL_WRONG_VERSION_NUMBER
+      - NETWORK_ERROR
+      - NETWORK_REQUEST_CANCELED
+      - NETWORK_UNREACHABLE
+      - TOO_MANY_REDIRECTS
+      - INVALID_CHARACTER
+      - INVALID_URL
+      - SSL_ERROR_CA_UNKNOWN
+      - DATA_ARCHIVED
+      - SSL_CERT_EXPIRED
+      - BULK_RETRY_CANCELLED
+      - DNS_LOOKUP_FAILED
+      - HOST_UNREACHABLE
+      - INTERNAL_ERROR
+      - PROTOCOL_ERROR
+      - PAYLOAD_MISSING
+      - UNABLE_TO_GET_ISSUER_CERT
+      - SOCKET_CLOSED
+      - OAUTH2_HANDSHAKE_FAILED
+      - Z_DATA_ERROR
+      - UNKNOWN
+      description: Error code of the delivery attempt
+    FilteredMeta:
+      type: array
+      items:
+        type: string
+        enum:
+        - body
+        - headers
+        - path
+        - query
     Event:
       type: object
       properties:
@@ -1124,43 +1026,213 @@ components:
       - updated_at
       - created_at
       additionalProperties: false
-    AttemptErrorCodes:
+    APIErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        status:
+          type: number
+          format: float
+          description: Status code
+        message:
+          type: string
+          description: Error description
+        data:
+          type: object
+          properties: {}
+          nullable: true
+      required:
+      - code
+      - status
+      - message
+      additionalProperties: false
+      description: Error response model
+    Operators:
+      type: object
+      properties:
+        gt:
+          type: string
+          format: date-time
+          nullable: true
+        gte:
+          type: string
+          format: date-time
+          nullable: true
+        le:
+          type: string
+          format: date-time
+          nullable: true
+        lte:
+          type: string
+          format: date-time
+          nullable: true
+        any:
+          type: boolean
+        all:
+          type: boolean
+      additionalProperties: false
+    OrderByDirection:
+      anyOf:
+      - enum:
+        - asc
+      - enum:
+        - desc
+      - enum:
+        - ASC
+      - enum:
+        - DESC
+    IgnoredEventCause:
       type: string
       enum:
-      - BAD_RESPONSE
+      - DISABLED
+      - FILTERED
+      - TRANSFORMATION_FAILED
+      - CLI_DISCONNECTED
+    IgnoredEvent:
+      type: object
+      properties:
+        id:
+          type: string
+        team_id:
+          type: string
+          description: ID of the project
+        webhook_id:
+          type: string
+          description: ID of the associated connection (webhook)
+        cause:
+          $ref: '#/components/schemas/IgnoredEventCause'
+        request_id:
+          type: string
+        meta:
+          anyOf:
+          - $ref: '#/components/schemas/FilteredMeta'
+          - $ref: '#/components/schemas/TransformationFailedMeta'
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+      required:
+      - id
+      - team_id
+      - webhook_id
+      - cause
+      - request_id
+      - created_at
+      additionalProperties: false
+    EventPaginatedResult:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event'
+      additionalProperties: false
+    EventData:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        path:
+          type: string
+          nullable: true
+          description: Raw path string
+        query:
+          type: string
+          nullable: true
+          description: Raw query param string
+        parsed_query:
+          anyOf:
+          - type: string
+            nullable: true
+          - type: object
+            properties: {}
+          nullable: true
+          description: JSON representation of query params
+        headers:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+            additionalProperties:
+              type: string
+              nullable: true
+          nullable: true
+          description: JSON representation of the headers
+        appended_headers:
+          type: array
+          items:
+            type: string
+          description: List of headers that were added by Hookdeck
+        body:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+          - type: array
+            items: {}
+          nullable: true
+          description: JSON or string representation of the body
+        is_large_payload:
+          type: boolean
+          description: Whether the payload is considered large payload and not searchable
+      required:
+      - url
+      - method
+      - path
+      - query
+      - parsed_query
+      - headers
+      - body
+      additionalProperties: false
+      nullable: true
+      description: Event data if included
+    EventStatus:
+      type: string
+      enum:
+      - SCHEDULED
+      - QUEUED
+      - HOLD
+      - SUCCESSFUL
+      - FAILED
       - CANCELLED
-      - TIMEOUT
-      - NOT_FOUND
-      - CANCELLED_PAST_RETENTION
-      - CONNECTION_REFUSED
-      - CONNECTION_RESET
-      - MISSING_URL
-      - CLI
-      - CLI_UNAVAILABLE
-      - SELF_SIGNED_CERT
-      - ERR_TLS_CERT_ALTNAME_INVALID
-      - ERR_SSL_WRONG_VERSION_NUMBER
-      - NETWORK_ERROR
-      - NETWORK_REQUEST_CANCELED
-      - NETWORK_UNREACHABLE
-      - TOO_MANY_REDIRECTS
-      - INVALID_CHARACTER
-      - INVALID_URL
-      - SSL_ERROR_CA_UNKNOWN
-      - DATA_ARCHIVED
-      - SSL_CERT_EXPIRED
-      - BULK_RETRY_CANCELLED
-      - DNS_LOOKUP_FAILED
-      - HOST_UNREACHABLE
-      - INTERNAL_ERROR
-      - PROTOCOL_ERROR
-      - PAYLOAD_MISSING
-      - UNABLE_TO_GET_ISSUER_CERT
-      - SOCKET_CLOSED
-      - OAUTH2_HANDSHAKE_FAILED
-      - Z_DATA_ERROR
-      - UNKNOWN
-      description: Error code of the delivery attempt
+    SeekPagination:
+      type: object
+      properties:
+        order_by:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        dir:
+          anyOf:
+          - $ref: '#/components/schemas/OrderByDirection'
+          - type: array
+            items:
+              $ref: '#/components/schemas/OrderByDirection'
+        limit:
+          type: integer
+        prev:
+          type: string
+        next:
+          type: string
+      additionalProperties: false
+    TransformationFailedMeta:
+      type: object
+      properties:
+        transformation_id:
+          type: string
+      required:
+      - transformation_id
+      additionalProperties: false
     ShortEventData:
       type: object
       properties:
@@ -1211,97 +1283,22 @@ components:
       additionalProperties: false
       nullable: true
       description: Request data
-    APIErrorResponse:
+    RequestPaginatedResult:
       type: object
       properties:
-        code:
-          type: string
-          description: Error code
-        status:
-          type: number
-          format: float
-          description: Status code
-        message:
-          type: string
-          description: Error description
-        data:
-          type: object
-          properties: {}
-          nullable: true
-      required:
-      - code
-      - status
-      - message
-      additionalProperties: false
-      description: Error response model
-    IgnoredEventCause:
-      type: string
-      enum:
-      - DISABLED
-      - FILTERED
-      - TRANSFORMATION_FAILED
-      - CLI_DISCONNECTED
-    RawBody:
-      type: object
-      properties:
-        body:
-          type: string
-      required:
-      - body
-      additionalProperties: false
-    OrderByDirection:
-      anyOf:
-      - enum:
-        - asc
-      - enum:
-        - desc
-      - enum:
-        - ASC
-      - enum:
-        - DESC
-    Operators:
-      type: object
-      properties:
-        gt:
-          type: string
-          format: date-time
-          nullable: true
-        gte:
-          type: string
-          format: date-time
-          nullable: true
-        le:
-          type: string
-          format: date-time
-          nullable: true
-        lte:
-          type: string
-          format: date-time
-          nullable: true
-        any:
-          type: boolean
-        all:
-          type: boolean
-      additionalProperties: false
-    FilteredMeta:
-      type: array
-      items:
-        type: string
-        enum:
-        - body
-        - headers
-        - path
-        - query
-    RetryRequest:
-      type: object
-      properties:
-        request:
-          $ref: '#/components/schemas/Request'
-        events:
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
           type: array
           items:
-            $ref: '#/components/schemas/Event'
-          nullable: true
-      required:
-      - request
+            $ref: '#/components/schemas/Request'
       additionalProperties: false
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    basicAuth:
+      type: http
+      scheme: basic

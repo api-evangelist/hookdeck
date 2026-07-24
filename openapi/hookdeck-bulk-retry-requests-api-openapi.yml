@@ -1,0 +1,910 @@
+openapi: 3.0.1
+info:
+  title: Hookdeck Bookmarks Attempts Bulk retry requests API
+  version: 1.0.0
+  description: Save bookmarked events for quick replay and convenient one-click testing during development.
+  contact:
+    name: Hookdeck Support
+    url: https://hookdeck.com/contact-us
+    email: info@hookdeck.com
+servers:
+- url: https://api.hookdeck.com/2025-07-01
+  description: Production API
+security:
+- bearerAuth: []
+- basicAuth: []
+tags:
+- name: Bulk retry requests
+  description: Bulk retry requests allow you to re-ingest many previously received requests at once.
+paths:
+  /bulk/requests/retry:
+    get:
+      operationId: getRequestBulkRetries
+      summary: Retrieve requests bulk retries
+      description: This endpoint lists requests bulk retries.
+      tags:
+      - Bulk retry requests
+      responses:
+        '200':
+          description: List of request bulk retries
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchOperationPaginatedResult'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: query
+        name: cancelled_at
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+            nullable: true
+          - $ref: '#/components/schemas/Operators'
+          description: Filter by date the bulk retry was cancelled
+      - in: query
+        name: completed_at
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+            nullable: true
+          - $ref: '#/components/schemas/Operators'
+          description: Filter by date the bulk retry completed
+      - in: query
+        name: created_at
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+            nullable: true
+          - $ref: '#/components/schemas/Operators'
+          description: Filter by date the bulk retry was created
+      - in: query
+        name: id
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+            description: Bulk retry ID
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+              description: Bulk retry ID
+          description: Filter by bulk retry IDs
+      - in: query
+        name: in_progress
+        schema:
+          type: boolean
+          description: Indicates if the bulk retry is currently in progress
+      - in: query
+        name: query
+        schema:
+          type: object
+          properties:
+            id:
+              anyOf:
+              - type: string
+                maxLength: 255
+                description: Request ID
+              - type: array
+                items:
+                  type: string
+                  maxLength: 255
+                  description: Request ID
+              description: Filter by requests IDs
+            status:
+              type: string
+              enum:
+              - accepted
+              - rejected
+              description: Filter by status
+            rejection_cause:
+              anyOf:
+              - $ref: '#/components/schemas/RequestRejectionCause'
+              - type: array
+                items:
+                  $ref: '#/components/schemas/RequestRejectionCause'
+              nullable: true
+              description: Filter by rejection cause
+            source_id:
+              anyOf:
+              - type: string
+                maxLength: 255
+                description: Source ID
+              - type: array
+                items:
+                  type: string
+                  maxLength: 255
+                  description: Source ID
+              description: Filter by source IDs
+            verified:
+              type: boolean
+              description: Filter by verification status
+            search_term:
+              type: string
+              minLength: 3
+              description: URL Encoded string of the value to match partially to the body, headers, parsed_query or path
+            headers:
+              anyOf:
+              - type: string
+              - type: object
+                properties: {}
+                additionalProperties: false
+              description: URL Encoded string of the JSON to match to the data headers
+              x-docs-force-simple-type: true
+              x-docs-type: JSON
+            body:
+              anyOf:
+              - type: string
+              - type: object
+                properties: {}
+                additionalProperties: false
+              description: URL Encoded string of the JSON to match to the data body
+              x-docs-force-simple-type: true
+              x-docs-type: JSON
+            parsed_query:
+              anyOf:
+              - type: string
+              - type: object
+                properties: {}
+                additionalProperties: false
+              description: URL Encoded string of the JSON to match to the parsed query (JSON representation of the query)
+              x-docs-force-simple-type: true
+              x-docs-type: JSON
+            path:
+              type: string
+              description: URL Encoded string of the value to match partially to the path
+            ignored_count:
+              anyOf:
+              - type: integer
+                minimum: 0
+              - $ref: '#/components/schemas/Operators'
+              - type: array
+                items:
+                  type: integer
+                  minimum: 0
+              description: Filter by count of ignored events
+            events_count:
+              anyOf:
+              - type: integer
+                minimum: 0
+              - $ref: '#/components/schemas/Operators'
+              - type: array
+                items:
+                  type: integer
+                  minimum: 0
+              description: Filter by count of events
+            cli_events_count:
+              anyOf:
+              - type: integer
+                minimum: 0
+              - $ref: '#/components/schemas/Operators'
+              - type: array
+                items:
+                  type: integer
+                  minimum: 0
+              description: Filter by count of CLI events
+            created_at:
+              anyOf:
+              - type: string
+                format: date-time
+              - $ref: '#/components/schemas/Operators'
+              description: Filter by request created date
+            ingested_at:
+              anyOf:
+              - type: string
+                format: date-time
+              - $ref: '#/components/schemas/Operators'
+              description: Filter by request ingested date
+            bulk_retry_id:
+              anyOf:
+              - type: string
+                maxLength: 255
+              - type: array
+                items:
+                  type: string
+                  maxLength: 255
+              x-docs-hide: true
+            include:
+              type: string
+              enum:
+              - data
+              x-docs-hide: true
+            progressive:
+              type: string
+              enum:
+              - 'true'
+              - 'false'
+              description: Enable progressive loading for partial results
+              x-docs-hide: true
+            order_by:
+              type: string
+              maxLength: 255
+              enum:
+              - created_at
+              - ingested_at
+              description: Sort key
+            dir:
+              type: string
+              enum:
+              - asc
+              - desc
+              description: Sort direction
+            limit:
+              type: integer
+              minimum: 0
+              maximum: 255
+              description: Result set size
+            next:
+              type: string
+              maxLength: 255
+              description: The ID to provide in the query to get the next set of results
+            prev:
+              type: string
+              maxLength: 255
+              description: The ID to provide in the query to get the previous set of results
+          additionalProperties: false
+          description: Filter properties for the events to be included in the bulk retry, use query parameters of [Requests](#requests)
+          x-docs-force-simple-type: true
+          x-docs-type: JSON
+      - in: query
+        name: query_partial_match
+        schema:
+          type: boolean
+          description: Allow partial filter match on query property
+      - in: query
+        name: order_by
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+            enum:
+            - created_at
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+              enum:
+              - created_at
+            minItems: 2
+            maxItems: 2
+          description: Sort key(s)
+      - in: query
+        name: dir
+        schema:
+          anyOf:
+          - type: string
+            enum:
+            - asc
+            - desc
+          - type: array
+            items:
+              type: string
+              enum:
+              - asc
+              - desc
+            minItems: 2
+            maxItems: 2
+          description: Sort direction(s)
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          minimum: 0
+          maximum: 255
+          description: Result set size
+      - in: query
+        name: next
+        schema:
+          type: string
+          maxLength: 255
+          description: The ID to provide in the query to get the next set of results
+      - in: query
+        name: prev
+        schema:
+          type: string
+          maxLength: 255
+          description: The ID to provide in the query to get the previous set of results
+    post:
+      operationId: createRequestBulkRetry
+      summary: Create requests bulk retry
+      description: This endpoint creates and starts a requests bulk retry using the provided query.
+      tags:
+      - Bulk retry requests
+      responses:
+        '200':
+          description: A single requests bulk retry
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchOperation'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: object
+                  properties:
+                    id:
+                      anyOf:
+                      - type: string
+                        maxLength: 255
+                        description: Request ID
+                      - type: array
+                        items:
+                          type: string
+                          maxLength: 255
+                          description: Request ID
+                      description: Filter by requests IDs
+                    status:
+                      type: string
+                      enum:
+                      - accepted
+                      - rejected
+                      description: Filter by status
+                    rejection_cause:
+                      anyOf:
+                      - $ref: '#/components/schemas/RequestRejectionCause'
+                      - type: array
+                        items:
+                          $ref: '#/components/schemas/RequestRejectionCause'
+                      nullable: true
+                      description: Filter by rejection cause
+                    source_id:
+                      anyOf:
+                      - type: string
+                        maxLength: 255
+                        description: Source ID
+                      - type: array
+                        items:
+                          type: string
+                          maxLength: 255
+                          description: Source ID
+                      description: Filter by source IDs
+                    verified:
+                      type: boolean
+                      description: Filter by verification status
+                    search_term:
+                      type: string
+                      minLength: 3
+                      description: URL Encoded string of the value to match partially to the body, headers, parsed_query or path
+                    headers:
+                      anyOf:
+                      - type: string
+                      - type: object
+                        properties: {}
+                        additionalProperties: false
+                      description: URL Encoded string of the JSON to match to the data headers
+                      x-docs-force-simple-type: true
+                      x-docs-type: JSON
+                    body:
+                      anyOf:
+                      - type: string
+                      - type: object
+                        properties: {}
+                        additionalProperties: false
+                      description: URL Encoded string of the JSON to match to the data body
+                      x-docs-force-simple-type: true
+                      x-docs-type: JSON
+                    parsed_query:
+                      anyOf:
+                      - type: string
+                      - type: object
+                        properties: {}
+                        additionalProperties: false
+                      description: URL Encoded string of the JSON to match to the parsed query (JSON representation of the query)
+                      x-docs-force-simple-type: true
+                      x-docs-type: JSON
+                    path:
+                      type: string
+                      description: URL Encoded string of the value to match partially to the path
+                    ignored_count:
+                      anyOf:
+                      - type: integer
+                        minimum: 0
+                      - $ref: '#/components/schemas/Operators'
+                      - type: array
+                        items:
+                          type: integer
+                          minimum: 0
+                      description: Filter by count of ignored events
+                    events_count:
+                      anyOf:
+                      - type: integer
+                        minimum: 0
+                      - $ref: '#/components/schemas/Operators'
+                      - type: array
+                        items:
+                          type: integer
+                          minimum: 0
+                      description: Filter by count of events
+                    cli_events_count:
+                      anyOf:
+                      - type: integer
+                        minimum: 0
+                      - $ref: '#/components/schemas/Operators'
+                      - type: array
+                        items:
+                          type: integer
+                          minimum: 0
+                      description: Filter by count of CLI events
+                    created_at:
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - $ref: '#/components/schemas/Operators'
+                      description: Filter by request created date
+                    ingested_at:
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - $ref: '#/components/schemas/Operators'
+                      description: Filter by request ingested date
+                    bulk_retry_id:
+                      anyOf:
+                      - type: string
+                        maxLength: 255
+                      - type: array
+                        items:
+                          type: string
+                          maxLength: 255
+                      x-docs-hide: true
+                  additionalProperties: false
+                  description: Filter properties for the events to be included in the bulk retry, use query parameters of [Requests](#requests)
+                  x-docs-force-simple-type: true
+                  x-docs-type: JSON
+              additionalProperties: false
+  /bulk/requests/retry/plan:
+    get:
+      operationId: generateRequestBulkRetryPlan
+      summary: Generate requests bulk retry plan
+      description: This endpoint estimates the number of requests matched by the provided query before creating a bulk retry.
+      tags:
+      - Bulk retry requests
+      responses:
+        '200':
+          description: Requests bulk retry plan
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  estimated_batch:
+                    type: integer
+                    nullable: true
+                    description: Number of batches required to complete the bulk retry
+                  estimated_count:
+                    type: integer
+                    nullable: true
+                    description: Number of estimated events to be retried
+                  progress:
+                    type: number
+                    format: float
+                    nullable: true
+                    description: Progression of the batch operations, values 0 - 1
+                additionalProperties: false
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: query
+        name: query
+        schema:
+          type: object
+          properties:
+            id:
+              anyOf:
+              - type: string
+                maxLength: 255
+                description: Request ID
+              - type: array
+                items:
+                  type: string
+                  maxLength: 255
+                  description: Request ID
+              description: Filter by requests IDs
+            status:
+              type: string
+              enum:
+              - accepted
+              - rejected
+              description: Filter by status
+            rejection_cause:
+              anyOf:
+              - $ref: '#/components/schemas/RequestRejectionCause'
+              - type: array
+                items:
+                  $ref: '#/components/schemas/RequestRejectionCause'
+              nullable: true
+              description: Filter by rejection cause
+            source_id:
+              anyOf:
+              - type: string
+                maxLength: 255
+                description: Source ID
+              - type: array
+                items:
+                  type: string
+                  maxLength: 255
+                  description: Source ID
+              description: Filter by source IDs
+            verified:
+              type: boolean
+              description: Filter by verification status
+            search_term:
+              type: string
+              minLength: 3
+              description: URL Encoded string of the value to match partially to the body, headers, parsed_query or path
+            headers:
+              anyOf:
+              - type: string
+              - type: object
+                properties: {}
+                additionalProperties: false
+              description: URL Encoded string of the JSON to match to the data headers
+              x-docs-force-simple-type: true
+              x-docs-type: JSON
+            body:
+              anyOf:
+              - type: string
+              - type: object
+                properties: {}
+                additionalProperties: false
+              description: URL Encoded string of the JSON to match to the data body
+              x-docs-force-simple-type: true
+              x-docs-type: JSON
+            parsed_query:
+              anyOf:
+              - type: string
+              - type: object
+                properties: {}
+                additionalProperties: false
+              description: URL Encoded string of the JSON to match to the parsed query (JSON representation of the query)
+              x-docs-force-simple-type: true
+              x-docs-type: JSON
+            path:
+              type: string
+              description: URL Encoded string of the value to match partially to the path
+            ignored_count:
+              anyOf:
+              - type: integer
+                minimum: 0
+              - $ref: '#/components/schemas/Operators'
+              - type: array
+                items:
+                  type: integer
+                  minimum: 0
+              description: Filter by count of ignored events
+            events_count:
+              anyOf:
+              - type: integer
+                minimum: 0
+              - $ref: '#/components/schemas/Operators'
+              - type: array
+                items:
+                  type: integer
+                  minimum: 0
+              description: Filter by count of events
+            cli_events_count:
+              anyOf:
+              - type: integer
+                minimum: 0
+              - $ref: '#/components/schemas/Operators'
+              - type: array
+                items:
+                  type: integer
+                  minimum: 0
+              description: Filter by count of CLI events
+            created_at:
+              anyOf:
+              - type: string
+                format: date-time
+              - $ref: '#/components/schemas/Operators'
+              description: Filter by request created date
+            ingested_at:
+              anyOf:
+              - type: string
+                format: date-time
+              - $ref: '#/components/schemas/Operators'
+              description: Filter by request ingested date
+            bulk_retry_id:
+              anyOf:
+              - type: string
+                maxLength: 255
+              - type: array
+                items:
+                  type: string
+                  maxLength: 255
+              x-docs-hide: true
+          additionalProperties: false
+          description: Filter properties for the events to be included in the bulk retry, use query parameters of [Requests](#requests)
+          x-docs-force-simple-type: true
+          x-docs-type: JSON
+  /bulk/requests/retry/{id}:
+    get:
+      operationId: getRequestBulkRetry
+      summary: Retrieve requests bulk retry
+      description: This endpoint retrieves a specific requests bulk retry.
+      tags:
+      - Bulk retry requests
+      responses:
+        '200':
+          description: A single requests bulk retry
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchOperation'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Bulk retry ID
+        required: true
+  /bulk/requests/retry/{id}/cancel:
+    post:
+      operationId: cancelRequestBulkRetry
+      summary: Cancel requests bulk retry
+      description: This endpoint cancels a pending or in-progress requests bulk retry.
+      tags:
+      - Bulk retry requests
+      responses:
+        '200':
+          description: A single requests bulk retry
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchOperation'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Bulk retry ID
+        required: true
+components:
+  schemas:
+    RequestRejectionCause:
+      type: string
+      enum:
+      - SOURCE_DISABLED
+      - NO_CONNECTION
+      - VERIFICATION_FAILED
+      - UNSUPPORTED_HTTP_METHOD
+      - UNSUPPORTED_CONTENT_TYPE
+      - UNPARSABLE_JSON
+      - PAYLOAD_TOO_LARGE
+      - INGESTION_FATAL
+      - UNKNOWN
+      x-docs-type: string
+    APIErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        status:
+          type: number
+          format: float
+          description: Status code
+        message:
+          type: string
+          description: Error description
+        data:
+          type: object
+          properties: {}
+          nullable: true
+      required:
+      - code
+      - status
+      - message
+      additionalProperties: false
+      description: Error response model
+    Operators:
+      type: object
+      properties:
+        gt:
+          type: string
+          format: date-time
+          nullable: true
+        gte:
+          type: string
+          format: date-time
+          nullable: true
+        le:
+          type: string
+          format: date-time
+          nullable: true
+        lte:
+          type: string
+          format: date-time
+          nullable: true
+        any:
+          type: boolean
+        all:
+          type: boolean
+      additionalProperties: false
+    OrderByDirection:
+      anyOf:
+      - enum:
+        - asc
+      - enum:
+        - desc
+      - enum:
+        - ASC
+      - enum:
+        - DESC
+    BatchOperationPaginatedResult:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/BatchOperation'
+      additionalProperties: false
+    BatchOperation:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the bulk retry
+        team_id:
+          type: string
+          description: ID of the project
+        type:
+          type: string
+          description: Type of the bulk operation
+        query:
+          anyOf:
+          - type: object
+            properties: {}
+            additionalProperties:
+              nullable: true
+          - type: string
+            nullable: true
+          nullable: true
+          description: Query object to filter records
+          x-docs-force-simple-type: true
+          x-docs-type: JSON
+        created_at:
+          type: string
+          format: date-time
+          description: Date the bulk retry was created
+        updated_at:
+          type: string
+          format: date-time
+          description: Last time the bulk retry was updated
+        cancelled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date the bulk retry was cancelled
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date the bulk retry was completed
+        estimated_batch:
+          type: integer
+          nullable: true
+          description: Number of batches required to complete the bulk retry
+        estimated_count:
+          type: integer
+          nullable: true
+          description: Number of estimated events to be retried
+        processed_batch:
+          type: integer
+          nullable: true
+          description: Number of batches currently processed
+        completed_count:
+          type: integer
+          nullable: true
+          description: Number of events that were successfully delivered
+        in_progress:
+          type: boolean
+          description: Indicates if the bulk retry is currently in progress
+        progress:
+          type: number
+          format: float
+          nullable: true
+          description: Progression of the batch operations, values 0 - 1
+        failed_count:
+          type: integer
+          nullable: true
+          description: Number of events that failed to be delivered
+        number:
+          type: number
+          format: float
+          nullable: true
+          x-docs-hide: true
+      required:
+      - id
+      - team_id
+      - type
+      - created_at
+      - updated_at
+      - in_progress
+      additionalProperties: false
+    SeekPagination:
+      type: object
+      properties:
+        order_by:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        dir:
+          anyOf:
+          - $ref: '#/components/schemas/OrderByDirection'
+          - type: array
+            items:
+              $ref: '#/components/schemas/OrderByDirection'
+        limit:
+          type: integer
+        prev:
+          type: string
+        next:
+          type: string
+      additionalProperties: false
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    basicAuth:
+      type: http
+      scheme: basic

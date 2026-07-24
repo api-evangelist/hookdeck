@@ -1,0 +1,550 @@
+openapi: 3.0.1
+info:
+  title: Hookdeck Bookmarks Attempts Bulk retry ignored events API
+  version: 1.0.0
+  description: Save bookmarked events for quick replay and convenient one-click testing during development.
+  contact:
+    name: Hookdeck Support
+    url: https://hookdeck.com/contact-us
+    email: info@hookdeck.com
+servers:
+- url: https://api.hookdeck.com/2025-07-01
+  description: Production API
+security:
+- bearerAuth: []
+- basicAuth: []
+tags:
+- name: Bulk retry ignored events
+  description: Bulk retry ignored events allow you to retry many events that were previously ignored (for instance due to filter rules) at once.
+paths:
+  /bulk/ignored-events/retry:
+    get:
+      operationId: getIgnoredEventBulkRetries
+      summary: Retrieve ignored events bulk retries
+      description: This endpoint lists ignored events bulk retries.
+      tags:
+      - Bulk retry ignored events
+      responses:
+        '200':
+          description: List of ignored events bulk retries
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchOperationPaginatedResult'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: query
+        name: cancelled_at
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+            nullable: true
+          - $ref: '#/components/schemas/Operators'
+          description: Filter by date the bulk retry was cancelled
+      - in: query
+        name: completed_at
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+            nullable: true
+          - $ref: '#/components/schemas/Operators'
+          description: Filter by date the bulk retry completed
+      - in: query
+        name: created_at
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+            nullable: true
+          - $ref: '#/components/schemas/Operators'
+          description: Filter by date the bulk retry was created
+      - in: query
+        name: id
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+            description: Bulk retry ID
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+              description: Bulk retry ID
+          description: Filter by bulk retry IDs
+      - in: query
+        name: query
+        schema:
+          type: object
+          properties:
+            cause:
+              anyOf:
+              - type: string
+                maxLength: 255
+              - type: array
+                items:
+                  type: string
+                  maxLength: 255
+              description: The cause of the ignored event
+            webhook_id:
+              anyOf:
+              - type: string
+                maxLength: 255
+              - type: array
+                items:
+                  type: string
+                  maxLength: 255
+              description: Connection (webhook) ID of the ignored event
+            transformation_id:
+              type: string
+              maxLength: 255
+              description: The associated transformation ID (only applicable to the cause `TRANSFORMATION_FAILED`)
+          additionalProperties: false
+          description: Filter by the bulk retry ignored event query object
+          x-docs-type: JSON
+      - in: query
+        name: query_partial_match
+        schema:
+          type: boolean
+          description: Allow partial filter match on query property
+      - in: query
+        name: in_progress
+        schema:
+          type: boolean
+          description: Indicates if the bulk retry is currently in progress
+      - in: query
+        name: order_by
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+            enum:
+            - created_at
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+              enum:
+              - created_at
+            minItems: 2
+            maxItems: 2
+          description: Sort key(s)
+      - in: query
+        name: dir
+        schema:
+          anyOf:
+          - type: string
+            enum:
+            - asc
+            - desc
+          - type: array
+            items:
+              type: string
+              enum:
+              - asc
+              - desc
+            minItems: 2
+            maxItems: 2
+          description: Sort direction(s)
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          minimum: 0
+          maximum: 255
+          description: Result set size
+      - in: query
+        name: next
+        schema:
+          type: string
+          maxLength: 255
+          description: The ID to provide in the query to get the next set of results
+      - in: query
+        name: prev
+        schema:
+          type: string
+          maxLength: 255
+          description: The ID to provide in the query to get the previous set of results
+    post:
+      operationId: createIgnoredEventBulkRetry
+      summary: Create ignored events bulk retry
+      description: This endpoint creates and starts an ignored events bulk retry using the provided query.
+      tags:
+      - Bulk retry ignored events
+      responses:
+        '200':
+          description: A single ignored events bulk retry
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchOperation'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: object
+                  properties:
+                    cause:
+                      anyOf:
+                      - type: string
+                        maxLength: 255
+                      - type: array
+                        items:
+                          type: string
+                          maxLength: 255
+                      description: The cause of the ignored event
+                    webhook_id:
+                      anyOf:
+                      - type: string
+                        maxLength: 255
+                      - type: array
+                        items:
+                          type: string
+                          maxLength: 255
+                      description: Connection (webhook) ID of the ignored event
+                    transformation_id:
+                      type: string
+                      maxLength: 255
+                      description: The associated transformation ID (only applicable to the cause `TRANSFORMATION_FAILED`)
+                  additionalProperties: false
+                  description: Filter by the bulk retry ignored event query object
+                  x-docs-type: JSON
+              additionalProperties: false
+  /bulk/ignored-events/retry/plan:
+    get:
+      operationId: generateIgnoredEventBulkRetryPlan
+      summary: Generate ignored events bulk retry plan
+      description: This endpoint estimates the number of ignored events matched by the provided query before creating a bulk retry.
+      tags:
+      - Bulk retry ignored events
+      responses:
+        '200':
+          description: Ignored events bulk retry plan
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  estimated_batch:
+                    type: integer
+                    nullable: true
+                    description: Number of batches required to complete the bulk retry
+                  estimated_count:
+                    type: integer
+                    nullable: true
+                    description: Number of estimated events to be retried
+                  progress:
+                    type: number
+                    format: float
+                    nullable: true
+                    description: Progression of the batch operations, values 0 - 1
+                additionalProperties: false
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: query
+        name: query
+        schema:
+          type: object
+          properties:
+            cause:
+              anyOf:
+              - type: string
+                maxLength: 255
+              - type: array
+                items:
+                  type: string
+                  maxLength: 255
+              description: The cause of the ignored event
+            webhook_id:
+              anyOf:
+              - type: string
+                maxLength: 255
+              - type: array
+                items:
+                  type: string
+                  maxLength: 255
+              description: Connection (webhook) ID of the ignored event
+            transformation_id:
+              type: string
+              maxLength: 255
+              description: The associated transformation ID (only applicable to the cause `TRANSFORMATION_FAILED`)
+          additionalProperties: false
+          description: Filter by the bulk retry ignored event query object
+          x-docs-type: JSON
+  /bulk/ignored-events/retry/{id}:
+    get:
+      operationId: getIgnoredEventBulkRetry
+      summary: Retrieve ignored events bulk retry
+      description: This endpoint retrieves a specific ignored events bulk retry.
+      tags:
+      - Bulk retry ignored events
+      responses:
+        '200':
+          description: A single ignored events bulk retry
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchOperation'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Bulk retry ID
+        required: true
+  /bulk/ignored-events/retry/{id}/cancel:
+    post:
+      operationId: cancelIgnoredEventBulkRetry
+      summary: Cancel ignored events bulk retry
+      description: This endpoint cancels a pending or in-progress ignored events bulk retry.
+      tags:
+      - Bulk retry ignored events
+      responses:
+        '200':
+          description: A single ignored events bulk retry
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchOperation'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Bulk retry ID
+        required: true
+components:
+  schemas:
+    APIErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        status:
+          type: number
+          format: float
+          description: Status code
+        message:
+          type: string
+          description: Error description
+        data:
+          type: object
+          properties: {}
+          nullable: true
+      required:
+      - code
+      - status
+      - message
+      additionalProperties: false
+      description: Error response model
+    Operators:
+      type: object
+      properties:
+        gt:
+          type: string
+          format: date-time
+          nullable: true
+        gte:
+          type: string
+          format: date-time
+          nullable: true
+        le:
+          type: string
+          format: date-time
+          nullable: true
+        lte:
+          type: string
+          format: date-time
+          nullable: true
+        any:
+          type: boolean
+        all:
+          type: boolean
+      additionalProperties: false
+    OrderByDirection:
+      anyOf:
+      - enum:
+        - asc
+      - enum:
+        - desc
+      - enum:
+        - ASC
+      - enum:
+        - DESC
+    BatchOperationPaginatedResult:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/BatchOperation'
+      additionalProperties: false
+    BatchOperation:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the bulk retry
+        team_id:
+          type: string
+          description: ID of the project
+        type:
+          type: string
+          description: Type of the bulk operation
+        query:
+          anyOf:
+          - type: object
+            properties: {}
+            additionalProperties:
+              nullable: true
+          - type: string
+            nullable: true
+          nullable: true
+          description: Query object to filter records
+          x-docs-force-simple-type: true
+          x-docs-type: JSON
+        created_at:
+          type: string
+          format: date-time
+          description: Date the bulk retry was created
+        updated_at:
+          type: string
+          format: date-time
+          description: Last time the bulk retry was updated
+        cancelled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date the bulk retry was cancelled
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date the bulk retry was completed
+        estimated_batch:
+          type: integer
+          nullable: true
+          description: Number of batches required to complete the bulk retry
+        estimated_count:
+          type: integer
+          nullable: true
+          description: Number of estimated events to be retried
+        processed_batch:
+          type: integer
+          nullable: true
+          description: Number of batches currently processed
+        completed_count:
+          type: integer
+          nullable: true
+          description: Number of events that were successfully delivered
+        in_progress:
+          type: boolean
+          description: Indicates if the bulk retry is currently in progress
+        progress:
+          type: number
+          format: float
+          nullable: true
+          description: Progression of the batch operations, values 0 - 1
+        failed_count:
+          type: integer
+          nullable: true
+          description: Number of events that failed to be delivered
+        number:
+          type: number
+          format: float
+          nullable: true
+          x-docs-hide: true
+      required:
+      - id
+      - team_id
+      - type
+      - created_at
+      - updated_at
+      - in_progress
+      additionalProperties: false
+    SeekPagination:
+      type: object
+      properties:
+        order_by:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        dir:
+          anyOf:
+          - $ref: '#/components/schemas/OrderByDirection'
+          - type: array
+            items:
+              $ref: '#/components/schemas/OrderByDirection'
+        limit:
+          type: integer
+        prev:
+          type: string
+        next:
+          type: string
+      additionalProperties: false
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    basicAuth:
+      type: http
+      scheme: basic

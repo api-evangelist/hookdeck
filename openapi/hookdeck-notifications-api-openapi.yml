@@ -1,8 +1,8 @@
 openapi: 3.0.1
 info:
-  title: Hookdeck Notifications API
+  title: Hookdeck Bookmarks Attempts Notifications API
   version: 1.0.0
-  description: Manage how your team is notified when issues occur — channel routing, mute windows, and per-team subscriptions.
+  description: Save bookmarked events for quick replay and convenient one-click testing during development.
   contact:
     name: Hookdeck Support
     url: https://hookdeck.com/contact-us
@@ -21,8 +21,7 @@ paths:
     put:
       operationId: toggleWebhookNotifications
       summary: Webhook Notifications
-      description: This endpoint enables or disables webhook notifications for the project, and sets the topics and source
-        to deliver them to.
+      description: This endpoint enables or disables webhook notifications for the project, and sets the topics and source to deliver them to.
       tags:
       - Notifications
       responses:
@@ -112,14 +111,23 @@ paths:
           type: string
         required: true
 components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-    basicAuth:
-      type: http
-      scheme: basic
   schemas:
+    ToggleWebhookNotifications:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        topics:
+          type: array
+          items:
+            $ref: '#/components/schemas/TopicsValue'
+          nullable: true
+        source_id:
+          type: string
+      required:
+      - enabled
+      - source_id
+      additionalProperties: false
     DeleteCustomDomainSchema:
       type: object
       properties:
@@ -138,6 +146,15 @@ components:
       required:
       - hostname
       additionalProperties: false
+    TopicsValue:
+      type: string
+      enum:
+      - issue.opened
+      - issue.updated
+      - deprecated.attempt-failed
+      - event.successful
+      description: Supported topics
+      x-docs-type: string
     ListCustomDomainSchema:
       type: array
       items:
@@ -216,28 +233,10 @@ components:
           created_at:
             type: string
         additionalProperties: false
-    TopicsValue:
-      type: string
-      enum:
-      - issue.opened
-      - issue.updated
-      - deprecated.attempt-failed
-      - event.successful
-      description: Supported topics
-      x-docs-type: string
-    ToggleWebhookNotifications:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-        topics:
-          type: array
-          items:
-            $ref: '#/components/schemas/TopicsValue'
-          nullable: true
-        source_id:
-          type: string
-      required:
-      - enabled
-      - source_id
-      additionalProperties: false
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    basicAuth:
+      type: http
+      scheme: basic

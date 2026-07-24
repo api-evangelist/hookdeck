@@ -1,9 +1,8 @@
 openapi: 3.0.1
 info:
-  title: Hookdeck Integrations API
+  title: Hookdeck Bookmarks Attempts Integrations API
   version: 1.0.0
-  description: Configure platform integrations that adapt Hookdeck behavior for specific source platforms — including signature
-    verification, header normalization, and platform-aware retries.
+  description: Save bookmarked events for quick replay and convenient one-click testing during development.
   contact:
     name: Hookdeck Support
     url: https://hookdeck.com/contact-us
@@ -320,52 +319,17 @@ paths:
           description: Source ID
         required: true
 components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-    basicAuth:
-      type: http
-      scheme: basic
   schemas:
-    DetachedIntegrationFromSource:
-      type: object
-      properties: {}
-      additionalProperties: false
-    OrderByDirection:
-      anyOf:
-      - enum:
-        - asc
-      - enum:
-        - desc
-      - enum:
-        - ASC
-      - enum:
-        - DESC
-    IntegrationFeature:
-      type: string
-      enum:
-      - VERIFICATION
-      - HANDSHAKE
-    IntegrationPaginatedResult:
+    BasicAuthIntegrationConfigs:
       type: object
       properties:
-        pagination:
-          $ref: '#/components/schemas/SeekPagination'
-        count:
-          type: integer
-        models:
-          type: array
-          items:
-            $ref: '#/components/schemas/Integration'
-      additionalProperties: false
-    ShopifyIntegrationConfigs:
-      type: object
-      properties:
-        webhook_secret_key:
+        username:
+          type: string
+        password:
           type: string
       required:
-      - webhook_secret_key
+      - username
+      - password
       additionalProperties: false
     APIKeyIntegrationConfigs:
       type: object
@@ -377,33 +341,6 @@ components:
       required:
       - header_key
       - api_key
-      additionalProperties: false
-    DeletedIntegration:
-      type: object
-      properties:
-        id:
-          type: string
-      required:
-      - id
-      additionalProperties: false
-    VercelLogDrainsIntegrationConfigs:
-      type: object
-      properties:
-        webhook_secret_key:
-          type: string
-          nullable: true
-        vercel_log_drains_secret:
-          type: string
-      required:
-      - vercel_log_drains_secret
-      additionalProperties: false
-    AttachedIntegrationToSource:
-      type: object
-      properties:
-        success:
-          type: boolean
-      required:
-      - success
       additionalProperties: false
     SeekPagination:
       type: object
@@ -427,16 +364,24 @@ components:
         next:
           type: string
       additionalProperties: false
-    BasicAuthIntegrationConfigs:
+    VercelLogDrainsIntegrationConfigs:
       type: object
       properties:
-        username:
+        webhook_secret_key:
           type: string
-        password:
+          nullable: true
+        vercel_log_drains_secret:
           type: string
       required:
-      - username
-      - password
+      - vercel_log_drains_secret
+      additionalProperties: false
+    HandledAPIKeyIntegrationConfigs:
+      type: object
+      properties:
+        api_key:
+          type: string
+      required:
+      - api_key
       additionalProperties: false
     HMACAlgorithms:
       type: string
@@ -445,6 +390,14 @@ components:
       - sha1
       - sha256
       - sha512
+    DeletedIntegration:
+      type: object
+      properties:
+        id:
+          type: string
+      required:
+      - id
+      additionalProperties: false
     IntegrationProvider:
       type: string
       enum:
@@ -582,22 +535,6 @@ components:
       - UBER
       - WECHAT
       - CIRCLE
-    HandledHMACConfigs:
-      type: object
-      properties:
-        webhook_secret_key:
-          type: string
-      required:
-      - webhook_secret_key
-      additionalProperties: false
-    HandledAPIKeyIntegrationConfigs:
-      type: object
-      properties:
-        api_key:
-          type: string
-      required:
-      - api_key
-      additionalProperties: false
     HMACIntegrationConfigs:
       type: object
       properties:
@@ -617,6 +554,68 @@ components:
       - algorithm
       - header_key
       - encoding
+      additionalProperties: false
+    IntegrationFeature:
+      type: string
+      enum:
+      - VERIFICATION
+      - HANDSHAKE
+    OrderByDirection:
+      anyOf:
+      - enum:
+        - asc
+      - enum:
+        - desc
+      - enum:
+        - ASC
+      - enum:
+        - DESC
+    IntegrationPaginatedResult:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/Integration'
+      additionalProperties: false
+    APIErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        status:
+          type: number
+          format: float
+          description: Status code
+        message:
+          type: string
+          description: Error description
+        data:
+          type: object
+          properties: {}
+          nullable: true
+      required:
+      - code
+      - status
+      - message
+      additionalProperties: false
+      description: Error response model
+    DetachedIntegrationFromSource:
+      type: object
+      properties: {}
+      additionalProperties: false
+    HandledHMACConfigs:
+      type: object
+      properties:
+        webhook_secret_key:
+          type: string
+      required:
+      - webhook_secret_key
       additionalProperties: false
     Integration:
       type: object
@@ -679,26 +678,26 @@ components:
       - updated_at
       - created_at
       additionalProperties: false
-    APIErrorResponse:
+    ShopifyIntegrationConfigs:
       type: object
       properties:
-        code:
+        webhook_secret_key:
           type: string
-          description: Error code
-        status:
-          type: number
-          format: float
-          description: Status code
-        message:
-          type: string
-          description: Error description
-        data:
-          type: object
-          properties: {}
-          nullable: true
       required:
-      - code
-      - status
-      - message
+      - webhook_secret_key
       additionalProperties: false
-      description: Error response model
+    AttachedIntegrationToSource:
+      type: object
+      properties:
+        success:
+          type: boolean
+      required:
+      - success
+      additionalProperties: false
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    basicAuth:
+      type: http
+      scheme: basic

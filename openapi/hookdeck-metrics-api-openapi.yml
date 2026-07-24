@@ -1,9 +1,8 @@
 openapi: 3.0.1
 info:
-  title: Hookdeck Metrics API
+  title: Hookdeck Bookmarks Attempts Metrics API
   version: 1.0.0
-  description: Query aggregated metrics for events, requests, and attempts — success counts, failure counts, response time,
-    throughput, and SLA bands grouped by source, destination, or connection.
+  description: Save bookmarked events for quick replay and convenient one-click testing during development.
   contact:
     name: Hookdeck Support
     url: https://hookdeck.com/contact-us
@@ -56,8 +55,7 @@ paths:
           type: string
           pattern: ^(\d+)(s|m|h|d|w|M)$
           nullable: true
-          description: 'Time bucket granularity. Format: <number><unit> where unit is s (seconds 1-60), m (minutes 1-60),
-            h (hours 1-24), d (days 1-31), w (weeks 1-4), M (months 1-12). Examples: 1s, 5m, 1h, 1d'
+          description: 'Time bucket granularity. Format: <number><unit> where unit is s (seconds 1-60), m (minutes 1-60), h (hours 1-24), d (days 1-31), w (weeks 1-4), M (months 1-12). Examples: 1s, 5m, 1h, 1d'
       - in: query
         name: filters
         schema:
@@ -212,8 +210,7 @@ paths:
           type: string
           pattern: ^(\d+)(s|m|h|d|w|M)$
           nullable: true
-          description: 'Time bucket granularity. Format: <number><unit> where unit is s (seconds 1-60), m (minutes 1-60),
-            h (hours 1-24), d (days 1-31), w (weeks 1-4), M (months 1-12). Examples: 1s, 5m, 1h, 1d'
+          description: 'Time bucket granularity. Format: <number><unit> where unit is s (seconds 1-60), m (minutes 1-60), h (hours 1-24), d (days 1-31), w (weeks 1-4), M (months 1-12). Examples: 1s, 5m, 1h, 1d'
       - in: query
         name: filters
         schema:
@@ -370,8 +367,7 @@ paths:
           type: string
           pattern: ^(\d+)(s|m|h|d|w|M)$
           nullable: true
-          description: 'Time bucket granularity. Format: <number><unit> where unit is s (seconds 1-60), m (minutes 1-60),
-            h (hours 1-24), d (days 1-31), w (weeks 1-4), M (months 1-12). Examples: 1s, 5m, 1h, 1d'
+          description: 'Time bucket granularity. Format: <number><unit> where unit is s (seconds 1-60), m (minutes 1-60), h (hours 1-24), d (days 1-31), w (weeks 1-4), M (months 1-12). Examples: 1s, 5m, 1h, 1d'
       - in: query
         name: filters
         schema:
@@ -449,8 +445,7 @@ paths:
     get:
       operationId: queryEventsByIssueMetrics
       summary: Query event metrics grouped by individual issue
-      description: Returns metrics for events broken down by individual issue IDs. Uses arrayJoin to create one row per issue
-        per event, enabling per-issue analytics. Useful for tracking which issues affect the most events over time.
+      description: Returns metrics for events broken down by individual issue IDs. Uses arrayJoin to create one row per issue per event, enabling per-issue analytics. Useful for tracking which issues affect the most events over time.
       tags:
       - Metrics
       responses:
@@ -484,8 +479,7 @@ paths:
           type: string
           pattern: ^(\d+)(s|m|h|d|w|M)$
           nullable: true
-          description: 'Time bucket granularity. Format: <number><unit> where unit is s (seconds 1-60), m (minutes 1-60),
-            h (hours 1-24), d (days 1-31), w (weeks 1-4), M (months 1-12). Examples: 1s, 5m, 1h, 1d'
+          description: 'Time bucket granularity. Format: <number><unit> where unit is s (seconds 1-60), m (minutes 1-60), h (hours 1-24), d (days 1-31), w (weeks 1-4), M (months 1-12). Examples: 1s, 5m, 1h, 1d'
       - in: query
         name: filters
         schema:
@@ -571,8 +565,7 @@ paths:
           type: string
           pattern: ^(\d+)(s|m|h|d|w|M)$
           nullable: true
-          description: 'Time bucket granularity. Format: <number><unit> where unit is s (seconds 1-60), m (minutes 1-60),
-            h (hours 1-24), d (days 1-31), w (weeks 1-4), M (months 1-12). Examples: 1s, 5m, 1h, 1d'
+          description: 'Time bucket granularity. Format: <number><unit> where unit is s (seconds 1-60), m (minutes 1-60), h (hours 1-24), d (days 1-31), w (weeks 1-4), M (months 1-12). Examples: 1s, 5m, 1h, 1d'
       - in: query
         name: filters
         schema:
@@ -640,8 +633,7 @@ paths:
           type: string
           pattern: ^(\d+)(s|m|h|d|w|M)$
           nullable: true
-          description: 'Time bucket granularity. Format: <number><unit> where unit is s (seconds 1-60), m (minutes 1-60),
-            h (hours 1-24), d (days 1-31), w (weeks 1-4), M (months 1-12). Examples: 1s, 5m, 1h, 1d'
+          description: 'Time bucket granularity. Format: <number><unit> where unit is s (seconds 1-60), m (minutes 1-60), h (hours 1-24), d (days 1-31), w (weeks 1-4), M (months 1-12). Examples: 1s, 5m, 1h, 1d'
       - in: query
         name: filters
         schema:
@@ -733,8 +725,7 @@ paths:
           type: string
           pattern: ^(\d+)(s|m|h|d|w|M)$
           nullable: true
-          description: 'Time bucket granularity. Format: <number><unit> where unit is s (seconds 1-60), m (minutes 1-60),
-            h (hours 1-24), d (days 1-31), w (weeks 1-4), M (months 1-12). Examples: 1s, 5m, 1h, 1d'
+          description: 'Time bucket granularity. Format: <number><unit> where unit is s (seconds 1-60), m (minutes 1-60), h (hours 1-24), d (days 1-31), w (weeks 1-4), M (months 1-12). Examples: 1s, 5m, 1h, 1d'
       - in: query
         name: filters
         schema:
@@ -764,13 +755,6 @@ paths:
             - destination_id
           description: List of dimensions to group by
 components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-    basicAuth:
-      type: http
-      scheme: basic
   schemas:
     MetricsResponse:
       type: object
@@ -835,3 +819,10 @@ components:
           description: Key-value pairs of metric names and their calculated values.
       additionalProperties: false
       description: A single metric data point with time bucket, dimensions, and metrics
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    basicAuth:
+      type: http
+      scheme: basic

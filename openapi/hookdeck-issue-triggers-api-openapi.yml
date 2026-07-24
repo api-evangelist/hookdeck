@@ -1,0 +1,760 @@
+openapi: 3.0.1
+info:
+  title: Hookdeck Bookmarks Attempts Issue Triggers API
+  version: 1.0.0
+  description: Save bookmarked events for quick replay and convenient one-click testing during development.
+  contact:
+    name: Hookdeck Support
+    url: https://hookdeck.com/contact-us
+    email: info@hookdeck.com
+servers:
+- url: https://api.hookdeck.com/2025-07-01
+  description: Production API
+security:
+- bearerAuth: []
+- basicAuth: []
+tags:
+- name: Issue Triggers
+  description: Issue Triggers lets you setup rules that trigger issues when certain conditions are met.
+paths:
+  /issue-triggers:
+    get:
+      operationId: getIssueTriggers
+      summary: Retrieve issue triggers
+      description: This endpoint lists issue triggers.
+      tags:
+      - Issue Triggers
+      responses:
+        '200':
+          description: List of issue triggers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssueTriggerPaginatedResult'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: query
+        name: name
+        schema:
+          type: string
+          maxLength: 255
+          description: Filter by issue trigger name
+      - in: query
+        name: type
+        schema:
+          anyOf:
+          - $ref: '#/components/schemas/IssueType'
+          - type: array
+            items:
+              $ref: '#/components/schemas/IssueType'
+      - in: query
+        name: disabled_at
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+            nullable: true
+          - $ref: '#/components/schemas/Operators'
+          description: Date when the issue trigger was disabled
+      - in: query
+        name: order_by
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 255
+            enum:
+            - created_at
+            - type
+          - type: array
+            items:
+              type: string
+              maxLength: 255
+              enum:
+              - created_at
+              - type
+            minItems: 2
+            maxItems: 2
+          description: Sort key(s)
+      - in: query
+        name: dir
+        schema:
+          anyOf:
+          - type: string
+            enum:
+            - asc
+            - desc
+          - type: array
+            items:
+              type: string
+              enum:
+              - asc
+              - desc
+            minItems: 2
+            maxItems: 2
+          description: Sort direction(s)
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          minimum: 0
+          maximum: 255
+          description: Result set size
+      - in: query
+        name: next
+        schema:
+          type: string
+          maxLength: 255
+          description: The ID to provide in the query to get the next set of results
+      - in: query
+        name: prev
+        schema:
+          type: string
+          maxLength: 255
+          description: The ID to provide in the query to get the previous set of results
+    post:
+      operationId: createIssueTrigger
+      summary: Create an issue trigger
+      description: This endpoint creates an issue trigger.
+      tags:
+      - Issue Triggers
+      responses:
+        '200':
+          description: A single issue trigger
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssueTrigger'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  $ref: '#/components/schemas/IssueType'
+                configs:
+                  anyOf:
+                  - $ref: '#/components/schemas/IssueTriggerDeliveryConfigs'
+                  - $ref: '#/components/schemas/IssueTriggerTransformationConfigs'
+                  - $ref: '#/components/schemas/IssueTriggerBackpressureConfigs'
+                  - $ref: '#/components/schemas/IssueTriggerRequestConfigs'
+                  description: Configuration object for the specific issue type selected
+                channels:
+                  $ref: '#/components/schemas/IssueTriggerChannels'
+                name:
+                  type: string
+                  maxLength: 255
+                  nullable: true
+                  description: Optional unique name to use as reference when using the API
+              required:
+              - type
+              - channels
+              additionalProperties: false
+    put:
+      operationId: upsertIssueTrigger
+      summary: Create/Update an issue trigger
+      description: This endpoint creates an issue trigger, or updates an existing issue trigger by name.
+      tags:
+      - Issue Triggers
+      responses:
+        '200':
+          description: A single issue trigger
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssueTrigger'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  $ref: '#/components/schemas/IssueType'
+                configs:
+                  anyOf:
+                  - $ref: '#/components/schemas/IssueTriggerDeliveryConfigs'
+                  - $ref: '#/components/schemas/IssueTriggerTransformationConfigs'
+                  - $ref: '#/components/schemas/IssueTriggerBackpressureConfigs'
+                  - $ref: '#/components/schemas/IssueTriggerRequestConfigs'
+                  description: Configuration object for the specific issue type selected
+                channels:
+                  $ref: '#/components/schemas/IssueTriggerChannels'
+                name:
+                  type: string
+                  maxLength: 255
+                  description: Required unique name to use as reference when using the API
+              required:
+              - type
+              - channels
+              - name
+              additionalProperties: false
+  /issue-triggers/{id}:
+    get:
+      operationId: getIssueTrigger
+      summary: Retrieve an issue trigger
+      description: This endpoint retrieves a specific issue trigger.
+      tags:
+      - Issue Triggers
+      responses:
+        '200':
+          description: A single issue trigger
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssueTrigger'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Issue trigger ID
+        required: true
+    put:
+      operationId: updateIssueTrigger
+      summary: Update an issue trigger
+      description: This endpoint updates an issue trigger.
+      tags:
+      - Issue Triggers
+      responses:
+        '200':
+          description: A single issue trigger
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssueTrigger'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Issue trigger ID
+        required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                configs:
+                  anyOf:
+                  - $ref: '#/components/schemas/IssueTriggerDeliveryConfigs'
+                  - $ref: '#/components/schemas/IssueTriggerTransformationConfigs'
+                  - $ref: '#/components/schemas/IssueTriggerBackpressureConfigs'
+                  - $ref: '#/components/schemas/IssueTriggerRequestConfigs'
+                  description: Configuration object for the specific issue type selected
+                channels:
+                  $ref: '#/components/schemas/IssueTriggerChannels'
+                disabled_at:
+                  type: string
+                  format: date-time
+                  nullable: true
+                  description: Date when the issue trigger was disabled
+                name:
+                  type: string
+                  maxLength: 255
+                  nullable: true
+                  description: Optional unique name to use as reference when using the API
+              additionalProperties: false
+    delete:
+      operationId: deleteIssueTrigger
+      summary: Delete an issue trigger
+      description: This endpoint permanently deletes an issue trigger. This action cannot be undone.
+      tags:
+      - Issue Triggers
+      responses:
+        '200':
+          description: An object with deleted issue trigger's id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeletedIssueTriggerResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Issue trigger ID
+        required: true
+  /issue-triggers/{id}/disable:
+    put:
+      operationId: disableIssueTrigger
+      summary: Disable an issue trigger
+      description: This endpoint disables an issue trigger so it stops producing issues.
+      tags:
+      - Issue Triggers
+      responses:
+        '200':
+          description: A single issue trigger
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssueTrigger'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Issue trigger ID
+        required: true
+  /issue-triggers/{id}/enable:
+    put:
+      operationId: enableIssueTrigger
+      summary: Enable an issue trigger
+      description: This endpoint enables a previously disabled issue trigger.
+      tags:
+      - Issue Triggers
+      responses:
+        '200':
+          description: A single issue trigger
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssueTrigger'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: Issue trigger ID
+        required: true
+components:
+  schemas:
+    RequestRejectionCause:
+      type: string
+      enum:
+      - SOURCE_DISABLED
+      - NO_CONNECTION
+      - VERIFICATION_FAILED
+      - UNSUPPORTED_HTTP_METHOD
+      - UNSUPPORTED_CONTENT_TYPE
+      - UNPARSABLE_JSON
+      - PAYLOAD_TOO_LARGE
+      - INGESTION_FATAL
+      - UNKNOWN
+      x-docs-type: string
+    IssueTriggerPaginatedResult:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/IssueTrigger'
+      additionalProperties: false
+    IssueTriggerIntegrationChannel:
+      type: object
+      properties: {}
+      additionalProperties: false
+      description: Integration channel for an issue trigger
+      x-docs-type: object
+    IssueTriggerBackpressureDelay:
+      type: integer
+      minimum: 60000
+      maximum: 86400000
+      description: The minimum delay (backpressure) to open the issue for min of 1 minute (60000) and max of 1 day (86400000)
+      x-docs-type: integer
+    IssueTriggerBackpressureConfigs:
+      type: object
+      properties:
+        delay:
+          $ref: '#/components/schemas/IssueTriggerBackpressureDelay'
+        destinations:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+          description: A pattern to match on the destination name or array of destination IDs. Use `*` as wildcard.
+          x-docs-force-simple-type: true
+      required:
+      - delay
+      - destinations
+      additionalProperties: false
+      description: Configurations for a 'Backpressure' issue trigger
+    IssueTriggerMicrosoftTeamsChannel:
+      type: object
+      properties:
+        channel_name:
+          type: string
+      required:
+      - channel_name
+      additionalProperties: false
+      description: Channel for a 'Microsoft Teams' issue trigger
+    Operators:
+      type: object
+      properties:
+        gt:
+          type: string
+          format: date-time
+          nullable: true
+        gte:
+          type: string
+          format: date-time
+          nullable: true
+        le:
+          type: string
+          format: date-time
+          nullable: true
+        lte:
+          type: string
+          format: date-time
+          nullable: true
+        any:
+          type: boolean
+        all:
+          type: boolean
+      additionalProperties: false
+    APIErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        status:
+          type: number
+          format: float
+          description: Status code
+        message:
+          type: string
+          description: Error description
+        data:
+          type: object
+          properties: {}
+          nullable: true
+      required:
+      - code
+      - status
+      - message
+      additionalProperties: false
+      description: Error response model
+    OrderByDirection:
+      anyOf:
+      - enum:
+        - asc
+      - enum:
+        - desc
+      - enum:
+        - ASC
+      - enum:
+        - DESC
+    IssueTriggerStrategy:
+      type: string
+      enum:
+      - first_attempt
+      - final_attempt
+      description: The strategy uses to open the issue
+    IssueTrigger:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the issue trigger
+        team_id:
+          type: string
+          nullable: true
+          description: ID of the project
+        name:
+          type: string
+          nullable: true
+          description: Optional unique name to use as reference when using the API
+        type:
+          $ref: '#/components/schemas/IssueType'
+        configs:
+          $ref: '#/components/schemas/IssueTriggerReference'
+        channels:
+          $ref: '#/components/schemas/IssueTriggerChannels'
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: ISO timestamp for when the issue trigger was disabled
+        updated_at:
+          type: string
+          format: date-time
+          description: ISO timestamp for when the issue trigger was last updated
+        created_at:
+          type: string
+          format: date-time
+          description: ISO timestamp for when the issue trigger was created
+        deleted_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: ISO timestamp for when the issue trigger was deleted
+      required:
+      - id
+      - type
+      - configs
+      - updated_at
+      - created_at
+      additionalProperties: false
+    IssueTriggerReference:
+      anyOf:
+      - $ref: '#/components/schemas/IssueTriggerDeliveryConfigs'
+      - $ref: '#/components/schemas/IssueTriggerTransformationConfigs'
+      - $ref: '#/components/schemas/IssueTriggerBackpressureConfigs'
+      - $ref: '#/components/schemas/IssueTriggerRequestConfigs'
+      description: Configuration object for the specific issue type selected
+    IssueTriggerDiscordChannel:
+      type: object
+      properties:
+        channel_name:
+          type: string
+        channel_id:
+          type: string
+        webhook_url:
+          type: string
+      required:
+      - channel_name
+      - channel_id
+      additionalProperties: false
+      description: Channel for a 'Discord' issue trigger
+    IssueTriggerRequestConfigs:
+      type: object
+      properties:
+        rejection_causes:
+          anyOf:
+          - type: string
+            enum:
+            - '*'
+          - type: array
+            items:
+              $ref: '#/components/schemas/RequestRejectionCause'
+          description: An array of rejection causes to match on, or '*' to match all rejection causes.
+          x-docs-force-simple-type: true
+        excluded_rejection_causes:
+          type: array
+          items:
+            $ref: '#/components/schemas/RequestRejectionCause'
+          description: Optional array of rejection causes to exclude. When specified, rejection_causes must be '*'. This allows matching all causes EXCEPT the specified ones.
+          x-docs-force-simple-type: true
+        sources:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+          description: A pattern to match on the source name or array of source IDs. Use `*` as wildcard.
+          x-docs-force-simple-type: true
+      required:
+      - rejection_causes
+      - sources
+      additionalProperties: false
+      description: Configurations for a 'Request' issue trigger
+    TransformationExecutionLogLevel:
+      type: string
+      enum:
+      - debug
+      - info
+      - warn
+      - error
+      - fatal
+      description: The minimum log level to open the issue on
+    IssueTriggerChannels:
+      type: object
+      properties:
+        slack:
+          $ref: '#/components/schemas/IssueTriggerSlackChannel'
+        microsoft_teams:
+          $ref: '#/components/schemas/IssueTriggerMicrosoftTeamsChannel'
+        discord:
+          $ref: '#/components/schemas/IssueTriggerDiscordChannel'
+        betteruptime:
+          $ref: '#/components/schemas/IssueTriggerBetterUptimeChannel'
+        pagerduty:
+          $ref: '#/components/schemas/IssueTriggerIntegrationChannel'
+        opsgenie:
+          $ref: '#/components/schemas/IssueTriggerIntegrationChannel'
+        email:
+          $ref: '#/components/schemas/IssueTriggerEmailChannel'
+      additionalProperties: false
+      nullable: true
+      description: Notification channels object for the specific channel type
+    IssueTriggerTransformationConfigs:
+      type: object
+      properties:
+        log_level:
+          $ref: '#/components/schemas/TransformationExecutionLogLevel'
+        transformations:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+          description: A pattern to match on the transformation name or array of transformation IDs. Use `*` as wildcard.
+          x-docs-force-simple-type: true
+      required:
+      - log_level
+      - transformations
+      additionalProperties: false
+      description: Configurations for a 'Transformation' issue trigger
+    IssueTriggerSlackChannel:
+      type: object
+      properties:
+        channel_name:
+          type: string
+      required:
+      - channel_name
+      additionalProperties: false
+      description: Channel for a 'Slack' issue trigger
+    IssueTriggerBetterUptimeChannel:
+      type: object
+      properties:
+        escalation_policy_id:
+          type: string
+        escalation_policy_name:
+          type: string
+      required:
+      - escalation_policy_id
+      - escalation_policy_name
+      additionalProperties: false
+      description: Channel for a 'Better Uptime' issue trigger
+    SeekPagination:
+      type: object
+      properties:
+        order_by:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        dir:
+          anyOf:
+          - $ref: '#/components/schemas/OrderByDirection'
+          - type: array
+            items:
+              $ref: '#/components/schemas/OrderByDirection'
+        limit:
+          type: integer
+        prev:
+          type: string
+        next:
+          type: string
+      additionalProperties: false
+    DeletedIssueTriggerResponse:
+      type: object
+      properties:
+        id:
+          type: string
+      required:
+      - id
+      additionalProperties: false
+    IssueTriggerEmailChannel:
+      type: object
+      properties: {}
+      additionalProperties: false
+      description: Email channel for an issue trigger
+      x-docs-type: object
+    IssueType:
+      type: string
+      enum:
+      - delivery
+      - transformation
+      - backpressure
+      - request
+      description: Issue type
+    IssueTriggerDeliveryConfigs:
+      type: object
+      properties:
+        strategy:
+          $ref: '#/components/schemas/IssueTriggerStrategy'
+        connections:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+          description: A pattern to match on the connection name or array of connection IDs. Use `*` as wildcard.
+          x-docs-force-simple-type: true
+      required:
+      - strategy
+      - connections
+      additionalProperties: false
+      description: Configurations for a 'delivery' issue trigger
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    basicAuth:
+      type: http
+      scheme: basic
