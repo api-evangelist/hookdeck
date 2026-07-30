@@ -6,7 +6,20 @@ description: >-
   senders and your services to receive, verify, queue, retry, transform, filter, route, and observe events reliably at
   scale. Hookdeck exposes a fully versioned REST Admin API, a CLI for local development, language SDKs (TypeScript, Go,
   Python, .NET), a Terraform provider, and the open-source Outpost project for self-hostable outbound webhook delivery.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/hookdeck.png
 type: Index
 access: 3rd-Party
 position: Consumer
@@ -29,221 +42,283 @@ segments:
   - Event-Driven
   - Webhooks
 apis:
-  - aid: hookdeck:hookdeck-connections-api
-    name: Hookdeck Connections API
-    tags:
-      - Webhooks
-      - Event Gateways
-      - Connections
-    baseURL: https://api.hookdeck.com/2025-07-01
-    humanURL: https://hookdeck.com/docs/api
-    description: >-
-      Create, update, list, archive, pause, and unpause connections. A connection routes events from a Source to a
-      Destination and may carry rules (retry, alert, transform, filter, delay) that determine how the gateway processes
-      events along that path.
-    properties:
-      - type: Documentation
-        url: https://hookdeck.com/docs/api
-      - type: OpenAPI
-        url: openapi/hookdeck-connections-api-openapi.yml
-      - type: JSONSchema
-        url: json-schema/hookdeck-connection-schema.json
-  - aid: hookdeck:hookdeck-sources-api
-    name: Hookdeck Sources API
-    tags:
-      - Webhooks
-      - Sources
-      - Event Gateways
-    baseURL: https://api.hookdeck.com/2025-07-01
-    humanURL: https://hookdeck.com/docs/sources
-    description: >-
-      Manage sources — the upstream endpoints (webhook senders or push channels) that ingest events into Hookdeck.
-      Sources support platform-specific verification (Stripe, GitHub, Twilio, Shopify, and many more), allowed HTTP
-      methods, allowed content types, allowed IPs, and a configurable custom response returned to the caller.
-    properties:
-      - type: Documentation
-        url: https://hookdeck.com/docs/sources
-      - type: OpenAPI
-        url: openapi/hookdeck-sources-api-openapi.yml
-      - type: JSONSchema
-        url: json-schema/hookdeck-source-schema.json
-  - aid: hookdeck:hookdeck-destinations-api
-    name: Hookdeck Destinations API
-    tags:
-      - Webhooks
-      - Destinations
-      - Event Gateways
-    baseURL: https://api.hookdeck.com/2025-07-01
-    humanURL: https://hookdeck.com/docs/destinations
-    description: >-
-      Manage destinations — the downstream targets (HTTP endpoints, AWS SQS, Azure Service Bus, GCP Pub/Sub, Kafka,
-      RabbitMQ, MongoDB, and more) where Hookdeck delivers events. Supports configurable auth methods, rate limiting,
-      path forwarding, archival, and pause/disable controls.
-    properties:
-      - type: Documentation
-        url: https://hookdeck.com/docs/destinations
-      - type: OpenAPI
-        url: openapi/hookdeck-destinations-api-openapi.yml
-      - type: JSONSchema
-        url: json-schema/hookdeck-destination-schema.json
-  - aid: hookdeck:hookdeck-events-api
-    name: Hookdeck Events API
-    tags:
-      - Webhooks
-      - Events
-      - Attempts
-      - Event Gateways
-    baseURL: https://api.hookdeck.com/2025-07-01
-    humanURL: https://hookdeck.com/docs/events
-    description: >-
-      List, retrieve, retry, mute, and inspect events and their delivery attempts. An event is any request Hookdeck
-      received from a source; an attempt is each delivery try against a destination, including status, response body,
-      response time, and error code.
-    properties:
-      - type: Documentation
-        url: https://hookdeck.com/docs/events
-      - type: OpenAPI
-        url: openapi/hookdeck-events-api-openapi.yml
-      - type: JSONSchema
-        url: json-schema/hookdeck-event-schema.json
-      - type: JSONSchema
-        url: json-schema/hookdeck-attempt-schema.json
-  - aid: hookdeck:hookdeck-requests-api
-    name: Hookdeck Requests API
-    tags:
-      - Webhooks
-      - Requests
-      - Event Gateways
-    baseURL: https://api.hookdeck.com/2025-07-01
-    humanURL: https://hookdeck.com/docs/requests
-    description: >-
-      List and inspect raw requests received by Hookdeck. A request precedes events and is what gets accepted at the
-      gateway boundary before verification, fan-out, transformation, and routing produce one or more downstream events.
-    properties:
-      - type: Documentation
-        url: https://hookdeck.com/docs/requests
-      - type: OpenAPI
-        url: openapi/hookdeck-requests-api-openapi.yml
-      - type: JSONSchema
-        url: json-schema/hookdeck-request-schema.json
-  - aid: hookdeck:hookdeck-transformations-api
-    name: Hookdeck Transformations API
-    tags:
-      - Transformations
-      - Webhooks
-      - Event Gateways
-    baseURL: https://api.hookdeck.com/2025-07-01
-    humanURL: https://hookdeck.com/docs/transformations
-    description: >-
-      Manage transformations — sandboxed JavaScript executed against events to mutate headers, body, path, or query
-      string before delivery. Also includes a sandboxed run endpoint for testing transformation code against sample
-      event payloads.
-    properties:
-      - type: Documentation
-        url: https://hookdeck.com/docs/transformations
-      - type: OpenAPI
-        url: openapi/hookdeck-transformations-api-openapi.yml
-      - type: JSONSchema
-        url: json-schema/hookdeck-transformation-schema.json
-  - aid: hookdeck:hookdeck-bookmarks-api
-    name: Hookdeck Bookmarks API
-    tags:
-      - Bookmarks
-      - Webhooks
-      - Event Gateways
-    baseURL: https://api.hookdeck.com/2025-07-01
-    humanURL: https://hookdeck.com/docs/bookmarks
-    description: >-
-      Save bookmarked events for quick replay and one-click testing during development. Bookmarks let your team capture
-      canonical event payloads and trigger them on demand into any destination.
-    properties:
-      - type: Documentation
-        url: https://hookdeck.com/docs/bookmarks
-      - type: OpenAPI
-        url: openapi/hookdeck-bookmarks-api-openapi.yml
-  - aid: hookdeck:hookdeck-bulk-operations-api
-    name: Hookdeck Bulk Operations API
-    tags:
-      - Bulk Operations
-      - Webhooks
-      - Event Gateways
-    baseURL: https://api.hookdeck.com/2025-07-01
-    humanURL: https://hookdeck.com/docs/bulk-retries
-    description: >-
-      Plan, schedule, and cancel bulk operations that retry or cancel many events, requests, or ignored events at once.
-      Each bulk operation reports per-batch counts, total scope, and live progress, and can be cancelled mid-run.
-    properties:
-      - type: Documentation
-        url: https://hookdeck.com/docs/bulk-retries
-      - type: OpenAPI
-        url: openapi/hookdeck-bulk-operations-api-openapi.yml
-  - aid: hookdeck:hookdeck-issues-api
-    name: Hookdeck Issues API
-    tags:
-      - Issues
-      - Issue Triggers
-      - Observability
-    baseURL: https://api.hookdeck.com/2025-07-01
-    humanURL: https://hookdeck.com/docs/issues
-    description: >-
-      Track issues that occur on events, requests, and backpressure, and manage the triggers (rules) that open and route
-      issues to Slack, Email, Microsoft Teams, Discord, BetterUptime, and other channels.
-    properties:
-      - type: Documentation
-        url: https://hookdeck.com/docs/issues
-      - type: OpenAPI
-        url: openapi/hookdeck-issues-api-openapi.yml
-      - type: JSONSchema
-        url: json-schema/hookdeck-issue-schema.json
-  - aid: hookdeck:hookdeck-metrics-api
-    name: Hookdeck Metrics API
-    tags:
-      - Metrics
-      - Observability
-      - Event Gateways
-    baseURL: https://api.hookdeck.com/2025-07-01
-    humanURL: https://hookdeck.com/docs/metrics
-    description: >-
-      Query aggregated metrics for events, requests, and attempts — success counts, failure counts, response time,
-      throughput, and SLA bands grouped by source, destination, or connection. Backs the dashboard analytics and
-      downstream observability bridges.
-    properties:
-      - type: Documentation
-        url: https://hookdeck.com/docs/metrics
-      - type: OpenAPI
-        url: openapi/hookdeck-metrics-api-openapi.yml
-  - aid: hookdeck:hookdeck-integrations-api
-    name: Hookdeck Integrations API
-    tags:
-      - Integrations
-      - Webhooks
-      - Event Gateways
-    baseURL: https://api.hookdeck.com/2025-07-01
-    humanURL: https://hookdeck.com/docs/integrations
-    description: >-
-      Configure platform integrations that adapt Hookdeck behavior for specific source platforms — including signature
-      verification, header normalization, allowed event types, and platform-aware retries (e.g., Stripe, GitHub, Twilio,
-      Shopify, Linear).
-    properties:
-      - type: Documentation
-        url: https://hookdeck.com/docs/integrations
-      - type: OpenAPI
-        url: openapi/hookdeck-integrations-api-openapi.yml
-  - aid: hookdeck:hookdeck-notifications-api
-    name: Hookdeck Notifications API
-    tags:
-      - Notifications
-      - Observability
-    baseURL: https://api.hookdeck.com/2025-07-01
-    humanURL: https://hookdeck.com/docs/notifications
-    description: >-
-      Manage how your team is notified when issues occur — channel routing, mute windows, per-team subscriptions, and
-      the templates rendered to Slack, Email, Microsoft Teams, and Discord.
-    properties:
-      - type: Documentation
-        url: https://hookdeck.com/docs/notifications
-      - type: OpenAPI
-        url: openapi/hookdeck-notifications-api-openapi.yml
+- aid: hookdeck:hookdeck-connections-api
+  name: Hookdeck Connections API
+  tags:
+  - Webhooks
+  - Event Gateways
+  - Connections
+  baseURL: https://api.hookdeck.com/2025-07-01
+  humanURL: https://hookdeck.com/docs/api
+  description: >-
+    Create, update, list, archive, pause, and unpause connections. A connection routes events from a Source
+    to a Destination and may carry rules (retry, alert, transform, filter, delay) that determine how the
+    gateway processes events along that path.
+  properties:
+  - type: Documentation
+    url: https://hookdeck.com/docs/api
+  - type: OpenAPI
+    url: openapi/hookdeck-connections-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/hookdeck-connection-schema.json
+- aid: hookdeck:hookdeck-sources-api
+  name: Hookdeck Sources API
+  tags:
+  - Webhooks
+  - Sources
+  - Event Gateways
+  baseURL: https://api.hookdeck.com/2025-07-01
+  humanURL: https://hookdeck.com/docs/sources
+  description: >-
+    Manage sources — the upstream endpoints (webhook senders or push channels) that ingest events into
+    Hookdeck. Sources support platform-specific verification (Stripe, GitHub, Twilio, Shopify, and many
+    more), allowed HTTP methods, allowed content types, allowed IPs, and a configurable custom response
+    returned to the caller.
+  properties:
+  - type: Documentation
+    url: https://hookdeck.com/docs/sources
+  - type: OpenAPI
+    url: openapi/hookdeck-sources-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/hookdeck-source-schema.json
+- aid: hookdeck:hookdeck-destinations-api
+  name: Hookdeck Destinations API
+  tags:
+  - Webhooks
+  - Destinations
+  - Event Gateways
+  baseURL: https://api.hookdeck.com/2025-07-01
+  humanURL: https://hookdeck.com/docs/destinations
+  description: >-
+    Manage destinations — the downstream targets (HTTP endpoints, AWS SQS, Azure Service Bus, GCP Pub/Sub,
+    Kafka, RabbitMQ, MongoDB, and more) where Hookdeck delivers events. Supports configurable auth methods,
+    rate limiting, path forwarding, archival, and pause/disable controls.
+  properties:
+  - type: Documentation
+    url: https://hookdeck.com/docs/destinations
+  - type: OpenAPI
+    url: openapi/hookdeck-destinations-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/hookdeck-destination-schema.json
+- aid: hookdeck:hookdeck-events-api
+  name: Hookdeck Events API
+  tags:
+  - Webhooks
+  - Events
+  - Attempts
+  - Event Gateways
+  baseURL: https://api.hookdeck.com/2025-07-01
+  humanURL: https://hookdeck.com/docs/events
+  description: >-
+    List, retrieve, retry, mute, and inspect events and their delivery attempts. An event is any request
+    Hookdeck received from a source; an attempt is each delivery try against a destination, including
+    status, response body, response time, and error code.
+  properties:
+  - type: Documentation
+    url: https://hookdeck.com/docs/events
+  - type: OpenAPI
+    url: openapi/hookdeck-events-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/hookdeck-event-schema.json
+  - type: JSONSchema
+    url: json-schema/hookdeck-attempt-schema.json
+- aid: hookdeck:hookdeck-requests-api
+  name: Hookdeck Requests API
+  tags:
+  - Webhooks
+  - Requests
+  - Event Gateways
+  baseURL: https://api.hookdeck.com/2025-07-01
+  humanURL: https://hookdeck.com/docs/requests
+  description: >-
+    List and inspect raw requests received by Hookdeck. A request precedes events and is what gets accepted
+    at the gateway boundary before verification, fan-out, transformation, and routing produce one or more
+    downstream events.
+  properties:
+  - type: Documentation
+    url: https://hookdeck.com/docs/requests
+  - type: OpenAPI
+    url: openapi/hookdeck-requests-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/hookdeck-request-schema.json
+- aid: hookdeck:hookdeck-transformations-api
+  name: Hookdeck Transformations API
+  tags:
+  - Transformations
+  - Webhooks
+  - Event Gateways
+  baseURL: https://api.hookdeck.com/2025-07-01
+  humanURL: https://hookdeck.com/docs/transformations
+  description: >-
+    Manage transformations — sandboxed JavaScript executed against events to mutate headers, body, path,
+    or query string before delivery. Also includes a sandboxed run endpoint for testing transformation
+    code against sample event payloads.
+  properties:
+  - type: Documentation
+    url: https://hookdeck.com/docs/transformations
+  - type: OpenAPI
+    url: openapi/hookdeck-transformations-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/hookdeck-transformation-schema.json
+- aid: hookdeck:hookdeck-bookmarks-api
+  name: Hookdeck Bookmarks API
+  tags:
+  - Bookmarks
+  - Webhooks
+  - Event Gateways
+  baseURL: https://api.hookdeck.com/2025-07-01
+  humanURL: https://hookdeck.com/docs/bookmarks
+  description: >-
+    Save bookmarked events for quick replay and one-click testing during development. Bookmarks let your
+    team capture canonical event payloads and trigger them on demand into any destination.
+  properties:
+  - type: Documentation
+    url: https://hookdeck.com/docs/bookmarks
+  - type: OpenAPI
+    url: openapi/hookdeck-bookmarks-api-openapi.yml
+- aid: hookdeck:hookdeck-issues-api
+  name: Hookdeck Issues API
+  tags:
+  - Issues
+  - Issue Triggers
+  - Observability
+  baseURL: https://api.hookdeck.com/2025-07-01
+  humanURL: https://hookdeck.com/docs/issues
+  description: >-
+    Track issues that occur on events, requests, and backpressure, and manage the triggers (rules) that
+    open and route issues to Slack, Email, Microsoft Teams, Discord, BetterUptime, and other channels.
+  properties:
+  - type: Documentation
+    url: https://hookdeck.com/docs/issues
+  - type: OpenAPI
+    url: openapi/hookdeck-issues-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/hookdeck-issue-schema.json
+- aid: hookdeck:hookdeck-metrics-api
+  name: Hookdeck Metrics API
+  tags:
+  - Metrics
+  - Observability
+  - Event Gateways
+  baseURL: https://api.hookdeck.com/2025-07-01
+  humanURL: https://hookdeck.com/docs/metrics
+  description: >-
+    Query aggregated metrics for events, requests, and attempts — success counts, failure counts, response
+    time, throughput, and SLA bands grouped by source, destination, or connection. Backs the dashboard
+    analytics and downstream observability bridges.
+  properties:
+  - type: Documentation
+    url: https://hookdeck.com/docs/metrics
+  - type: OpenAPI
+    url: openapi/hookdeck-metrics-api-openapi.yml
+- aid: hookdeck:hookdeck-integrations-api
+  name: Hookdeck Integrations API
+  tags:
+  - Integrations
+  - Webhooks
+  - Event Gateways
+  baseURL: https://api.hookdeck.com/2025-07-01
+  humanURL: https://hookdeck.com/docs/integrations
+  description: >-
+    Configure platform integrations that adapt Hookdeck behavior for specific source platforms — including
+    signature verification, header normalization, allowed event types, and platform-aware retries (e.g.,
+    Stripe, GitHub, Twilio, Shopify, Linear).
+  properties:
+  - type: Documentation
+    url: https://hookdeck.com/docs/integrations
+  - type: OpenAPI
+    url: openapi/hookdeck-integrations-api-openapi.yml
+- aid: hookdeck:hookdeck-notifications-api
+  name: Hookdeck Notifications API
+  tags:
+  - Notifications
+  - Observability
+  baseURL: https://api.hookdeck.com/2025-07-01
+  humanURL: https://hookdeck.com/docs/notifications
+  description: >-
+    Manage how your team is notified when issues occur — channel routing, mute windows, per-team subscriptions,
+    and the templates rendered to Slack, Email, Microsoft Teams, and Discord.
+  properties:
+  - type: Documentation
+    url: https://hookdeck.com/docs/notifications
+  - type: OpenAPI
+    url: openapi/hookdeck-notifications-api-openapi.yml
+- aid: hookdeck:hookdeck-attempts-api
+  name: Hookdeck Attempts API
+  description: An attempt is any request that Hookdeck makes on behalf of an event.
+  humanURL: https://hookdeck.com/docs/api
+  baseURL: https://api.hookdeck.com/2025-07-01
+  tags:
+  - Attempts
+  properties:
+  - type: OpenAPI
+    url: openapi/hookdeck-attempts-api-openapi.yml
+  - type: Documentation
+    url: https://hookdeck.com/docs/bulk-retries
+- aid: hookdeck:hookdeck-bulk-cancel-events-api
+  name: Hookdeck Bulk cancel events API
+  description: Bulk cancel operations allow you to cancel multiple pending events at once.
+  humanURL: https://hookdeck.com/docs/api
+  baseURL: https://api.hookdeck.com/2025-07-01
+  tags:
+  - Bulk cancel events
+  properties:
+  - type: OpenAPI
+    url: openapi/hookdeck-bulk-cancel-events-api-openapi.yml
+  - type: Documentation
+    url: https://hookdeck.com/docs/bulk-retries
+- aid: hookdeck:hookdeck-bulk-retry-events-api
+  name: Hookdeck Bulk retry events API
+  description: >-
+    Bulk retry operations allow you to retry many events at once. A bulk retry is first estimated, then
+    created, then processed asynchronously.
+  humanURL: https://hookdeck.com/docs/api
+  baseURL: https://api.hookdeck.com/2025-07-01
+  tags:
+  - Bulk retry events
+  properties:
+  - type: OpenAPI
+    url: openapi/hookdeck-bulk-retry-events-api-openapi.yml
+  - type: Documentation
+    url: https://hookdeck.com/docs/bulk-retries
+- aid: hookdeck:hookdeck-bulk-retry-ignored-events-api
+  name: Hookdeck Bulk retry ignored events API
+  description: >-
+    Bulk retry ignored events allow you to retry many events that were previously ignored (for instance
+    due to filter rules) at once.
+  humanURL: https://hookdeck.com/docs/api
+  baseURL: https://api.hookdeck.com/2025-07-01
+  tags:
+  - Bulk retry ignored events
+  properties:
+  - type: OpenAPI
+    url: openapi/hookdeck-bulk-retry-ignored-events-api-openapi.yml
+  - type: Documentation
+    url: https://hookdeck.com/docs/bulk-retries
+- aid: hookdeck:hookdeck-bulk-retry-requests-api
+  name: Hookdeck Bulk retry requests API
+  description: Bulk retry requests allow you to re-ingest many previously received requests at once.
+  humanURL: https://hookdeck.com/docs/api
+  baseURL: https://api.hookdeck.com/2025-07-01
+  tags:
+  - Bulk retry requests
+  properties:
+  - type: OpenAPI
+    url: openapi/hookdeck-bulk-retry-requests-api-openapi.yml
+  - type: Documentation
+    url: https://hookdeck.com/docs/bulk-retries
+- aid: hookdeck:hookdeck-issue-triggers-api
+  name: Hookdeck Issue Triggers API
+  description: Issue Triggers lets you setup rules that trigger issues when certain conditions are met.
+  humanURL: https://hookdeck.com/docs/api
+  baseURL: https://api.hookdeck.com/2025-07-01
+  tags:
+  - Issue Triggers
+  properties:
+  - type: OpenAPI
+    url: openapi/hookdeck-issue-triggers-api-openapi.yml
+  - type: Documentation
+    url: https://hookdeck.com/docs/bulk-retries
 common:
   - type: AgenticAccess
     url: agentic-access/hookdeck-agentic-access.yml
