@@ -320,6 +320,12 @@ apis:
   - type: Documentation
     url: https://hookdeck.com/docs/bulk-retries
 common:
+  - type: IssueTracker
+    url: https://github.com/hookdeck/hookdeck-api-schema/issues
+  - type: Releases
+    url: https://github.com/hookdeck/hookdeck-api-schema/releases
+  - type: CodeOfConduct
+    url: https://github.com/hookdeck/.github/blob/master/CODE_OF_CONDUCT.md
   - type: AgenticAccess
     url: agentic-access/hookdeck-agentic-access.yml
   - type: DomainSecurity
