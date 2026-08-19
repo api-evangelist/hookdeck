@@ -1,25 +1,974 @@
 {
   "item": [
     {
-      "id": "e06f1bea-c978-4085-8c24-85cc818a7d14",
-      "name": "Events",
+      "id": "01b2ff9c-4ffb-41e4-841e-4430c74a1b77",
+      "name": "Bulk cancel events",
       "description": {
-        "content": "An event is any request that Hookdeck receives from a source.",
+        "content": "Bulk cancel operations allow you to cancel multiple pending events at once.",
         "type": "text/plain"
       },
       "item": [
         {
-          "id": "e6eff5f2-0385-4f10-ae4a-8fd690ab449f",
-          "name": "Retrieve events",
+          "id": "85a7e142-0207-4f49-8ea8-1c8951958bef",
+          "name": "Retrieve events bulk cancels",
           "request": {
-            "name": "Retrieve events",
+            "name": "Retrieve events bulk cancels",
             "description": {
-              "content": "This endpoint lists events, or a subset of events.",
+              "content": "This endpoint lists events bulk cancels.",
               "type": "text/plain"
             },
             "url": {
               "path": [
-                "events"
+                "bulk",
+                "events",
+                "cancel"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "cancelled_at",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "completed_at",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "created_at",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "webhook_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "destination_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "source_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "attempts",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "response_status",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "successful_at",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "created_at",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "error_code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "cli_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "last_attempt_at",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "next_attempt_at",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "search_term",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "headers",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "body",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "parsed_query",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "path",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "cli_user_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "issue_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "event_data_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "bulk_retry_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "query_partial_match",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "in_progress",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "order_by",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dir",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "next",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "prev",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "032122dc-f375-4ced-8be3-32cb2541cebc",
+              "name": "List of events bulk cancels",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "events",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "cancelled_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "completed_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "created_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "webhook_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "destination_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "source_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "attempts",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "response_status",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "successful_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "created_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "error_code",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cli_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "last_attempt_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "next_attempt_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "search_term",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "headers",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "body",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parsed_query",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "path",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cli_user_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "issue_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "event_data_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "bulk_retry_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "query_partial_match",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "in_progress",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dir",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "next",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "prev",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"pagination\": {\n    \"order_by\": \"string\",\n    \"dir\": \"string\",\n    \"limit\": 3230,\n    \"prev\": \"string\",\n    \"next\": \"string\"\n  },\n  \"count\": 1186,\n  \"models\": [\n    {\n      \"id\": \"string\",\n      \"team_id\": \"string\",\n      \"type\": \"string\",\n      \"created_at\": \"1966-12-24T03:17:56.889Z\",\n      \"updated_at\": \"1976-02-08T05:42:17.122Z\",\n      \"in_progress\": false,\n      \"query\": {\n        \"key_0\": {}\n      },\n      \"cancelled_at\": \"2008-04-22T04:23:28.754Z\",\n      \"completed_at\": \"1965-10-11T20:46:03.558Z\",\n      \"estimated_batch\": 8151,\n      \"estimated_count\": 7515,\n      \"processed_batch\": 9801,\n      \"completed_count\": 2918,\n      \"progress\": 442.44185287616756,\n      \"failed_count\": 4462,\n      \"number\": 3230.022818689834\n    },\n    {\n      \"id\": \"string\",\n      \"team_id\": \"string\",\n      \"type\": \"string\",\n      \"created_at\": \"1957-09-13T04:13:04.607Z\",\n      \"updated_at\": \"2018-01-31T14:14:02.128Z\",\n      \"in_progress\": false,\n      \"query\": {\n        \"key_0\": {}\n      },\n      \"cancelled_at\": \"2007-01-25T00:25:51.039Z\",\n      \"completed_at\": \"1963-05-27T18:48:12.720Z\",\n      \"estimated_batch\": 5302,\n      \"estimated_count\": 5590,\n      \"processed_batch\": 8072,\n      \"completed_count\": 8634,\n      \"progress\": 8266.832048650629,\n      \"failed_count\": 3413,\n      \"number\": 2156.6065615971665\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8e7df093-4a8a-472d-b1dd-07a874182634",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "events",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "cancelled_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "completed_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "created_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "webhook_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "destination_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "source_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "attempts",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "response_status",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "successful_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "created_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "error_code",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cli_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "last_attempt_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "next_attempt_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "search_term",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "headers",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "body",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parsed_query",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "path",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cli_user_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "issue_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "event_data_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "bulk_retry_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "query_partial_match",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "in_progress",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dir",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "next",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "prev",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 403.4416867130108,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "786925d0-5822-4ae2-b1ef-14f8f1295319",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "events",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "cancelled_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "completed_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "created_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "webhook_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "destination_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "source_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "attempts",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "response_status",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "successful_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "created_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "error_code",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cli_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "last_attempt_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "next_attempt_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "search_term",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "headers",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "body",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parsed_query",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "path",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cli_user_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "issue_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "event_data_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "bulk_retry_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "query_partial_match",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "in_progress",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dir",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "next",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "prev",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 403.4416867130108,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b82eb08f-8ccc-4d28-82f7-51db4923a506",
+          "name": "Create events bulk cancel",
+          "request": {
+            "name": "Create events bulk cancel",
+            "description": {
+              "content": "This endpoint creates and starts an events bulk cancel using the provided query.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "bulk",
+                "events",
+                "cancel"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": {\n    \"id\": \"<string>\",\n    \"status\": \"<string>\",\n    \"webhook_id\": \"<string>\",\n    \"destination_id\": \"<string>\",\n    \"source_id\": \"<string>\",\n    \"attempts\": \"<integer>\",\n    \"response_status\": \"<integer>\",\n    \"successful_at\": \"<dateTime>\",\n    \"created_at\": \"<dateTime>\",\n    \"error_code\": \"<string>\",\n    \"cli_id\": \"<string>\",\n    \"last_attempt_at\": \"<dateTime>\",\n    \"next_attempt_at\": \"<dateTime>\",\n    \"search_term\": \"<string>\",\n    \"headers\": \"<string>\",\n    \"body\": \"<string>\",\n    \"parsed_query\": \"<string>\",\n    \"path\": \"<string>\",\n    \"cli_user_id\": \"<string>\",\n    \"issue_id\": \"<string>\",\n    \"event_data_id\": \"<string>\",\n    \"bulk_retry_id\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c3a981a8-2407-4de0-922b-35d1b0f2e827",
+              "name": "A single events bulk cancel",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "events",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"query\": {\n    \"id\": \"<string>\",\n    \"status\": \"<string>\",\n    \"webhook_id\": \"<string>\",\n    \"destination_id\": \"<string>\",\n    \"source_id\": \"<string>\",\n    \"attempts\": \"<integer>\",\n    \"response_status\": \"<integer>\",\n    \"successful_at\": \"<dateTime>\",\n    \"created_at\": \"<dateTime>\",\n    \"error_code\": \"<string>\",\n    \"cli_id\": \"<string>\",\n    \"last_attempt_at\": \"<dateTime>\",\n    \"next_attempt_at\": \"<dateTime>\",\n    \"search_term\": \"<string>\",\n    \"headers\": \"<string>\",\n    \"body\": \"<string>\",\n    \"parsed_query\": \"<string>\",\n    \"path\": \"<string>\",\n    \"cli_user_id\": \"<string>\",\n    \"issue_id\": \"<string>\",\n    \"event_data_id\": \"<string>\",\n    \"bulk_retry_id\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"team_id\": \"string\",\n  \"type\": \"string\",\n  \"created_at\": \"1953-07-16T03:17:44.367Z\",\n  \"updated_at\": \"1967-11-18T04:07:34.560Z\",\n  \"in_progress\": false,\n  \"query\": {\n    \"key_0\": {},\n    \"key_1\": {},\n    \"key_2\": {},\n    \"key_3\": {}\n  },\n  \"cancelled_at\": \"1970-11-19T11:42:02.335Z\",\n  \"completed_at\": \"1957-10-23T16:09:12.868Z\",\n  \"estimated_batch\": 5792,\n  \"estimated_count\": 9137,\n  \"processed_batch\": 9516,\n  \"completed_count\": 6164,\n  \"progress\": 2443.472636468964,\n  \"failed_count\": 2617,\n  \"number\": 8814.719287152095\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1afbccf7-5507-4e2a-aa03-b4fdfc4c63a6",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "events",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"query\": {\n    \"id\": \"<string>\",\n    \"status\": \"<string>\",\n    \"webhook_id\": \"<string>\",\n    \"destination_id\": \"<string>\",\n    \"source_id\": \"<string>\",\n    \"attempts\": \"<integer>\",\n    \"response_status\": \"<integer>\",\n    \"successful_at\": \"<dateTime>\",\n    \"created_at\": \"<dateTime>\",\n    \"error_code\": \"<string>\",\n    \"cli_id\": \"<string>\",\n    \"last_attempt_at\": \"<dateTime>\",\n    \"next_attempt_at\": \"<dateTime>\",\n    \"search_term\": \"<string>\",\n    \"headers\": \"<string>\",\n    \"body\": \"<string>\",\n    \"parsed_query\": \"<string>\",\n    \"path\": \"<string>\",\n    \"cli_user_id\": \"<string>\",\n    \"issue_id\": \"<string>\",\n    \"event_data_id\": \"<string>\",\n    \"bulk_retry_id\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 403.4416867130108,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8338a785-7cc1-4dbd-9160-19a938e7ffaa",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "events",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"query\": {\n    \"id\": \"<string>\",\n    \"status\": \"<string>\",\n    \"webhook_id\": \"<string>\",\n    \"destination_id\": \"<string>\",\n    \"source_id\": \"<string>\",\n    \"attempts\": \"<integer>\",\n    \"response_status\": \"<integer>\",\n    \"successful_at\": \"<dateTime>\",\n    \"created_at\": \"<dateTime>\",\n    \"error_code\": \"<string>\",\n    \"cli_id\": \"<string>\",\n    \"last_attempt_at\": \"<dateTime>\",\n    \"next_attempt_at\": \"<dateTime>\",\n    \"search_term\": \"<string>\",\n    \"headers\": \"<string>\",\n    \"body\": \"<string>\",\n    \"parsed_query\": \"<string>\",\n    \"path\": \"<string>\",\n    \"cli_user_id\": \"<string>\",\n    \"issue_id\": \"<string>\",\n    \"event_data_id\": \"<string>\",\n    \"bulk_retry_id\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 403.4416867130108,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "70c5254a-ba14-48ca-8883-6e378e37d619",
+          "name": "Generate events bulk cancel plan",
+          "request": {
+            "name": "Generate events bulk cancel plan",
+            "description": {
+              "content": "This endpoint estimates the number of events matched by the provided query before creating a bulk cancel.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "bulk",
+                "events",
+                "cancel",
+                "plan"
               ],
               "host": [
                 "{{baseUrl}}"
@@ -134,41 +1083,6 @@
                   "disabled": false,
                   "key": "bulk_retry_id",
                   "value": "<string>"
-                },
-                {
-                  "disabled": false,
-                  "key": "include",
-                  "value": "<string>"
-                },
-                {
-                  "disabled": false,
-                  "key": "progressive",
-                  "value": "<string>"
-                },
-                {
-                  "disabled": false,
-                  "key": "order_by",
-                  "value": "<string>"
-                },
-                {
-                  "disabled": false,
-                  "key": "dir",
-                  "value": "<string>"
-                },
-                {
-                  "disabled": false,
-                  "key": "limit",
-                  "value": "<integer>"
-                },
-                {
-                  "disabled": false,
-                  "key": "next",
-                  "value": "<string>"
-                },
-                {
-                  "disabled": false,
-                  "key": "prev",
-                  "value": "<string>"
                 }
               ],
               "variable": []
@@ -184,12 +1098,15 @@
           },
           "response": [
             {
-              "id": "81d7a9cb-d1ce-4beb-877b-bfb1da03b925",
-              "name": "List of events",
+              "id": "a44c3686-5d60-4e5b-a9c6-b56b7ba895df",
+              "name": "Events bulk cancel plan",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "events"
+                    "bulk",
+                    "events",
+                    "cancel",
+                    "plan"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -281,34 +1198,6 @@
                     },
                     {
                       "key": "bulk_retry_id",
-                      "value": "<string>"
-                    },
-                    {
-                      "key": "include",
-                      "value": "<string>"
-                    },
-                    {
-                      "key": "progressive",
-                      "value": "<string>"
-                    },
-                    {
-                      "key": "order_by",
-                      "value": "<string>"
-                    },
-                    {
-                      "key": "dir",
-                      "value": "<string>"
-                    },
-                    {
-                      "key": "limit",
-                      "value": "<integer>"
-                    },
-                    {
-                      "key": "next",
-                      "value": "<string>"
-                    },
-                    {
-                      "key": "prev",
                       "value": "<string>"
                     }
                   ],
@@ -339,17 +1228,20 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"pagination\": {\n    \"order_by\": \"string\",\n    \"dir\": \"string\",\n    \"limit\": 1306,\n    \"prev\": \"string\",\n    \"next\": \"string\"\n  },\n  \"count\": 7030,\n  \"models\": [\n    {\n      \"id\": \"string\",\n      \"team_id\": \"string\",\n      \"webhook_id\": \"string\",\n      \"source_id\": \"string\",\n      \"destination_id\": \"string\",\n      \"event_data_id\": \"string\",\n      \"request_id\": \"string\",\n      \"attempts\": 8425,\n      \"last_attempt_at\": \"1973-10-25T11:43:05.661Z\",\n      \"next_attempt_at\": \"1990-07-02T04:49:55.310Z\",\n      \"status\": \"<string>\",\n      \"successful_at\": \"2000-06-02T20:52:48.660Z\",\n      \"cli_id\": \"string\",\n      \"updated_at\": \"2013-02-10T05:00:22.432Z\",\n      \"created_at\": \"1983-10-10T10:54:36.353Z\",\n      \"response_status\": 6233,\n      \"error_code\": \"<string>\",\n      \"data\": {\n        \"url\": \"string\",\n        \"method\": \"string\",\n        \"path\": \"string\",\n        \"query\": \"string\",\n        \"parsed_query\": \"string\",\n        \"headers\": \"string\",\n        \"body\": \"string\",\n        \"appended_headers\": [\n          \"string\",\n          \"string\"\n        ],\n        \"is_large_payload\": false\n      }\n    },\n    {\n      \"id\": \"string\",\n      \"team_id\": \"string\",\n      \"webhook_id\": \"string\",\n      \"source_id\": \"string\",\n      \"destination_id\": \"string\",\n      \"event_data_id\": \"string\",\n      \"request_id\": \"string\",\n      \"attempts\": 7773,\n      \"last_attempt_at\": \"1993-03-16T19:37:22.229Z\",\n      \"next_attempt_at\": \"1989-12-15T11:01:43.338Z\",\n      \"status\": \"<string>\",\n      \"successful_at\": \"1961-05-14T11:32:53.098Z\",\n      \"cli_id\": \"string\",\n      \"updated_at\": \"1992-07-13T10:15:47.086Z\",\n      \"created_at\": \"1953-05-04T03:26:35.258Z\",\n      \"response_status\": 1800,\n      \"error_code\": \"<string>\",\n      \"data\": {\n        \"url\": \"string\",\n        \"method\": \"string\",\n        \"path\": \"string\",\n        \"query\": \"string\",\n        \"parsed_query\": \"string\",\n        \"headers\": \"string\",\n        \"body\": \"string\",\n        \"appended_headers\": [\n          \"string\",\n          \"string\"\n        ],\n        \"is_large_payload\": true\n      }\n    }\n  ]\n}",
+              "body": "{\n  \"estimated_batch\": 1889,\n  \"estimated_count\": 9330,\n  \"progress\": 9484.413444889706\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "8aa6aed2-8531-4514-9e2c-2d38f7fa23b1",
+              "id": "273ad2b0-d9e8-4707-be0f-7ece8c7c3e96",
               "name": "Bad Request",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "events"
+                    "bulk",
+                    "events",
+                    "cancel",
+                    "plan"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -441,34 +1333,6 @@
                     },
                     {
                       "key": "bulk_retry_id",
-                      "value": "<string>"
-                    },
-                    {
-                      "key": "include",
-                      "value": "<string>"
-                    },
-                    {
-                      "key": "progressive",
-                      "value": "<string>"
-                    },
-                    {
-                      "key": "order_by",
-                      "value": "<string>"
-                    },
-                    {
-                      "key": "dir",
-                      "value": "<string>"
-                    },
-                    {
-                      "key": "limit",
-                      "value": "<integer>"
-                    },
-                    {
-                      "key": "next",
-                      "value": "<string>"
-                    },
-                    {
-                      "key": "prev",
                       "value": "<string>"
                     }
                   ],
@@ -499,17 +1363,20 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 8944.793569659683,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 403.4416867130108,\n  \"message\": \"string\",\n  \"data\": {}\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "7e3213a5-526c-455c-b24b-50805241b2f6",
+              "id": "a18c371a-638b-4480-aa37-978a0efced36",
               "name": "Unprocessable Entity",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "events"
+                    "bulk",
+                    "events",
+                    "cancel",
+                    "plan"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -602,34 +1469,6 @@
                     {
                       "key": "bulk_retry_id",
                       "value": "<string>"
-                    },
-                    {
-                      "key": "include",
-                      "value": "<string>"
-                    },
-                    {
-                      "key": "progressive",
-                      "value": "<string>"
-                    },
-                    {
-                      "key": "order_by",
-                      "value": "<string>"
-                    },
-                    {
-                      "key": "dir",
-                      "value": "<string>"
-                    },
-                    {
-                      "key": "limit",
-                      "value": "<integer>"
-                    },
-                    {
-                      "key": "next",
-                      "value": "<string>"
-                    },
-                    {
-                      "key": "prev",
-                      "value": "<string>"
                     }
                   ],
                   "variable": []
@@ -659,7 +1498,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 8944.793569659683,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 403.4416867130108,\n  \"message\": \"string\",\n  \"data\": {}\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -670,17 +1509,19 @@
           }
         },
         {
-          "id": "df72a35e-d900-4f8b-983f-03faa6ec501c",
-          "name": "Retrieve an event",
+          "id": "67330f6d-7c59-4b4e-b8dd-17aa96b88a0a",
+          "name": "Retrieve events bulk cancel",
           "request": {
-            "name": "Retrieve an event",
+            "name": "Retrieve events bulk cancel",
             "description": {
-              "content": "This endpoint retrieves a specific event. The response contains the `data` object with the properties `body` and `headers`, representing the original data for that request.",
+              "content": "This endpoint retrieves a specific events bulk cancel.",
               "type": "text/plain"
             },
             "url": {
               "path": [
+                "bulk",
                 "events",
+                "cancel",
                 ":id"
               ],
               "host": [
@@ -708,12 +1549,14 @@
           },
           "response": [
             {
-              "id": "0644e5a4-9b46-4f4c-9ae2-75ec6e1f7e06",
-              "name": "A single event",
+              "id": "6677bef5-52fe-4a48-9b86-ef572ad0b654",
+              "name": "A single events bulk cancel",
               "originalRequest": {
                 "url": {
                   "path": [
+                    "bulk",
                     "events",
+                    "cancel",
                     ":id"
                   ],
                   "host": [
@@ -755,17 +1598,19 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"string\",\n  \"team_id\": \"string\",\n  \"webhook_id\": \"string\",\n  \"source_id\": \"string\",\n  \"destination_id\": \"string\",\n  \"event_data_id\": \"string\",\n  \"request_id\": \"string\",\n  \"attempts\": 4070,\n  \"last_attempt_at\": \"2004-07-19T09:18:28.108Z\",\n  \"next_attempt_at\": \"2018-11-23T03:02:00.125Z\",\n  \"status\": \"<string>\",\n  \"successful_at\": \"1985-05-10T20:27:40.101Z\",\n  \"cli_id\": \"string\",\n  \"updated_at\": \"1984-04-16T16:52:46.396Z\",\n  \"created_at\": \"1962-03-08T08:26:40.422Z\",\n  \"response_status\": 7206,\n  \"error_code\": \"<string>\",\n  \"data\": {\n    \"url\": \"string\",\n    \"method\": \"string\",\n    \"path\": \"string\",\n    \"query\": \"string\",\n    \"parsed_query\": \"string\",\n    \"headers\": \"string\",\n    \"body\": \"string\",\n    \"appended_headers\": [\n      \"string\",\n      \"string\"\n    ],\n    \"is_large_payload\": true\n  }\n}",
+              "body": "{\n  \"id\": \"string\",\n  \"team_id\": \"string\",\n  \"type\": \"string\",\n  \"created_at\": \"1953-07-16T03:17:44.367Z\",\n  \"updated_at\": \"1967-11-18T04:07:34.560Z\",\n  \"in_progress\": false,\n  \"query\": {\n    \"key_0\": {},\n    \"key_1\": {},\n    \"key_2\": {},\n    \"key_3\": {}\n  },\n  \"cancelled_at\": \"1970-11-19T11:42:02.335Z\",\n  \"completed_at\": \"1957-10-23T16:09:12.868Z\",\n  \"estimated_batch\": 5792,\n  \"estimated_count\": 9137,\n  \"processed_batch\": 9516,\n  \"completed_count\": 6164,\n  \"progress\": 2443.472636468964,\n  \"failed_count\": 2617,\n  \"number\": 8814.719287152095\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "279bbd7a-b113-4e70-97cb-90189f981fcc",
+              "id": "2ab37009-20fd-4b2b-bef5-90be240e1f44",
               "name": "Not Found",
               "originalRequest": {
                 "url": {
                   "path": [
+                    "bulk",
                     "events",
+                    "cancel",
                     ":id"
                   ],
                   "host": [
@@ -807,717 +1652,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 8944.793569659683,\n  \"message\": \"string\",\n  \"data\": {}\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            }
-          ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "id": "c67e305f-a3a8-4137-b435-7949f6bd7a97",
-          "name": "Get a event raw body data",
-          "request": {
-            "name": "Get a event raw body data",
-            "description": {
-              "content": "",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "events",
-                ":id",
-                "raw_body"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "GET",
-            "auth": null
-          },
-          "response": [
-            {
-              "id": "3881b45d-717d-47c3-9417-7bbe7d76d4e3",
-              "name": "A request raw body data",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "events",
-                    ":id",
-                    "raw_body"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "id",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: bearer",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "Bearer <token>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "GET",
-                "body": {}
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"body\": \"string\"\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "95f1ef4d-9cbe-4006-b319-ab67205ffa4e",
-              "name": "Not Found",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "events",
-                    ":id",
-                    "raw_body"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "id",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: bearer",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "Bearer <token>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "GET",
-                "body": {}
-              },
-              "status": "Not Found",
-              "code": 404,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 8944.793569659683,\n  \"message\": \"string\",\n  \"data\": {}\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            }
-          ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "id": "91613ee5-9226-4cec-b6ae-3a7d456f904d",
-          "name": "Retry an event",
-          "request": {
-            "name": "Retry an event",
-            "description": {
-              "content": "This endpoint retries a specific event. Retrying an event will cause a new attempt to be made to deliver it to the destination.",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "events",
-                ":id",
-                "retry"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "POST",
-            "auth": null
-          },
-          "response": [
-            {
-              "id": "3e60dda4-1eae-4c38-aec4-2f2712c62a0d",
-              "name": "Retried event with event attempt",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "events",
-                    ":id",
-                    "retry"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "id",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: bearer",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "Bearer <token>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {}
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"id\": \"string\",\n  \"team_id\": \"string\",\n  \"webhook_id\": \"string\",\n  \"source_id\": \"string\",\n  \"destination_id\": \"string\",\n  \"event_data_id\": \"string\",\n  \"request_id\": \"string\",\n  \"attempts\": 4070,\n  \"last_attempt_at\": \"2004-07-19T09:18:28.108Z\",\n  \"next_attempt_at\": \"2018-11-23T03:02:00.125Z\",\n  \"status\": \"<string>\",\n  \"successful_at\": \"1985-05-10T20:27:40.101Z\",\n  \"cli_id\": \"string\",\n  \"updated_at\": \"1984-04-16T16:52:46.396Z\",\n  \"created_at\": \"1962-03-08T08:26:40.422Z\",\n  \"response_status\": 7206,\n  \"error_code\": \"<string>\",\n  \"data\": {\n    \"url\": \"string\",\n    \"method\": \"string\",\n    \"path\": \"string\",\n    \"query\": \"string\",\n    \"parsed_query\": \"string\",\n    \"headers\": \"string\",\n    \"body\": \"string\",\n    \"appended_headers\": [\n      \"string\",\n      \"string\"\n    ],\n    \"is_large_payload\": true\n  }\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "576f5dd3-7dc7-4c76-8500-d923929b7523",
-              "name": "Not Found",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "events",
-                    ":id",
-                    "retry"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "id",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: bearer",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "Bearer <token>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {}
-              },
-              "status": "Not Found",
-              "code": 404,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 8944.793569659683,\n  \"message\": \"string\",\n  \"data\": {}\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            }
-          ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "id": "1f92a289-24d8-4053-895e-f49dc42543dc",
-          "name": "Cancel an event",
-          "request": {
-            "name": "Cancel an event",
-            "description": {
-              "content": "This endpoint cancels a pending event. Only events with a status of `QUEUED`, `SCHEDULED`, or `HOLD` can be cancelled.",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "events",
-                ":id",
-                "cancel"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "PUT",
-            "auth": null
-          },
-          "response": [
-            {
-              "id": "ebf2f743-e7c9-48e8-8a99-acf7f4039c81",
-              "name": "A cancelled event",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "events",
-                    ":id",
-                    "cancel"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "id",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: bearer",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "Bearer <token>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "PUT",
-                "body": {}
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"id\": \"string\",\n  \"team_id\": \"string\",\n  \"webhook_id\": \"string\",\n  \"source_id\": \"string\",\n  \"destination_id\": \"string\",\n  \"event_data_id\": \"string\",\n  \"request_id\": \"string\",\n  \"attempts\": 4070,\n  \"last_attempt_at\": \"2004-07-19T09:18:28.108Z\",\n  \"next_attempt_at\": \"2018-11-23T03:02:00.125Z\",\n  \"status\": \"<string>\",\n  \"successful_at\": \"1985-05-10T20:27:40.101Z\",\n  \"cli_id\": \"string\",\n  \"updated_at\": \"1984-04-16T16:52:46.396Z\",\n  \"created_at\": \"1962-03-08T08:26:40.422Z\",\n  \"response_status\": 7206,\n  \"error_code\": \"<string>\",\n  \"data\": {\n    \"url\": \"string\",\n    \"method\": \"string\",\n    \"path\": \"string\",\n    \"query\": \"string\",\n    \"parsed_query\": \"string\",\n    \"headers\": \"string\",\n    \"body\": \"string\",\n    \"appended_headers\": [\n      \"string\",\n      \"string\"\n    ],\n    \"is_large_payload\": true\n  }\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "00174d2b-4938-4764-95e0-2a18eca9cf85",
-              "name": "Not Found",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "events",
-                    ":id",
-                    "cancel"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "id",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: bearer",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "Bearer <token>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "PUT",
-                "body": {}
-              },
-              "status": "Not Found",
-              "code": 404,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 8944.793569659683,\n  \"message\": \"string\",\n  \"data\": {}\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "dc709f50-6fc9-4a14-af60-467551abf4ed",
-              "name": "Unprocessable Entity",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "events",
-                    ":id",
-                    "cancel"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "id",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: bearer",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "Bearer <token>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "PUT",
-                "body": {}
-              },
-              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
-              "code": 422,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 8944.793569659683,\n  \"message\": \"string\",\n  \"data\": {}\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            }
-          ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "id": "79c00f0d-81d9-4fa9-9888-408f53b0fbf8",
-          "name": "Cancel an event",
-          "request": {
-            "name": "Cancel an event",
-            "description": {
-              "content": "This endpoint cancels a pending event. Only events with a status of `QUEUED`, `SCHEDULED`, or `HOLD` can be cancelled.",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "events",
-                ":id",
-                "mute"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "PUT",
-            "auth": null
-          },
-          "response": [
-            {
-              "id": "afa3f478-eae8-4c14-a108-64776a977983",
-              "name": "A cancelled event",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "events",
-                    ":id",
-                    "mute"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "id",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: bearer",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "Bearer <token>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "PUT",
-                "body": {}
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"id\": \"string\",\n  \"team_id\": \"string\",\n  \"webhook_id\": \"string\",\n  \"source_id\": \"string\",\n  \"destination_id\": \"string\",\n  \"event_data_id\": \"string\",\n  \"request_id\": \"string\",\n  \"attempts\": 4070,\n  \"last_attempt_at\": \"2004-07-19T09:18:28.108Z\",\n  \"next_attempt_at\": \"2018-11-23T03:02:00.125Z\",\n  \"status\": \"<string>\",\n  \"successful_at\": \"1985-05-10T20:27:40.101Z\",\n  \"cli_id\": \"string\",\n  \"updated_at\": \"1984-04-16T16:52:46.396Z\",\n  \"created_at\": \"1962-03-08T08:26:40.422Z\",\n  \"response_status\": 7206,\n  \"error_code\": \"<string>\",\n  \"data\": {\n    \"url\": \"string\",\n    \"method\": \"string\",\n    \"path\": \"string\",\n    \"query\": \"string\",\n    \"parsed_query\": \"string\",\n    \"headers\": \"string\",\n    \"body\": \"string\",\n    \"appended_headers\": [\n      \"string\",\n      \"string\"\n    ],\n    \"is_large_payload\": true\n  }\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "2f3aa2e2-aa18-494e-b16f-f7922ac8ac31",
-              "name": "Not Found",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "events",
-                    ":id",
-                    "mute"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "id",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: bearer",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "Bearer <token>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "PUT",
-                "body": {}
-              },
-              "status": "Not Found",
-              "code": 404,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 8944.793569659683,\n  \"message\": \"string\",\n  \"data\": {}\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "ea1b0e05-c2d8-41ee-aaeb-10608871c729",
-              "name": "Unprocessable Entity",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "events",
-                    ":id",
-                    "mute"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "id",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: bearer",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "Bearer <token>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "PUT",
-                "body": {}
-              },
-              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
-              "code": 422,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 8944.793569659683,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 403.4416867130108,\n  \"message\": \"string\",\n  \"data\": {}\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -1549,8 +1684,8 @@
     ]
   },
   "info": {
-    "_postman_id": "ec2232cc-fe13-41cc-ab03-69f2a7526a38",
-    "name": "Hookdeck Bookmarks Attempts Events API",
+    "_postman_id": "3e3225cd-f74e-49a4-b135-bef712b0efe5",
+    "name": "Hookdeck Bookmarks Attempts Bulk cancel events API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
       "content": "Save bookmarked events for quick replay and convenient one-click testing during development.\n\nContact Support:\n Name: Hookdeck Support\n Email: info@hookdeck.com",

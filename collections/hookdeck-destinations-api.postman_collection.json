@@ -1,7 +1,7 @@
 {
   "item": [
     {
-      "id": "b8b935f6-9a91-4fec-8c7a-c2520c65f00c",
+      "id": "ea0e460f-eccb-48e9-b804-e96297a8cf36",
       "name": "Destinations",
       "description": {
         "content": "A destination is any endpoint to which your webhooks can be routed.",
@@ -9,7 +9,7 @@
       },
       "item": [
         {
-          "id": "0737ffaf-5371-4760-9e65-3b8302481678",
+          "id": "7d160b81-fa8a-45f6-b371-177e84245026",
           "name": "Retrieve destinations",
           "request": {
             "name": "Retrieve destinations",
@@ -89,7 +89,7 @@
           },
           "response": [
             {
-              "id": "0030eb6a-5f50-4fdf-b87c-dc8402b14c83",
+              "id": "26a78eae-3673-4b06-a60b-f2ce35ed5d34",
               "name": "List of destinations",
               "originalRequest": {
                 "url": {
@@ -168,12 +168,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"pagination\": {\n    \"order_by\": \"string\",\n    \"dir\": \"string\",\n    \"limit\": 9913,\n    \"prev\": \"string\",\n    \"next\": \"string\"\n  },\n  \"count\": 7130,\n  \"models\": [\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"team_id\": \"string\",\n      \"type\": \"CLI\",\n      \"disabled_at\": \"1956-10-23T13:17:09.715Z\",\n      \"updated_at\": \"2002-12-10T13:04:01.437Z\",\n      \"created_at\": \"1967-01-10T10:21:44.035Z\",\n      \"description\": \"string\",\n      \"config\": {\n        \"url\": \"string\",\n        \"rate_limit\": 7008.560769992864,\n        \"rate_limit_period\": \"minute\",\n        \"path_forwarding_disabled\": true,\n        \"http_method\": \"GET\",\n        \"auth_type\": \"CUSTOM_SIGNATURE\",\n        \"auth\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    },\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"team_id\": \"string\",\n      \"type\": \"CLI\",\n      \"disabled_at\": \"1981-02-22T07:55:01.177Z\",\n      \"updated_at\": \"1978-04-26T23:25:29.201Z\",\n      \"created_at\": \"2011-09-11T15:48:35.881Z\",\n      \"description\": \"string\",\n      \"config\": {\n        \"url\": \"string\",\n        \"rate_limit\": 6161.115243708167,\n        \"rate_limit_period\": \"second\",\n        \"path_forwarding_disabled\": true,\n        \"http_method\": \"POST\",\n        \"auth_type\": \"API_KEY\",\n        \"auth\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    }\n  ]\n}",
+              "body": "{\n  \"pagination\": {\n    \"order_by\": \"string\",\n    \"dir\": \"string\",\n    \"limit\": 622,\n    \"prev\": \"string\",\n    \"next\": \"string\"\n  },\n  \"count\": 2957,\n  \"models\": [\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"team_id\": \"string\",\n      \"type\": \"CLI\",\n      \"disabled_at\": \"1977-03-09T14:29:55.610Z\",\n      \"updated_at\": \"2014-12-04T14:13:25.360Z\",\n      \"created_at\": \"1991-12-29T06:29:14.375Z\",\n      \"description\": \"string\",\n      \"config\": {\n        \"url\": \"string\",\n        \"rate_limit\": 1763.791559985638,\n        \"rate_limit_period\": \"concurrent\",\n        \"path_forwarding_disabled\": true,\n        \"http_method\": \"DELETE\",\n        \"auth_type\": \"BASIC_AUTH\",\n        \"auth\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    },\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"team_id\": \"string\",\n      \"type\": \"MOCK_API\",\n      \"disabled_at\": \"1955-05-13T01:36:45.470Z\",\n      \"updated_at\": \"1959-11-01T15:06:25.136Z\",\n      \"created_at\": \"2021-11-03T14:24:20.726Z\",\n      \"description\": \"string\",\n      \"config\": {\n        \"url\": \"string\",\n        \"rate_limit\": 2655.1459406401113,\n        \"rate_limit_period\": \"second\",\n        \"path_forwarding_disabled\": true,\n        \"http_method\": \"GET\",\n        \"auth_type\": \"GCP_SERVICE_ACCOUNT\",\n        \"auth\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    }\n  ]\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "30fec195-26b4-4890-8516-05f6063b83d9",
+              "id": "7cd11b15-e4d0-4a87-9666-50faec06ecaf",
               "name": "Bad Request",
               "originalRequest": {
                 "url": {
@@ -252,12 +252,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 2618.8426666613796,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 9869.636326254195,\n  \"message\": \"string\",\n  \"data\": {}\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "74157acc-b0e8-4566-b248-479febc2f4c7",
+              "id": "862c0a5b-655a-433c-b60c-a1f21bf1622c",
               "name": "Unprocessable Entity",
               "originalRequest": {
                 "url": {
@@ -336,7 +336,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 2618.8426666613796,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 9869.636326254195,\n  \"message\": \"string\",\n  \"data\": {}\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -347,7 +347,7 @@
           }
         },
         {
-          "id": "4fe0c0ac-a70a-4059-b0e3-31f5c5a89faa",
+          "id": "cfbc1e07-8047-409b-8ecf-e92de6264adf",
           "name": "Create a destination",
           "request": {
             "name": "Create a destination",
@@ -389,7 +389,7 @@
           },
           "response": [
             {
-              "id": "4ccc6ef4-dd4b-4378-acc7-1918c802e83f",
+              "id": "56a4651a-6abf-47da-a9d8-5b9322d906ea",
               "name": "A single destination",
               "originalRequest": {
                 "url": {
@@ -435,12 +435,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"team_id\": \"string\",\n  \"type\": \"MOCK_API\",\n  \"disabled_at\": \"2024-11-16T15:24:36.286Z\",\n  \"updated_at\": \"1990-11-05T17:13:15.450Z\",\n  \"created_at\": \"1988-03-05T20:45:41.312Z\",\n  \"description\": \"string\",\n  \"config\": {\n    \"url\": \"<URL>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"<string>\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"<string>\",\n    \"auth_type\": \"<string>\",\n    \"auth\": {}\n  }\n}",
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"team_id\": \"string\",\n  \"type\": \"CLI\",\n  \"disabled_at\": \"2016-03-14T16:56:31.081Z\",\n  \"updated_at\": \"2008-11-30T16:07:06.958Z\",\n  \"created_at\": \"1947-02-15T19:15:58.648Z\",\n  \"description\": \"string\",\n  \"config\": {\n    \"url\": \"<URL>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"<string>\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"<string>\",\n    \"auth_type\": \"<string>\",\n    \"auth\": {}\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "4360ec41-2c3e-4106-8e6c-383ed9e9b257",
+              "id": "d8dcc4cc-a2e8-48d3-bbe3-491ab8f209c8",
               "name": "Bad Request",
               "originalRequest": {
                 "url": {
@@ -486,12 +486,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 2618.8426666613796,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 9869.636326254195,\n  \"message\": \"string\",\n  \"data\": {}\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "187c2ba7-bb9e-4a0c-a50b-8a3610dcd7b0",
+              "id": "0e2275fb-6923-47f8-8a93-4bb2360008fc",
               "name": "Unprocessable Entity",
               "originalRequest": {
                 "url": {
@@ -537,7 +537,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 2618.8426666613796,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 9869.636326254195,\n  \"message\": \"string\",\n  \"data\": {}\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -548,7 +548,7 @@
           }
         },
         {
-          "id": "e982dd09-6857-4e70-bcaa-79e2c43ad597",
+          "id": "d67f526d-3271-462b-b382-b116289ea4f8",
           "name": "Create/Update a destination",
           "request": {
             "name": "Create/Update a destination",
@@ -590,7 +590,7 @@
           },
           "response": [
             {
-              "id": "ee5201e9-fa1d-48d8-a1eb-419905e0146a",
+              "id": "1c9ac918-5820-46fd-9554-a68e6a52f436",
               "name": "A single destination",
               "originalRequest": {
                 "url": {
@@ -636,12 +636,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"team_id\": \"string\",\n  \"type\": \"MOCK_API\",\n  \"disabled_at\": \"2024-11-16T15:24:36.286Z\",\n  \"updated_at\": \"1990-11-05T17:13:15.450Z\",\n  \"created_at\": \"1988-03-05T20:45:41.312Z\",\n  \"description\": \"string\",\n  \"config\": {\n    \"url\": \"<URL>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"<string>\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"<string>\",\n    \"auth_type\": \"<string>\",\n    \"auth\": {}\n  }\n}",
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"team_id\": \"string\",\n  \"type\": \"CLI\",\n  \"disabled_at\": \"2016-03-14T16:56:31.081Z\",\n  \"updated_at\": \"2008-11-30T16:07:06.958Z\",\n  \"created_at\": \"1947-02-15T19:15:58.648Z\",\n  \"description\": \"string\",\n  \"config\": {\n    \"url\": \"<URL>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"<string>\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"<string>\",\n    \"auth_type\": \"<string>\",\n    \"auth\": {}\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "f3852c51-0120-4c80-939c-ef0335863c97",
+              "id": "581334c3-f8c3-40b1-947a-6931f5e23348",
               "name": "Bad Request",
               "originalRequest": {
                 "url": {
@@ -687,12 +687,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 2618.8426666613796,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 9869.636326254195,\n  \"message\": \"string\",\n  \"data\": {}\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "98b024db-65a5-48eb-921a-fa953e8f77bd",
+              "id": "0d098c5b-c8d8-4693-81ad-e8a0ef61700a",
               "name": "Unprocessable Entity",
               "originalRequest": {
                 "url": {
@@ -738,7 +738,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 2618.8426666613796,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 9869.636326254195,\n  \"message\": \"string\",\n  \"data\": {}\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -749,7 +749,7 @@
           }
         },
         {
-          "id": "7ea043de-a568-4d98-acc2-adf12d507734",
+          "id": "28060535-47f8-4187-82cc-d030f6b766e7",
           "name": "Count destinations",
           "request": {
             "name": "Count destinations",
@@ -800,7 +800,7 @@
           },
           "response": [
             {
-              "id": "82077cdf-c959-4cc1-b22e-f5e5c76eca42",
+              "id": "e8a398ac-10c3-429e-a696-5e455b740fe2",
               "name": "Count of destinations",
               "originalRequest": {
                 "url": {
@@ -856,12 +856,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"count\": 6824.01032461106\n}",
+              "body": "{\n  \"count\": 7086.821275521842\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "32f35064-c2e1-4fc7-a578-e490878e0067",
+              "id": "c7c04d32-e61d-495e-b746-508362d9db14",
               "name": "Bad Request",
               "originalRequest": {
                 "url": {
@@ -917,12 +917,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 2618.8426666613796,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 9869.636326254195,\n  \"message\": \"string\",\n  \"data\": {}\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "3b4a1901-0c34-403a-9d1a-13f951961951",
+              "id": "a29de1ec-2d5c-4817-97ab-fefb72678d68",
               "name": "Unprocessable Entity",
               "originalRequest": {
                 "url": {
@@ -978,7 +978,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 2618.8426666613796,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 9869.636326254195,\n  \"message\": \"string\",\n  \"data\": {}\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -989,7 +989,7 @@
           }
         },
         {
-          "id": "18288510-e4ef-44af-ac94-e50dab622aae",
+          "id": "98649fbc-8f85-45f5-8f92-7558398a5c9c",
           "name": "Retrieve a destination",
           "request": {
             "name": "Retrieve a destination",
@@ -1033,7 +1033,7 @@
           },
           "response": [
             {
-              "id": "4ed039c3-2583-4eac-8610-b6bd9f923cbb",
+              "id": "5b8cfe03-55ef-4a6c-8c91-2505ee0e7343",
               "name": "A single destination",
               "originalRequest": {
                 "url": {
@@ -1085,12 +1085,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"team_id\": \"string\",\n  \"type\": \"MOCK_API\",\n  \"disabled_at\": \"2024-11-16T15:24:36.286Z\",\n  \"updated_at\": \"1990-11-05T17:13:15.450Z\",\n  \"created_at\": \"1988-03-05T20:45:41.312Z\",\n  \"description\": \"string\",\n  \"config\": {\n    \"url\": \"<URL>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"<string>\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"<string>\",\n    \"auth_type\": \"<string>\",\n    \"auth\": {}\n  }\n}",
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"team_id\": \"string\",\n  \"type\": \"CLI\",\n  \"disabled_at\": \"2016-03-14T16:56:31.081Z\",\n  \"updated_at\": \"2008-11-30T16:07:06.958Z\",\n  \"created_at\": \"1947-02-15T19:15:58.648Z\",\n  \"description\": \"string\",\n  \"config\": {\n    \"url\": \"<URL>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"<string>\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"<string>\",\n    \"auth_type\": \"<string>\",\n    \"auth\": {}\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "cd3a8fb3-465f-45a8-8286-d4cce804b4d7",
+              "id": "f917d5ae-f703-46f1-9899-b87dce60b7a0",
               "name": "Not Found",
               "originalRequest": {
                 "url": {
@@ -1142,12 +1142,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 2618.8426666613796,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 9869.636326254195,\n  \"message\": \"string\",\n  \"data\": {}\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "9f5318df-5bd4-4f3b-85c5-94b8bfe534b7",
+              "id": "68b66550-18ed-42cd-ac44-adba9cedf873",
               "name": "Gone",
               "originalRequest": {
                 "url": {
@@ -1199,7 +1199,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 2618.8426666613796,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 9869.636326254195,\n  \"message\": \"string\",\n  \"data\": {}\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -1210,7 +1210,7 @@
           }
         },
         {
-          "id": "0ea7f3f6-a68a-4dd9-bc9c-6cab0f067ff2",
+          "id": "48ce71a8-9a35-4657-91bc-b72d26300d87",
           "name": "Update a destination",
           "request": {
             "name": "Update a destination",
@@ -1261,7 +1261,7 @@
           },
           "response": [
             {
-              "id": "f2e685d8-753e-4550-b5e7-f8f5611154bf",
+              "id": "8e8f0d40-04a5-4e09-982d-e0b3f74fd7e2",
               "name": "A single destination",
               "originalRequest": {
                 "url": {
@@ -1316,12 +1316,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"team_id\": \"string\",\n  \"type\": \"MOCK_API\",\n  \"disabled_at\": \"2024-11-16T15:24:36.286Z\",\n  \"updated_at\": \"1990-11-05T17:13:15.450Z\",\n  \"created_at\": \"1988-03-05T20:45:41.312Z\",\n  \"description\": \"string\",\n  \"config\": {\n    \"url\": \"<URL>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"<string>\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"<string>\",\n    \"auth_type\": \"<string>\",\n    \"auth\": {}\n  }\n}",
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"team_id\": \"string\",\n  \"type\": \"CLI\",\n  \"disabled_at\": \"2016-03-14T16:56:31.081Z\",\n  \"updated_at\": \"2008-11-30T16:07:06.958Z\",\n  \"created_at\": \"1947-02-15T19:15:58.648Z\",\n  \"description\": \"string\",\n  \"config\": {\n    \"url\": \"<URL>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"<string>\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"<string>\",\n    \"auth_type\": \"<string>\",\n    \"auth\": {}\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "25334015-e436-45d3-aa78-c9a01cb001d3",
+              "id": "b87cc933-abbb-45e7-ae99-0515f05e913e",
               "name": "Bad Request",
               "originalRequest": {
                 "url": {
@@ -1376,12 +1376,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 2618.8426666613796,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 9869.636326254195,\n  \"message\": \"string\",\n  \"data\": {}\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "d233e1a6-648a-48d5-a7f5-3c7c9da8b096",
+              "id": "696d099e-4259-4370-a86f-d879a9f662f5",
               "name": "Not Found",
               "originalRequest": {
                 "url": {
@@ -1436,12 +1436,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 2618.8426666613796,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 9869.636326254195,\n  \"message\": \"string\",\n  \"data\": {}\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "afe8577f-6c4b-4451-93ca-1e3619928c4a",
+              "id": "88249373-3ea8-4e2a-8fb7-64e4de4b19c9",
               "name": "Unprocessable Entity",
               "originalRequest": {
                 "url": {
@@ -1496,7 +1496,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 2618.8426666613796,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 9869.636326254195,\n  \"message\": \"string\",\n  \"data\": {}\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -1507,7 +1507,7 @@
           }
         },
         {
-          "id": "5c718a10-5aea-410f-9c1f-3a6c75b0f65d",
+          "id": "113e2c39-7a56-48f9-922a-64c1aaeda15a",
           "name": "Delete a destination",
           "request": {
             "name": "Delete a destination",
@@ -1545,7 +1545,7 @@
           },
           "response": [
             {
-              "id": "2cb80cf1-06c1-4aa1-995d-e155c5d6a24c",
+              "id": "d270a909-05fc-466f-aee0-91ece7ad5ba3",
               "name": "A single destination",
               "originalRequest": {
                 "url": {
@@ -1597,7 +1597,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "c59012b7-8362-466b-a815-229ee374f06d",
+              "id": "37321f52-39ca-4fdd-b1c0-bab187c8a1ec",
               "name": "Not Found",
               "originalRequest": {
                 "url": {
@@ -1644,7 +1644,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 2618.8426666613796,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 9869.636326254195,\n  \"message\": \"string\",\n  \"data\": {}\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -1655,7 +1655,7 @@
           }
         },
         {
-          "id": "57c4240b-d39c-492e-96e7-10e60caf86ae",
+          "id": "deaecded-85d9-485b-aeb9-74726f6d3426",
           "name": "Disable a destination",
           "request": {
             "name": "Disable a destination",
@@ -1694,7 +1694,7 @@
           },
           "response": [
             {
-              "id": "1fc513b1-a3ca-4a90-9ae9-b0c681ac6ab9",
+              "id": "9de46205-02a6-4057-a01a-1e2b0a7724ef",
               "name": "A single destination",
               "originalRequest": {
                 "url": {
@@ -1742,12 +1742,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"team_id\": \"string\",\n  \"type\": \"MOCK_API\",\n  \"disabled_at\": \"2024-11-16T15:24:36.286Z\",\n  \"updated_at\": \"1990-11-05T17:13:15.450Z\",\n  \"created_at\": \"1988-03-05T20:45:41.312Z\",\n  \"description\": \"string\",\n  \"config\": {\n    \"url\": \"<URL>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"<string>\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"<string>\",\n    \"auth_type\": \"<string>\",\n    \"auth\": {}\n  }\n}",
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"team_id\": \"string\",\n  \"type\": \"CLI\",\n  \"disabled_at\": \"2016-03-14T16:56:31.081Z\",\n  \"updated_at\": \"2008-11-30T16:07:06.958Z\",\n  \"created_at\": \"1947-02-15T19:15:58.648Z\",\n  \"description\": \"string\",\n  \"config\": {\n    \"url\": \"<URL>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"<string>\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"<string>\",\n    \"auth_type\": \"<string>\",\n    \"auth\": {}\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "445e06fa-a7ca-42fd-a4fa-f6a3e04e1d1f",
+              "id": "85dff295-f61c-4be2-9b2b-829700bdb083",
               "name": "Not Found",
               "originalRequest": {
                 "url": {
@@ -1795,7 +1795,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 2618.8426666613796,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 9869.636326254195,\n  \"message\": \"string\",\n  \"data\": {}\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -1806,7 +1806,7 @@
           }
         },
         {
-          "id": "d893fa2f-3831-4788-bd12-e95176339f78",
+          "id": "fd9bff0a-3937-4f97-88dd-77196e496c19",
           "name": "Disable a destination",
           "request": {
             "name": "Disable a destination",
@@ -1845,7 +1845,7 @@
           },
           "response": [
             {
-              "id": "c210ee13-0e69-4324-bb26-03fbbcff1297",
+              "id": "4eb6042f-c5a5-42ae-b3a3-88cbbf6e7983",
               "name": "A single destination",
               "originalRequest": {
                 "url": {
@@ -1893,12 +1893,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"team_id\": \"string\",\n  \"type\": \"MOCK_API\",\n  \"disabled_at\": \"2024-11-16T15:24:36.286Z\",\n  \"updated_at\": \"1990-11-05T17:13:15.450Z\",\n  \"created_at\": \"1988-03-05T20:45:41.312Z\",\n  \"description\": \"string\",\n  \"config\": {\n    \"url\": \"<URL>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"<string>\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"<string>\",\n    \"auth_type\": \"<string>\",\n    \"auth\": {}\n  }\n}",
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"team_id\": \"string\",\n  \"type\": \"CLI\",\n  \"disabled_at\": \"2016-03-14T16:56:31.081Z\",\n  \"updated_at\": \"2008-11-30T16:07:06.958Z\",\n  \"created_at\": \"1947-02-15T19:15:58.648Z\",\n  \"description\": \"string\",\n  \"config\": {\n    \"url\": \"<URL>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"<string>\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"<string>\",\n    \"auth_type\": \"<string>\",\n    \"auth\": {}\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "bcbe701f-d201-4e6c-ba50-a4abf8dcedda",
+              "id": "5bcce503-8c9a-47e3-863f-66a9ab5c33dd",
               "name": "Not Found",
               "originalRequest": {
                 "url": {
@@ -1946,7 +1946,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 2618.8426666613796,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 9869.636326254195,\n  \"message\": \"string\",\n  \"data\": {}\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -1957,7 +1957,7 @@
           }
         },
         {
-          "id": "6b7f4198-b391-4e34-bf4e-0bec0cb41d72",
+          "id": "8437e39c-7231-4f88-8a9d-7c6aee11ad2e",
           "name": "Enable a destination",
           "request": {
             "name": "Enable a destination",
@@ -1996,7 +1996,7 @@
           },
           "response": [
             {
-              "id": "4a811973-7797-44af-b3d0-7e3bff5999df",
+              "id": "6d565e8c-072e-46f6-b7ae-76c71174c6f1",
               "name": "A single destination",
               "originalRequest": {
                 "url": {
@@ -2044,12 +2044,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"team_id\": \"string\",\n  \"type\": \"MOCK_API\",\n  \"disabled_at\": \"2024-11-16T15:24:36.286Z\",\n  \"updated_at\": \"1990-11-05T17:13:15.450Z\",\n  \"created_at\": \"1988-03-05T20:45:41.312Z\",\n  \"description\": \"string\",\n  \"config\": {\n    \"url\": \"<URL>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"<string>\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"<string>\",\n    \"auth_type\": \"<string>\",\n    \"auth\": {}\n  }\n}",
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"team_id\": \"string\",\n  \"type\": \"CLI\",\n  \"disabled_at\": \"2016-03-14T16:56:31.081Z\",\n  \"updated_at\": \"2008-11-30T16:07:06.958Z\",\n  \"created_at\": \"1947-02-15T19:15:58.648Z\",\n  \"description\": \"string\",\n  \"config\": {\n    \"url\": \"<URL>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"<string>\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"<string>\",\n    \"auth_type\": \"<string>\",\n    \"auth\": {}\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "64357750-ecb6-4b07-b589-e47c21e485f1",
+              "id": "4acfbb11-a538-44a4-a4c9-8a533507f216",
               "name": "Not Found",
               "originalRequest": {
                 "url": {
@@ -2097,7 +2097,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 2618.8426666613796,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 9869.636326254195,\n  \"message\": \"string\",\n  \"data\": {}\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -2108,7 +2108,7 @@
           }
         },
         {
-          "id": "20136558-bb85-4b9e-8ccf-07dacb16b867",
+          "id": "a6289f2d-6f6e-4f69-b393-fb383ea9ed2d",
           "name": "Enable a destination",
           "request": {
             "name": "Enable a destination",
@@ -2147,7 +2147,7 @@
           },
           "response": [
             {
-              "id": "d641dbe0-a181-4a54-b6ce-395bf9032583",
+              "id": "73b2c8cf-1727-4ae6-99e9-ba1a0a50f2a5",
               "name": "A single destination",
               "originalRequest": {
                 "url": {
@@ -2195,12 +2195,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"team_id\": \"string\",\n  \"type\": \"MOCK_API\",\n  \"disabled_at\": \"2024-11-16T15:24:36.286Z\",\n  \"updated_at\": \"1990-11-05T17:13:15.450Z\",\n  \"created_at\": \"1988-03-05T20:45:41.312Z\",\n  \"description\": \"string\",\n  \"config\": {\n    \"url\": \"<URL>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"<string>\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"<string>\",\n    \"auth_type\": \"<string>\",\n    \"auth\": {}\n  }\n}",
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"team_id\": \"string\",\n  \"type\": \"CLI\",\n  \"disabled_at\": \"2016-03-14T16:56:31.081Z\",\n  \"updated_at\": \"2008-11-30T16:07:06.958Z\",\n  \"created_at\": \"1947-02-15T19:15:58.648Z\",\n  \"description\": \"string\",\n  \"config\": {\n    \"url\": \"<URL>\",\n    \"rate_limit\": \"<float>\",\n    \"rate_limit_period\": \"<string>\",\n    \"path_forwarding_disabled\": \"<boolean>\",\n    \"http_method\": \"<string>\",\n    \"auth_type\": \"<string>\",\n    \"auth\": {}\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "cdd5b5d5-64e2-42a7-b3f3-f1aee7b05741",
+              "id": "d8a738a4-365c-4b02-9a1a-f008f14e825a",
               "name": "Not Found",
               "originalRequest": {
                 "url": {
@@ -2248,7 +2248,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 2618.8426666613796,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 9869.636326254195,\n  \"message\": \"string\",\n  \"data\": {}\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -2280,11 +2280,11 @@
     ]
   },
   "info": {
-    "_postman_id": "6c505639-c27e-411d-8b43-1ff284cde51d",
-    "name": "Hookdeck Destinations API",
+    "_postman_id": "df164c63-9a99-425d-90d4-aa42c80fc475",
+    "name": "Hookdeck Bookmarks Attempts Destinations API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
-      "content": "Manage destinations — the downstream targets (HTTP endpoints, AWS, Azure, GCP, queues) where Hookdeck delivers events. Supports auth methods, rate limiting, and path forwarding.\n\nContact Support:\n Name: Hookdeck Support\n Email: info@hookdeck.com",
+      "content": "Save bookmarked events for quick replay and convenient one-click testing during development.\n\nContact Support:\n Name: Hookdeck Support\n Email: info@hookdeck.com",
       "type": "text/plain"
     }
   }

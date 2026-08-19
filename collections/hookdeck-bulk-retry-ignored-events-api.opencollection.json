@@ -1,7 +1,7 @@
 {
   "opencollection": "1.0.0",
   "info": {
-    "name": "Hookdeck Attempts Bookmarks API",
+    "name": "Hookdeck Bookmarks Attempts Bulk retry ignored events API",
     "version": "1.0.0"
   },
   "request": {
@@ -13,46 +13,51 @@
   "items": [
     {
       "info": {
-        "name": "Bookmarks",
+        "name": "Bulk retry ignored events",
         "type": "folder"
       },
       "items": [
         {
           "info": {
-            "name": "Retrieve bookmarks",
+            "name": "Retrieve ignored events bulk retries",
             "type": "http"
           },
           "http": {
             "method": "GET",
-            "url": "https://api.hookdeck.com/2025-07-01/bookmarks",
+            "url": "https://api.hookdeck.com/2025-07-01/bulk/ignored-events/retry",
             "params": [
+              {
+                "name": "cancelled_at",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "completed_at",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "created_at",
+                "value": "",
+                "type": "query"
+              },
               {
                 "name": "id",
                 "value": "",
                 "type": "query"
               },
               {
-                "name": "name",
+                "name": "query",
                 "value": "",
                 "type": "query"
               },
               {
-                "name": "webhook_id",
+                "name": "query_partial_match",
                 "value": "",
                 "type": "query"
               },
               {
-                "name": "event_data_id",
-                "value": "",
-                "type": "query"
-              },
-              {
-                "name": "label",
-                "value": "",
-                "type": "query"
-              },
-              {
-                "name": "last_used_at",
+                "name": "in_progress",
                 "value": "",
                 "type": "query"
               },
@@ -83,89 +88,49 @@
               }
             ]
           },
-          "docs": "This endpoint lists bookmarks, or a subset of bookmarks."
+          "docs": "This endpoint lists ignored events bulk retries."
         },
         {
           "info": {
-            "name": "Create a bookmark",
+            "name": "Create ignored events bulk retry",
             "type": "http"
           },
           "http": {
             "method": "POST",
-            "url": "https://api.hookdeck.com/2025-07-01/bookmarks",
+            "url": "https://api.hookdeck.com/2025-07-01/bulk/ignored-events/retry",
             "body": {
               "type": "json",
               "data": "{}"
             }
           },
-          "docs": "This endpoint creates a bookmark from a specific event."
+          "docs": "This endpoint creates and starts an ignored events bulk retry using the provided query."
         },
         {
           "info": {
-            "name": "Retrieve a bookmark",
+            "name": "Generate ignored events bulk retry plan",
             "type": "http"
           },
           "http": {
             "method": "GET",
-            "url": "https://api.hookdeck.com/2025-07-01/bookmarks/:id",
+            "url": "https://api.hookdeck.com/2025-07-01/bulk/ignored-events/retry/plan",
             "params": [
               {
-                "name": "id",
+                "name": "query",
                 "value": "",
-                "type": "path"
+                "type": "query"
               }
             ]
           },
-          "docs": "This endpoint retrieves a specific bookmark."
+          "docs": "This endpoint estimates the number of ignored events matched by the provided query before creating a bulk retry."
         },
         {
           "info": {
-            "name": "Update a bookmark",
-            "type": "http"
-          },
-          "http": {
-            "method": "PUT",
-            "url": "https://api.hookdeck.com/2025-07-01/bookmarks/:id",
-            "params": [
-              {
-                "name": "id",
-                "value": "",
-                "type": "path"
-              }
-            ],
-            "body": {
-              "type": "json",
-              "data": "{}"
-            }
-          },
-          "docs": "This endpoint updates a bookmark."
-        },
-        {
-          "info": {
-            "name": "Delete a bookmark",
-            "type": "http"
-          },
-          "http": {
-            "method": "DELETE",
-            "url": "https://api.hookdeck.com/2025-07-01/bookmarks/:id",
-            "params": [
-              {
-                "name": "id",
-                "value": "",
-                "type": "path"
-              }
-            ]
-          },
-          "docs": "This endpoint permanently deletes a bookmark. This action cannot be undone."
-        },
-        {
-          "info": {
-            "name": "Get a bookmark raw body data",
+            "name": "Retrieve ignored events bulk retry",
             "type": "http"
           },
           "http": {
             "method": "GET",
-            "url": "https://api.hookdeck.com/2025-07-01/bookmarks/:id/raw_body",
+            "url": "https://api.hookdeck.com/2025-07-01/bulk/ignored-events/retry/:id",
             "params": [
               {
                 "name": "id",
@@ -174,16 +139,16 @@
               }
             ]
           },
-          "docs": "Get a bookmark raw body data"
+          "docs": "This endpoint retrieves a specific ignored events bulk retry."
         },
         {
           "info": {
-            "name": "Trigger a bookmark",
+            "name": "Cancel ignored events bulk retry",
             "type": "http"
           },
           "http": {
             "method": "POST",
-            "url": "https://api.hookdeck.com/2025-07-01/bookmarks/:id/trigger",
+            "url": "https://api.hookdeck.com/2025-07-01/bulk/ignored-events/retry/:id/cancel",
             "params": [
               {
                 "name": "id",
@@ -192,7 +157,7 @@
               }
             ]
           },
-          "docs": "This endpoint triggers a bookmark, replaying its associated event against all matching connections."
+          "docs": "This endpoint cancels a pending or in-progress ignored events bulk retry."
         }
       ]
     }

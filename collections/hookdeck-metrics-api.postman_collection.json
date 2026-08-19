@@ -1,7 +1,7 @@
 {
   "item": [
     {
-      "id": "e2e6cd5c-4d98-499c-a198-f1a2809b770a",
+      "id": "b659fe19-62e0-46bb-ab26-84a00e5a6e54",
       "name": "Metrics",
       "description": {
         "content": "Query aggregated metrics for events, requests, and attempts with time-based grouping and filtering.",
@@ -9,7 +9,7 @@
       },
       "item": [
         {
-          "id": "90d9ba8e-d603-46a0-a30d-9cce70ccde8d",
+          "id": "82a3ea81-320b-4311-9206-fc97509a9f9f",
           "name": "Query request metrics",
           "request": {
             "name": "Query request metrics",
@@ -100,7 +100,7 @@
           },
           "response": [
             {
-              "id": "f2c7d02c-8f20-49e9-83d2-f1ee317ddaf1",
+              "id": "360cb21e-c67f-40f1-aaa0-fa24caf0d007",
               "name": "Request metrics results",
               "originalRequest": {
                 "url": {
@@ -188,7 +188,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"data\": [\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 5733.714620813279,\n        \"key_1\": 6348.155992502177\n      }\n    },\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 3320.880028958201\n      }\n    }\n  ],\n  \"metadata\": {\n    \"granularity\": \"string\",\n    \"query_time_ms\": 9874.48237955731,\n    \"row_count\": 5665.040196804762,\n    \"row_limit\": 966.624789902698,\n    \"truncated\": false,\n    \"warning\": \"string\"\n  }\n}",
+              "body": "{\n  \"data\": [\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 1879.0814143980017,\n        \"key_1\": 9990.04217260757\n      }\n    },\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\",\n        \"key_2\": \"string\",\n        \"key_3\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 3572.8850570606774,\n        \"key_1\": 9205.8043388529,\n        \"key_2\": 687.202236250496,\n        \"key_3\": 8707.18091578929\n      }\n    }\n  ],\n  \"metadata\": {\n    \"granularity\": \"string\",\n    \"query_time_ms\": 7992.257556640027,\n    \"row_count\": 4294.540143052989,\n    \"row_limit\": 6817.077352074417,\n    \"truncated\": true,\n    \"warning\": \"string\"\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -199,7 +199,7 @@
           }
         },
         {
-          "id": "f7ab857c-2da7-4ae5-8768-d226c1b9c20c",
+          "id": "55059373-eec7-4b48-b20f-1339c4886c6c",
           "name": "Query event metrics",
           "request": {
             "name": "Query event metrics",
@@ -320,7 +320,7 @@
           },
           "response": [
             {
-              "id": "503ed285-0fb4-4c1c-9197-57d8cd8a473a",
+              "id": "851d7753-6a2d-4a51-aaca-d694f1074622",
               "name": "Event metrics results",
               "originalRequest": {
                 "url": {
@@ -432,7 +432,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"data\": [\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 2888.414780205598,\n        \"key_1\": 7361.613645917065\n      }\n    },\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 1307.4371717564848,\n        \"key_1\": 4933.183874110997,\n        \"key_2\": 3595.2521278518425\n      }\n    }\n  ],\n  \"metadata\": {\n    \"granularity\": \"string\",\n    \"query_time_ms\": 9573.172618754108,\n    \"row_count\": 7374.489457045907,\n    \"row_limit\": 6792.970735118173,\n    \"truncated\": false,\n    \"warning\": \"string\"\n  }\n}",
+              "body": "{\n  \"data\": [\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 3548.185063659234\n      }\n    },\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 9223.397504106464\n      }\n    }\n  ],\n  \"metadata\": {\n    \"granularity\": \"string\",\n    \"query_time_ms\": 3528.4330591705957,\n    \"row_count\": 9397.945596505699,\n    \"row_limit\": 1878.6871231767232,\n    \"truncated\": false,\n    \"warning\": \"string\"\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -443,7 +443,7 @@
           }
         },
         {
-          "id": "d1b6b455-75b4-48f9-a8b2-35e22e8ed97b",
+          "id": "72940c46-ffce-40c2-a736-47fb2320fe3f",
           "name": "Query attempt metrics",
           "request": {
             "name": "Query attempt metrics",
@@ -534,7 +534,7 @@
           },
           "response": [
             {
-              "id": "bf391046-da83-4655-b2e5-87086ed91248",
+              "id": "cdfbdad4-8fad-40ca-bd7a-3a734c5a4e2d",
               "name": "Attempt metrics results",
               "originalRequest": {
                 "url": {
@@ -622,7 +622,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"data\": [\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 2888.414780205598,\n        \"key_1\": 7361.613645917065\n      }\n    },\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 1307.4371717564848,\n        \"key_1\": 4933.183874110997,\n        \"key_2\": 3595.2521278518425\n      }\n    }\n  ],\n  \"metadata\": {\n    \"granularity\": \"string\",\n    \"query_time_ms\": 9573.172618754108,\n    \"row_count\": 7374.489457045907,\n    \"row_limit\": 6792.970735118173,\n    \"truncated\": false,\n    \"warning\": \"string\"\n  }\n}",
+              "body": "{\n  \"data\": [\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 3548.185063659234\n      }\n    },\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 9223.397504106464\n      }\n    }\n  ],\n  \"metadata\": {\n    \"granularity\": \"string\",\n    \"query_time_ms\": 3528.4330591705957,\n    \"row_count\": 9397.945596505699,\n    \"row_limit\": 1878.6871231767232,\n    \"truncated\": false,\n    \"warning\": \"string\"\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -633,7 +633,7 @@
           }
         },
         {
-          "id": "d5a00b28-fbdc-4bd5-a4eb-be4c0ef551fc",
+          "id": "9c37d432-34db-4fdd-b55a-66861deefda8",
           "name": "Query event metrics grouped by individual issue",
           "request": {
             "name": "Query event metrics grouped by individual issue",
@@ -714,7 +714,7 @@
           },
           "response": [
             {
-              "id": "7f01e04c-5208-4a30-99c1-2892608109f5",
+              "id": "597fe0df-1e35-46aa-979d-04040128533f",
               "name": "Events by issue metrics results",
               "originalRequest": {
                 "url": {
@@ -794,7 +794,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"data\": [\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 2888.414780205598,\n        \"key_1\": 7361.613645917065\n      }\n    },\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 1307.4371717564848,\n        \"key_1\": 4933.183874110997,\n        \"key_2\": 3595.2521278518425\n      }\n    }\n  ],\n  \"metadata\": {\n    \"granularity\": \"string\",\n    \"query_time_ms\": 9573.172618754108,\n    \"row_count\": 7374.489457045907,\n    \"row_limit\": 6792.970735118173,\n    \"truncated\": false,\n    \"warning\": \"string\"\n  }\n}",
+              "body": "{\n  \"data\": [\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 3548.185063659234\n      }\n    },\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 9223.397504106464\n      }\n    }\n  ],\n  \"metadata\": {\n    \"granularity\": \"string\",\n    \"query_time_ms\": 3528.4330591705957,\n    \"row_count\": 9397.945596505699,\n    \"row_limit\": 1878.6871231767232,\n    \"truncated\": false,\n    \"warning\": \"string\"\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -805,7 +805,7 @@
           }
         },
         {
-          "id": "a4fd39f8-2945-4f32-a794-1206f6702013",
+          "id": "f9c198a4-e898-4111-bc9e-1bbf806f23b7",
           "name": "Query queue depth metrics",
           "request": {
             "name": "Query queue depth metrics",
@@ -871,7 +871,7 @@
           },
           "response": [
             {
-              "id": "bc2e9bb6-f8cc-4d89-a3c7-2d44e9763e2a",
+              "id": "0bbfb381-fef5-44b2-95fe-827c8da7e163",
               "name": "Queue depth metrics results",
               "originalRequest": {
                 "url": {
@@ -939,7 +939,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"data\": [\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 2888.414780205598,\n        \"key_1\": 7361.613645917065\n      }\n    },\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 1307.4371717564848,\n        \"key_1\": 4933.183874110997,\n        \"key_2\": 3595.2521278518425\n      }\n    }\n  ],\n  \"metadata\": {\n    \"granularity\": \"string\",\n    \"query_time_ms\": 9573.172618754108,\n    \"row_count\": 7374.489457045907,\n    \"row_limit\": 6792.970735118173,\n    \"truncated\": false,\n    \"warning\": \"string\"\n  }\n}",
+              "body": "{\n  \"data\": [\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 3548.185063659234\n      }\n    },\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 9223.397504106464\n      }\n    }\n  ],\n  \"metadata\": {\n    \"granularity\": \"string\",\n    \"query_time_ms\": 3528.4330591705957,\n    \"row_count\": 9397.945596505699,\n    \"row_limit\": 1878.6871231767232,\n    \"truncated\": false,\n    \"warning\": \"string\"\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -950,7 +950,7 @@
           }
         },
         {
-          "id": "1603cbae-f666-4efd-8d0c-8cdf51cd7659",
+          "id": "7063b8c5-e10a-4cbb-a537-6c3450b273d3",
           "name": "Query transformation execution metrics",
           "request": {
             "name": "Query transformation execution metrics",
@@ -1031,7 +1031,7 @@
           },
           "response": [
             {
-              "id": "68cbcd4e-2564-4a91-b04b-ef083f802640",
+              "id": "363a95b8-47e2-433f-95b6-dab7e0f97331",
               "name": "Transformation metrics results",
               "originalRequest": {
                 "url": {
@@ -1111,7 +1111,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"data\": [\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 2888.414780205598,\n        \"key_1\": 7361.613645917065\n      }\n    },\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 1307.4371717564848,\n        \"key_1\": 4933.183874110997,\n        \"key_2\": 3595.2521278518425\n      }\n    }\n  ],\n  \"metadata\": {\n    \"granularity\": \"string\",\n    \"query_time_ms\": 9573.172618754108,\n    \"row_count\": 7374.489457045907,\n    \"row_limit\": 6792.970735118173,\n    \"truncated\": false,\n    \"warning\": \"string\"\n  }\n}",
+              "body": "{\n  \"data\": [\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 3548.185063659234\n      }\n    },\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 9223.397504106464\n      }\n    }\n  ],\n  \"metadata\": {\n    \"granularity\": \"string\",\n    \"query_time_ms\": 3528.4330591705957,\n    \"row_count\": 9397.945596505699,\n    \"row_limit\": 1878.6871231767232,\n    \"truncated\": false,\n    \"warning\": \"string\"\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -1122,7 +1122,7 @@
           }
         },
         {
-          "id": "86224e68-dddb-4167-9cfc-39c16ad31582",
+          "id": "64ff59bf-0777-47c4-82bf-47834ae55c76",
           "name": "Query events pending timeseries metrics",
           "request": {
             "name": "Query events pending timeseries metrics",
@@ -1188,7 +1188,7 @@
           },
           "response": [
             {
-              "id": "1444d81a-866a-452b-b380-15f04c432997",
+              "id": "f37a2e54-774d-44c8-b380-233d9b52f635",
               "name": "Events pending timeseries metrics results",
               "originalRequest": {
                 "url": {
@@ -1256,7 +1256,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"data\": [\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 2888.414780205598,\n        \"key_1\": 7361.613645917065\n      }\n    },\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 1307.4371717564848,\n        \"key_1\": 4933.183874110997,\n        \"key_2\": 3595.2521278518425\n      }\n    }\n  ],\n  \"metadata\": {\n    \"granularity\": \"string\",\n    \"query_time_ms\": 9573.172618754108,\n    \"row_count\": 7374.489457045907,\n    \"row_limit\": 6792.970735118173,\n    \"truncated\": false,\n    \"warning\": \"string\"\n  }\n}",
+              "body": "{\n  \"data\": [\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 3548.185063659234\n      }\n    },\n    {\n      \"time_bucket\": \"string\",\n      \"dimensions\": {\n        \"key_0\": \"string\"\n      },\n      \"metrics\": {\n        \"key_0\": 9223.397504106464\n      }\n    }\n  ],\n  \"metadata\": {\n    \"granularity\": \"string\",\n    \"query_time_ms\": 3528.4330591705957,\n    \"row_count\": 9397.945596505699,\n    \"row_limit\": 1878.6871231767232,\n    \"truncated\": false,\n    \"warning\": \"string\"\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -1288,11 +1288,11 @@
     ]
   },
   "info": {
-    "_postman_id": "4b4bf54c-e653-429f-8a60-873ac688a870",
-    "name": "Hookdeck Metrics API",
+    "_postman_id": "97825ed9-f6b4-450c-88e6-638f56543d6c",
+    "name": "Hookdeck Bookmarks Attempts Metrics API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
-      "content": "Query aggregated metrics for events, requests, and attempts — success counts, failure counts, response time, throughput, and SLA bands grouped by source, destination, or connection.\n\nContact Support:\n Name: Hookdeck Support\n Email: info@hookdeck.com",
+      "content": "Save bookmarked events for quick replay and convenient one-click testing during development.\n\nContact Support:\n Name: Hookdeck Support\n Email: info@hookdeck.com",
       "type": "text/plain"
     }
   }

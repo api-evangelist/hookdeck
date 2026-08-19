@@ -1,7 +1,7 @@
 {
   "opencollection": "1.0.0",
   "info": {
-    "name": "Hookdeck Connections API",
+    "name": "Hookdeck Bookmarks Attempts Connections API",
     "version": "1.0.0"
   },
   "request": {

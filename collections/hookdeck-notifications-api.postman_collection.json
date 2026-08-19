@@ -1,7 +1,7 @@
 {
   "item": [
     {
-      "id": "0e955320-9733-4a39-96ae-cd38a9e113c4",
+      "id": "5a73e951-32f8-4b26-a983-eaea7d395510",
       "name": "Notifications",
       "description": {
         "content": "Notifications let your team receive alerts anytime an issue changes.",
@@ -9,7 +9,7 @@
       },
       "item": [
         {
-          "id": "c41f5e16-101e-486c-bba9-91195f887b51",
+          "id": "7ef5a178-abc4-4942-a553-ccb534bc9df1",
           "name": "Webhook Notifications",
           "request": {
             "name": "Webhook Notifications",
@@ -52,7 +52,7 @@
           },
           "response": [
             {
-              "id": "4069c593-dc8b-4b90-bb40-85704a217aa6",
+              "id": "a4ed0073-99c2-4ed3-93aa-193a226e23dd",
               "name": "Toggle operation status response",
               "originalRequest": {
                 "url": {
@@ -110,7 +110,7 @@
           }
         },
         {
-          "id": "3230be3f-4b23-4a70-b22d-14ff0ce3de2e",
+          "id": "fb5746a1-4eb8-4d2f-8371-0983950ab97a",
           "name": "Add a custom domain to the project",
           "request": {
             "name": "Add a custom domain to the project",
@@ -154,7 +154,7 @@
           },
           "response": [
             {
-              "id": "9577ffa2-303e-4078-b33b-150e01954c73",
+              "id": "e35d6368-075b-4396-92e3-c7f1ccee13e1",
               "name": "Custom domain successfuly added",
               "originalRequest": {
                 "url": {
@@ -213,7 +213,7 @@
           }
         },
         {
-          "id": "77ca579a-497f-43f1-98e8-afb1cd3d0009",
+          "id": "89faaad9-6e8b-408f-8f29-ab7c434753f5",
           "name": "List all custom domains and their verification statuses for the project",
           "request": {
             "name": "List all custom domains and their verification statuses for the project",
@@ -244,7 +244,7 @@
           },
           "response": [
             {
-              "id": "5072d932-839b-4a90-a7ca-3aecf6b9976f",
+              "id": "5c0d5ce4-31b4-4767-a6ab-ae47b0f7a3b0",
               "name": "List of custom domains",
               "originalRequest": {
                 "url": {
@@ -284,7 +284,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "[\n  {\n    \"id\": \"string\",\n    \"hostname\": \"string\",\n    \"status\": \"string\",\n    \"ssl\": {\n      \"id\": \"string\",\n      \"type\": \"string\",\n      \"method\": \"string\",\n      \"status\": \"string\",\n      \"txt_name\": \"string\",\n      \"txt_value\": \"string\",\n      \"validation_records\": [\n        {\n          \"status\": \"string\",\n          \"txt_name\": \"string\",\n          \"txt_value\": \"string\"\n        },\n        {\n          \"status\": \"string\",\n          \"txt_name\": \"string\",\n          \"txt_value\": \"string\"\n        }\n      ],\n      \"dcv_delegation_records\": [\n        {\n          \"cname\": \"string\",\n          \"cname_target\": \"string\"\n        },\n        {\n          \"cname\": \"string\",\n          \"cname_target\": \"string\"\n        }\n      ],\n      \"settings\": {\n        \"min_tls_version\": \"string\"\n      },\n      \"bundle_method\": \"string\",\n      \"wildcard\": true,\n      \"certificate_authority\": \"string\"\n    },\n    \"verification_errors\": [\n      \"string\",\n      \"string\"\n    ],\n    \"ownership_verification\": {\n      \"type\": \"string\",\n      \"name\": \"string\",\n      \"value\": \"string\"\n    },\n    \"created_at\": \"string\"\n  },\n  {\n    \"id\": \"string\",\n    \"hostname\": \"string\",\n    \"status\": \"string\",\n    \"ssl\": {\n      \"id\": \"string\",\n      \"type\": \"string\",\n      \"method\": \"string\",\n      \"status\": \"string\",\n      \"txt_name\": \"string\",\n      \"txt_value\": \"string\",\n      \"validation_records\": [\n        {\n          \"status\": \"string\",\n          \"txt_name\": \"string\",\n          \"txt_value\": \"string\"\n        },\n        {\n          \"status\": \"string\",\n          \"txt_name\": \"string\",\n          \"txt_value\": \"string\"\n        }\n      ],\n      \"dcv_delegation_records\": [\n        {\n          \"cname\": \"string\",\n          \"cname_target\": \"string\"\n        },\n        {\n          \"cname\": \"string\",\n          \"cname_target\": \"string\"\n        }\n      ],\n      \"settings\": {\n        \"min_tls_version\": \"string\"\n      },\n      \"bundle_method\": \"string\",\n      \"wildcard\": false,\n      \"certificate_authority\": \"string\"\n    },\n    \"verification_errors\": [\n      \"string\",\n      \"string\"\n    ],\n    \"ownership_verification\": {\n      \"type\": \"string\",\n      \"name\": \"string\",\n      \"value\": \"string\"\n    },\n    \"created_at\": \"string\"\n  }\n]",
+              "body": "[\n  {\n    \"id\": \"string\",\n    \"hostname\": \"string\",\n    \"status\": \"string\",\n    \"ssl\": {\n      \"id\": \"string\",\n      \"type\": \"string\",\n      \"method\": \"string\",\n      \"status\": \"string\",\n      \"txt_name\": \"string\",\n      \"txt_value\": \"string\",\n      \"validation_records\": [\n        {\n          \"status\": \"string\",\n          \"txt_name\": \"string\",\n          \"txt_value\": \"string\"\n        },\n        {\n          \"status\": \"string\",\n          \"txt_name\": \"string\",\n          \"txt_value\": \"string\"\n        }\n      ],\n      \"dcv_delegation_records\": [\n        {\n          \"cname\": \"string\",\n          \"cname_target\": \"string\"\n        },\n        {\n          \"cname\": \"string\",\n          \"cname_target\": \"string\"\n        }\n      ],\n      \"settings\": {\n        \"min_tls_version\": \"string\"\n      },\n      \"bundle_method\": \"string\",\n      \"wildcard\": false,\n      \"certificate_authority\": \"string\"\n    },\n    \"verification_errors\": [\n      \"string\",\n      \"string\"\n    ],\n    \"ownership_verification\": {\n      \"type\": \"string\",\n      \"name\": \"string\",\n      \"value\": \"string\"\n    },\n    \"created_at\": \"string\"\n  },\n  {\n    \"id\": \"string\",\n    \"hostname\": \"string\",\n    \"status\": \"string\",\n    \"ssl\": {\n      \"id\": \"string\",\n      \"type\": \"string\",\n      \"method\": \"string\",\n      \"status\": \"string\",\n      \"txt_name\": \"string\",\n      \"txt_value\": \"string\",\n      \"validation_records\": [\n        {\n          \"status\": \"string\",\n          \"txt_name\": \"string\",\n          \"txt_value\": \"string\"\n        },\n        {\n          \"status\": \"string\",\n          \"txt_name\": \"string\",\n          \"txt_value\": \"string\"\n        }\n      ],\n      \"dcv_delegation_records\": [\n        {\n          \"cname\": \"string\",\n          \"cname_target\": \"string\"\n        },\n        {\n          \"cname\": \"string\",\n          \"cname_target\": \"string\"\n        }\n      ],\n      \"settings\": {\n        \"min_tls_version\": \"string\"\n      },\n      \"bundle_method\": \"string\",\n      \"wildcard\": true,\n      \"certificate_authority\": \"string\"\n    },\n    \"verification_errors\": [\n      \"string\",\n      \"string\"\n    ],\n    \"ownership_verification\": {\n      \"type\": \"string\",\n      \"name\": \"string\",\n      \"value\": \"string\"\n    },\n    \"created_at\": \"string\"\n  }\n]",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -295,7 +295,7 @@
           }
         },
         {
-          "id": "d58aa678-d140-4005-9bc6-a0d02047f4a4",
+          "id": "5a0ecbad-5a30-426b-ab0f-af9f95717830",
           "name": "Removes a custom domain from the project",
           "request": {
             "name": "Removes a custom domain from the project",
@@ -335,7 +335,7 @@
           },
           "response": [
             {
-              "id": "3e217f65-10ae-4c05-9376-72dba051fb07",
+              "id": "e6646cac-9fb3-42eb-bad5-ec2a1efc062d",
               "name": "Custom domain successfuly removed",
               "originalRequest": {
                 "url": {
@@ -416,11 +416,11 @@
     ]
   },
   "info": {
-    "_postman_id": "a6da321b-370d-40ab-80d4-457deddcf15b",
-    "name": "Hookdeck Notifications API",
+    "_postman_id": "908775d9-d55c-47da-bde0-a6090560fc09",
+    "name": "Hookdeck Bookmarks Attempts Notifications API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
-      "content": "Manage how your team is notified when issues occur — channel routing, mute windows, and per-team subscriptions.\n\nContact Support:\n Name: Hookdeck Support\n Email: info@hookdeck.com",
+      "content": "Save bookmarked events for quick replay and convenient one-click testing during development.\n\nContact Support:\n Name: Hookdeck Support\n Email: info@hookdeck.com",
       "type": "text/plain"
     }
   }

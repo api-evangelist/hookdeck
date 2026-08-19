@@ -1,7 +1,7 @@
 {
   "opencollection": "1.0.0",
   "info": {
-    "name": "Hookdeck Events API",
+    "name": "Hookdeck Bookmarks Attempts Events API",
     "version": "1.0.0"
   },
   "request": {
@@ -11,80 +11,6 @@
     }
   },
   "items": [
-    {
-      "info": {
-        "name": "Attempts",
-        "type": "folder"
-      },
-      "items": [
-        {
-          "info": {
-            "name": "Retrieve attempts",
-            "type": "http"
-          },
-          "http": {
-            "method": "GET",
-            "url": "https://api.hookdeck.com/2025-07-01/attempts",
-            "params": [
-              {
-                "name": "id",
-                "value": "",
-                "type": "query"
-              },
-              {
-                "name": "event_id",
-                "value": "",
-                "type": "query"
-              },
-              {
-                "name": "order_by",
-                "value": "",
-                "type": "query"
-              },
-              {
-                "name": "dir",
-                "value": "",
-                "type": "query"
-              },
-              {
-                "name": "limit",
-                "value": "",
-                "type": "query"
-              },
-              {
-                "name": "next",
-                "value": "",
-                "type": "query"
-              },
-              {
-                "name": "prev",
-                "value": "",
-                "type": "query"
-              }
-            ]
-          },
-          "docs": "This endpoint lists attempts, or a subset of attempts."
-        },
-        {
-          "info": {
-            "name": "Retrieve an attempt",
-            "type": "http"
-          },
-          "http": {
-            "method": "GET",
-            "url": "https://api.hookdeck.com/2025-07-01/attempts/:id",
-            "params": [
-              {
-                "name": "id",
-                "value": "",
-                "type": "path"
-              }
-            ]
-          },
-          "docs": "This endpoint retrieves a specific attempt. When retrieving a completed attempt, the response will contain the `body` of the destination's response. If the `body` is not yet available in our backend service the `body` will be set to `NOT_AVAILABLE_YET`."
-        }
-      ]
-    },
     {
       "info": {
         "name": "Events",

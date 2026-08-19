@@ -1,25 +1,25 @@
 {
   "item": [
     {
-      "id": "a99632c3-a45d-40b0-83c0-d23d5e1e92a7",
-      "name": "Integrations",
+      "id": "b3c49243-f5c9-40b7-834b-319a1fd5f5d9",
+      "name": "Issue Triggers",
       "description": {
-        "content": "An integration configures platform-specific behaviors, such as signature verification.",
+        "content": "Issue Triggers lets you setup rules that trigger issues when certain conditions are met.",
         "type": "text/plain"
       },
       "item": [
         {
-          "id": "dee96712-7644-4398-8f91-2829ece6ec2a",
-          "name": "Get integrations",
+          "id": "e8ce2483-2879-4c45-8d3c-0ada5a61374d",
+          "name": "Retrieve issue triggers",
           "request": {
-            "name": "Get integrations",
+            "name": "Retrieve issue triggers",
             "description": {
-              "content": "",
+              "content": "This endpoint lists issue triggers.",
               "type": "text/plain"
             },
             "url": {
               "path": [
-                "integrations"
+                "issue-triggers"
               ],
               "host": [
                 "{{baseUrl}}"
@@ -27,12 +27,42 @@
               "query": [
                 {
                   "disabled": false,
-                  "key": "label",
+                  "key": "name",
                   "value": "<string>"
                 },
                 {
                   "disabled": false,
-                  "key": "provider",
+                  "key": "type",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "disabled_at",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "order_by",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dir",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "next",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "prev",
                   "value": "<string>"
                 }
               ],
@@ -49,23 +79,47 @@
           },
           "response": [
             {
-              "id": "34ab3c2b-de4d-42e3-a3a8-d47022a2fab0",
-              "name": "List of integrations",
+              "id": "738c3f68-1a0a-4046-8ae5-759a754e8190",
+              "name": "List of issue triggers",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "integrations"
+                    "issue-triggers"
                   ],
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "query": [
                     {
-                      "key": "label",
+                      "key": "name",
                       "value": "<string>"
                     },
                     {
-                      "key": "provider",
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "disabled_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dir",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "next",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "prev",
                       "value": "<string>"
                     }
                   ],
@@ -96,28 +150,52 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"pagination\": {\n    \"order_by\": \"string\",\n    \"dir\": \"string\",\n    \"limit\": 2040,\n    \"prev\": \"string\",\n    \"next\": \"string\"\n  },\n  \"count\": 63,\n  \"models\": [\n    {\n      \"id\": \"string\",\n      \"team_id\": \"string\",\n      \"label\": \"string\",\n      \"provider\": \"<string>\",\n      \"features\": [\n        \"VERIFICATION\",\n        \"HANDSHAKE\"\n      ],\n      \"configs\": {\n        \"webhook_secret_key\": \"string\",\n        \"algorithm\": \"sha512\",\n        \"header_key\": \"string\",\n        \"encoding\": \"base64\"\n      },\n      \"sources\": [\n        \"string\",\n        \"string\"\n      ],\n      \"updated_at\": \"1950-11-26T02:06:56.960Z\",\n      \"created_at\": \"1956-09-12T12:47:20.645Z\"\n    },\n    {\n      \"id\": \"string\",\n      \"team_id\": \"string\",\n      \"label\": \"string\",\n      \"provider\": \"<string>\",\n      \"features\": [\n        \"HANDSHAKE\",\n        \"HANDSHAKE\"\n      ],\n      \"configs\": {\n        \"webhook_secret_key\": \"string\",\n        \"algorithm\": \"md5\",\n        \"header_key\": \"string\",\n        \"encoding\": \"base64\"\n      },\n      \"sources\": [\n        \"string\",\n        \"string\"\n      ],\n      \"updated_at\": \"1959-08-19T02:37:41.938Z\",\n      \"created_at\": \"2004-11-16T09:54:01.032Z\"\n    }\n  ]\n}",
+              "body": "{\n  \"pagination\": {\n    \"order_by\": \"string\",\n    \"dir\": \"string\",\n    \"limit\": 8677,\n    \"prev\": \"string\",\n    \"next\": \"string\"\n  },\n  \"count\": 1861,\n  \"models\": [\n    {\n      \"id\": \"string\",\n      \"type\": \"<string>\",\n      \"configs\": {\n        \"strategy\": \"first_attempt\",\n        \"connections\": \"string\"\n      },\n      \"updated_at\": \"1993-06-22T04:29:14.261Z\",\n      \"created_at\": \"1981-01-11T21:25:09.139Z\",\n      \"team_id\": \"string\",\n      \"name\": \"string\",\n      \"channels\": {\n        \"slack\": {\n          \"channel_name\": \"string\"\n        },\n        \"microsoft_teams\": {\n          \"channel_name\": \"string\"\n        },\n        \"discord\": {\n          \"channel_name\": \"string\",\n          \"channel_id\": \"string\",\n          \"webhook_url\": \"string\"\n        },\n        \"betteruptime\": {\n          \"escalation_policy_id\": \"string\",\n          \"escalation_policy_name\": \"string\"\n        },\n        \"pagerduty\": {},\n        \"opsgenie\": {},\n        \"email\": {}\n      },\n      \"disabled_at\": \"1958-12-01T18:13:36.859Z\",\n      \"deleted_at\": \"2019-07-29T03:04:18.968Z\"\n    },\n    {\n      \"id\": \"string\",\n      \"type\": \"<string>\",\n      \"configs\": {\n        \"strategy\": \"first_attempt\",\n        \"connections\": \"string\"\n      },\n      \"updated_at\": \"1993-09-03T09:32:28.940Z\",\n      \"created_at\": \"2016-03-03T03:04:03.792Z\",\n      \"team_id\": \"string\",\n      \"name\": \"string\",\n      \"channels\": {\n        \"slack\": {\n          \"channel_name\": \"string\"\n        },\n        \"microsoft_teams\": {\n          \"channel_name\": \"string\"\n        },\n        \"discord\": {\n          \"channel_name\": \"string\",\n          \"channel_id\": \"string\",\n          \"webhook_url\": \"string\"\n        },\n        \"betteruptime\": {\n          \"escalation_policy_id\": \"string\",\n          \"escalation_policy_name\": \"string\"\n        },\n        \"pagerduty\": {},\n        \"opsgenie\": {},\n        \"email\": {}\n      },\n      \"disabled_at\": \"1993-02-04T17:56:41.500Z\",\n      \"deleted_at\": \"2017-01-23T08:41:04.958Z\"\n    }\n  ]\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "b271bc8d-4907-4412-b3d3-d1d35389471c",
+              "id": "c59b0043-2b54-4ef2-8b00-10c01dce2365",
               "name": "Bad Request",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "integrations"
+                    "issue-triggers"
                   ],
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "query": [
                     {
-                      "key": "label",
+                      "key": "name",
                       "value": "<string>"
                     },
                     {
-                      "key": "provider",
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "disabled_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dir",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "next",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "prev",
                       "value": "<string>"
                     }
                   ],
@@ -148,28 +226,52 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 5841.136984654993,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 599.4308741626542,\n  \"message\": \"string\",\n  \"data\": {}\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "0a804a19-9c02-48aa-bfc4-7d698cf2489f",
+              "id": "186672f7-036f-46fb-b8c6-5bb97c82e04b",
               "name": "Unprocessable Entity",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "integrations"
+                    "issue-triggers"
                   ],
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "query": [
                     {
-                      "key": "label",
+                      "key": "name",
                       "value": "<string>"
                     },
                     {
-                      "key": "provider",
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "disabled_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dir",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "next",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "prev",
                       "value": "<string>"
                     }
                   ],
@@ -200,7 +302,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 5841.136984654993,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 599.4308741626542,\n  \"message\": \"string\",\n  \"data\": {}\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -211,17 +313,17 @@
           }
         },
         {
-          "id": "8b7ec889-72c3-462a-99ab-9f5eedc3681e",
-          "name": "Create an integration",
+          "id": "97e119d6-c1b7-4fc0-957e-1bf08479e0e8",
+          "name": "Create an issue trigger",
           "request": {
-            "name": "Create an integration",
+            "name": "Create an issue trigger",
             "description": {
-              "content": "",
+              "content": "This endpoint creates an issue trigger.",
               "type": "text/plain"
             },
             "url": {
               "path": [
-                "integrations"
+                "issue-triggers"
               ],
               "host": [
                 "{{baseUrl}}"
@@ -243,7 +345,7 @@
             "auth": null,
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"label\": \"<string>\",\n  \"configs\": {\n    \"webhook_secret_key\": \"<string>\",\n    \"algorithm\": \"<string>\",\n    \"header_key\": \"<string>\",\n    \"encoding\": \"<string>\"\n  },\n  \"provider\": \"<string>\",\n  \"features\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "raw": "{\n  \"type\": \"<string>\",\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  },\n  \"name\": \"<string>\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -253,12 +355,12 @@
           },
           "response": [
             {
-              "id": "68e68e62-724f-4712-b73e-3bf22d082ac6",
-              "name": "A single integration",
+              "id": "5a10e8a6-fb9b-4232-b49c-66ec6ae74608",
+              "name": "A single issue trigger",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "integrations"
+                    "issue-triggers"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -283,7 +385,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"label\": \"<string>\",\n  \"configs\": {\n    \"webhook_secret_key\": \"<string>\",\n    \"algorithm\": \"<string>\",\n    \"header_key\": \"<string>\",\n    \"encoding\": \"<string>\"\n  },\n  \"provider\": \"<string>\",\n  \"features\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "raw": "{\n  \"type\": \"<string>\",\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  },\n  \"name\": \"<string>\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -299,17 +401,17 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"string\",\n  \"team_id\": \"string\",\n  \"label\": \"string\",\n  \"provider\": \"<string>\",\n  \"features\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"configs\": {\n    \"webhook_secret_key\": \"<string>\",\n    \"algorithm\": \"<string>\",\n    \"header_key\": \"<string>\",\n    \"encoding\": \"<string>\"\n  },\n  \"sources\": [\n    \"string\",\n    \"string\"\n  ],\n  \"updated_at\": \"1986-11-06T10:34:44.996Z\",\n  \"created_at\": \"1951-07-01T06:50:06.391Z\"\n}",
+              "body": "{\n  \"id\": \"string\",\n  \"type\": \"<string>\",\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  },\n  \"updated_at\": \"2005-04-08T14:46:33.187Z\",\n  \"created_at\": \"1996-01-30T14:29:13.427Z\",\n  \"team_id\": \"string\",\n  \"name\": \"string\",\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"disabled_at\": \"2012-01-15T03:52:17.752Z\",\n  \"deleted_at\": \"1965-03-05T19:49:40.298Z\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "8c81da22-942a-40da-b521-9e58b578d99b",
+              "id": "5b53c973-8d6b-43d3-90c0-e3d387567aeb",
               "name": "Bad Request",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "integrations"
+                    "issue-triggers"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -334,7 +436,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"label\": \"<string>\",\n  \"configs\": {\n    \"webhook_secret_key\": \"<string>\",\n    \"algorithm\": \"<string>\",\n    \"header_key\": \"<string>\",\n    \"encoding\": \"<string>\"\n  },\n  \"provider\": \"<string>\",\n  \"features\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "raw": "{\n  \"type\": \"<string>\",\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  },\n  \"name\": \"<string>\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -350,17 +452,17 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 5841.136984654993,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 599.4308741626542,\n  \"message\": \"string\",\n  \"data\": {}\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "a89568f6-dbc1-49de-a6dd-b4239aa12712",
+              "id": "d34888df-25b7-4d10-b96d-b450f575b1b4",
               "name": "Unprocessable Entity",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "integrations"
+                    "issue-triggers"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -385,7 +487,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"label\": \"<string>\",\n  \"configs\": {\n    \"webhook_secret_key\": \"<string>\",\n    \"algorithm\": \"<string>\",\n    \"header_key\": \"<string>\",\n    \"encoding\": \"<string>\"\n  },\n  \"provider\": \"<string>\",\n  \"features\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "raw": "{\n  \"type\": \"<string>\",\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  },\n  \"name\": \"<string>\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -401,7 +503,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 5841.136984654993,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 599.4308741626542,\n  \"message\": \"string\",\n  \"data\": {}\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -412,17 +514,218 @@
           }
         },
         {
-          "id": "28de0690-adf2-4cab-97c4-b18a6e2c99f9",
-          "name": "Get an integration",
+          "id": "11599a7a-7b8b-41e1-8f00-44892d031eba",
+          "name": "Create/Update an issue trigger",
           "request": {
-            "name": "Get an integration",
+            "name": "Create/Update an issue trigger",
             "description": {
-              "content": "",
+              "content": "This endpoint creates an issue trigger, or updates an existing issue trigger by name.",
               "type": "text/plain"
             },
             "url": {
               "path": [
-                "integrations",
+                "issue-triggers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"<string>\",\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"name\": \"<string>\",\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b673fdc1-16c0-4e03-b691-c1bcfd2f8ac0",
+              "name": "A single issue trigger",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue-triggers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"<string>\",\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"name\": \"<string>\",\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"type\": \"<string>\",\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  },\n  \"updated_at\": \"2005-04-08T14:46:33.187Z\",\n  \"created_at\": \"1996-01-30T14:29:13.427Z\",\n  \"team_id\": \"string\",\n  \"name\": \"string\",\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"disabled_at\": \"2012-01-15T03:52:17.752Z\",\n  \"deleted_at\": \"1965-03-05T19:49:40.298Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dcdc70fb-0717-48d6-9401-3d0673f1033c",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue-triggers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"<string>\",\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"name\": \"<string>\",\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 599.4308741626542,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "870cd172-698d-4813-93ae-7fceed2afa46",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issue-triggers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"<string>\",\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"name\": \"<string>\",\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 599.4308741626542,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cb0b52de-0641-43df-9faf-d09b0d1e6463",
+          "name": "Retrieve an issue trigger",
+          "request": {
+            "name": "Retrieve an issue trigger",
+            "description": {
+              "content": "This endpoint retrieves a specific issue trigger.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "issue-triggers",
                 ":id"
               ],
               "host": [
@@ -450,12 +753,12 @@
           },
           "response": [
             {
-              "id": "02bed990-7b76-49cb-bbb4-67abd2dc4c8d",
-              "name": "A single integration",
+              "id": "a54fe7d1-f6d3-41f0-971a-78d42f0d4e62",
+              "name": "A single issue trigger",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "integrations",
+                    "issue-triggers",
                     ":id"
                   ],
                   "host": [
@@ -497,17 +800,17 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"string\",\n  \"team_id\": \"string\",\n  \"label\": \"string\",\n  \"provider\": \"<string>\",\n  \"features\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"configs\": {\n    \"webhook_secret_key\": \"<string>\",\n    \"algorithm\": \"<string>\",\n    \"header_key\": \"<string>\",\n    \"encoding\": \"<string>\"\n  },\n  \"sources\": [\n    \"string\",\n    \"string\"\n  ],\n  \"updated_at\": \"1986-11-06T10:34:44.996Z\",\n  \"created_at\": \"1951-07-01T06:50:06.391Z\"\n}",
+              "body": "{\n  \"id\": \"string\",\n  \"type\": \"<string>\",\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  },\n  \"updated_at\": \"2005-04-08T14:46:33.187Z\",\n  \"created_at\": \"1996-01-30T14:29:13.427Z\",\n  \"team_id\": \"string\",\n  \"name\": \"string\",\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"disabled_at\": \"2012-01-15T03:52:17.752Z\",\n  \"deleted_at\": \"1965-03-05T19:49:40.298Z\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "4d32d95b-0a63-4057-bac9-52bef968a1b6",
+              "id": "088c8be0-4b77-48c1-91ab-f1018b1f2926",
               "name": "Not Found",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "integrations",
+                    "issue-triggers",
                     ":id"
                   ],
                   "host": [
@@ -549,7 +852,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 5841.136984654993,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 599.4308741626542,\n  \"message\": \"string\",\n  \"data\": {}\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -560,17 +863,17 @@
           }
         },
         {
-          "id": "7b31c18e-a687-4cd2-9452-dbe14c655141",
-          "name": "Update an integration",
+          "id": "d72fc6c7-bdbd-407a-8bf1-a5f08e847956",
+          "name": "Update an issue trigger",
           "request": {
-            "name": "Update an integration",
+            "name": "Update an issue trigger",
             "description": {
-              "content": "",
+              "content": "This endpoint updates an issue trigger.",
               "type": "text/plain"
             },
             "url": {
               "path": [
-                "integrations",
+                "issue-triggers",
                 ":id"
               ],
               "host": [
@@ -601,7 +904,7 @@
             "auth": null,
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"label\": \"<string>\",\n  \"configs\": {\n    \"webhook_secret_key\": \"<string>\",\n    \"algorithm\": \"<string>\",\n    \"header_key\": \"<string>\",\n    \"encoding\": \"<string>\"\n  },\n  \"provider\": \"<string>\",\n  \"features\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "raw": "{\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  },\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"disabled_at\": \"<dateTime>\",\n  \"name\": \"<string>\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -611,12 +914,12 @@
           },
           "response": [
             {
-              "id": "9a61425a-ded6-400e-9ad6-f423a20effff",
-              "name": "A single integration",
+              "id": "4fe06a81-0f26-4162-9607-77eb6b19ef61",
+              "name": "A single issue trigger",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "integrations",
+                    "issue-triggers",
                     ":id"
                   ],
                   "host": [
@@ -650,7 +953,7 @@
                 "method": "PUT",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"label\": \"<string>\",\n  \"configs\": {\n    \"webhook_secret_key\": \"<string>\",\n    \"algorithm\": \"<string>\",\n    \"header_key\": \"<string>\",\n    \"encoding\": \"<string>\"\n  },\n  \"provider\": \"<string>\",\n  \"features\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "raw": "{\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  },\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"disabled_at\": \"<dateTime>\",\n  \"name\": \"<string>\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -666,17 +969,17 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"string\",\n  \"team_id\": \"string\",\n  \"label\": \"string\",\n  \"provider\": \"<string>\",\n  \"features\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"configs\": {\n    \"webhook_secret_key\": \"<string>\",\n    \"algorithm\": \"<string>\",\n    \"header_key\": \"<string>\",\n    \"encoding\": \"<string>\"\n  },\n  \"sources\": [\n    \"string\",\n    \"string\"\n  ],\n  \"updated_at\": \"1986-11-06T10:34:44.996Z\",\n  \"created_at\": \"1951-07-01T06:50:06.391Z\"\n}",
+              "body": "{\n  \"id\": \"string\",\n  \"type\": \"<string>\",\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  },\n  \"updated_at\": \"2005-04-08T14:46:33.187Z\",\n  \"created_at\": \"1996-01-30T14:29:13.427Z\",\n  \"team_id\": \"string\",\n  \"name\": \"string\",\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"disabled_at\": \"2012-01-15T03:52:17.752Z\",\n  \"deleted_at\": \"1965-03-05T19:49:40.298Z\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "e792ddbe-4c4b-40d1-aca5-3eadc82b6527",
+              "id": "3730266f-f5e9-4ca1-abc3-78a88093c17c",
               "name": "Bad Request",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "integrations",
+                    "issue-triggers",
                     ":id"
                   ],
                   "host": [
@@ -710,7 +1013,7 @@
                 "method": "PUT",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"label\": \"<string>\",\n  \"configs\": {\n    \"webhook_secret_key\": \"<string>\",\n    \"algorithm\": \"<string>\",\n    \"header_key\": \"<string>\",\n    \"encoding\": \"<string>\"\n  },\n  \"provider\": \"<string>\",\n  \"features\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "raw": "{\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  },\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"disabled_at\": \"<dateTime>\",\n  \"name\": \"<string>\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -726,77 +1029,17 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 5841.136984654993,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 599.4308741626542,\n  \"message\": \"string\",\n  \"data\": {}\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "302de710-d20f-4d3f-a8e1-a2ee1ce1f5d6",
-              "name": "Not Found",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "integrations",
-                    ":id"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "id",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: bearer",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "Bearer <token>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "PUT",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"label\": \"<string>\",\n  \"configs\": {\n    \"webhook_secret_key\": \"<string>\",\n    \"algorithm\": \"<string>\",\n    \"header_key\": \"<string>\",\n    \"encoding\": \"<string>\"\n  },\n  \"provider\": \"<string>\",\n  \"features\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              },
-              "status": "Not Found",
-              "code": 404,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 5841.136984654993,\n  \"message\": \"string\",\n  \"data\": {}\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "b05be994-358f-49f9-b583-ac315c86b2a3",
+              "id": "a3a42c63-7ed7-484e-b034-aa155c3d3df2",
               "name": "Unprocessable Entity",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "integrations",
+                    "issue-triggers",
                     ":id"
                   ],
                   "host": [
@@ -830,7 +1073,7 @@
                 "method": "PUT",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"label\": \"<string>\",\n  \"configs\": {\n    \"webhook_secret_key\": \"<string>\",\n    \"algorithm\": \"<string>\",\n    \"header_key\": \"<string>\",\n    \"encoding\": \"<string>\"\n  },\n  \"provider\": \"<string>\",\n  \"features\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "raw": "{\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  },\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"disabled_at\": \"<dateTime>\",\n  \"name\": \"<string>\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -846,7 +1089,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 5841.136984654993,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 599.4308741626542,\n  \"message\": \"string\",\n  \"data\": {}\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -857,17 +1100,17 @@
           }
         },
         {
-          "id": "b8fb7c3f-b845-447f-bed4-62080c213337",
-          "name": "Delete an integration",
+          "id": "aba4935e-4acc-42d5-b2ef-814bb128d672",
+          "name": "Delete an issue trigger",
           "request": {
-            "name": "Delete an integration",
+            "name": "Delete an issue trigger",
             "description": {
-              "content": "",
+              "content": "This endpoint permanently deletes an issue trigger. This action cannot be undone.",
               "type": "text/plain"
             },
             "url": {
               "path": [
-                "integrations",
+                "issue-triggers",
                 ":id"
               ],
               "host": [
@@ -895,12 +1138,12 @@
           },
           "response": [
             {
-              "id": "597c5660-f048-42b2-a0e9-64ea02f4432f",
-              "name": "An object with deleted integration id",
+              "id": "9ef62ef0-3c38-43ce-9dd4-163d9b25eddb",
+              "name": "An object with deleted issue trigger's id",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "integrations",
+                    "issue-triggers",
                     ":id"
                   ],
                   "host": [
@@ -947,12 +1190,12 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "843b9ff5-f84c-4f4f-9ac8-95a2e99db15a",
+              "id": "5acfb307-0edc-40b9-9d24-7db404fcbcc6",
               "name": "Not Found",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "integrations",
+                    "issue-triggers",
                     ":id"
                   ],
                   "host": [
@@ -994,7 +1237,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 5841.136984654993,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 599.4308741626542,\n  \"message\": \"string\",\n  \"data\": {}\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -1005,20 +1248,19 @@
           }
         },
         {
-          "id": "d190a104-c44f-41a5-b079-b5e3fe4fc6c8",
-          "name": "Attach an integration to a source",
+          "id": "36850033-04e4-43c9-bf65-df5375a19eae",
+          "name": "Disable an issue trigger",
           "request": {
-            "name": "Attach an integration to a source",
+            "name": "Disable an issue trigger",
             "description": {
-              "content": "",
+              "content": "This endpoint disables an issue trigger so it stops producing issues.",
               "type": "text/plain"
             },
             "url": {
               "path": [
-                "integrations",
+                "issue-triggers",
                 ":id",
-                "attach",
-                ":source_id"
+                "disable"
               ],
               "host": [
                 "{{baseUrl}}"
@@ -1030,13 +1272,6 @@
                   "type": "any",
                   "value": "<string>",
                   "key": "id",
-                  "description": "(Required) "
-                },
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "source_id",
                   "description": "(Required) "
                 }
               ]
@@ -1052,15 +1287,14 @@
           },
           "response": [
             {
-              "id": "600c2f18-9025-40b8-ae03-3eb921b35e41",
-              "name": "Attach operation success status",
+              "id": "178fabe7-999b-4f90-95e7-25d8d4a7fb0d",
+              "name": "A single issue trigger",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "integrations",
+                    "issue-triggers",
                     ":id",
-                    "attach",
-                    ":source_id"
+                    "disable"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -1072,13 +1306,6 @@
                       "type": "any",
                       "value": "<string>",
                       "key": "id",
-                      "description": "(Required) "
-                    },
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "source_id",
                       "description": "(Required) "
                     }
                   ]
@@ -1108,81 +1335,19 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"success\": false\n}",
+              "body": "{\n  \"id\": \"string\",\n  \"type\": \"<string>\",\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  },\n  \"updated_at\": \"2005-04-08T14:46:33.187Z\",\n  \"created_at\": \"1996-01-30T14:29:13.427Z\",\n  \"team_id\": \"string\",\n  \"name\": \"string\",\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"disabled_at\": \"2012-01-15T03:52:17.752Z\",\n  \"deleted_at\": \"1965-03-05T19:49:40.298Z\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "5e31e409-30ce-4c57-a165-aabd06040b41",
-              "name": "Bad Request",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "integrations",
-                    ":id",
-                    "attach",
-                    ":source_id"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "id",
-                      "description": "(Required) "
-                    },
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "source_id",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: bearer",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "Bearer <token>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "PUT",
-                "body": {}
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 5841.136984654993,\n  \"message\": \"string\",\n  \"data\": {}\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "36da0006-a252-4cc5-baf2-7b2d809c1349",
+              "id": "ed546bf2-4cd9-49cb-b91f-cd00c46901fd",
               "name": "Not Found",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "integrations",
+                    "issue-triggers",
                     ":id",
-                    "attach",
-                    ":source_id"
+                    "disable"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -1194,13 +1359,6 @@
                       "type": "any",
                       "value": "<string>",
                       "key": "id",
-                      "description": "(Required) "
-                    },
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "source_id",
                       "description": "(Required) "
                     }
                   ]
@@ -1230,7 +1388,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 5841.136984654993,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 599.4308741626542,\n  \"message\": \"string\",\n  \"data\": {}\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -1241,20 +1399,19 @@
           }
         },
         {
-          "id": "96610f47-9206-4b88-a0c9-c03e72d53c9e",
-          "name": "Detach an integration from a source",
+          "id": "014e6553-cb69-4ebe-9bc1-1ac54236ef62",
+          "name": "Enable an issue trigger",
           "request": {
-            "name": "Detach an integration from a source",
+            "name": "Enable an issue trigger",
             "description": {
-              "content": "",
+              "content": "This endpoint enables a previously disabled issue trigger.",
               "type": "text/plain"
             },
             "url": {
               "path": [
-                "integrations",
+                "issue-triggers",
                 ":id",
-                "detach",
-                ":source_id"
+                "enable"
               ],
               "host": [
                 "{{baseUrl}}"
@@ -1266,13 +1423,6 @@
                   "type": "any",
                   "value": "<string>",
                   "key": "id",
-                  "description": "(Required) "
-                },
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "source_id",
                   "description": "(Required) "
                 }
               ]
@@ -1288,15 +1438,14 @@
           },
           "response": [
             {
-              "id": "16547a39-0fa4-42ba-879e-1b5d677de6a3",
-              "name": "Detach operation success status",
+              "id": "0ba4ace0-e064-4916-a7b4-2970f4cae3b7",
+              "name": "A single issue trigger",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "integrations",
+                    "issue-triggers",
                     ":id",
-                    "detach",
-                    ":source_id"
+                    "enable"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -1308,13 +1457,6 @@
                       "type": "any",
                       "value": "<string>",
                       "key": "id",
-                      "description": "(Required) "
-                    },
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "source_id",
                       "description": "(Required) "
                     }
                   ]
@@ -1344,81 +1486,19 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{}",
+              "body": "{\n  \"id\": \"string\",\n  \"type\": \"<string>\",\n  \"configs\": {\n    \"strategy\": \"<string>\",\n    \"connections\": \"<string>\"\n  },\n  \"updated_at\": \"2005-04-08T14:46:33.187Z\",\n  \"created_at\": \"1996-01-30T14:29:13.427Z\",\n  \"team_id\": \"string\",\n  \"name\": \"string\",\n  \"channels\": {\n    \"slack\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"microsoft_teams\": {\n      \"channel_name\": \"<string>\"\n    },\n    \"discord\": {\n      \"channel_name\": \"<string>\",\n      \"channel_id\": \"<string>\",\n      \"webhook_url\": \"<string>\"\n    },\n    \"betteruptime\": {\n      \"escalation_policy_id\": \"<string>\",\n      \"escalation_policy_name\": \"<string>\"\n    },\n    \"pagerduty\": {},\n    \"opsgenie\": {},\n    \"email\": {}\n  },\n  \"disabled_at\": \"2012-01-15T03:52:17.752Z\",\n  \"deleted_at\": \"1965-03-05T19:49:40.298Z\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "5ab4bf01-501c-42f6-96af-7c578e0905bd",
-              "name": "Bad Request",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "integrations",
-                    ":id",
-                    "detach",
-                    ":source_id"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "id",
-                      "description": "(Required) "
-                    },
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "source_id",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: bearer",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "Bearer <token>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "PUT",
-                "body": {}
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 5841.136984654993,\n  \"message\": \"string\",\n  \"data\": {}\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "fa76d102-d6d0-43a4-9101-3d296925dc0e",
+              "id": "c86c23f3-767a-45f3-852c-70b911f5855e",
               "name": "Not Found",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "integrations",
+                    "issue-triggers",
                     ":id",
-                    "detach",
-                    ":source_id"
+                    "enable"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -1430,13 +1510,6 @@
                       "type": "any",
                       "value": "<string>",
                       "key": "id",
-                      "description": "(Required) "
-                    },
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "source_id",
                       "description": "(Required) "
                     }
                   ]
@@ -1466,7 +1539,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"code\": \"string\",\n  \"status\": 5841.136984654993,\n  \"message\": \"string\",\n  \"data\": {}\n}",
+              "body": "{\n  \"code\": \"string\",\n  \"status\": 599.4308741626542,\n  \"message\": \"string\",\n  \"data\": {}\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -1498,8 +1571,8 @@
     ]
   },
   "info": {
-    "_postman_id": "e11de8c8-a0fd-4ebb-a299-6b1f608a57a2",
-    "name": "Hookdeck Bookmarks Attempts Integrations API",
+    "_postman_id": "e94d32e8-6375-42fb-b0cd-f84d078e936f",
+    "name": "Hookdeck Bookmarks Attempts Issue Triggers API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
       "content": "Save bookmarked events for quick replay and convenient one-click testing during development.\n\nContact Support:\n Name: Hookdeck Support\n Email: info@hookdeck.com",

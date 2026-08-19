@@ -1,7 +1,7 @@
 {
   "opencollection": "1.0.0",
   "info": {
-    "name": "Hookdeck Bookmarks Attempts Sources API",
+    "name": "Hookdeck Bookmarks Attempts Issue Triggers API",
     "version": "1.0.0"
   },
   "request": {
@@ -13,24 +13,19 @@
   "items": [
     {
       "info": {
-        "name": "Sources",
+        "name": "Issue Triggers",
         "type": "folder"
       },
       "items": [
         {
           "info": {
-            "name": "Retrieve sources",
+            "name": "Retrieve issue triggers",
             "type": "http"
           },
           "http": {
             "method": "GET",
-            "url": "https://api.hookdeck.com/2025-07-01/sources",
+            "url": "https://api.hookdeck.com/2025-07-01/issue-triggers",
             "params": [
-              {
-                "name": "id",
-                "value": "",
-                "type": "query"
-              },
               {
                 "name": "name",
                 "value": "",
@@ -38,11 +33,6 @@
               },
               {
                 "name": "type",
-                "value": "",
-                "type": "query"
-              },
-              {
-                "name": "disabled",
                 "value": "",
                 "type": "query"
               },
@@ -78,63 +68,47 @@
               }
             ]
           },
-          "docs": "This endpoint lists sources, or a subset of sources."
+          "docs": "This endpoint lists issue triggers."
         },
         {
           "info": {
-            "name": "Create a source",
+            "name": "Create an issue trigger",
             "type": "http"
           },
           "http": {
             "method": "POST",
-            "url": "https://api.hookdeck.com/2025-07-01/sources",
+            "url": "https://api.hookdeck.com/2025-07-01/issue-triggers",
             "body": {
               "type": "json",
               "data": "{}"
             }
           },
-          "docs": "This endpoint creates a source."
+          "docs": "This endpoint creates an issue trigger."
         },
         {
           "info": {
-            "name": "Create/Update a source",
+            "name": "Create/Update an issue trigger",
             "type": "http"
           },
           "http": {
             "method": "PUT",
-            "url": "https://api.hookdeck.com/2025-07-01/sources",
+            "url": "https://api.hookdeck.com/2025-07-01/issue-triggers",
             "body": {
               "type": "json",
               "data": "{}"
             }
           },
-          "docs": "This endpoint creates a source, or updates an existing source by name."
+          "docs": "This endpoint creates an issue trigger, or updates an existing issue trigger by name."
         },
         {
           "info": {
-            "name": "Count sources",
+            "name": "Retrieve an issue trigger",
             "type": "http"
           },
           "http": {
             "method": "GET",
-            "url": "https://api.hookdeck.com/2025-07-01/sources/count"
-          },
-          "docs": "Count sources"
-        },
-        {
-          "info": {
-            "name": "Retrieve a source",
-            "type": "http"
-          },
-          "http": {
-            "method": "GET",
-            "url": "https://api.hookdeck.com/2025-07-01/sources/:id",
+            "url": "https://api.hookdeck.com/2025-07-01/issue-triggers/:id",
             "params": [
-              {
-                "name": "include",
-                "value": "",
-                "type": "query"
-              },
               {
                 "name": "id",
                 "value": "",
@@ -142,16 +116,16 @@
               }
             ]
           },
-          "docs": "This endpoint retrieves a specific source."
+          "docs": "This endpoint retrieves a specific issue trigger."
         },
         {
           "info": {
-            "name": "Update a source",
+            "name": "Update an issue trigger",
             "type": "http"
           },
           "http": {
             "method": "PUT",
-            "url": "https://api.hookdeck.com/2025-07-01/sources/:id",
+            "url": "https://api.hookdeck.com/2025-07-01/issue-triggers/:id",
             "params": [
               {
                 "name": "id",
@@ -164,16 +138,16 @@
               "data": "{}"
             }
           },
-          "docs": "This endpoint updates a source."
+          "docs": "This endpoint updates an issue trigger."
         },
         {
           "info": {
-            "name": "Delete a source",
+            "name": "Delete an issue trigger",
             "type": "http"
           },
           "http": {
             "method": "DELETE",
-            "url": "https://api.hookdeck.com/2025-07-01/sources/:id",
+            "url": "https://api.hookdeck.com/2025-07-01/issue-triggers/:id",
             "params": [
               {
                 "name": "id",
@@ -182,16 +156,16 @@
               }
             ]
           },
-          "docs": "This endpoint permanently deletes a source. This action cannot be undone."
+          "docs": "This endpoint permanently deletes an issue trigger. This action cannot be undone."
         },
         {
           "info": {
-            "name": "Disable a source",
+            "name": "Disable an issue trigger",
             "type": "http"
           },
           "http": {
             "method": "PUT",
-            "url": "https://api.hookdeck.com/2025-07-01/sources/:id/disable",
+            "url": "https://api.hookdeck.com/2025-07-01/issue-triggers/:id/disable",
             "params": [
               {
                 "name": "id",
@@ -200,16 +174,16 @@
               }
             ]
           },
-          "docs": "This endpoint disables a source. A disabled source will no longer receive any events, and all connections associated with this source will also be disabled."
+          "docs": "This endpoint disables an issue trigger so it stops producing issues."
         },
         {
           "info": {
-            "name": "Disable a source",
+            "name": "Enable an issue trigger",
             "type": "http"
           },
           "http": {
             "method": "PUT",
-            "url": "https://api.hookdeck.com/2025-07-01/sources/:id/archive",
+            "url": "https://api.hookdeck.com/2025-07-01/issue-triggers/:id/enable",
             "params": [
               {
                 "name": "id",
@@ -218,43 +192,7 @@
               }
             ]
           },
-          "docs": "This endpoint disables a source. A disabled source will no longer receive any events, and all connections associated with this source will also be disabled."
-        },
-        {
-          "info": {
-            "name": "Enable a source",
-            "type": "http"
-          },
-          "http": {
-            "method": "PUT",
-            "url": "https://api.hookdeck.com/2025-07-01/sources/:id/enable",
-            "params": [
-              {
-                "name": "id",
-                "value": "",
-                "type": "path"
-              }
-            ]
-          },
-          "docs": "This endpoint enables a source that was previously disabled."
-        },
-        {
-          "info": {
-            "name": "Enable a source",
-            "type": "http"
-          },
-          "http": {
-            "method": "PUT",
-            "url": "https://api.hookdeck.com/2025-07-01/sources/:id/unarchive",
-            "params": [
-              {
-                "name": "id",
-                "value": "",
-                "type": "path"
-              }
-            ]
-          },
-          "docs": "This endpoint enables a source that was previously disabled."
+          "docs": "This endpoint enables a previously disabled issue trigger."
         }
       ]
     }
