@@ -26,6 +26,18 @@ position: Consumer
 created: '2025-08-19'
 modified: '2026-05-25'
 tags:
+  - Webhook
+  - Event Gateways
+  - Gateways
+  - Event
+  - Event Infrastructure
+  - Event-Driven
+  - Messaging
+  - Queues
+  - Retries
+  - Transformation
+  - Observability
+tags_raw:
   - Webhooks
   - Event Gateways
   - Gateways
@@ -45,6 +57,10 @@ apis:
 - aid: hookdeck:hookdeck-connections-api
   name: Hookdeck Connections API
   tags:
+  - Webhook
+  - Event Gateways
+  - Connections
+  tags_raw:
   - Webhooks
   - Event Gateways
   - Connections
@@ -64,6 +80,10 @@ apis:
 - aid: hookdeck:hookdeck-sources-api
   name: Hookdeck Sources API
   tags:
+  - Webhook
+  - Sources
+  - Event Gateways
+  tags_raw:
   - Webhooks
   - Sources
   - Event Gateways
@@ -84,6 +104,10 @@ apis:
 - aid: hookdeck:hookdeck-destinations-api
   name: Hookdeck Destinations API
   tags:
+  - Webhook
+  - Destinations
+  - Event Gateways
+  tags_raw:
   - Webhooks
   - Destinations
   - Event Gateways
@@ -103,6 +127,11 @@ apis:
 - aid: hookdeck:hookdeck-events-api
   name: Hookdeck Events API
   tags:
+  - Webhook
+  - Event
+  - Attempts
+  - Event Gateways
+  tags_raw:
   - Webhooks
   - Events
   - Attempts
@@ -125,6 +154,10 @@ apis:
 - aid: hookdeck:hookdeck-requests-api
   name: Hookdeck Requests API
   tags:
+  - Webhook
+  - Requests
+  - Event Gateways
+  tags_raw:
   - Webhooks
   - Requests
   - Event Gateways
@@ -144,6 +177,10 @@ apis:
 - aid: hookdeck:hookdeck-transformations-api
   name: Hookdeck Transformations API
   tags:
+  - Transformation
+  - Webhook
+  - Event Gateways
+  tags_raw:
   - Transformations
   - Webhooks
   - Event Gateways
@@ -163,6 +200,10 @@ apis:
 - aid: hookdeck:hookdeck-bookmarks-api
   name: Hookdeck Bookmarks API
   tags:
+  - Bookmarks
+  - Webhook
+  - Event Gateways
+  tags_raw:
   - Bookmarks
   - Webhooks
   - Event Gateways
@@ -214,6 +255,10 @@ apis:
 - aid: hookdeck:hookdeck-integrations-api
   name: Hookdeck Integrations API
   tags:
+  - Integration
+  - Webhook
+  - Event Gateways
+  tags_raw:
   - Integrations
   - Webhooks
   - Event Gateways
@@ -231,6 +276,9 @@ apis:
 - aid: hookdeck:hookdeck-notifications-api
   name: Hookdeck Notifications API
   tags:
+  - Notification
+  - Observability
+  tags_raw:
   - Notifications
   - Observability
   baseURL: https://api.hookdeck.com/2025-07-01
