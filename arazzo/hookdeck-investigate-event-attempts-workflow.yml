@@ -11,6 +11,9 @@ info:
     OpenAPI description.
   version: 1.0.0
 sourceDescriptions:
+- name: attemptsApi
+  url: ../openapi/hookdeck-attempts-api-openapi.yml
+  type: openapi
 - name: eventsApi
   url: ../openapi/hookdeck-events-api-openapi.yml
   type: openapi

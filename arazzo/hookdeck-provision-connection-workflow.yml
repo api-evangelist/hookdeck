@@ -11,14 +11,14 @@ info:
     without opening the underlying OpenAPI description.
   version: 1.0.0
 sourceDescriptions:
-- name: sourcesApi
-  url: ../openapi/hookdeck-sources-api-openapi.yml
+- name: connectionsApi
+  url: ../openapi/hookdeck-connections-api-openapi.yml
   type: openapi
 - name: destinationsApi
   url: ../openapi/hookdeck-destinations-api-openapi.yml
   type: openapi
-- name: connectionsApi
-  url: ../openapi/hookdeck-connections-api-openapi.yml
+- name: sourcesApi
+  url: ../openapi/hookdeck-sources-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: provision-connection

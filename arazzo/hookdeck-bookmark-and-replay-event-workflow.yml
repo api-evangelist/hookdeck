@@ -12,11 +12,11 @@ info:
     description.
   version: 1.0.0
 sourceDescriptions:
-- name: eventsApi
-  url: ../openapi/hookdeck-events-api-openapi.yml
-  type: openapi
 - name: bookmarksApi
   url: ../openapi/hookdeck-bookmarks-api-openapi.yml
+  type: openapi
+- name: eventsApi
+  url: ../openapi/hookdeck-events-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: bookmark-and-replay-event
