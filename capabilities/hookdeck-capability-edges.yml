@@ -1,0 +1,54 @@
+slug: hookdeck
+provider: Hookdeck
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Telecommunications
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 4
+edges:
+- tag: Connections
+  spec_file: hookdeck-connections-api-openapi.yml
+  capability_id: BC-4270.80
+  capability_id_l1: BC-4270
+  capability_name: Webhook & Event Subscription Management
+  confidence: 0.7
+  evidence: POST /connections  createConnection  Create a connection; schemas SourceConfigStripeAuth,
+    SourceTypeConfigAWS_SNS
+  reason: Connections bind webhook sources to destinations, i.e. configuring event routing/subscriptions
+    between senders and consuming services. This is webhook and event subscription lifecycle management,
+    not a telecom network connection.
+- tag: Destinations
+  spec_file: hookdeck-destinations-api-openapi.yml
+  capability_id: BC-4270.80
+  capability_id_l1: BC-4270
+  capability_name: Webhook & Event Subscription Management
+  confidence: 0.7
+  evidence: POST /destinations  createDestination  Create a destination; DestinationConfigHTTPAuthHookdeckSignatureDefault
+  reason: Destinations are the endpoints webhook events are delivered to, with delivery auth configuration
+    — outbound event subscription/delivery management. Not a logistics or telecom concept here.
+- tag: Events
+  spec_file: hookdeck-events-api-openapi.yml
+  capability_id: BC-4270.80
+  capability_id_l1: BC-4270
+  capability_name: Webhook & Event Subscription Management
+  confidence: 0.7
+  evidence: POST /events/{id}/retry  retryEvent  Retry an event; schemas EventStatus, AttemptErrorCodes,
+    RetriedEvent
+  reason: Events here are webhook delivery events with status, retry and cancel operations — event delivery
+    lifecycle and reliability, a developer-platform capability rather than any business-domain event.
+- tag: Sources
+  spec_file: hookdeck-sources-api-openapi.yml
+  capability_id: BC-4270.80
+  capability_id_l1: BC-4270
+  capability_name: Webhook & Event Subscription Management
+  confidence: 0.7
+  evidence: POST /sources  createSource  Create a source; SourceTypeConfigAWS_SNS, SourceConfigStripeAuth
+  reason: Sources define the webhook senders the gateway accepts events from, with per-provider verification
+    config — inbound event subscription/endpoint lifecycle management, a developer-platform capability.

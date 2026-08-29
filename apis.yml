@@ -381,6 +381,9 @@ apis:
   - type: Documentation
     url: https://hookdeck.com/docs/bulk-retries
 common:
+  - type: CapabilityMap
+    url: capabilities/hookdeck-capability-edges.yml
+    name: Hookdeck Business Capability Map
   - type: IssueTracker
     url: https://github.com/hookdeck/hookdeck-api-schema/issues
   - type: Releases
