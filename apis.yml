@@ -48,7 +48,7 @@ tags:
   - Messaging
   - Queues
   - Retries
-  - Transformation
+  - Transformations
   - Observability
 tags_raw:
   - Webhooks
@@ -190,7 +190,7 @@ apis:
 - aid: hookdeck:hookdeck-transformations-api
   name: Hookdeck Transformations API
   tags:
-  - Transformation
+  - Transformations
   - Webhook
   - Event Gateways
   tags_raw:
