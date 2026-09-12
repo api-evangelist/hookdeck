@@ -382,6 +382,8 @@ apis:
   - type: Documentation
     url: https://hookdeck.com/docs/bulk-retries
 common:
+  - type: Website
+    url: https://www.hookdeck.com/
   - type: CapabilityMap
     url: capabilities/hookdeck-capability-edges.yml
     name: Hookdeck Business Capability Map
