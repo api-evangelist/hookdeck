@@ -1,0 +1,119 @@
+{
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "Hookdeck",
+    "identifier": "did:web:hookdeck.com",
+    "documentationUrl": "https://hookdeck.com/docs"
+  },
+  "entries": [
+    {
+      "identifier": "urn:air:hookdeck.com:api:event-gateway",
+      "displayName": "Hookdeck Event Gateway API",
+      "type": "application/json",
+      "url": "https://api.hookdeck.com/latest/openapi",
+      "description": "REST API for inbound webhook infrastructure: sources, destinations, connections, transformations, events, requests, attempts and issues.",
+      "tags": [
+        "webhooks",
+        "inbound",
+        "event-gateway",
+        "openapi"
+      ],
+      "representativeQueries": [
+        "receive webhooks from a third party reliably",
+        "retry a failed webhook delivery",
+        "route incoming webhook events to different endpoints"
+      ]
+    },
+    {
+      "identifier": "urn:air:hookdeck.com:api:outpost",
+      "displayName": "Hookdeck Outpost API",
+      "type": "application/yaml",
+      "url": "https://raw.githubusercontent.com/hookdeck/outpost/main/docs/apis/openapi.yaml",
+      "description": "REST API for outbound event delivery to customer destinations: tenants, destinations, topics, publishes, events and delivery attempts.",
+      "tags": [
+        "webhooks",
+        "outbound",
+        "outpost",
+        "openapi"
+      ],
+      "representativeQueries": [
+        "send webhooks to my own customers",
+        "deliver events to a customer AWS SQS queue or Kafka topic",
+        "add per-tenant webhook destinations to my platform"
+      ]
+    },
+    {
+      "identifier": "urn:air:hookdeck.com:api:console",
+      "displayName": "Hookdeck Console API",
+      "type": "application/json",
+      "url": "https://console.hookdeck.com/openapi.json",
+      "description": "API for creating and reading Hookdeck Console test URLs that capture HTTP requests without an account.",
+      "tags": [
+        "webhooks",
+        "testing",
+        "console",
+        "openapi"
+      ],
+      "representativeQueries": [
+        "create a temporary URL to capture a webhook",
+        "inspect a webhook payload without signing up",
+        "debug an inbound HTTP request without deploying a server"
+      ]
+    },
+    {
+      "identifier": "urn:air:hookdeck.com:skills:index",
+      "displayName": "Hookdeck Agent Skills",
+      "type": "application/json",
+      "url": "https://hookdeck.com/.well-known/agent-skills/index.json",
+      "description": "Agent Skills discovery index for the hookdeck, event-gateway and outpost skills.",
+      "tags": [
+        "agent-skills",
+        "webhooks"
+      ],
+      "capabilities": [
+        "hookdeck",
+        "event-gateway",
+        "outpost"
+      ],
+      "representativeQueries": [
+        "install the Hookdeck agent skill",
+        "get instructions for building with Hookdeck webhooks",
+        "set up outbound webhook delivery with the Outpost skill"
+      ]
+    },
+    {
+      "identifier": "urn:air:hookdeck.com:docs:event-gateway",
+      "displayName": "Hookdeck Event Gateway docs",
+      "type": "text/plain",
+      "url": "https://hookdeck.com/docs/llms.txt",
+      "description": "Documentation index for Hookdeck Event Gateway: product docs, guides, API reference and CLI, with Markdown URLs.",
+      "tags": [
+        "documentation",
+        "event-gateway",
+        "llms-txt"
+      ],
+      "representativeQueries": [
+        "how do I create a Hookdeck connection",
+        "Hookdeck Event Gateway API reference in markdown",
+        "verify webhook signatures with Hookdeck"
+      ]
+    },
+    {
+      "identifier": "urn:air:hookdeck.com:docs:outpost",
+      "displayName": "Hookdeck Outpost docs",
+      "type": "text/plain",
+      "url": "https://hookdeck.com/docs/outpost/llms.txt",
+      "description": "Documentation index for Hookdeck Outpost: outbound delivery, destinations, topics, API reference and self-hosting, with Markdown URLs.",
+      "tags": [
+        "documentation",
+        "outpost",
+        "llms-txt"
+      ],
+      "representativeQueries": [
+        "how do I send webhooks to my customers with Outpost",
+        "Outpost self-hosting documentation",
+        "Outpost API reference in markdown"
+      ]
+    }
+  ]
+}
