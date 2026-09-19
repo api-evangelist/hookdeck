@@ -119,7 +119,7 @@ apis:
   name: Hookdeck Destinations API
   tags:
   - Webhook
-  - Destinations
+  - Destination
   - Event Gateways
   tags_raw:
   - Webhooks
