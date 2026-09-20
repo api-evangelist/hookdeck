@@ -10,6 +10,11 @@ provenance:
   grounding: every price_text was found verbatim in the fetched page text
 audience: developer-api
 pricing_basis: tiered-subscription
+delivery:
+  delivery: managed
+  method: page
+  read: '2026-09-20'
+  managed_tier: Team
 published: true
 note: Tiered plans plus metered event usage; throughput slider shows 5 to 10,000+ events/second per destination.
   Billing pro-rated by 10k events.
