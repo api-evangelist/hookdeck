@@ -1,152 +1,62 @@
-specification: API Commons Plans
-specificationVersion: '0.1'
-schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
-provider: Hookdeck
-providerId: hookdeck
-created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
-tags:
-  - Event Gateways
-  - Gateways
-  - Webhooks
-description: Machine-readable plans and pricing scaffold for this API provider. Conforms to the API Commons
-  Plans schema. Tier limits and prices are scaffold defaults; replace with provider-published values.
+# Pricing transcribed from the provider's own page — see provenance. Numbers are quoted, not derived.
+generated: '2026-09-20'
+method: searched
+source: https://hookdeck.com/pricing
+sources:
+- https://hookdeck.com/pricing
+provenance:
+  tool: planning/api-economics/harvest_pricing.py
+  run: 20260920T120546
+  grounding: every price_text was found verbatim in the fetched page text
+audience: developer-api
+pricing_basis: tiered-subscription
+published: true
+note: Tiered plans plus metered event usage; throughput slider shows 5 to 10,000+ events/second per destination.
+  Billing pro-rated by 10k events.
+plan_count: 6
+currency: USD
 plans:
-  - id: hookdeck-free
-    name: Free
-    type: freemium
-    description: Free entry tier for the Hookdeck API surface. Intended for evaluation, prototyping, and
-      low-volume integrations. Real limits and pricing must be reconciled with the provider's published
-      plan documentation.
-    entries:
-      - label: API Requests
-        description: Monthly API request quota across all included endpoints
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: 1000
-        timeFrame: month
-        geo: global
-        domains:
-          - https://api.hookdeck.com
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-      - label: Rate Limit
-        description: Maximum requests per minute on the free tier
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 10
-        timeFrame: minute
-        geo: global
-        domains:
-          - https://api.hookdeck.com
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-    elements:
-      - name: Public Documentation
-      - name: Community Support
-      - name: Sandbox Access
-      - name: Hookdeck API
-      - name: Hookdeck
-  - id: hookdeck-pro
-    name: Professional
-    type: paid
-    description: Production tier for Hookdeck. Provides higher quotas, priority support, and access to
-      the broader API portfolio. Pricing placeholder; align with the provider's pricing page.
-    entries:
-      - label: API Requests
-        description: Monthly API request quota
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: 100000
-        timeFrame: month
-        geo: global
-        domains:
-          - https://api.hookdeck.com
-        unit: 1
-        price: TBD
-        userMultiplied: false
-      - label: Rate Limit
-        description: Maximum requests per minute on the professional tier
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 100
-        timeFrame: minute
-        geo: global
-        domains:
-          - https://api.hookdeck.com
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-      - label: Overage
-        description: Per-request price after monthly quota is exceeded
-        name: overage
-        type: metered
-        metric: requests
-        limit: -1
-        timeFrame: month
-        geo: global
-        domains:
-          - https://api.hookdeck.com
-        unit: 1000
-        price: TBD
-        userMultiplied: false
-    elements:
-      - name: All Production Endpoints
-      - name: Email Support
-      - name: SLA Targets
-      - name: Webhook Subscriptions
-      - name: Hookdeck API
-      - name: Hookdeck
-  - id: hookdeck-enterprise
-    name: Enterprise
-    type: enterprise
-    description: Custom-negotiated tier for Hookdeck. Includes dedicated capacity, contractual SLAs, security
-      review, data residency options, and named technical account management.
-    entries:
-      - label: API Requests
-        description: Negotiated request volume; -1 indicates uncapped subject to fair use
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: -1
-        timeFrame: month
-        geo: configurable
-        domains:
-          - https://api.hookdeck.com
-        unit: 1
-        price: custom
-        userMultiplied: false
-      - label: Rate Limit
-        description: Negotiated burst and steady-state rate
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 1000
-        timeFrame: minute
-        geo: configurable
-        domains:
-          - https://api.hookdeck.com
-        unit: 1
-        price: custom
-        userMultiplied: false
-    elements:
-      - name: Unlimited / Negotiated Volume
-      - name: 24/7 Dedicated Support
-      - name: Contractual SLA
-      - name: Security & Compliance Review
-      - name: Dedicated Account Manager
-      - name: Custom Data Residency
-      - name: Hookdeck API
-      - name: Hookdeck
-maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- name: Developer
+  price_text: Always $0 /month
+  price: 0
+  currency: USD
+  period: month
+  included_quota: Up to 10,000 events, 3-day retention, 1 user, SoC2 compliance
+- name: Team
+  price_text: Starts at $39 /month
+  price: 39
+  currency: USD
+  period: month
+  included_quota: 10,000 monthly events; 100,000 discarded requests; 7-day retention; unlimited users
+  overage: Metered billing; additional discarded requests +$2.50 per million
+- name: Growth
+  price_text: Starts at $499 /month
+  price: 499
+  currency: USD
+  period: month
+  included_quota: 10,000 monthly events; 100,000 discarded requests; 30-day retention; SLAs; SSO, SAML
+    and SCIM
+  overage: Metered billing; additional discarded requests +$2.50 per million
+- name: Enterprise
+  price_text: Inquire for plans Custom
+  period: none
+  included_quota: Custom events, retention, SLAs, premium support
+  overage: Custom
+- name: Events Pay-as-you-go
+  price_text: $1.00 per additional 100k
+  price: 1
+  currency: USD
+  period: per-use
+  unit: per additional 100k events
+  overage: Event pricing as low as $0.33 per 100k.
+- name: Static IP Add-on
+  price_text: + $100
+  price: 100
+  currency: USD
+  period: month
+  unit: add-on
+rate_limit_statements:
+- Includes 5 events/second of throughput per destination (per project)
+- Each destination can deliver up to this many events per second, independently of other destinations
+  5 10,000+
+- Delivery above your configured throughput is queued, not rejected.
