@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Hookdeck Bookmarks Attempts Metrics API
   version: 1.0.0
@@ -52,9 +52,10 @@ paths:
       - in: query
         name: granularity
         schema:
-          type: string
+          type:
+          - string
+          - 'null'
           pattern: ^(\d+)(s|m|h|d|w|M)$
-          nullable: true
           description: 'Time bucket granularity. Format: <number><unit> where unit is s (seconds 1-60), m (minutes 1-60), h (hours 1-24), d (days 1-31), w (weeks 1-4), M (months 1-12). Examples: 1s, 5m, 1h, 1d'
       - in: query
         name: filters
@@ -207,9 +208,10 @@ paths:
       - in: query
         name: granularity
         schema:
-          type: string
+          type:
+          - string
+          - 'null'
           pattern: ^(\d+)(s|m|h|d|w|M)$
-          nullable: true
           description: 'Time bucket granularity. Format: <number><unit> where unit is s (seconds 1-60), m (minutes 1-60), h (hours 1-24), d (days 1-31), w (weeks 1-4), M (months 1-12). Examples: 1s, 5m, 1h, 1d'
       - in: query
         name: filters
@@ -364,9 +366,10 @@ paths:
       - in: query
         name: granularity
         schema:
-          type: string
+          type:
+          - string
+          - 'null'
           pattern: ^(\d+)(s|m|h|d|w|M)$
-          nullable: true
           description: 'Time bucket granularity. Format: <number><unit> where unit is s (seconds 1-60), m (minutes 1-60), h (hours 1-24), d (days 1-31), w (weeks 1-4), M (months 1-12). Examples: 1s, 5m, 1h, 1d'
       - in: query
         name: filters
@@ -476,9 +479,10 @@ paths:
       - in: query
         name: granularity
         schema:
-          type: string
+          type:
+          - string
+          - 'null'
           pattern: ^(\d+)(s|m|h|d|w|M)$
-          nullable: true
           description: 'Time bucket granularity. Format: <number><unit> where unit is s (seconds 1-60), m (minutes 1-60), h (hours 1-24), d (days 1-31), w (weeks 1-4), M (months 1-12). Examples: 1s, 5m, 1h, 1d'
       - in: query
         name: filters
@@ -562,9 +566,10 @@ paths:
       - in: query
         name: granularity
         schema:
-          type: string
+          type:
+          - string
+          - 'null'
           pattern: ^(\d+)(s|m|h|d|w|M)$
-          nullable: true
           description: 'Time bucket granularity. Format: <number><unit> where unit is s (seconds 1-60), m (minutes 1-60), h (hours 1-24), d (days 1-31), w (weeks 1-4), M (months 1-12). Examples: 1s, 5m, 1h, 1d'
       - in: query
         name: filters
@@ -630,9 +635,10 @@ paths:
       - in: query
         name: granularity
         schema:
-          type: string
+          type:
+          - string
+          - 'null'
           pattern: ^(\d+)(s|m|h|d|w|M)$
-          nullable: true
           description: 'Time bucket granularity. Format: <number><unit> where unit is s (seconds 1-60), m (minutes 1-60), h (hours 1-24), d (days 1-31), w (weeks 1-4), M (months 1-12). Examples: 1s, 5m, 1h, 1d'
       - in: query
         name: filters
@@ -722,9 +728,10 @@ paths:
       - in: query
         name: granularity
         schema:
-          type: string
+          type:
+          - string
+          - 'null'
           pattern: ^(\d+)(s|m|h|d|w|M)$
-          nullable: true
           description: 'Time bucket granularity. Format: <number><unit> where unit is s (seconds 1-60), m (minutes 1-60), h (hours 1-24), d (days 1-31), w (weeks 1-4), M (months 1-12). Examples: 1s, 5m, 1h, 1d'
       - in: query
         name: filters
@@ -768,8 +775,9 @@ components:
           type: object
           properties:
             granularity:
-              type: string
-              nullable: true
+              type:
+              - string
+              - 'null'
               description: Time granularity used in the query
             query_time_ms:
               type: number
@@ -797,8 +805,9 @@ components:
       type: object
       properties:
         time_bucket:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: Time bucket for the metric data point
         dimensions:
           type: object

@@ -1,8 +1,8 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Hookdeck Bookmarks Attempts Bulk retry events API
+  title: Hookdeck Bulk Operations Bulk retry events API
   version: 1.0.0
-  description: Save bookmarked events for quick replay and convenient one-click testing during development.
+  description: Plan, schedule, and cancel bulk operations that retry or cancel many events, requests, or ignored events at once. Returns progress and per-batch counts.
   contact:
     name: Hookdeck Support
     url: https://hookdeck.com/contact-us
@@ -48,27 +48,30 @@ paths:
         name: cancelled_at
         schema:
           anyOf:
-          - type: string
+          - type:
+            - string
+            - 'null'
             format: date-time
-            nullable: true
           - $ref: '#/components/schemas/Operators'
           description: Filter by date the bulk retry was cancelled
       - in: query
         name: completed_at
         schema:
           anyOf:
-          - type: string
+          - type:
+            - string
+            - 'null'
             format: date-time
-            nullable: true
           - $ref: '#/components/schemas/Operators'
           description: Filter by date the bulk retry completed
       - in: query
         name: created_at
         schema:
           anyOf:
-          - type: string
+          - type:
+            - string
+            - 'null'
             format: date-time
-            nullable: true
           - $ref: '#/components/schemas/Operators'
           description: Filter by date the bulk retry was created
       - in: query
@@ -157,14 +160,12 @@ paths:
                   type: integer
                   minimum: 200
                   maximum: 600
-              nullable: true
               description: Filter by HTTP response status code
             successful_at:
               anyOf:
               - type: string
                 format: date-time
               - $ref: '#/components/schemas/Operators'
-              nullable: true
               description: Filter by `successful_at` date using a date operator
             created_at:
               anyOf:
@@ -192,21 +193,18 @@ paths:
               - type: array
                 items:
                   type: string
-              nullable: true
               description: Filter by CLI IDs. `?[any]=true` operator for any CLI.
             last_attempt_at:
               anyOf:
               - type: string
                 format: date-time
               - $ref: '#/components/schemas/Operators'
-              nullable: true
               description: Filter by `last_attempt_at` date using a date operator
             next_attempt_at:
               anyOf:
               - type: string
                 format: date-time
               - $ref: '#/components/schemas/Operators'
-              nullable: true
               description: Filter by `next_attempt_at` date using a date operator
             search_term:
               type: string
@@ -248,7 +246,6 @@ paths:
               - type: array
                 items:
                   type: string
-              nullable: true
               x-docs-hide: true
             issue_id:
               anyOf:
@@ -448,14 +445,12 @@ paths:
                           type: integer
                           minimum: 200
                           maximum: 600
-                      nullable: true
                       description: Filter by HTTP response status code
                     successful_at:
                       anyOf:
                       - type: string
                         format: date-time
                       - $ref: '#/components/schemas/Operators'
-                      nullable: true
                       description: Filter by `successful_at` date using a date operator
                     created_at:
                       anyOf:
@@ -483,21 +478,18 @@ paths:
                       - type: array
                         items:
                           type: string
-                      nullable: true
                       description: Filter by CLI IDs. `?[any]=true` operator for any CLI.
                     last_attempt_at:
                       anyOf:
                       - type: string
                         format: date-time
                       - $ref: '#/components/schemas/Operators'
-                      nullable: true
                       description: Filter by `last_attempt_at` date using a date operator
                     next_attempt_at:
                       anyOf:
                       - type: string
                         format: date-time
                       - $ref: '#/components/schemas/Operators'
-                      nullable: true
                       description: Filter by `next_attempt_at` date using a date operator
                     search_term:
                       type: string
@@ -539,7 +531,6 @@ paths:
                       - type: array
                         items:
                           type: string
-                      nullable: true
                       x-docs-hide: true
                     issue_id:
                       anyOf:
@@ -589,17 +580,20 @@ paths:
                 type: object
                 properties:
                   estimated_batch:
-                    type: integer
-                    nullable: true
+                    type:
+                    - integer
+                    - 'null'
                     description: Number of batches required to complete the bulk retry
                   estimated_count:
-                    type: integer
-                    nullable: true
+                    type:
+                    - integer
+                    - 'null'
                     description: Number of estimated events to be retried
                   progress:
-                    type: number
+                    type:
+                    - number
+                    - 'null'
                     format: float
-                    nullable: true
                     description: Progression of the batch operations, values 0 - 1
                 additionalProperties: false
         '400':
@@ -688,14 +682,12 @@ paths:
                   type: integer
                   minimum: 200
                   maximum: 600
-              nullable: true
               description: Filter by HTTP response status code
             successful_at:
               anyOf:
               - type: string
                 format: date-time
               - $ref: '#/components/schemas/Operators'
-              nullable: true
               description: Filter by `successful_at` date using a date operator
             created_at:
               anyOf:
@@ -723,21 +715,18 @@ paths:
               - type: array
                 items:
                   type: string
-              nullable: true
               description: Filter by CLI IDs. `?[any]=true` operator for any CLI.
             last_attempt_at:
               anyOf:
               - type: string
                 format: date-time
               - $ref: '#/components/schemas/Operators'
-              nullable: true
               description: Filter by `last_attempt_at` date using a date operator
             next_attempt_at:
               anyOf:
               - type: string
                 format: date-time
               - $ref: '#/components/schemas/Operators'
-              nullable: true
               description: Filter by `next_attempt_at` date using a date operator
             search_term:
               type: string
@@ -779,7 +768,6 @@ paths:
               - type: array
                 items:
                   type: string
-              nullable: true
               x-docs-hide: true
             issue_id:
               anyOf:
@@ -868,15 +856,6 @@ paths:
         required: true
 components:
   schemas:
-    EventStatus:
-      type: string
-      enum:
-      - SCHEDULED
-      - QUEUED
-      - HOLD
-      - SUCCESSFUL
-      - FAILED
-      - CANCELLED
     APIErrorResponse:
       type: object
       properties:
@@ -891,39 +870,138 @@ components:
           type: string
           description: Error description
         data:
-          type: object
+          type:
+          - object
+          - 'null'
           properties: {}
-          nullable: true
       required:
       - code
       - status
       - message
       additionalProperties: false
       description: Error response model
-    Operators:
+    SeekPagination:
       type: object
       properties:
-        gt:
+        order_by:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        dir:
+          anyOf:
+          - $ref: '#/components/schemas/OrderByDirection'
+          - type: array
+            items:
+              $ref: '#/components/schemas/OrderByDirection'
+        limit:
+          type: integer
+        prev:
           type: string
-          format: date-time
-          nullable: true
-        gte:
+        next:
           type: string
-          format: date-time
-          nullable: true
-        le:
-          type: string
-          format: date-time
-          nullable: true
-        lte:
-          type: string
-          format: date-time
-          nullable: true
-        any:
-          type: boolean
-        all:
-          type: boolean
       additionalProperties: false
+    BatchOperation:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the bulk retry
+        team_id:
+          type: string
+          description: ID of the project
+        type:
+          type: string
+          description: Type of the bulk operation
+        query:
+          anyOf:
+          - type: object
+            properties: {}
+            additionalProperties: {}
+          - type:
+            - string
+            - 'null'
+          description: Query object to filter records
+          x-docs-force-simple-type: true
+          x-docs-type: JSON
+        created_at:
+          type: string
+          format: date-time
+          description: Date the bulk retry was created
+        updated_at:
+          type: string
+          format: date-time
+          description: Last time the bulk retry was updated
+        cancelled_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date the bulk retry was cancelled
+        completed_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date the bulk retry was completed
+        estimated_batch:
+          type:
+          - integer
+          - 'null'
+          description: Number of batches required to complete the bulk retry
+        estimated_count:
+          type:
+          - integer
+          - 'null'
+          description: Number of estimated events to be retried
+        processed_batch:
+          type:
+          - integer
+          - 'null'
+          description: Number of batches currently processed
+        completed_count:
+          type:
+          - integer
+          - 'null'
+          description: Number of events that were successfully delivered
+        in_progress:
+          type: boolean
+          description: Indicates if the bulk retry is currently in progress
+        progress:
+          type:
+          - number
+          - 'null'
+          format: float
+          description: Progression of the batch operations, values 0 - 1
+        failed_count:
+          type:
+          - integer
+          - 'null'
+          description: Number of events that failed to be delivered
+        number:
+          type:
+          - number
+          - 'null'
+          format: float
+          x-docs-hide: true
+      required:
+      - id
+      - team_id
+      - type
+      - created_at
+      - updated_at
+      - in_progress
+      additionalProperties: false
+    EventStatus:
+      type: string
+      enum:
+      - SCHEDULED
+      - QUEUED
+      - HOLD
+      - SUCCESSFUL
+      - FAILED
+      - CANCELLED
     OrderByDirection:
       anyOf:
       - enum:
@@ -934,18 +1012,6 @@ components:
         - ASC
       - enum:
         - DESC
-    BatchOperationPaginatedResult:
-      type: object
-      properties:
-        pagination:
-          $ref: '#/components/schemas/SeekPagination'
-        count:
-          type: integer
-        models:
-          type: array
-          items:
-            $ref: '#/components/schemas/BatchOperation'
-      additionalProperties: false
     AttemptErrorCodes:
       type: string
       enum:
@@ -983,110 +1049,45 @@ components:
       - Z_DATA_ERROR
       - UNKNOWN
       description: Error code of the delivery attempt
-    BatchOperation:
+    Operators:
       type: object
       properties:
-        id:
-          type: string
-          description: ID of the bulk retry
-        team_id:
-          type: string
-          description: ID of the project
-        type:
-          type: string
-          description: Type of the bulk operation
-        query:
-          anyOf:
-          - type: object
-            properties: {}
-            additionalProperties:
-              nullable: true
-          - type: string
-            nullable: true
-          nullable: true
-          description: Query object to filter records
-          x-docs-force-simple-type: true
-          x-docs-type: JSON
-        created_at:
-          type: string
+        gt:
+          type:
+          - string
+          - 'null'
           format: date-time
-          description: Date the bulk retry was created
-        updated_at:
-          type: string
+        gte:
+          type:
+          - string
+          - 'null'
           format: date-time
-          description: Last time the bulk retry was updated
-        cancelled_at:
-          type: string
+        le:
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
-          description: Date the bulk retry was cancelled
-        completed_at:
-          type: string
+        lte:
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
-          description: Date the bulk retry was completed
-        estimated_batch:
-          type: integer
-          nullable: true
-          description: Number of batches required to complete the bulk retry
-        estimated_count:
-          type: integer
-          nullable: true
-          description: Number of estimated events to be retried
-        processed_batch:
-          type: integer
-          nullable: true
-          description: Number of batches currently processed
-        completed_count:
-          type: integer
-          nullable: true
-          description: Number of events that were successfully delivered
-        in_progress:
+        any:
           type: boolean
-          description: Indicates if the bulk retry is currently in progress
-        progress:
-          type: number
-          format: float
-          nullable: true
-          description: Progression of the batch operations, values 0 - 1
-        failed_count:
-          type: integer
-          nullable: true
-          description: Number of events that failed to be delivered
-        number:
-          type: number
-          format: float
-          nullable: true
-          x-docs-hide: true
-      required:
-      - id
-      - team_id
-      - type
-      - created_at
-      - updated_at
-      - in_progress
+        all:
+          type: boolean
       additionalProperties: false
-    SeekPagination:
+    BatchOperationPaginatedResult:
       type: object
       properties:
-        order_by:
-          anyOf:
-          - type: string
-          - type: array
-            items:
-              type: string
-        dir:
-          anyOf:
-          - $ref: '#/components/schemas/OrderByDirection'
-          - type: array
-            items:
-              $ref: '#/components/schemas/OrderByDirection'
-        limit:
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
           type: integer
-        prev:
-          type: string
-        next:
-          type: string
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/BatchOperation'
       additionalProperties: false
   securitySchemes:
     bearerAuth:

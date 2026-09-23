@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Hookdeck Attempts Bookmarks API
   version: 1.0.0
@@ -115,9 +115,10 @@ paths:
         name: last_used_at
         schema:
           anyOf:
-          - type: string
+          - type:
+            - string
+            - 'null'
             format: date-time
-            nullable: true
             description: Last used date
           - $ref: '#/components/schemas/Operators'
           description: Filter by last used date
@@ -413,184 +414,30 @@ paths:
         required: true
 components:
   schemas:
-    EventData:
+    APIErrorResponse:
       type: object
       properties:
-        url:
+        code:
           type: string
-        method:
+          description: Error code
+        status:
+          type: number
+          format: float
+          description: Status code
+        message:
           type: string
-        path:
-          type: string
-          nullable: true
-          description: Raw path string
-        query:
-          type: string
-          nullable: true
-          description: Raw query param string
-        parsed_query:
-          anyOf:
-          - type: string
-            nullable: true
-          - type: object
-            properties: {}
-          nullable: true
-          description: JSON representation of query params
-        headers:
-          anyOf:
-          - type: string
-          - type: object
-            properties: {}
-            additionalProperties:
-              type: string
-              nullable: true
-          nullable: true
-          description: JSON representation of the headers
-        appended_headers:
-          type: array
-          items:
-            type: string
-          description: List of headers that were added by Hookdeck
-        body:
-          anyOf:
-          - type: string
-          - type: object
-            properties: {}
-          - type: array
-            items: {}
-          nullable: true
-          description: JSON or string representation of the body
-        is_large_payload:
-          type: boolean
-          description: Whether the payload is considered large payload and not searchable
-      required:
-      - url
-      - method
-      - path
-      - query
-      - parsed_query
-      - headers
-      - body
-      additionalProperties: false
-      nullable: true
-      description: Event data if included
-    EventStatus:
-      type: string
-      enum:
-      - SCHEDULED
-      - QUEUED
-      - HOLD
-      - SUCCESSFUL
-      - FAILED
-      - CANCELLED
-    ShortEventData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: Request path
-        query:
-          type: string
-          nullable: true
-          description: Raw query param string
-        parsed_query:
-          anyOf:
-          - type: string
-            nullable: true
-          - type: object
-            properties: {}
-          nullable: true
-          description: JSON representation of query params
-        headers:
-          anyOf:
-          - type: string
-          - type: object
-            properties: {}
-            additionalProperties:
-              type: string
-              nullable: true
-          nullable: true
-          description: JSON representation of the headers
-        body:
-          anyOf:
-          - type: string
-          - type: object
-            properties: {}
-          - type: array
-            items: {}
-          nullable: true
-          description: JSON or string representation of the body
-        is_large_payload:
-          type: boolean
-          nullable: true
-          description: Whether the payload is considered large payload and not searchable
-      required:
-      - path
-      - query
-      - parsed_query
-      - headers
-      - body
-      additionalProperties: false
-      nullable: true
-      description: Request data
-    BookmarkPaginatedResult:
-      type: object
-      properties:
-        pagination:
-          $ref: '#/components/schemas/SeekPagination'
-        count:
-          type: integer
-        models:
-          type: array
-          items:
-            $ref: '#/components/schemas/Bookmark'
-      additionalProperties: false
-    Bookmark:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the bookmark
-        team_id:
-          type: string
-          description: ID of the project
-        webhook_id:
-          type: string
-          description: ID of the associated connection (webhook)
-        event_data_id:
-          type: string
-          description: ID of the bookmarked event data
-        label:
-          type: string
-          description: Descriptive name of the bookmark
-        alias:
-          type: string
-          nullable: true
-          description: Alternate alias for the bookmark
+          description: Error description
         data:
-          $ref: '#/components/schemas/ShortEventData'
-        last_used_at:
-          type: string
-          format: date-time
-          nullable: true
-          description: Date the bookmark was last manually triggered
-        updated_at:
-          type: string
-          format: date-time
-          description: Date the bookmark was last updated
-        created_at:
-          type: string
-          format: date-time
-          description: Date the bookmark was created
+          type:
+          - object
+          - 'null'
+          properties: {}
       required:
-      - id
-      - team_id
-      - webhook_id
-      - event_data_id
-      - label
-      - updated_at
-      - created_at
+      - code
+      - status
+      - message
       additionalProperties: false
+      description: Error response model
     Event:
       type: object
       properties:
@@ -619,31 +466,36 @@ components:
           type: integer
           description: Number of delivery attempts made
         last_attempt_at:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
           description: Date of the most recently attempted retry
         next_attempt_at:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
           description: Date of the next scheduled retry
         response_status:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
           description: Event status
         error_code:
           $ref: '#/components/schemas/AttemptErrorCodes'
         status:
           $ref: '#/components/schemas/EventStatus'
         successful_at:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
           description: Date of the latest successful attempt
         cli_id:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: ID of the CLI the event is sent to
         updated_at:
           type: string
@@ -672,52 +524,105 @@ components:
       - updated_at
       - created_at
       additionalProperties: false
-    APIErrorResponse:
+    BookmarkPaginatedResult:
       type: object
       properties:
-        code:
-          type: string
-          description: Error code
-        status:
-          type: number
-          format: float
-          description: Status code
-        message:
-          type: string
-          description: Error description
-        data:
-          type: object
-          properties: {}
-          nullable: true
-      required:
-      - code
-      - status
-      - message
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/Bookmark'
       additionalProperties: false
-      description: Error response model
-    Operators:
+    DeletedBookmarkResponse:
       type: object
       properties:
-        gt:
+        id:
+          type: string
+          description: Bookmark ID
+      required:
+      - id
+      additionalProperties: false
+    SeekPagination:
+      type: object
+      properties:
+        order_by:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        dir:
+          anyOf:
+          - $ref: '#/components/schemas/OrderByDirection'
+          - type: array
+            items:
+              $ref: '#/components/schemas/OrderByDirection'
+        limit:
+          type: integer
+        prev:
+          type: string
+        next:
+          type: string
+      additionalProperties: false
+    EventStatus:
+      type: string
+      enum:
+      - SCHEDULED
+      - QUEUED
+      - HOLD
+      - SUCCESSFUL
+      - FAILED
+      - CANCELLED
+    Bookmark:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the bookmark
+        team_id:
+          type: string
+          description: ID of the project
+        webhook_id:
+          type: string
+          description: ID of the associated connection (webhook)
+        event_data_id:
+          type: string
+          description: ID of the bookmarked event data
+        label:
+          type: string
+          description: Descriptive name of the bookmark
+        alias:
+          type:
+          - string
+          - 'null'
+          description: Alternate alias for the bookmark
+        data:
+          $ref: '#/components/schemas/ShortEventData'
+        last_used_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date the bookmark was last manually triggered
+        updated_at:
           type: string
           format: date-time
-          nullable: true
-        gte:
+          description: Date the bookmark was last updated
+        created_at:
           type: string
           format: date-time
-          nullable: true
-        le:
-          type: string
-          format: date-time
-          nullable: true
-        lte:
-          type: string
-          format: date-time
-          nullable: true
-        any:
-          type: boolean
-        all:
-          type: boolean
+          description: Date the bookmark was created
+      required:
+      - id
+      - team_id
+      - webhook_id
+      - event_data_id
+      - label
+      - updated_at
+      - created_at
       additionalProperties: false
     OrderByDirection:
       anyOf:
@@ -729,18 +634,6 @@ components:
         - ASC
       - enum:
         - DESC
-    RawBody:
-      type: object
-      properties:
-        body:
-          type: string
-      required:
-      - body
-      additionalProperties: false
-    EventArray:
-      type: array
-      items:
-        $ref: '#/components/schemas/Event'
     AttemptErrorCodes:
       type: string
       enum:
@@ -778,37 +671,161 @@ components:
       - Z_DATA_ERROR
       - UNKNOWN
       description: Error code of the delivery attempt
-    DeletedBookmarkResponse:
-      type: object
+    EventData:
+      type:
+      - object
+      - 'null'
       properties:
-        id:
+        url:
           type: string
-          description: Bookmark ID
-      required:
-      - id
-      additionalProperties: false
-    SeekPagination:
-      type: object
-      properties:
-        order_by:
+        method:
+          type: string
+        path:
+          type:
+          - string
+          - 'null'
+          description: Raw path string
+        query:
+          type:
+          - string
+          - 'null'
+          description: Raw query param string
+        parsed_query:
+          anyOf:
+          - type:
+            - string
+            - 'null'
+          - type: object
+            properties: {}
+          description: JSON representation of query params
+        headers:
           anyOf:
           - type: string
-          - type: array
-            items:
-              type: string
-        dir:
+          - type: object
+            properties: {}
+            additionalProperties:
+              type:
+              - string
+              - 'null'
+          description: JSON representation of the headers
+        appended_headers:
+          type: array
+          items:
+            type: string
+          description: List of headers that were added by Hookdeck
+        body:
           anyOf:
-          - $ref: '#/components/schemas/OrderByDirection'
+          - type: string
+          - type: object
+            properties: {}
           - type: array
-            items:
-              $ref: '#/components/schemas/OrderByDirection'
-        limit:
-          type: integer
-        prev:
-          type: string
-        next:
-          type: string
+            items: {}
+          description: JSON or string representation of the body
+        is_large_payload:
+          type: boolean
+          description: Whether the payload is considered large payload and not searchable
+      required:
+      - url
+      - method
+      - path
+      - query
+      - parsed_query
+      - headers
+      - body
       additionalProperties: false
+      description: Event data if included
+    RawBody:
+      type: object
+      properties:
+        body:
+          type: string
+      required:
+      - body
+      additionalProperties: false
+    EventArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/Event'
+    Operators:
+      type: object
+      properties:
+        gt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        gte:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        le:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        lte:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        any:
+          type: boolean
+        all:
+          type: boolean
+      additionalProperties: false
+    ShortEventData:
+      type:
+      - object
+      - 'null'
+      properties:
+        path:
+          type: string
+          description: Request path
+        query:
+          type:
+          - string
+          - 'null'
+          description: Raw query param string
+        parsed_query:
+          anyOf:
+          - type:
+            - string
+            - 'null'
+          - type: object
+            properties: {}
+          description: JSON representation of query params
+        headers:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+            additionalProperties:
+              type:
+              - string
+              - 'null'
+          description: JSON representation of the headers
+        body:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+          - type: array
+            items: {}
+          description: JSON or string representation of the body
+        is_large_payload:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the payload is considered large payload and not searchable
+      required:
+      - path
+      - query
+      - parsed_query
+      - headers
+      - body
+      additionalProperties: false
+      description: Request data
   securitySchemes:
     bearerAuth:
       type: http

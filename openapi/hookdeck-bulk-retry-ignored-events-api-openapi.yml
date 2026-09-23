@@ -1,8 +1,8 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Hookdeck Bookmarks Attempts Bulk retry ignored events API
+  title: Hookdeck Bulk Operations Bulk retry ignored events API
   version: 1.0.0
-  description: Save bookmarked events for quick replay and convenient one-click testing during development.
+  description: Plan, schedule, and cancel bulk operations that retry or cancel many events, requests, or ignored events at once. Returns progress and per-batch counts.
   contact:
     name: Hookdeck Support
     url: https://hookdeck.com/contact-us
@@ -48,27 +48,30 @@ paths:
         name: cancelled_at
         schema:
           anyOf:
-          - type: string
+          - type:
+            - string
+            - 'null'
             format: date-time
-            nullable: true
           - $ref: '#/components/schemas/Operators'
           description: Filter by date the bulk retry was cancelled
       - in: query
         name: completed_at
         schema:
           anyOf:
-          - type: string
+          - type:
+            - string
+            - 'null'
             format: date-time
-            nullable: true
           - $ref: '#/components/schemas/Operators'
           description: Filter by date the bulk retry completed
       - in: query
         name: created_at
         schema:
           anyOf:
-          - type: string
+          - type:
+            - string
+            - 'null'
             format: date-time
-            nullable: true
           - $ref: '#/components/schemas/Operators'
           description: Filter by date the bulk retry was created
       - in: query
@@ -255,17 +258,20 @@ paths:
                 type: object
                 properties:
                   estimated_batch:
-                    type: integer
-                    nullable: true
+                    type:
+                    - integer
+                    - 'null'
                     description: Number of batches required to complete the bulk retry
                   estimated_count:
-                    type: integer
-                    nullable: true
+                    type:
+                    - integer
+                    - 'null'
                     description: Number of estimated events to be retried
                   progress:
-                    type: number
+                    type:
+                    - number
+                    - 'null'
                     format: float
-                    nullable: true
                     description: Progression of the batch operations, values 0 - 1
                 additionalProperties: false
         '400':
@@ -381,144 +387,16 @@ components:
           type: string
           description: Error description
         data:
-          type: object
+          type:
+          - object
+          - 'null'
           properties: {}
-          nullable: true
       required:
       - code
       - status
       - message
       additionalProperties: false
       description: Error response model
-    Operators:
-      type: object
-      properties:
-        gt:
-          type: string
-          format: date-time
-          nullable: true
-        gte:
-          type: string
-          format: date-time
-          nullable: true
-        le:
-          type: string
-          format: date-time
-          nullable: true
-        lte:
-          type: string
-          format: date-time
-          nullable: true
-        any:
-          type: boolean
-        all:
-          type: boolean
-      additionalProperties: false
-    OrderByDirection:
-      anyOf:
-      - enum:
-        - asc
-      - enum:
-        - desc
-      - enum:
-        - ASC
-      - enum:
-        - DESC
-    BatchOperationPaginatedResult:
-      type: object
-      properties:
-        pagination:
-          $ref: '#/components/schemas/SeekPagination'
-        count:
-          type: integer
-        models:
-          type: array
-          items:
-            $ref: '#/components/schemas/BatchOperation'
-      additionalProperties: false
-    BatchOperation:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the bulk retry
-        team_id:
-          type: string
-          description: ID of the project
-        type:
-          type: string
-          description: Type of the bulk operation
-        query:
-          anyOf:
-          - type: object
-            properties: {}
-            additionalProperties:
-              nullable: true
-          - type: string
-            nullable: true
-          nullable: true
-          description: Query object to filter records
-          x-docs-force-simple-type: true
-          x-docs-type: JSON
-        created_at:
-          type: string
-          format: date-time
-          description: Date the bulk retry was created
-        updated_at:
-          type: string
-          format: date-time
-          description: Last time the bulk retry was updated
-        cancelled_at:
-          type: string
-          format: date-time
-          nullable: true
-          description: Date the bulk retry was cancelled
-        completed_at:
-          type: string
-          format: date-time
-          nullable: true
-          description: Date the bulk retry was completed
-        estimated_batch:
-          type: integer
-          nullable: true
-          description: Number of batches required to complete the bulk retry
-        estimated_count:
-          type: integer
-          nullable: true
-          description: Number of estimated events to be retried
-        processed_batch:
-          type: integer
-          nullable: true
-          description: Number of batches currently processed
-        completed_count:
-          type: integer
-          nullable: true
-          description: Number of events that were successfully delivered
-        in_progress:
-          type: boolean
-          description: Indicates if the bulk retry is currently in progress
-        progress:
-          type: number
-          format: float
-          nullable: true
-          description: Progression of the batch operations, values 0 - 1
-        failed_count:
-          type: integer
-          nullable: true
-          description: Number of events that failed to be delivered
-        number:
-          type: number
-          format: float
-          nullable: true
-          x-docs-hide: true
-      required:
-      - id
-      - team_id
-      - type
-      - created_at
-      - updated_at
-      - in_progress
-      additionalProperties: false
     SeekPagination:
       type: object
       properties:
@@ -540,6 +418,147 @@ components:
           type: string
         next:
           type: string
+      additionalProperties: false
+    BatchOperation:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the bulk retry
+        team_id:
+          type: string
+          description: ID of the project
+        type:
+          type: string
+          description: Type of the bulk operation
+        query:
+          anyOf:
+          - type: object
+            properties: {}
+            additionalProperties: {}
+          - type:
+            - string
+            - 'null'
+          description: Query object to filter records
+          x-docs-force-simple-type: true
+          x-docs-type: JSON
+        created_at:
+          type: string
+          format: date-time
+          description: Date the bulk retry was created
+        updated_at:
+          type: string
+          format: date-time
+          description: Last time the bulk retry was updated
+        cancelled_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date the bulk retry was cancelled
+        completed_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date the bulk retry was completed
+        estimated_batch:
+          type:
+          - integer
+          - 'null'
+          description: Number of batches required to complete the bulk retry
+        estimated_count:
+          type:
+          - integer
+          - 'null'
+          description: Number of estimated events to be retried
+        processed_batch:
+          type:
+          - integer
+          - 'null'
+          description: Number of batches currently processed
+        completed_count:
+          type:
+          - integer
+          - 'null'
+          description: Number of events that were successfully delivered
+        in_progress:
+          type: boolean
+          description: Indicates if the bulk retry is currently in progress
+        progress:
+          type:
+          - number
+          - 'null'
+          format: float
+          description: Progression of the batch operations, values 0 - 1
+        failed_count:
+          type:
+          - integer
+          - 'null'
+          description: Number of events that failed to be delivered
+        number:
+          type:
+          - number
+          - 'null'
+          format: float
+          x-docs-hide: true
+      required:
+      - id
+      - team_id
+      - type
+      - created_at
+      - updated_at
+      - in_progress
+      additionalProperties: false
+    OrderByDirection:
+      anyOf:
+      - enum:
+        - asc
+      - enum:
+        - desc
+      - enum:
+        - ASC
+      - enum:
+        - DESC
+    Operators:
+      type: object
+      properties:
+        gt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        gte:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        le:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        lte:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        any:
+          type: boolean
+        all:
+          type: boolean
+      additionalProperties: false
+    BatchOperationPaginatedResult:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/BatchOperation'
       additionalProperties: false
   securitySchemes:
     bearerAuth:

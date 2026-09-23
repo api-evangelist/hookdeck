@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Hookdeck Bookmarks Attempts Transformations API
   version: 1.0.0
@@ -59,10 +59,11 @@ paths:
         name: name
         schema:
           anyOf:
-          - type: string
+          - type:
+            - string
+            - 'null'
             pattern: ^[A-z0-9-_]+$
             maxLength: 155
-            nullable: true
           - $ref: '#/components/schemas/Operators'
           description: Filter by transformation name
       - in: query
@@ -430,12 +431,14 @@ paths:
                       description: Body of the request
                       x-docs-force-simple-type: true
                     path:
-                      type: string
-                      nullable: true
+                      type:
+                      - string
+                      - 'null'
                       description: Path of the request
                     query:
-                      type: string
-                      nullable: true
+                      type:
+                      - string
+                      - 'null'
                       description: String representation of the query params of the request
                     parsed_query:
                       type: object
@@ -483,24 +486,26 @@ paths:
         name: log_level
         schema:
           anyOf:
-          - type: string
+          - type:
+            - string
+            - 'null'
             enum:
             - debug
             - info
             - warn
             - error
             - fatal
-            nullable: true
           - type: array
             items:
-              type: string
+              type:
+              - string
+              - 'null'
               enum:
               - debug
               - info
               - warn
               - error
               - fatal
-              nullable: true
           description: Log level of the execution
       - in: query
         name: webhook_id
@@ -626,245 +631,6 @@ paths:
         required: true
 components:
   schemas:
-    TransformationPaginatedResult:
-      type: object
-      properties:
-        pagination:
-          $ref: '#/components/schemas/SeekPagination'
-        count:
-          type: integer
-        models:
-          type: array
-          items:
-            $ref: '#/components/schemas/Transformation'
-      additionalProperties: false
-    TransformationExecutionLogLevel:
-      type: string
-      enum:
-      - debug
-      - info
-      - warn
-      - error
-      - fatal
-      description: The minimum log level to open the issue on
-    TransformationExecution:
-      type: object
-      properties:
-        id:
-          type: string
-        transformed_event_data_id:
-          type: string
-          nullable: true
-        original_event_data_id:
-          type: string
-        transformation_id:
-          type: string
-        team_id:
-          type: string
-          description: ID of the project
-        webhook_id:
-          type: string
-          description: ID of the associated connection (webhook)
-        log_level:
-          $ref: '#/components/schemas/TransformationExecutionLogLevel'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/ConsoleLine'
-        updated_at:
-          type: string
-          format: date-time
-        created_at:
-          type: string
-          format: date-time
-        original_event_data:
-          $ref: '#/components/schemas/ShortEventData'
-        transformed_event_data:
-          $ref: '#/components/schemas/ShortEventData'
-        issue_id:
-          type: string
-          nullable: true
-      required:
-      - id
-      - original_event_data_id
-      - transformation_id
-      - team_id
-      - webhook_id
-      - log_level
-      - logs
-      - updated_at
-      - created_at
-      additionalProperties: false
-    ShortEventData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: Request path
-        query:
-          type: string
-          nullable: true
-          description: Raw query param string
-        parsed_query:
-          anyOf:
-          - type: string
-            nullable: true
-          - type: object
-            properties: {}
-          nullable: true
-          description: JSON representation of query params
-        headers:
-          anyOf:
-          - type: string
-          - type: object
-            properties: {}
-            additionalProperties:
-              type: string
-              nullable: true
-          nullable: true
-          description: JSON representation of the headers
-        body:
-          anyOf:
-          - type: string
-          - type: object
-            properties: {}
-          - type: array
-            items: {}
-          nullable: true
-          description: JSON or string representation of the body
-        is_large_payload:
-          type: boolean
-          nullable: true
-          description: Whether the payload is considered large payload and not searchable
-      required:
-      - path
-      - query
-      - parsed_query
-      - headers
-      - body
-      additionalProperties: false
-      nullable: true
-      description: Request data
-    TransformationExecutorOutput:
-      type: object
-      properties:
-        request_id:
-          type: string
-          nullable: true
-        transformation_id:
-          type: string
-          nullable: true
-        execution_id:
-          type: string
-          nullable: true
-        log_level:
-          $ref: '#/components/schemas/TransformationExecutionLogLevel'
-        request:
-          type: object
-          properties:
-            headers:
-              anyOf:
-              - type: string
-              - type: object
-                properties: {}
-                additionalProperties:
-                  nullable: true
-              nullable: true
-            path:
-              type: string
-            query:
-              anyOf:
-              - type: object
-                properties: {}
-                additionalProperties: false
-                nullable: true
-              - type: string
-              nullable: true
-            parsed_query:
-              anyOf:
-              - type: string
-                nullable: true
-              - type: object
-                properties: {}
-                additionalProperties: false
-              nullable: true
-            body:
-              anyOf:
-              - type: string
-                nullable: true
-              - type: object
-                properties: {}
-                additionalProperties: false
-              nullable: true
-          required:
-          - path
-          additionalProperties: false
-          nullable: true
-        console:
-          type: array
-          items:
-            $ref: '#/components/schemas/ConsoleLine'
-          nullable: true
-      required:
-      - log_level
-      additionalProperties: false
-    APIErrorResponse:
-      type: object
-      properties:
-        code:
-          type: string
-          description: Error code
-        status:
-          type: number
-          format: float
-          description: Status code
-        message:
-          type: string
-          description: Error description
-        data:
-          type: object
-          properties: {}
-          nullable: true
-      required:
-      - code
-      - status
-      - message
-      additionalProperties: false
-      description: Error response model
-    Operators:
-      type: object
-      properties:
-        gt:
-          type: string
-          format: date-time
-          nullable: true
-        gte:
-          type: string
-          format: date-time
-          nullable: true
-        le:
-          type: string
-          format: date-time
-          nullable: true
-        lte:
-          type: string
-          format: date-time
-          nullable: true
-        any:
-          type: boolean
-        all:
-          type: boolean
-      additionalProperties: false
-    OrderByDirection:
-      anyOf:
-      - enum:
-        - asc
-      - enum:
-        - desc
-      - enum:
-        - ASC
-      - enum:
-        - DESC
     Transformation:
       type: object
       properties:
@@ -881,19 +647,22 @@ components:
           type: string
           description: JavaScript code to be executed
         encrypted_env:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           x-docs-hide: true
         iv:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           x-docs-hide: true
         env:
-          type: object
+          type:
+          - object
+          - 'null'
           properties: {}
           additionalProperties:
             type: string
-          nullable: true
           description: Key-value environment variables to be passed to the transformation
           x-docs-force-simple-type: true
         updated_at:
@@ -929,18 +698,39 @@ components:
       - type
       - message
       additionalProperties: false
-    TransformationExecutionPaginatedResult:
+    APIErrorResponse:
       type: object
       properties:
-        pagination:
-          $ref: '#/components/schemas/SeekPagination'
-        count:
-          type: integer
-        models:
-          type: array
-          items:
-            $ref: '#/components/schemas/TransformationExecution'
+        code:
+          type: string
+          description: Error code
+        status:
+          type: number
+          format: float
+          description: Status code
+        message:
+          type: string
+          description: Error description
+        data:
+          type:
+          - object
+          - 'null'
+          properties: {}
+      required:
+      - code
+      - status
+      - message
       additionalProperties: false
+      description: Error response model
+    TransformationExecutionLogLevel:
+      type: string
+      enum:
+      - debug
+      - info
+      - warn
+      - error
+      - fatal
+      description: The minimum log level to open the issue on
     SeekPagination:
       type: object
       properties:
@@ -962,6 +752,236 @@ components:
           type: string
         next:
           type: string
+      additionalProperties: false
+    TransformationPaginatedResult:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transformation'
+      additionalProperties: false
+    OrderByDirection:
+      anyOf:
+      - enum:
+        - asc
+      - enum:
+        - desc
+      - enum:
+        - ASC
+      - enum:
+        - DESC
+    TransformationExecution:
+      type: object
+      properties:
+        id:
+          type: string
+        transformed_event_data_id:
+          type:
+          - string
+          - 'null'
+        original_event_data_id:
+          type: string
+        transformation_id:
+          type: string
+        team_id:
+          type: string
+          description: ID of the project
+        webhook_id:
+          type: string
+          description: ID of the associated connection (webhook)
+        log_level:
+          $ref: '#/components/schemas/TransformationExecutionLogLevel'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConsoleLine'
+        updated_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+        original_event_data:
+          $ref: '#/components/schemas/ShortEventData'
+        transformed_event_data:
+          $ref: '#/components/schemas/ShortEventData'
+        issue_id:
+          type:
+          - string
+          - 'null'
+      required:
+      - id
+      - original_event_data_id
+      - transformation_id
+      - team_id
+      - webhook_id
+      - log_level
+      - logs
+      - updated_at
+      - created_at
+      additionalProperties: false
+    TransformationExecutionPaginatedResult:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransformationExecution'
+      additionalProperties: false
+    Operators:
+      type: object
+      properties:
+        gt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        gte:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        le:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        lte:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        any:
+          type: boolean
+        all:
+          type: boolean
+      additionalProperties: false
+    ShortEventData:
+      type:
+      - object
+      - 'null'
+      properties:
+        path:
+          type: string
+          description: Request path
+        query:
+          type:
+          - string
+          - 'null'
+          description: Raw query param string
+        parsed_query:
+          anyOf:
+          - type:
+            - string
+            - 'null'
+          - type: object
+            properties: {}
+          description: JSON representation of query params
+        headers:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+            additionalProperties:
+              type:
+              - string
+              - 'null'
+          description: JSON representation of the headers
+        body:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+          - type: array
+            items: {}
+          description: JSON or string representation of the body
+        is_large_payload:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the payload is considered large payload and not searchable
+      required:
+      - path
+      - query
+      - parsed_query
+      - headers
+      - body
+      additionalProperties: false
+      description: Request data
+    TransformationExecutorOutput:
+      type: object
+      properties:
+        request_id:
+          type:
+          - string
+          - 'null'
+        transformation_id:
+          type:
+          - string
+          - 'null'
+        execution_id:
+          type:
+          - string
+          - 'null'
+        log_level:
+          $ref: '#/components/schemas/TransformationExecutionLogLevel'
+        request:
+          type:
+          - object
+          - 'null'
+          properties:
+            headers:
+              anyOf:
+              - type: string
+              - type: object
+                properties: {}
+                additionalProperties: {}
+            path:
+              type: string
+            query:
+              anyOf:
+              - type:
+                - object
+                - 'null'
+                properties: {}
+                additionalProperties: false
+              - type: string
+            parsed_query:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: object
+                properties: {}
+                additionalProperties: false
+            body:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: object
+                properties: {}
+                additionalProperties: false
+          required:
+          - path
+          additionalProperties: false
+        console:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ConsoleLine'
+      required:
+      - log_level
       additionalProperties: false
   securitySchemes:
     bearerAuth:

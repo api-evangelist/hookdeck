@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Hookdeck Bookmarks Attempts Events API
   version: 1.0.0
@@ -126,7 +126,6 @@ paths:
               type: integer
               minimum: 200
               maximum: 600
-          nullable: true
           description: Filter by HTTP response status code
       - in: query
         name: successful_at
@@ -135,7 +134,6 @@ paths:
           - type: string
             format: date-time
           - $ref: '#/components/schemas/Operators'
-          nullable: true
           description: Filter by `successful_at` date using a date operator
       - in: query
         name: created_at
@@ -169,7 +167,6 @@ paths:
           - type: array
             items:
               type: string
-          nullable: true
           description: Filter by CLI IDs. `?[any]=true` operator for any CLI.
       - in: query
         name: last_attempt_at
@@ -178,7 +175,6 @@ paths:
           - type: string
             format: date-time
           - $ref: '#/components/schemas/Operators'
-          nullable: true
           description: Filter by `last_attempt_at` date using a date operator
       - in: query
         name: next_attempt_at
@@ -187,7 +183,6 @@ paths:
           - type: string
             format: date-time
           - $ref: '#/components/schemas/Operators'
-          nullable: true
           description: Filter by `next_attempt_at` date using a date operator
       - in: query
         name: search_term
@@ -241,7 +236,6 @@ paths:
           - type: array
             items:
               type: string
-          nullable: true
           x-docs-hide: true
       - in: query
         name: issue_id
@@ -477,76 +471,18 @@ paths:
         required: true
 components:
   schemas:
-    EventData:
+    EventPaginatedResult:
       type: object
       properties:
-        url:
-          type: string
-        method:
-          type: string
-        path:
-          type: string
-          nullable: true
-          description: Raw path string
-        query:
-          type: string
-          nullable: true
-          description: Raw query param string
-        parsed_query:
-          anyOf:
-          - type: string
-            nullable: true
-          - type: object
-            properties: {}
-          nullable: true
-          description: JSON representation of query params
-        headers:
-          anyOf:
-          - type: string
-          - type: object
-            properties: {}
-            additionalProperties:
-              type: string
-              nullable: true
-          nullable: true
-          description: JSON representation of the headers
-        appended_headers:
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
           type: array
           items:
-            type: string
-          description: List of headers that were added by Hookdeck
-        body:
-          anyOf:
-          - type: string
-          - type: object
-            properties: {}
-          - type: array
-            items: {}
-          nullable: true
-          description: JSON or string representation of the body
-        is_large_payload:
-          type: boolean
-          description: Whether the payload is considered large payload and not searchable
-      required:
-      - url
-      - method
-      - path
-      - query
-      - parsed_query
-      - headers
-      - body
+            $ref: '#/components/schemas/Event'
       additionalProperties: false
-      nullable: true
-      description: Event data if included
-    EventStatus:
-      type: string
-      enum:
-      - SCHEDULED
-      - QUEUED
-      - HOLD
-      - SUCCESSFUL
-      - FAILED
-      - CANCELLED
     Event:
       type: object
       properties:
@@ -575,31 +511,36 @@ components:
           type: integer
           description: Number of delivery attempts made
         last_attempt_at:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
           description: Date of the most recently attempted retry
         next_attempt_at:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
           description: Date of the next scheduled retry
         response_status:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
           description: Event status
         error_code:
           $ref: '#/components/schemas/AttemptErrorCodes'
         status:
           $ref: '#/components/schemas/EventStatus'
         successful_at:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
           description: Date of the latest successful attempt
         cli_id:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: ID of the CLI the event is sent to
         updated_at:
           type: string
@@ -642,39 +583,47 @@ components:
           type: string
           description: Error description
         data:
-          type: object
+          type:
+          - object
+          - 'null'
           properties: {}
-          nullable: true
       required:
       - code
       - status
       - message
       additionalProperties: false
       description: Error response model
-    Operators:
+    SeekPagination:
       type: object
       properties:
-        gt:
+        order_by:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        dir:
+          anyOf:
+          - $ref: '#/components/schemas/OrderByDirection'
+          - type: array
+            items:
+              $ref: '#/components/schemas/OrderByDirection'
+        limit:
+          type: integer
+        prev:
           type: string
-          format: date-time
-          nullable: true
-        gte:
+        next:
           type: string
-          format: date-time
-          nullable: true
-        le:
-          type: string
-          format: date-time
-          nullable: true
-        lte:
-          type: string
-          format: date-time
-          nullable: true
-        any:
-          type: boolean
-        all:
-          type: boolean
       additionalProperties: false
+    EventStatus:
+      type: string
+      enum:
+      - SCHEDULED
+      - QUEUED
+      - HOLD
+      - SUCCESSFUL
+      - FAILED
+      - CANCELLED
     OrderByDirection:
       anyOf:
       - enum:
@@ -685,6 +634,155 @@ components:
         - ASC
       - enum:
         - DESC
+    RetriedEvent:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the event
+        team_id:
+          type: string
+          description: ID of the project
+        webhook_id:
+          type: string
+          description: ID of the associated connection (webhook)
+        source_id:
+          type: string
+          description: ID of the associated source
+        destination_id:
+          type: string
+          description: ID of the associated destination
+        event_data_id:
+          type: string
+          description: ID of the event data
+        request_id:
+          type: string
+          description: ID of the request that created the event
+        attempts:
+          type: integer
+          description: Number of delivery attempts made
+        last_attempt_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date of the most recently attempted retry
+        next_attempt_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date of the next scheduled retry
+        response_status:
+          type:
+          - integer
+          - 'null'
+          description: Event status
+        error_code:
+          $ref: '#/components/schemas/AttemptErrorCodes'
+        status:
+          $ref: '#/components/schemas/EventStatus'
+        successful_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date of the latest successful attempt
+        cli_id:
+          type:
+          - string
+          - 'null'
+          description: ID of the CLI the event is sent to
+        updated_at:
+          type: string
+          format: date-time
+          description: Date the event was last updated
+        created_at:
+          type: string
+          format: date-time
+          description: Date the event was created
+        data:
+          $ref: '#/components/schemas/EventData'
+      required:
+      - id
+      - team_id
+      - webhook_id
+      - source_id
+      - destination_id
+      - event_data_id
+      - request_id
+      - attempts
+      - last_attempt_at
+      - next_attempt_at
+      - status
+      - successful_at
+      - cli_id
+      - updated_at
+      - created_at
+      additionalProperties: false
+    EventData:
+      type:
+      - object
+      - 'null'
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        path:
+          type:
+          - string
+          - 'null'
+          description: Raw path string
+        query:
+          type:
+          - string
+          - 'null'
+          description: Raw query param string
+        parsed_query:
+          anyOf:
+          - type:
+            - string
+            - 'null'
+          - type: object
+            properties: {}
+          description: JSON representation of query params
+        headers:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+            additionalProperties:
+              type:
+              - string
+              - 'null'
+          description: JSON representation of the headers
+        appended_headers:
+          type: array
+          items:
+            type: string
+          description: List of headers that were added by Hookdeck
+        body:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+          - type: array
+            items: {}
+          description: JSON or string representation of the body
+        is_large_payload:
+          type: boolean
+          description: Whether the payload is considered large payload and not searchable
+      required:
+      - url
+      - method
+      - path
+      - query
+      - parsed_query
+      - headers
+      - body
+      additionalProperties: false
+      description: Event data if included
     RawBody:
       type: object
       properties:
@@ -730,120 +828,33 @@ components:
       - Z_DATA_ERROR
       - UNKNOWN
       description: Error code of the delivery attempt
-    EventPaginatedResult:
+    Operators:
       type: object
       properties:
-        pagination:
-          $ref: '#/components/schemas/SeekPagination'
-        count:
-          type: integer
-        models:
-          type: array
-          items:
-            $ref: '#/components/schemas/Event'
-      additionalProperties: false
-    RetriedEvent:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the event
-        team_id:
-          type: string
-          description: ID of the project
-        webhook_id:
-          type: string
-          description: ID of the associated connection (webhook)
-        source_id:
-          type: string
-          description: ID of the associated source
-        destination_id:
-          type: string
-          description: ID of the associated destination
-        event_data_id:
-          type: string
-          description: ID of the event data
-        request_id:
-          type: string
-          description: ID of the request that created the event
-        attempts:
-          type: integer
-          description: Number of delivery attempts made
-        last_attempt_at:
-          type: string
+        gt:
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
-          description: Date of the most recently attempted retry
-        next_attempt_at:
-          type: string
+        gte:
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
-          description: Date of the next scheduled retry
-        response_status:
-          type: integer
-          nullable: true
-          description: Event status
-        error_code:
-          $ref: '#/components/schemas/AttemptErrorCodes'
-        status:
-          $ref: '#/components/schemas/EventStatus'
-        successful_at:
-          type: string
+        le:
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
-          description: Date of the latest successful attempt
-        cli_id:
-          type: string
-          nullable: true
-          description: ID of the CLI the event is sent to
-        updated_at:
-          type: string
+        lte:
+          type:
+          - string
+          - 'null'
           format: date-time
-          description: Date the event was last updated
-        created_at:
-          type: string
-          format: date-time
-          description: Date the event was created
-        data:
-          $ref: '#/components/schemas/EventData'
-      required:
-      - id
-      - team_id
-      - webhook_id
-      - source_id
-      - destination_id
-      - event_data_id
-      - request_id
-      - attempts
-      - last_attempt_at
-      - next_attempt_at
-      - status
-      - successful_at
-      - cli_id
-      - updated_at
-      - created_at
-      additionalProperties: false
-    SeekPagination:
-      type: object
-      properties:
-        order_by:
-          anyOf:
-          - type: string
-          - type: array
-            items:
-              type: string
-        dir:
-          anyOf:
-          - $ref: '#/components/schemas/OrderByDirection'
-          - type: array
-            items:
-              $ref: '#/components/schemas/OrderByDirection'
-        limit:
-          type: integer
-        prev:
-          type: string
-        next:
-          type: string
+        any:
+          type: boolean
+        all:
+          type: boolean
       additionalProperties: false
   securitySchemes:
     bearerAuth:

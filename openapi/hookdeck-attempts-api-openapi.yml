@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Hookdeck Bookmarks Attempts API
   version: 1.0.0
@@ -152,34 +152,6 @@ paths:
         required: true
 components:
   schemas:
-    AttemptTrigger:
-      type: string
-      enum:
-      - INITIAL
-      - MANUAL
-      - BULK_RETRY
-      - UNPAUSE
-      - AUTOMATIC
-      nullable: true
-      description: How the attempt was triggered
-    EventAttemptPaginatedResult:
-      type: object
-      properties:
-        pagination:
-          $ref: '#/components/schemas/SeekPagination'
-        count:
-          type: integer
-        models:
-          type: array
-          items:
-            $ref: '#/components/schemas/EventAttempt'
-      additionalProperties: false
-    AttemptStatus:
-      type: string
-      enum:
-      - FAILED
-      - SUCCESSFUL
-      description: Attempt status
     APIErrorResponse:
       type: object
       properties:
@@ -194,15 +166,154 @@ components:
           type: string
           description: Error description
         data:
-          type: object
+          type:
+          - object
+          - 'null'
           properties: {}
-          nullable: true
       required:
       - code
       - status
       - message
       additionalProperties: false
       description: Error response model
+    EventAttempt:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+          description: Attempt ID
+        team_id:
+          type: string
+          description: ID of the project
+        event_id:
+          type: string
+          description: Event ID
+        destination_id:
+          type: string
+          description: Destination ID
+        response_status:
+          type:
+          - integer
+          - 'null'
+          description: Attempt's HTTP response code
+        attempt_number:
+          type:
+          - integer
+          - 'null'
+          description: Sequential number of attempts (up to and including this one) made for the associated event
+        trigger:
+          $ref: '#/components/schemas/AttemptTrigger'
+        error_code:
+          $ref: '#/components/schemas/AttemptErrorCodes'
+        body:
+          anyOf:
+          - type:
+            - object
+            - 'null'
+            properties: {}
+            description: Response body from the destination
+          - type:
+            - string
+            - 'null'
+            description: Response body from the destination
+        requested_url:
+          type:
+          - string
+          - 'null'
+          description: URL of the destination where delivery was attempted
+        http_method:
+          type:
+          - string
+          - 'null'
+          enum:
+          - GET
+          - POST
+          - PUT
+          - PATCH
+          - DELETE
+          description: HTTP method used to deliver the attempt
+        bulk_retry_id:
+          type:
+          - string
+          - 'null'
+          description: ID of associated bulk retry
+        status:
+          $ref: '#/components/schemas/AttemptStatus'
+        successful_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date the attempt was successful
+        delivered_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date the attempt was delivered
+        responded_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date the destination responded to this attempt
+        delivery_latency:
+          type:
+          - integer
+          - 'null'
+          description: Time elapsed between attempt initiation and final delivery (in ms)
+        response_latency:
+          type:
+          - integer
+          - 'null'
+          description: Time elapsed between attempt initiation and a response from the destination (in ms)
+        updated_at:
+          type: string
+          format: date-time
+          description: Date the attempt was last updated
+        created_at:
+          type: string
+          format: date-time
+          description: Date the attempt was created
+      required:
+      - id
+      - team_id
+      - event_id
+      - destination_id
+      - status
+      - updated_at
+      - created_at
+      additionalProperties: false
+    AttemptStatus:
+      type: string
+      enum:
+      - FAILED
+      - SUCCESSFUL
+      description: Attempt status
+    SeekPagination:
+      type: object
+      properties:
+        order_by:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        dir:
+          anyOf:
+          - $ref: '#/components/schemas/OrderByDirection'
+          - type: array
+            items:
+              $ref: '#/components/schemas/OrderByDirection'
+        limit:
+          type: integer
+        prev:
+          type: string
+        next:
+          type: string
+      additionalProperties: false
     OrderByDirection:
       anyOf:
       - enum:
@@ -250,124 +361,28 @@ components:
       - Z_DATA_ERROR
       - UNKNOWN
       description: Error code of the delivery attempt
-    EventAttempt:
+    AttemptTrigger:
+      type:
+      - string
+      - 'null'
+      enum:
+      - INITIAL
+      - MANUAL
+      - BULK_RETRY
+      - UNPAUSE
+      - AUTOMATIC
+      description: How the attempt was triggered
+    EventAttemptPaginatedResult:
       type: object
       properties:
-        id:
-          type: string
-          description: Attempt ID
-        team_id:
-          type: string
-          description: ID of the project
-        event_id:
-          type: string
-          description: Event ID
-        destination_id:
-          type: string
-          description: Destination ID
-        response_status:
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
           type: integer
-          nullable: true
-          description: Attempt's HTTP response code
-        attempt_number:
-          type: integer
-          nullable: true
-          description: Sequential number of attempts (up to and including this one) made for the associated event
-        trigger:
-          $ref: '#/components/schemas/AttemptTrigger'
-        error_code:
-          $ref: '#/components/schemas/AttemptErrorCodes'
-        body:
-          anyOf:
-          - type: object
-            properties: {}
-            nullable: true
-            description: Response body from the destination
-          - type: string
-            nullable: true
-            description: Response body from the destination
-        requested_url:
-          type: string
-          nullable: true
-          description: URL of the destination where delivery was attempted
-        http_method:
-          type: string
-          enum:
-          - GET
-          - POST
-          - PUT
-          - PATCH
-          - DELETE
-          nullable: true
-          description: HTTP method used to deliver the attempt
-        bulk_retry_id:
-          type: string
-          nullable: true
-          description: ID of associated bulk retry
-        status:
-          $ref: '#/components/schemas/AttemptStatus'
-        successful_at:
-          type: string
-          format: date-time
-          nullable: true
-          description: Date the attempt was successful
-        delivered_at:
-          type: string
-          format: date-time
-          nullable: true
-          description: Date the attempt was delivered
-        responded_at:
-          type: string
-          format: date-time
-          nullable: true
-          description: Date the destination responded to this attempt
-        delivery_latency:
-          type: integer
-          nullable: true
-          description: Time elapsed between attempt initiation and final delivery (in ms)
-        response_latency:
-          type: integer
-          nullable: true
-          description: Time elapsed between attempt initiation and a response from the destination (in ms)
-        updated_at:
-          type: string
-          format: date-time
-          description: Date the attempt was last updated
-        created_at:
-          type: string
-          format: date-time
-          description: Date the attempt was created
-      required:
-      - id
-      - team_id
-      - event_id
-      - destination_id
-      - status
-      - updated_at
-      - created_at
-      additionalProperties: false
-      nullable: true
-    SeekPagination:
-      type: object
-      properties:
-        order_by:
-          anyOf:
-          - type: string
-          - type: array
-            items:
-              type: string
-        dir:
-          anyOf:
-          - $ref: '#/components/schemas/OrderByDirection'
-          - type: array
-            items:
-              $ref: '#/components/schemas/OrderByDirection'
-        limit:
-          type: integer
-        prev:
-          type: string
-        next:
-          type: string
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventAttempt'
       additionalProperties: false
   securitySchemes:
     bearerAuth:

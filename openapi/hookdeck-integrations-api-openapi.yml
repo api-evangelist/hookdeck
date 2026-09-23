@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Hookdeck Bookmarks Attempts Integrations API
   version: 1.0.0
@@ -320,27 +320,41 @@ paths:
         required: true
 components:
   schemas:
-    BasicAuthIntegrationConfigs:
+    APIErrorResponse:
       type: object
       properties:
-        username:
+        code:
           type: string
-        password:
+          description: Error code
+        status:
+          type: number
+          format: float
+          description: Status code
+        message:
           type: string
+          description: Error description
+        data:
+          type:
+          - object
+          - 'null'
+          properties: {}
       required:
-      - username
-      - password
+      - code
+      - status
+      - message
       additionalProperties: false
-    APIKeyIntegrationConfigs:
+      description: Error response model
+    IntegrationPaginatedResult:
       type: object
       properties:
-        header_key:
-          type: string
-        api_key:
-          type: string
-      required:
-      - header_key
-      - api_key
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/Integration'
       additionalProperties: false
     SeekPagination:
       type: object
@@ -363,40 +377,6 @@ components:
           type: string
         next:
           type: string
-      additionalProperties: false
-    VercelLogDrainsIntegrationConfigs:
-      type: object
-      properties:
-        webhook_secret_key:
-          type: string
-          nullable: true
-        vercel_log_drains_secret:
-          type: string
-      required:
-      - vercel_log_drains_secret
-      additionalProperties: false
-    HandledAPIKeyIntegrationConfigs:
-      type: object
-      properties:
-        api_key:
-          type: string
-      required:
-      - api_key
-      additionalProperties: false
-    HMACAlgorithms:
-      type: string
-      enum:
-      - md5
-      - sha1
-      - sha256
-      - sha512
-    DeletedIntegration:
-      type: object
-      properties:
-        id:
-          type: string
-      required:
-      - id
       additionalProperties: false
     IntegrationProvider:
       type: string
@@ -535,88 +515,6 @@ components:
       - UBER
       - WECHAT
       - CIRCLE
-    HMACIntegrationConfigs:
-      type: object
-      properties:
-        webhook_secret_key:
-          type: string
-        algorithm:
-          $ref: '#/components/schemas/HMACAlgorithms'
-        header_key:
-          type: string
-        encoding:
-          type: string
-          enum:
-          - base64
-          - hex
-      required:
-      - webhook_secret_key
-      - algorithm
-      - header_key
-      - encoding
-      additionalProperties: false
-    IntegrationFeature:
-      type: string
-      enum:
-      - VERIFICATION
-      - HANDSHAKE
-    OrderByDirection:
-      anyOf:
-      - enum:
-        - asc
-      - enum:
-        - desc
-      - enum:
-        - ASC
-      - enum:
-        - DESC
-    IntegrationPaginatedResult:
-      type: object
-      properties:
-        pagination:
-          $ref: '#/components/schemas/SeekPagination'
-        count:
-          type: integer
-        models:
-          type: array
-          items:
-            $ref: '#/components/schemas/Integration'
-      additionalProperties: false
-    APIErrorResponse:
-      type: object
-      properties:
-        code:
-          type: string
-          description: Error code
-        status:
-          type: number
-          format: float
-          description: Status code
-        message:
-          type: string
-          description: Error description
-        data:
-          type: object
-          properties: {}
-          nullable: true
-      required:
-      - code
-      - status
-      - message
-      additionalProperties: false
-      description: Error response model
-    DetachedIntegrationFromSource:
-      type: object
-      properties: {}
-      additionalProperties: false
-    HandledHMACConfigs:
-      type: object
-      properties:
-        webhook_secret_key:
-          type: string
-      required:
-      - webhook_secret_key
-      additionalProperties: false
     Integration:
       type: object
       properties:
@@ -678,6 +576,99 @@ components:
       - updated_at
       - created_at
       additionalProperties: false
+    DetachedIntegrationFromSource:
+      type: object
+      properties: {}
+      additionalProperties: false
+    IntegrationFeature:
+      type: string
+      enum:
+      - VERIFICATION
+      - HANDSHAKE
+    BasicAuthIntegrationConfigs:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+      - username
+      - password
+      additionalProperties: false
+    HandledAPIKeyIntegrationConfigs:
+      type: object
+      properties:
+        api_key:
+          type: string
+      required:
+      - api_key
+      additionalProperties: false
+    OrderByDirection:
+      anyOf:
+      - enum:
+        - asc
+      - enum:
+        - desc
+      - enum:
+        - ASC
+      - enum:
+        - DESC
+    HMACIntegrationConfigs:
+      type: object
+      properties:
+        webhook_secret_key:
+          type: string
+        algorithm:
+          $ref: '#/components/schemas/HMACAlgorithms'
+        header_key:
+          type: string
+        encoding:
+          type: string
+          enum:
+          - base64
+          - hex
+      required:
+      - webhook_secret_key
+      - algorithm
+      - header_key
+      - encoding
+      additionalProperties: false
+    HandledHMACConfigs:
+      type: object
+      properties:
+        webhook_secret_key:
+          type: string
+      required:
+      - webhook_secret_key
+      additionalProperties: false
+    HMACAlgorithms:
+      type: string
+      enum:
+      - md5
+      - sha1
+      - sha256
+      - sha512
+    AttachedIntegrationToSource:
+      type: object
+      properties:
+        success:
+          type: boolean
+      required:
+      - success
+      additionalProperties: false
+    VercelLogDrainsIntegrationConfigs:
+      type: object
+      properties:
+        webhook_secret_key:
+          type:
+          - string
+          - 'null'
+        vercel_log_drains_secret:
+          type: string
+      required:
+      - vercel_log_drains_secret
+      additionalProperties: false
     ShopifyIntegrationConfigs:
       type: object
       properties:
@@ -686,13 +677,24 @@ components:
       required:
       - webhook_secret_key
       additionalProperties: false
-    AttachedIntegrationToSource:
+    DeletedIntegration:
       type: object
       properties:
-        success:
-          type: boolean
+        id:
+          type: string
       required:
-      - success
+      - id
+      additionalProperties: false
+    APIKeyIntegrationConfigs:
+      type: object
+      properties:
+        header_key:
+          type: string
+        api_key:
+          type: string
+      required:
+      - header_key
+      - api_key
       additionalProperties: false
   securitySchemes:
     bearerAuth:

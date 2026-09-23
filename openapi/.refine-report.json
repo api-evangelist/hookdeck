@@ -1,12 +1,9 @@
 {
   "provider": "hookdeck",
   "sources": [
+    "_original/hookdeck-bulk-operations-api-openapi.yml",
     "hookdeck-attempts-api-openapi.yml",
     "hookdeck-bookmarks-api-openapi.yml",
-    "hookdeck-bulk-cancel-events-api-openapi.yml",
-    "hookdeck-bulk-retry-events-api-openapi.yml",
-    "hookdeck-bulk-retry-ignored-events-api-openapi.yml",
-    "hookdeck-bulk-retry-requests-api-openapi.yml",
     "hookdeck-connections-api-openapi.yml",
     "hookdeck-destinations-api-openapi.yml",
     "hookdeck-events-api-openapi.yml",
@@ -20,12 +17,12 @@
     "hookdeck-transformations-api-openapi.yml"
   ],
   "outputs": [
-    "hookdeck-attempts-api-openapi.yml",
-    "hookdeck-bookmarks-api-openapi.yml",
     "hookdeck-bulk-cancel-events-api-openapi.yml",
     "hookdeck-bulk-retry-events-api-openapi.yml",
     "hookdeck-bulk-retry-ignored-events-api-openapi.yml",
     "hookdeck-bulk-retry-requests-api-openapi.yml",
+    "hookdeck-attempts-api-openapi.yml",
+    "hookdeck-bookmarks-api-openapi.yml",
     "hookdeck-connections-api-openapi.yml",
     "hookdeck-destinations-api-openapi.yml",
     "hookdeck-events-api-openapi.yml",
@@ -40,7 +37,30 @@
   ],
   "archived": [],
   "errors": [],
-  "warnings": [],
-  "notes": [],
-  "skipped": []
+  "warnings": [
+    "hookdeck-attempts-api-openapi.yml: previously refined output kept for 2 operation(s) no archived document covers (e.g. /attempts get, /attempts/{id} get); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "hookdeck-bookmarks-api-openapi.yml: previously refined output kept for 7 operation(s) no archived document covers (e.g. /bookmarks get, /bookmarks post, /bookmarks/{id} delete); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "hookdeck-connections-api-openapi.yml: previously refined output kept for 13 operation(s) no archived document covers (e.g. /connections get, /connections post, /connections put); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "hookdeck-destinations-api-openapi.yml: previously refined output kept for 11 operation(s) no archived document covers (e.g. /destinations get, /destinations post, /destinations put); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "hookdeck-events-api-openapi.yml: previously refined output kept for 6 operation(s) no archived document covers (e.g. /events get, /events/{id} get, /events/{id}/cancel put); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "hookdeck-integrations-api-openapi.yml: previously refined output kept for 7 operation(s) no archived document covers (e.g. /integrations get, /integrations post, /integrations/{id} delete); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "hookdeck-issue-triggers-api-openapi.yml: previously refined output kept for 8 operation(s) no archived document covers (e.g. /issue-triggers get, /issue-triggers post, /issue-triggers put); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "hookdeck-issues-api-openapi.yml: previously refined output kept for 5 operation(s) no archived document covers (e.g. /issues get, /issues/count get, /issues/{id} delete); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "hookdeck-metrics-api-openapi.yml: previously refined output kept for 7 operation(s) no archived document covers (e.g. /metrics/attempts get, /metrics/events get, /metrics/events-by-issue get); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "hookdeck-notifications-api-openapi.yml: previously refined output kept for 4 operation(s) no archived document covers (e.g. /notifications/webhooks put, /teams/current/custom_domains get, /teams/current/custom_domains post); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "hookdeck-requests-api-openapi.yml: previously refined output kept for 6 operation(s) no archived document covers (e.g. /requests get, /requests/{id} get, /requests/{id}/events get); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "hookdeck-sources-api-openapi.yml: previously refined output kept for 11 operation(s) no archived document covers (e.g. /sources get, /sources post, /sources put); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "hookdeck-transformations-api-openapi.yml: previously refined output kept for 10 operation(s) no archived document covers (e.g. /transformations get, /transformations post, /transformations put); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth."
+  ],
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "hookdeck-bulk-operations-api-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "hookdeck-bulk-cancel-events-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hookdeck-bulk-retry-events-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hookdeck-bulk-retry-ignored-events-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hookdeck-bulk-retry-requests-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

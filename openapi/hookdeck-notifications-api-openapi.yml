@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Hookdeck Bookmarks Attempts Notifications API
   version: 1.0.0
@@ -112,49 +112,6 @@ paths:
         required: true
 components:
   schemas:
-    ToggleWebhookNotifications:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-        topics:
-          type: array
-          items:
-            $ref: '#/components/schemas/TopicsValue'
-          nullable: true
-        source_id:
-          type: string
-      required:
-      - enabled
-      - source_id
-      additionalProperties: false
-    DeleteCustomDomainSchema:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The custom hostname ID
-      required:
-      - id
-      additionalProperties: false
-    AddCustomHostname:
-      type: object
-      properties:
-        hostname:
-          type: string
-          description: The custom hostname to attach to the project
-      required:
-      - hostname
-      additionalProperties: false
-    TopicsValue:
-      type: string
-      enum:
-      - issue.opened
-      - issue.updated
-      - deprecated.attempt-failed
-      - event.successful
-      description: Supported topics
-      x-docs-type: string
     ListCustomDomainSchema:
       type: array
       items:
@@ -233,6 +190,50 @@ components:
           created_at:
             type: string
         additionalProperties: false
+    DeleteCustomDomainSchema:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The custom hostname ID
+      required:
+      - id
+      additionalProperties: false
+    AddCustomHostname:
+      type: object
+      properties:
+        hostname:
+          type: string
+          description: The custom hostname to attach to the project
+      required:
+      - hostname
+      additionalProperties: false
+    ToggleWebhookNotifications:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        topics:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/TopicsValue'
+        source_id:
+          type: string
+      required:
+      - enabled
+      - source_id
+      additionalProperties: false
+    TopicsValue:
+      type: string
+      enum:
+      - issue.opened
+      - issue.updated
+      - deprecated.attempt-failed
+      - event.successful
+      description: Supported topics
+      x-docs-type: string
   securitySchemes:
     bearerAuth:
       type: http
