@@ -576,18 +576,6 @@ paths:
         required: true
 components:
   schemas:
-    DestinationPaginatedResult:
-      type: object
-      properties:
-        pagination:
-          $ref: '#/components/schemas/SeekPagination'
-        count:
-          type: integer
-        models:
-          type: array
-          items:
-            $ref: '#/components/schemas/Destination'
-      additionalProperties: false
     DestinationConfig:
       type: object
       properties: {}
@@ -611,24 +599,37 @@ components:
           type: string
       additionalProperties: false
       x-docs-type: AWS_SIGNATURE
-    DestinationConfigHTTPAuthHookdeckSignatureDefault:
+    DestinationConfigMockAPIAuthBasicAuth:
       type: object
-      properties: {}
+      properties:
+        username:
+          type: string
+        password:
+          type: string
       additionalProperties: false
-      x-docs-type: HOOKDECK_SIGNATURE
-    DestinationConfigHTTPAuthEmpty:
-      x-docs-hide: true
-      x-docs-nullable: true
-    OrderByDirection:
-      anyOf:
-      - enum:
-        - asc
-      - enum:
-        - desc
-      - enum:
-        - ASC
-      - enum:
-        - DESC
+      x-docs-type: BASIC_AUTH
+    DestinationConfigMockAPIAuthAWSSignature:
+      type: object
+      properties:
+        access_key_id:
+          type: string
+        secret_access_key:
+          type: string
+        region:
+          type: string
+        service:
+          type: string
+      additionalProperties: false
+      x-docs-type: AWS_SIGNATURE
+    DestinationConfigHTTPAuthCustomSHA256HMACSignature:
+      type: object
+      properties:
+        key:
+          type: string
+        signing_secret:
+          type: string
+      additionalProperties: false
+      x-docs-type: CUSTOM_SIGNATURE
     DestinationConfigHTTPAuthAWSSignature:
       type: object
       properties:
@@ -642,66 +643,6 @@ components:
           type: string
       additionalProperties: false
       x-docs-type: AWS_SIGNATURE
-    DestinationConfigCLIAuthCustomSHA256HMACSignature:
-      type: object
-      properties:
-        key:
-          type: string
-        signing_secret:
-          type: string
-      additionalProperties: false
-      x-docs-type: CUSTOM_SIGNATURE
-    DestinationConfigCLIAuthBearerToken:
-      type: object
-      properties:
-        token:
-          type: string
-      additionalProperties: false
-      x-docs-type: BEARER_TOKEN
-    DestinationConfigMockAPIAuthCustomSHA256HMACSignature:
-      type: object
-      properties:
-        key:
-          type: string
-        signing_secret:
-          type: string
-      additionalProperties: false
-      x-docs-type: CUSTOM_SIGNATURE
-    VerificationConfig:
-      type: object
-      properties: {}
-      additionalProperties: false
-      oneOf:
-      - $ref: '#/components/schemas/DestinationTypeConfigHTTP'
-        x-required: true
-      - $ref: '#/components/schemas/DestinationTypeConfigCLI'
-        x-required: true
-      - $ref: '#/components/schemas/DestinationTypeConfigMOCK_API'
-      description: The type configs for the specified type
-      default: {}
-    DestinationConfigHTTPAuthBearerToken:
-      type: object
-      properties:
-        token:
-          type: string
-      additionalProperties: false
-      x-docs-type: BEARER_TOKEN
-    DestinationConfigHTTPAuthCustomSHA256HMACSignature:
-      type: object
-      properties:
-        key:
-          type: string
-        signing_secret:
-          type: string
-      additionalProperties: false
-      x-docs-type: CUSTOM_SIGNATURE
-    DestinationConfigMockAPIAuthBearerToken:
-      type: object
-      properties:
-        token:
-          type: string
-      additionalProperties: false
-      x-docs-type: BEARER_TOKEN
     APIErrorResponse:
       type: object
       properties:
@@ -726,17 +667,109 @@ components:
       - message
       additionalProperties: false
       description: Error response model
-    DestinationConfigHTTPAuthGCPServiceAccount:
+    DestinationConfigHTTPAuthEmpty:
+      x-docs-hide: true
+      x-docs-nullable: true
+    DestinationConfigHTTPAuthAPIKey:
       type: object
       properties:
-        service_account_key:
+        key:
           type: string
-        scope:
+        api_key:
+          type: string
+        to:
+          type: string
+          enum:
+          - header
+          - query
+      additionalProperties: false
+      x-docs-type: API_KEY
+    Operators:
+      type: object
+      properties:
+        gt:
           type:
           - string
           - 'null'
+          format: date-time
+        gte:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        le:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        lte:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        any:
+          type: boolean
+        all:
+          type: boolean
       additionalProperties: false
-      x-docs-type: GCP_SERVICE_ACCOUNT
+    DestinationConfigMockAPIAuthEmpty:
+      x-docs-hide: true
+      x-docs-nullable: true
+    DestinationConfigHTTPAuthBearerToken:
+      type: object
+      properties:
+        token:
+          type: string
+      additionalProperties: false
+      x-docs-type: BEARER_TOKEN
+    DestinationTypeConfigMOCK_API:
+      type: object
+      properties:
+        rate_limit:
+          type:
+          - number
+          - 'null'
+          format: float
+        rate_limit_period:
+          type:
+          - string
+          - 'null'
+          enum:
+          - second
+          - minute
+          - hour
+          - concurrent
+        path_forwarding_disabled:
+          type: boolean
+        http_method:
+          type:
+          - string
+          - 'null'
+          enum:
+          - GET
+          - POST
+          - PUT
+          - PATCH
+          - DELETE
+        auth_type:
+          type:
+          - string
+          - 'null'
+          enum:
+          - HOOKDECK_SIGNATURE
+          - CUSTOM_SIGNATURE
+          - BASIC_AUTH
+          - API_KEY
+          - BEARER_TOKEN
+          - OAUTH2_CLIENT_CREDENTIALS
+          - OAUTH2_AUTHORIZATION_CODE
+          - AWS_SIGNATURE
+          - GCP_SERVICE_ACCOUNT
+        auth:
+          $ref: '#/components/schemas/DestinationConfigMockAPIAuth'
+      additionalProperties: false
+      description: The type config for MOCK_API. Requires type to be `MOCK_API`.
+      x-docs-type: MOCK_API
     DestinationTypeConfigCLI:
       type: object
       properties:
@@ -776,33 +809,107 @@ components:
       additionalProperties: false
       description: The type config for CLI. Requires type to be `CLI`.
       x-docs-type: CLI
-    DestinationConfigMockAPIAuthBasicAuth:
+    DestinationConfigMockAPIAuthOAuth2AuthorizationCode:
       type: object
       properties:
-        username:
+        auth_server:
           type: string
-        password:
+        client_id:
+          type: string
+        client_secret:
+          type: string
+        refresh_token:
+          type: string
+        scope:
           type: string
       additionalProperties: false
-      x-docs-type: BASIC_AUTH
-    DestinationConfigCLIAuthHookdeckSignatureDefault:
+      x-docs-type: OAUTH2_AUTHORIZATION_CODE
+    DestinationConfigMockAPIAuth:
       type: object
       properties: {}
       additionalProperties: false
-      x-docs-type: HOOKDECK_SIGNATURE
-    DestinationConfigMockAPIAuthAWSSignature:
+      oneOf:
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthHookdeckSignatureDefault'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthCustomSHA256HMACSignature'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthBasicAuth'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthAPIKey'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthBearerToken'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthOAuth2ClientCredentials'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthOAuth2AuthorizationCode'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthAWSSignature'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthGCPServiceAccount'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthEmpty'
+    DestinationConfigHTTPAuthOAuth2AuthorizationCode:
       type: object
       properties:
-        access_key_id:
+        auth_server:
           type: string
-        secret_access_key:
+        client_id:
           type: string
-        region:
+        client_secret:
           type: string
-        service:
+        refresh_token:
+          type: string
+        scope:
           type: string
       additionalProperties: false
-      x-docs-type: AWS_SIGNATURE
+      x-docs-type: OAUTH2_AUTHORIZATION_CODE
+    DestinationConfigCLIAuthBearerToken:
+      type: object
+      properties:
+        token:
+          type: string
+      additionalProperties: false
+      x-docs-type: BEARER_TOKEN
+    DestinationConfigCLIAuth:
+      type: object
+      properties: {}
+      additionalProperties: false
+      oneOf:
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthHookdeckSignatureDefault'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthCustomSHA256HMACSignature'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthBasicAuth'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthAPIKey'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthBearerToken'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthOAuth2ClientCredentials'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthOAuth2AuthorizationCode'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthAWSSignature'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthGCPServiceAccount'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthEmpty'
+    DestinationConfigCLIAuthCustomSHA256HMACSignature:
+      type: object
+      properties:
+        key:
+          type: string
+        signing_secret:
+          type: string
+      additionalProperties: false
+      x-docs-type: CUSTOM_SIGNATURE
+    SeekPagination:
+      type: object
+      properties:
+        order_by:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        dir:
+          anyOf:
+          - $ref: '#/components/schemas/OrderByDirection'
+          - type: array
+            items:
+              $ref: '#/components/schemas/OrderByDirection'
+        limit:
+          type: integer
+        prev:
+          type: string
+        next:
+          type: string
+      additionalProperties: false
+    DestinationConfigCLIAuthEmpty:
+      x-docs-hide: true
+      x-docs-nullable: true
     DestinationConfigMockAPIAuthOAuth2ClientCredentials:
       type: object
       properties:
@@ -822,7 +929,22 @@ components:
           - x-www-form-urlencoded
       additionalProperties: false
       x-docs-type: OAUTH2_CLIENT_CREDENTIALS
-    DestinationConfigHTTPAuthBasicAuth:
+    DestinationConfigMockAPIAuthHookdeckSignatureDefault:
+      type: object
+      properties: {}
+      additionalProperties: false
+      x-docs-type: HOOKDECK_SIGNATURE
+    OrderByDirection:
+      anyOf:
+      - enum:
+        - asc
+      - enum:
+        - desc
+      - enum:
+        - ASC
+      - enum:
+        - DESC
+    DestinationConfigCLIAuthBasicAuth:
       type: object
       properties:
         username:
@@ -831,6 +953,36 @@ components:
           type: string
       additionalProperties: false
       x-docs-type: BASIC_AUTH
+    DestinationConfigMockAPIAuthBearerToken:
+      type: object
+      properties:
+        token:
+          type: string
+      additionalProperties: false
+      x-docs-type: BEARER_TOKEN
+    DestinationConfigMockAPIAuthAPIKey:
+      type: object
+      properties:
+        key:
+          type: string
+        api_key:
+          type: string
+        to:
+          type: string
+          enum:
+          - header
+          - query
+      additionalProperties: false
+      x-docs-type: API_KEY
+    DestinationConfigMockAPIAuthCustomSHA256HMACSignature:
+      type: object
+      properties:
+        key:
+          type: string
+        signing_secret:
+          type: string
+      additionalProperties: false
+      x-docs-type: CUSTOM_SIGNATURE
     DestinationConfigHTTPAuth:
       type: object
       properties: {}
@@ -846,48 +998,66 @@ components:
       - $ref: '#/components/schemas/DestinationConfigHTTPAuthAWSSignature'
       - $ref: '#/components/schemas/DestinationConfigHTTPAuthGCPServiceAccount'
       - $ref: '#/components/schemas/DestinationConfigHTTPAuthEmpty'
-    DestinationConfigHTTPAuthOAuth2AuthorizationCode:
-      type: object
-      properties:
-        auth_server:
-          type: string
-        client_id:
-          type: string
-        client_secret:
-          type: string
-        refresh_token:
-          type: string
-        scope:
-          type: string
-      additionalProperties: false
-      x-docs-type: OAUTH2_AUTHORIZATION_CODE
-    DestinationConfigMockAPIAuthEmpty:
-      x-docs-hide: true
-      x-docs-nullable: true
-    DestinationConfigCLIAuth:
+    DestinationConfigCLIAuthHookdeckSignatureDefault:
       type: object
       properties: {}
       additionalProperties: false
-      oneOf:
-      - $ref: '#/components/schemas/DestinationConfigCLIAuthHookdeckSignatureDefault'
-      - $ref: '#/components/schemas/DestinationConfigCLIAuthCustomSHA256HMACSignature'
-      - $ref: '#/components/schemas/DestinationConfigCLIAuthBasicAuth'
-      - $ref: '#/components/schemas/DestinationConfigCLIAuthAPIKey'
-      - $ref: '#/components/schemas/DestinationConfigCLIAuthBearerToken'
-      - $ref: '#/components/schemas/DestinationConfigCLIAuthOAuth2ClientCredentials'
-      - $ref: '#/components/schemas/DestinationConfigCLIAuthOAuth2AuthorizationCode'
-      - $ref: '#/components/schemas/DestinationConfigCLIAuthAWSSignature'
-      - $ref: '#/components/schemas/DestinationConfigCLIAuthGCPServiceAccount'
-      - $ref: '#/components/schemas/DestinationConfigCLIAuthEmpty'
-    DestinationConfigCLIAuthBasicAuth:
+      x-docs-type: HOOKDECK_SIGNATURE
+    Destination:
       type: object
       properties:
-        username:
+        id:
           type: string
-        password:
+          description: ID of the destination
+        name:
           type: string
+          description: A unique, human-friendly name for the destination
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description of the destination
+        team_id:
+          type: string
+          description: ID of the project
+        type:
+          type: string
+          enum:
+          - HTTP
+          - CLI
+          - MOCK_API
+          description: Type of the destination
+        config:
+          $ref: '#/components/schemas/DestinationConfig'
+        disabled_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date the destination was disabled
+        updated_at:
+          type: string
+          format: date-time
+          description: Date the destination was last updated
+        created_at:
+          type: string
+          format: date-time
+          description: Date the destination was created
+      required:
+      - id
+      - name
+      - team_id
+      - type
+      - disabled_at
+      - updated_at
+      - created_at
       additionalProperties: false
-      x-docs-type: BASIC_AUTH
+      description: Associated [Destination](#destination-object) object
+    DestinationConfigHTTPAuthHookdeckSignatureDefault:
+      type: object
+      properties: {}
+      additionalProperties: false
+      x-docs-type: HOOKDECK_SIGNATURE
     DestinationTypeConfigHTTP:
       type: object
       properties:
@@ -941,109 +1111,29 @@ components:
       additionalProperties: false
       description: The type config for HTTP. Requires type to be `HTTP`.
       x-docs-type: HTTP
-    SeekPagination:
+    DestinationConfigCLIAuthGCPServiceAccount:
       type: object
       properties:
-        order_by:
-          anyOf:
-          - type: string
-          - type: array
-            items:
-              type: string
-        dir:
-          anyOf:
-          - $ref: '#/components/schemas/OrderByDirection'
-          - type: array
-            items:
-              $ref: '#/components/schemas/OrderByDirection'
-        limit:
-          type: integer
-        prev:
-          type: string
-        next:
-          type: string
-      additionalProperties: false
-    DestinationTypeConfigMOCK_API:
-      type: object
-      properties:
-        rate_limit:
-          type:
-          - number
-          - 'null'
-          format: float
-        rate_limit_period:
-          type:
-          - string
-          - 'null'
-          enum:
-          - second
-          - minute
-          - hour
-          - concurrent
-        path_forwarding_disabled:
-          type: boolean
-        http_method:
-          type:
-          - string
-          - 'null'
-          enum:
-          - GET
-          - POST
-          - PUT
-          - PATCH
-          - DELETE
-        auth_type:
-          type:
-          - string
-          - 'null'
-          enum:
-          - HOOKDECK_SIGNATURE
-          - CUSTOM_SIGNATURE
-          - BASIC_AUTH
-          - API_KEY
-          - BEARER_TOKEN
-          - OAUTH2_CLIENT_CREDENTIALS
-          - OAUTH2_AUTHORIZATION_CODE
-          - AWS_SIGNATURE
-          - GCP_SERVICE_ACCOUNT
-        auth:
-          $ref: '#/components/schemas/DestinationConfigMockAPIAuth'
-      additionalProperties: false
-      description: The type config for MOCK_API. Requires type to be `MOCK_API`.
-      x-docs-type: MOCK_API
-    DestinationConfigHTTPAuthOAuth2ClientCredentials:
-      type: object
-      properties:
-        auth_server:
-          type: string
-        client_id:
-          type: string
-        client_secret:
+        service_account_key:
           type: string
         scope:
-          type: string
-        authentication_type:
-          type: string
-          enum:
-          - basic
-          - bearer
-          - x-www-form-urlencoded
+          type:
+          - string
+          - 'null'
       additionalProperties: false
-      x-docs-type: OAUTH2_CLIENT_CREDENTIALS
-    DestinationConfigHTTPAuthAPIKey:
+      x-docs-type: GCP_SERVICE_ACCOUNT
+    DestinationPaginatedResult:
       type: object
       properties:
-        key:
-          type: string
-        api_key:
-          type: string
-        to:
-          type: string
-          enum:
-          - header
-          - query
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/Destination'
       additionalProperties: false
-      x-docs-type: API_KEY
     DestinationConfigCLIAuthOAuth2ClientCredentials:
       type: object
       properties:
@@ -1063,21 +1153,7 @@ components:
           - x-www-form-urlencoded
       additionalProperties: false
       x-docs-type: OAUTH2_CLIENT_CREDENTIALS
-    DestinationConfigMockAPIAuthAPIKey:
-      type: object
-      properties:
-        key:
-          type: string
-        api_key:
-          type: string
-        to:
-          type: string
-          enum:
-          - header
-          - query
-      additionalProperties: false
-      x-docs-type: API_KEY
-    DestinationConfigMockAPIAuthOAuth2AuthorizationCode:
+    DestinationConfigHTTPAuthOAuth2ClientCredentials:
       type: object
       properties:
         auth_server:
@@ -1086,40 +1162,16 @@ components:
           type: string
         client_secret:
           type: string
-        refresh_token:
-          type: string
         scope:
           type: string
+        authentication_type:
+          type: string
+          enum:
+          - basic
+          - bearer
+          - x-www-form-urlencoded
       additionalProperties: false
-      x-docs-type: OAUTH2_AUTHORIZATION_CODE
-    Operators:
-      type: object
-      properties:
-        gt:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        gte:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        le:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        lte:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        any:
-          type: boolean
-        all:
-          type: boolean
-      additionalProperties: false
+      x-docs-type: OAUTH2_CLIENT_CREDENTIALS
     DestinationConfigMockAPIAuthGCPServiceAccount:
       type: object
       properties:
@@ -1131,6 +1183,27 @@ components:
           - 'null'
       additionalProperties: false
       x-docs-type: GCP_SERVICE_ACCOUNT
+    VerificationConfig:
+      type: object
+      properties: {}
+      additionalProperties: false
+      oneOf:
+      - $ref: '#/components/schemas/DestinationTypeConfigHTTP'
+        x-required: true
+      - $ref: '#/components/schemas/DestinationTypeConfigCLI'
+        x-required: true
+      - $ref: '#/components/schemas/DestinationTypeConfigMOCK_API'
+      description: The type configs for the specified type
+      default: {}
+    DestinationConfigHTTPAuthBasicAuth:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      additionalProperties: false
+      x-docs-type: BASIC_AUTH
     DestinationConfigCLIAuthOAuth2AuthorizationCode:
       type: object
       properties:
@@ -1160,25 +1233,7 @@ components:
           - query
       additionalProperties: false
       x-docs-type: API_KEY
-    DestinationConfigMockAPIAuth:
-      type: object
-      properties: {}
-      additionalProperties: false
-      oneOf:
-      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthHookdeckSignatureDefault'
-      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthCustomSHA256HMACSignature'
-      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthBasicAuth'
-      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthAPIKey'
-      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthBearerToken'
-      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthOAuth2ClientCredentials'
-      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthOAuth2AuthorizationCode'
-      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthAWSSignature'
-      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthGCPServiceAccount'
-      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthEmpty'
-    DestinationConfigCLIAuthEmpty:
-      x-docs-hide: true
-      x-docs-nullable: true
-    DestinationConfigCLIAuthGCPServiceAccount:
+    DestinationConfigHTTPAuthGCPServiceAccount:
       type: object
       properties:
         service_account_key:
@@ -1189,61 +1244,6 @@ components:
           - 'null'
       additionalProperties: false
       x-docs-type: GCP_SERVICE_ACCOUNT
-    Destination:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the destination
-        name:
-          type: string
-          description: A unique, human-friendly name for the destination
-        description:
-          type:
-          - string
-          - 'null'
-          description: Description of the destination
-        team_id:
-          type: string
-          description: ID of the project
-        type:
-          type: string
-          enum:
-          - HTTP
-          - CLI
-          - MOCK_API
-          description: Type of the destination
-        config:
-          $ref: '#/components/schemas/DestinationConfig'
-        disabled_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Date the destination was disabled
-        updated_at:
-          type: string
-          format: date-time
-          description: Date the destination was last updated
-        created_at:
-          type: string
-          format: date-time
-          description: Date the destination was created
-      required:
-      - id
-      - name
-      - team_id
-      - type
-      - disabled_at
-      - updated_at
-      - created_at
-      additionalProperties: false
-      description: Associated [Destination](#destination-object) object
-    DestinationConfigMockAPIAuthHookdeckSignatureDefault:
-      type: object
-      properties: {}
-      additionalProperties: false
-      x-docs-type: HOOKDECK_SIGNATURE
   securitySchemes:
     bearerAuth:
       type: http

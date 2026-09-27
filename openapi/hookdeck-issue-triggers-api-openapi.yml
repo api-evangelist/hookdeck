@@ -400,15 +400,200 @@ paths:
         required: true
 components:
   schemas:
-    TransformationExecutionLogLevel:
+    IssueTriggerDiscordChannel:
+      type: object
+      properties:
+        channel_name:
+          type: string
+        channel_id:
+          type: string
+        webhook_url:
+          type: string
+      required:
+      - channel_name
+      - channel_id
+      additionalProperties: false
+      description: Channel for a 'Discord' issue trigger
+    RequestRejectionCause:
       type: string
       enum:
-      - debug
-      - info
-      - warn
-      - error
-      - fatal
-      description: The minimum log level to open the issue on
+      - SOURCE_DISABLED
+      - NO_CONNECTION
+      - VERIFICATION_FAILED
+      - UNSUPPORTED_HTTP_METHOD
+      - UNSUPPORTED_CONTENT_TYPE
+      - UNPARSABLE_JSON
+      - PAYLOAD_TOO_LARGE
+      - INGESTION_FATAL
+      - UNKNOWN
+      x-docs-type: string
+    APIErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        status:
+          type: number
+          format: float
+          description: Status code
+        message:
+          type: string
+          description: Error description
+        data:
+          type:
+          - object
+          - 'null'
+          properties: {}
+      required:
+      - code
+      - status
+      - message
+      additionalProperties: false
+      description: Error response model
+    IssueTriggerBetterUptimeChannel:
+      type: object
+      properties:
+        escalation_policy_id:
+          type: string
+        escalation_policy_name:
+          type: string
+      required:
+      - escalation_policy_id
+      - escalation_policy_name
+      additionalProperties: false
+      description: Channel for a 'Better Uptime' issue trigger
+    IssueTriggerMicrosoftTeamsChannel:
+      type: object
+      properties:
+        channel_name:
+          type: string
+      required:
+      - channel_name
+      additionalProperties: false
+      description: Channel for a 'Microsoft Teams' issue trigger
+    IssueTriggerChannels:
+      type:
+      - object
+      - 'null'
+      properties:
+        slack:
+          $ref: '#/components/schemas/IssueTriggerSlackChannel'
+        microsoft_teams:
+          $ref: '#/components/schemas/IssueTriggerMicrosoftTeamsChannel'
+        discord:
+          $ref: '#/components/schemas/IssueTriggerDiscordChannel'
+        betteruptime:
+          $ref: '#/components/schemas/IssueTriggerBetterUptimeChannel'
+        pagerduty:
+          $ref: '#/components/schemas/IssueTriggerIntegrationChannel'
+        opsgenie:
+          $ref: '#/components/schemas/IssueTriggerIntegrationChannel'
+        email:
+          $ref: '#/components/schemas/IssueTriggerEmailChannel'
+      additionalProperties: false
+      description: Notification channels object for the specific channel type
+    IssueTriggerDeliveryConfigs:
+      type: object
+      properties:
+        strategy:
+          $ref: '#/components/schemas/IssueTriggerStrategy'
+        connections:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+          description: A pattern to match on the connection name or array of connection IDs. Use `*` as wildcard.
+          x-docs-force-simple-type: true
+      required:
+      - strategy
+      - connections
+      additionalProperties: false
+      description: Configurations for a 'delivery' issue trigger
+    IssueTriggerStrategy:
+      type: string
+      enum:
+      - first_attempt
+      - final_attempt
+      description: The strategy uses to open the issue
+    IssueTriggerIntegrationChannel:
+      type: object
+      properties: {}
+      additionalProperties: false
+      description: Integration channel for an issue trigger
+      x-docs-type: object
+    IssueTriggerReference:
+      anyOf:
+      - $ref: '#/components/schemas/IssueTriggerDeliveryConfigs'
+      - $ref: '#/components/schemas/IssueTriggerTransformationConfigs'
+      - $ref: '#/components/schemas/IssueTriggerBackpressureConfigs'
+      - $ref: '#/components/schemas/IssueTriggerRequestConfigs'
+      description: Configuration object for the specific issue type selected
+    Operators:
+      type: object
+      properties:
+        gt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        gte:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        le:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        lte:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        any:
+          type: boolean
+        all:
+          type: boolean
+      additionalProperties: false
+    IssueTriggerEmailChannel:
+      type: object
+      properties: {}
+      additionalProperties: false
+      description: Email channel for an issue trigger
+      x-docs-type: object
+    IssueType:
+      type: string
+      enum:
+      - delivery
+      - transformation
+      - backpressure
+      - request
+      description: Issue type
+    SeekPagination:
+      type: object
+      properties:
+        order_by:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        dir:
+          anyOf:
+          - $ref: '#/components/schemas/OrderByDirection'
+          - type: array
+            items:
+              $ref: '#/components/schemas/OrderByDirection'
+        limit:
+          type: integer
+        prev:
+          type: string
+        next:
+          type: string
+      additionalProperties: false
     IssueTrigger:
       type: object
       properties:
@@ -458,25 +643,40 @@ components:
       - updated_at
       - created_at
       additionalProperties: false
-    RequestRejectionCause:
+    IssueTriggerBackpressureDelay:
+      type: integer
+      minimum: 60000
+      maximum: 86400000
+      description: The minimum delay (backpressure) to open the issue for min of 1 minute (60000) and max of 1 day (86400000)
+      x-docs-type: integer
+    OrderByDirection:
+      anyOf:
+      - enum:
+        - asc
+      - enum:
+        - desc
+      - enum:
+        - ASC
+      - enum:
+        - DESC
+    IssueTriggerSlackChannel:
+      type: object
+      properties:
+        channel_name:
+          type: string
+      required:
+      - channel_name
+      additionalProperties: false
+      description: Channel for a 'Slack' issue trigger
+    TransformationExecutionLogLevel:
       type: string
       enum:
-      - SOURCE_DISABLED
-      - NO_CONNECTION
-      - VERIFICATION_FAILED
-      - UNSUPPORTED_HTTP_METHOD
-      - UNSUPPORTED_CONTENT_TYPE
-      - UNPARSABLE_JSON
-      - PAYLOAD_TOO_LARGE
-      - INGESTION_FATAL
-      - UNKNOWN
-      x-docs-type: string
-    IssueTriggerEmailChannel:
-      type: object
-      properties: {}
-      additionalProperties: false
-      description: Email channel for an issue trigger
-      x-docs-type: object
+      - debug
+      - info
+      - warn
+      - error
+      - fatal
+      description: The minimum log level to open the issue on
     IssueTriggerRequestConfigs:
       type: object
       properties:
@@ -509,16 +709,24 @@ components:
       - sources
       additionalProperties: false
       description: Configurations for a 'Request' issue trigger
-    OrderByDirection:
-      anyOf:
-      - enum:
-        - asc
-      - enum:
-        - desc
-      - enum:
-        - ASC
-      - enum:
-        - DESC
+    IssueTriggerBackpressureConfigs:
+      type: object
+      properties:
+        delay:
+          $ref: '#/components/schemas/IssueTriggerBackpressureDelay'
+        destinations:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+          description: A pattern to match on the destination name or array of destination IDs. Use `*` as wildcard.
+          x-docs-force-simple-type: true
+      required:
+      - delay
+      - destinations
+      additionalProperties: false
+      description: Configurations for a 'Backpressure' issue trigger
     IssueTriggerPaginatedResult:
       type: object
       properties:
@@ -549,142 +757,6 @@ components:
       - transformations
       additionalProperties: false
       description: Configurations for a 'Transformation' issue trigger
-    APIErrorResponse:
-      type: object
-      properties:
-        code:
-          type: string
-          description: Error code
-        status:
-          type: number
-          format: float
-          description: Status code
-        message:
-          type: string
-          description: Error description
-        data:
-          type:
-          - object
-          - 'null'
-          properties: {}
-      required:
-      - code
-      - status
-      - message
-      additionalProperties: false
-      description: Error response model
-    IssueType:
-      type: string
-      enum:
-      - delivery
-      - transformation
-      - backpressure
-      - request
-      description: Issue type
-    IssueTriggerBackpressureDelay:
-      type: integer
-      minimum: 60000
-      maximum: 86400000
-      description: The minimum delay (backpressure) to open the issue for min of 1 minute (60000) and max of 1 day (86400000)
-      x-docs-type: integer
-    IssueTriggerIntegrationChannel:
-      type: object
-      properties: {}
-      additionalProperties: false
-      description: Integration channel for an issue trigger
-      x-docs-type: object
-    IssueTriggerChannels:
-      type:
-      - object
-      - 'null'
-      properties:
-        slack:
-          $ref: '#/components/schemas/IssueTriggerSlackChannel'
-        microsoft_teams:
-          $ref: '#/components/schemas/IssueTriggerMicrosoftTeamsChannel'
-        discord:
-          $ref: '#/components/schemas/IssueTriggerDiscordChannel'
-        betteruptime:
-          $ref: '#/components/schemas/IssueTriggerBetterUptimeChannel'
-        pagerduty:
-          $ref: '#/components/schemas/IssueTriggerIntegrationChannel'
-        opsgenie:
-          $ref: '#/components/schemas/IssueTriggerIntegrationChannel'
-        email:
-          $ref: '#/components/schemas/IssueTriggerEmailChannel'
-      additionalProperties: false
-      description: Notification channels object for the specific channel type
-    IssueTriggerBetterUptimeChannel:
-      type: object
-      properties:
-        escalation_policy_id:
-          type: string
-        escalation_policy_name:
-          type: string
-      required:
-      - escalation_policy_id
-      - escalation_policy_name
-      additionalProperties: false
-      description: Channel for a 'Better Uptime' issue trigger
-    IssueTriggerMicrosoftTeamsChannel:
-      type: object
-      properties:
-        channel_name:
-          type: string
-      required:
-      - channel_name
-      additionalProperties: false
-      description: Channel for a 'Microsoft Teams' issue trigger
-    SeekPagination:
-      type: object
-      properties:
-        order_by:
-          anyOf:
-          - type: string
-          - type: array
-            items:
-              type: string
-        dir:
-          anyOf:
-          - $ref: '#/components/schemas/OrderByDirection'
-          - type: array
-            items:
-              $ref: '#/components/schemas/OrderByDirection'
-        limit:
-          type: integer
-        prev:
-          type: string
-        next:
-          type: string
-      additionalProperties: false
-    Operators:
-      type: object
-      properties:
-        gt:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        gte:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        le:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        lte:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        any:
-          type: boolean
-        all:
-          type: boolean
-      additionalProperties: false
     DeletedIssueTriggerResponse:
       type: object
       properties:
@@ -693,78 +765,6 @@ components:
       required:
       - id
       additionalProperties: false
-    IssueTriggerReference:
-      anyOf:
-      - $ref: '#/components/schemas/IssueTriggerDeliveryConfigs'
-      - $ref: '#/components/schemas/IssueTriggerTransformationConfigs'
-      - $ref: '#/components/schemas/IssueTriggerBackpressureConfigs'
-      - $ref: '#/components/schemas/IssueTriggerRequestConfigs'
-      description: Configuration object for the specific issue type selected
-    IssueTriggerBackpressureConfigs:
-      type: object
-      properties:
-        delay:
-          $ref: '#/components/schemas/IssueTriggerBackpressureDelay'
-        destinations:
-          anyOf:
-          - type: string
-          - type: array
-            items:
-              type: string
-          description: A pattern to match on the destination name or array of destination IDs. Use `*` as wildcard.
-          x-docs-force-simple-type: true
-      required:
-      - delay
-      - destinations
-      additionalProperties: false
-      description: Configurations for a 'Backpressure' issue trigger
-    IssueTriggerSlackChannel:
-      type: object
-      properties:
-        channel_name:
-          type: string
-      required:
-      - channel_name
-      additionalProperties: false
-      description: Channel for a 'Slack' issue trigger
-    IssueTriggerDeliveryConfigs:
-      type: object
-      properties:
-        strategy:
-          $ref: '#/components/schemas/IssueTriggerStrategy'
-        connections:
-          anyOf:
-          - type: string
-          - type: array
-            items:
-              type: string
-          description: A pattern to match on the connection name or array of connection IDs. Use `*` as wildcard.
-          x-docs-force-simple-type: true
-      required:
-      - strategy
-      - connections
-      additionalProperties: false
-      description: Configurations for a 'delivery' issue trigger
-    IssueTriggerStrategy:
-      type: string
-      enum:
-      - first_attempt
-      - final_attempt
-      description: The strategy uses to open the issue
-    IssueTriggerDiscordChannel:
-      type: object
-      properties:
-        channel_name:
-          type: string
-        channel_id:
-          type: string
-        webhook_url:
-          type: string
-      required:
-      - channel_name
-      - channel_id
-      additionalProperties: false
-      description: Channel for a 'Discord' issue trigger
   securitySchemes:
     bearerAuth:
       type: http

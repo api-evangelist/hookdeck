@@ -783,6 +783,339 @@ paths:
         required: true
 components:
   schemas:
+    RequestRejectionCause:
+      type: string
+      enum:
+      - SOURCE_DISABLED
+      - NO_CONNECTION
+      - VERIFICATION_FAILED
+      - UNSUPPORTED_HTTP_METHOD
+      - UNSUPPORTED_CONTENT_TYPE
+      - UNPARSABLE_JSON
+      - PAYLOAD_TOO_LARGE
+      - INGESTION_FATAL
+      - UNKNOWN
+      x-docs-type: string
+    IgnoredEventPaginatedResult:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/IgnoredEvent'
+      additionalProperties: false
+    APIErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        status:
+          type: number
+          format: float
+          description: Status code
+        message:
+          type: string
+          description: Error description
+        data:
+          type:
+          - object
+          - 'null'
+          properties: {}
+      required:
+      - code
+      - status
+      - message
+      additionalProperties: false
+      description: Error response model
+    FilteredMeta:
+      type: array
+      items:
+        type: string
+        enum:
+        - body
+        - headers
+        - path
+        - query
+    EventPaginatedResult:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event'
+      additionalProperties: false
+    IgnoredEventCause:
+      type: string
+      enum:
+      - DISABLED
+      - FILTERED
+      - TRANSFORMATION_FAILED
+      - CLI_DISCONNECTED
+    RequestPaginatedResult:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/Request'
+      additionalProperties: false
+    Operators:
+      type: object
+      properties:
+        gt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        gte:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        le:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        lte:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        any:
+          type: boolean
+        all:
+          type: boolean
+      additionalProperties: false
+    TransformationFailedMeta:
+      type: object
+      properties:
+        transformation_id:
+          type: string
+      required:
+      - transformation_id
+      additionalProperties: false
+    RawBody:
+      type: object
+      properties:
+        body:
+          type: string
+      required:
+      - body
+      additionalProperties: false
+    EventStatus:
+      type: string
+      enum:
+      - SCHEDULED
+      - QUEUED
+      - HOLD
+      - SUCCESSFUL
+      - FAILED
+      - CANCELLED
+    ShortEventData:
+      type:
+      - object
+      - 'null'
+      properties:
+        path:
+          type: string
+          description: Request path
+        query:
+          type:
+          - string
+          - 'null'
+          description: Raw query param string
+        parsed_query:
+          anyOf:
+          - type:
+            - string
+            - 'null'
+          - type: object
+            properties: {}
+          description: JSON representation of query params
+        headers:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+            additionalProperties:
+              type:
+              - string
+              - 'null'
+          description: JSON representation of the headers
+        body:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+          - type: array
+            items: {}
+          description: JSON or string representation of the body
+        is_large_payload:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the payload is considered large payload and not searchable
+      required:
+      - path
+      - query
+      - parsed_query
+      - headers
+      - body
+      additionalProperties: false
+      description: Request data
+    SeekPagination:
+      type: object
+      properties:
+        order_by:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        dir:
+          anyOf:
+          - $ref: '#/components/schemas/OrderByDirection'
+          - type: array
+            items:
+              $ref: '#/components/schemas/OrderByDirection'
+        limit:
+          type: integer
+        prev:
+          type: string
+        next:
+          type: string
+      additionalProperties: false
+    EventData:
+      type:
+      - object
+      - 'null'
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        path:
+          type:
+          - string
+          - 'null'
+          description: Raw path string
+        query:
+          type:
+          - string
+          - 'null'
+          description: Raw query param string
+        parsed_query:
+          anyOf:
+          - type:
+            - string
+            - 'null'
+          - type: object
+            properties: {}
+          description: JSON representation of query params
+        headers:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+            additionalProperties:
+              type:
+              - string
+              - 'null'
+          description: JSON representation of the headers
+        appended_headers:
+          type: array
+          items:
+            type: string
+          description: List of headers that were added by Hookdeck
+        body:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+          - type: array
+            items: {}
+          description: JSON or string representation of the body
+        is_large_payload:
+          type: boolean
+          description: Whether the payload is considered large payload and not searchable
+      required:
+      - url
+      - method
+      - path
+      - query
+      - parsed_query
+      - headers
+      - body
+      additionalProperties: false
+      description: Event data if included
+    OrderByDirection:
+      anyOf:
+      - enum:
+        - asc
+      - enum:
+        - desc
+      - enum:
+        - ASC
+      - enum:
+        - DESC
+    IgnoredEvent:
+      type: object
+      properties:
+        id:
+          type: string
+        team_id:
+          type: string
+          description: ID of the project
+        webhook_id:
+          type: string
+          description: ID of the associated connection (webhook)
+        cause:
+          $ref: '#/components/schemas/IgnoredEventCause'
+        request_id:
+          type: string
+        meta:
+          anyOf:
+          - $ref: '#/components/schemas/FilteredMeta'
+          - $ref: '#/components/schemas/TransformationFailedMeta'
+        created_at:
+          type: string
+          format: date-time
+      required:
+      - id
+      - team_id
+      - webhook_id
+      - cause
+      - request_id
+      - created_at
+      additionalProperties: false
+    RetryRequest:
+      type: object
+      properties:
+        request:
+          $ref: '#/components/schemas/Request'
+        events:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/Event'
+      required:
+      - request
+      additionalProperties: false
     Event:
       type: object
       properties:
@@ -869,313 +1202,6 @@ components:
       - updated_at
       - created_at
       additionalProperties: false
-    RequestRejectionCause:
-      type: string
-      enum:
-      - SOURCE_DISABLED
-      - NO_CONNECTION
-      - VERIFICATION_FAILED
-      - UNSUPPORTED_HTTP_METHOD
-      - UNSUPPORTED_CONTENT_TYPE
-      - UNPARSABLE_JSON
-      - PAYLOAD_TOO_LARGE
-      - INGESTION_FATAL
-      - UNKNOWN
-      x-docs-type: string
-    OrderByDirection:
-      anyOf:
-      - enum:
-        - asc
-      - enum:
-        - desc
-      - enum:
-        - ASC
-      - enum:
-        - DESC
-    AttemptErrorCodes:
-      type: string
-      enum:
-      - BAD_RESPONSE
-      - CANCELLED
-      - TIMEOUT
-      - NOT_FOUND
-      - CANCELLED_PAST_RETENTION
-      - CONNECTION_REFUSED
-      - CONNECTION_RESET
-      - MISSING_URL
-      - CLI
-      - CLI_UNAVAILABLE
-      - SELF_SIGNED_CERT
-      - ERR_TLS_CERT_ALTNAME_INVALID
-      - ERR_SSL_WRONG_VERSION_NUMBER
-      - NETWORK_ERROR
-      - NETWORK_REQUEST_CANCELED
-      - NETWORK_UNREACHABLE
-      - TOO_MANY_REDIRECTS
-      - INVALID_CHARACTER
-      - INVALID_URL
-      - SSL_ERROR_CA_UNKNOWN
-      - DATA_ARCHIVED
-      - SSL_CERT_EXPIRED
-      - BULK_RETRY_CANCELLED
-      - DNS_LOOKUP_FAILED
-      - HOST_UNREACHABLE
-      - INTERNAL_ERROR
-      - PROTOCOL_ERROR
-      - PAYLOAD_MISSING
-      - UNABLE_TO_GET_ISSUER_CERT
-      - SOCKET_CLOSED
-      - OAUTH2_HANDSHAKE_FAILED
-      - Z_DATA_ERROR
-      - UNKNOWN
-      description: Error code of the delivery attempt
-    RequestPaginatedResult:
-      type: object
-      properties:
-        pagination:
-          $ref: '#/components/schemas/SeekPagination'
-        count:
-          type: integer
-        models:
-          type: array
-          items:
-            $ref: '#/components/schemas/Request'
-      additionalProperties: false
-    IgnoredEvent:
-      type: object
-      properties:
-        id:
-          type: string
-        team_id:
-          type: string
-          description: ID of the project
-        webhook_id:
-          type: string
-          description: ID of the associated connection (webhook)
-        cause:
-          $ref: '#/components/schemas/IgnoredEventCause'
-        request_id:
-          type: string
-        meta:
-          anyOf:
-          - $ref: '#/components/schemas/FilteredMeta'
-          - $ref: '#/components/schemas/TransformationFailedMeta'
-        created_at:
-          type: string
-          format: date-time
-      required:
-      - id
-      - team_id
-      - webhook_id
-      - cause
-      - request_id
-      - created_at
-      additionalProperties: false
-    ShortEventData:
-      type:
-      - object
-      - 'null'
-      properties:
-        path:
-          type: string
-          description: Request path
-        query:
-          type:
-          - string
-          - 'null'
-          description: Raw query param string
-        parsed_query:
-          anyOf:
-          - type:
-            - string
-            - 'null'
-          - type: object
-            properties: {}
-          description: JSON representation of query params
-        headers:
-          anyOf:
-          - type: string
-          - type: object
-            properties: {}
-            additionalProperties:
-              type:
-              - string
-              - 'null'
-          description: JSON representation of the headers
-        body:
-          anyOf:
-          - type: string
-          - type: object
-            properties: {}
-          - type: array
-            items: {}
-          description: JSON or string representation of the body
-        is_large_payload:
-          type:
-          - boolean
-          - 'null'
-          description: Whether the payload is considered large payload and not searchable
-      required:
-      - path
-      - query
-      - parsed_query
-      - headers
-      - body
-      additionalProperties: false
-      description: Request data
-    RetryRequest:
-      type: object
-      properties:
-        request:
-          $ref: '#/components/schemas/Request'
-        events:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/Event'
-      required:
-      - request
-      additionalProperties: false
-    APIErrorResponse:
-      type: object
-      properties:
-        code:
-          type: string
-          description: Error code
-        status:
-          type: number
-          format: float
-          description: Status code
-        message:
-          type: string
-          description: Error description
-        data:
-          type:
-          - object
-          - 'null'
-          properties: {}
-      required:
-      - code
-      - status
-      - message
-      additionalProperties: false
-      description: Error response model
-    IgnoredEventPaginatedResult:
-      type: object
-      properties:
-        pagination:
-          $ref: '#/components/schemas/SeekPagination'
-        count:
-          type: integer
-        models:
-          type: array
-          items:
-            $ref: '#/components/schemas/IgnoredEvent'
-      additionalProperties: false
-    EventStatus:
-      type: string
-      enum:
-      - SCHEDULED
-      - QUEUED
-      - HOLD
-      - SUCCESSFUL
-      - FAILED
-      - CANCELLED
-    RawBody:
-      type: object
-      properties:
-        body:
-          type: string
-      required:
-      - body
-      additionalProperties: false
-    IgnoredEventCause:
-      type: string
-      enum:
-      - DISABLED
-      - FILTERED
-      - TRANSFORMATION_FAILED
-      - CLI_DISCONNECTED
-    EventPaginatedResult:
-      type: object
-      properties:
-        pagination:
-          $ref: '#/components/schemas/SeekPagination'
-        count:
-          type: integer
-        models:
-          type: array
-          items:
-            $ref: '#/components/schemas/Event'
-      additionalProperties: false
-    SeekPagination:
-      type: object
-      properties:
-        order_by:
-          anyOf:
-          - type: string
-          - type: array
-            items:
-              type: string
-        dir:
-          anyOf:
-          - $ref: '#/components/schemas/OrderByDirection'
-          - type: array
-            items:
-              $ref: '#/components/schemas/OrderByDirection'
-        limit:
-          type: integer
-        prev:
-          type: string
-        next:
-          type: string
-      additionalProperties: false
-    Operators:
-      type: object
-      properties:
-        gt:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        gte:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        le:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        lte:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        any:
-          type: boolean
-        all:
-          type: boolean
-      additionalProperties: false
-    FilteredMeta:
-      type: array
-      items:
-        type: string
-        enum:
-        - body
-        - headers
-        - path
-        - query
-    TransformationFailedMeta:
-      type: object
-      properties:
-        transformation_id:
-          type: string
-      required:
-      - transformation_id
-      additionalProperties: false
     Request:
       type: object
       properties:
@@ -1245,69 +1271,43 @@ components:
       - updated_at
       - created_at
       additionalProperties: false
-    EventData:
-      type:
-      - object
-      - 'null'
-      properties:
-        url:
-          type: string
-        method:
-          type: string
-        path:
-          type:
-          - string
-          - 'null'
-          description: Raw path string
-        query:
-          type:
-          - string
-          - 'null'
-          description: Raw query param string
-        parsed_query:
-          anyOf:
-          - type:
-            - string
-            - 'null'
-          - type: object
-            properties: {}
-          description: JSON representation of query params
-        headers:
-          anyOf:
-          - type: string
-          - type: object
-            properties: {}
-            additionalProperties:
-              type:
-              - string
-              - 'null'
-          description: JSON representation of the headers
-        appended_headers:
-          type: array
-          items:
-            type: string
-          description: List of headers that were added by Hookdeck
-        body:
-          anyOf:
-          - type: string
-          - type: object
-            properties: {}
-          - type: array
-            items: {}
-          description: JSON or string representation of the body
-        is_large_payload:
-          type: boolean
-          description: Whether the payload is considered large payload and not searchable
-      required:
-      - url
-      - method
-      - path
-      - query
-      - parsed_query
-      - headers
-      - body
-      additionalProperties: false
-      description: Event data if included
+    AttemptErrorCodes:
+      type: string
+      enum:
+      - BAD_RESPONSE
+      - CANCELLED
+      - TIMEOUT
+      - NOT_FOUND
+      - CANCELLED_PAST_RETENTION
+      - CONNECTION_REFUSED
+      - CONNECTION_RESET
+      - MISSING_URL
+      - CLI
+      - CLI_UNAVAILABLE
+      - SELF_SIGNED_CERT
+      - ERR_TLS_CERT_ALTNAME_INVALID
+      - ERR_SSL_WRONG_VERSION_NUMBER
+      - NETWORK_ERROR
+      - NETWORK_REQUEST_CANCELED
+      - NETWORK_UNREACHABLE
+      - TOO_MANY_REDIRECTS
+      - INVALID_CHARACTER
+      - INVALID_URL
+      - SSL_ERROR_CA_UNKNOWN
+      - DATA_ARCHIVED
+      - SSL_CERT_EXPIRED
+      - BULK_RETRY_CANCELLED
+      - DNS_LOOKUP_FAILED
+      - HOST_UNREACHABLE
+      - INTERNAL_ERROR
+      - PROTOCOL_ERROR
+      - PAYLOAD_MISSING
+      - UNABLE_TO_GET_ISSUER_CERT
+      - SOCKET_CLOSED
+      - OAUTH2_HANDSHAKE_FAILED
+      - Z_DATA_ERROR
+      - UNKNOWN
+      description: Error code of the delivery attempt
   securitySchemes:
     bearerAuth:
       type: http

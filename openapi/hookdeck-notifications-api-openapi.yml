@@ -190,24 +190,6 @@ components:
           created_at:
             type: string
         additionalProperties: false
-    DeleteCustomDomainSchema:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The custom hostname ID
-      required:
-      - id
-      additionalProperties: false
-    AddCustomHostname:
-      type: object
-      properties:
-        hostname:
-          type: string
-          description: The custom hostname to attach to the project
-      required:
-      - hostname
-      additionalProperties: false
     ToggleWebhookNotifications:
       type: object
       properties:
@@ -234,6 +216,24 @@ components:
       - event.successful
       description: Supported topics
       x-docs-type: string
+    DeleteCustomDomainSchema:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The custom hostname ID
+      required:
+      - id
+      additionalProperties: false
+    AddCustomHostname:
+      type: object
+      properties:
+        hostname:
+          type: string
+          description: The custom hostname to attach to the project
+      required:
+      - hostname
+      additionalProperties: false
   securitySchemes:
     bearerAuth:
       type: http
