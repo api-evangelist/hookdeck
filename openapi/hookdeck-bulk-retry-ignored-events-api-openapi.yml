@@ -401,16 +401,6 @@ components:
         all:
           type: boolean
       additionalProperties: false
-    OrderByDirection:
-      anyOf:
-      - enum:
-        - asc
-      - enum:
-        - desc
-      - enum:
-        - ASC
-      - enum:
-        - DESC
     APIErrorResponse:
       type: object
       properties:
@@ -526,6 +516,16 @@ components:
       - updated_at
       - in_progress
       additionalProperties: false
+    OrderByDirection:
+      anyOf:
+      - enum:
+        - asc
+      - enum:
+        - desc
+      - enum:
+        - ASC
+      - enum:
+        - DESC
     SeekPagination:
       type: object
       properties:

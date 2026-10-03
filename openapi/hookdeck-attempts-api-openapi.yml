@@ -152,17 +152,68 @@ paths:
         required: true
 components:
   schemas:
-    EventAttemptPaginatedResult:
+    APIErrorResponse:
       type: object
       properties:
-        pagination:
-          $ref: '#/components/schemas/SeekPagination'
-        count:
+        code:
+          type: string
+          description: Error code
+        status:
+          type: number
+          format: float
+          description: Status code
+        message:
+          type: string
+          description: Error description
+        data:
+          type:
+          - object
+          - 'null'
+          properties: {}
+      required:
+      - code
+      - status
+      - message
+      additionalProperties: false
+      description: Error response model
+    AttemptStatus:
+      type: string
+      enum:
+      - FAILED
+      - SUCCESSFUL
+      description: Attempt status
+    AttemptTrigger:
+      type:
+      - string
+      - 'null'
+      enum:
+      - INITIAL
+      - MANUAL
+      - BULK_RETRY
+      - UNPAUSE
+      - AUTOMATIC
+      description: How the attempt was triggered
+    SeekPagination:
+      type: object
+      properties:
+        order_by:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        dir:
+          anyOf:
+          - $ref: '#/components/schemas/OrderByDirection'
+          - type: array
+            items:
+              $ref: '#/components/schemas/OrderByDirection'
+        limit:
           type: integer
-        models:
-          type: array
-          items:
-            $ref: '#/components/schemas/EventAttempt'
+        prev:
+          type: string
+        next:
+          type: string
       additionalProperties: false
     AttemptErrorCodes:
       type: string
@@ -211,41 +262,18 @@ components:
         - ASC
       - enum:
         - DESC
-    AttemptTrigger:
-      type:
-      - string
-      - 'null'
-      enum:
-      - INITIAL
-      - MANUAL
-      - BULK_RETRY
-      - UNPAUSE
-      - AUTOMATIC
-      description: How the attempt was triggered
-    APIErrorResponse:
+    EventAttemptPaginatedResult:
       type: object
       properties:
-        code:
-          type: string
-          description: Error code
-        status:
-          type: number
-          format: float
-          description: Status code
-        message:
-          type: string
-          description: Error description
-        data:
-          type:
-          - object
-          - 'null'
-          properties: {}
-      required:
-      - code
-      - status
-      - message
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventAttempt'
       additionalProperties: false
-      description: Error response model
     EventAttempt:
       type:
       - object
@@ -355,34 +383,6 @@ components:
       - status
       - updated_at
       - created_at
-      additionalProperties: false
-    AttemptStatus:
-      type: string
-      enum:
-      - FAILED
-      - SUCCESSFUL
-      description: Attempt status
-    SeekPagination:
-      type: object
-      properties:
-        order_by:
-          anyOf:
-          - type: string
-          - type: array
-            items:
-              type: string
-        dir:
-          anyOf:
-          - $ref: '#/components/schemas/OrderByDirection'
-          - type: array
-            items:
-              $ref: '#/components/schemas/OrderByDirection'
-        limit:
-          type: integer
-        prev:
-          type: string
-        next:
-          type: string
       additionalProperties: false
   securitySchemes:
     bearerAuth:

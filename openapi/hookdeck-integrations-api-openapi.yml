@@ -320,67 +320,6 @@ paths:
         required: true
 components:
   schemas:
-    Integration:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the integration
-        team_id:
-          type: string
-          description: ID of the project
-        label:
-          type: string
-          description: Label of the integration
-        provider:
-          $ref: '#/components/schemas/IntegrationProvider'
-        features:
-          type: array
-          items:
-            $ref: '#/components/schemas/IntegrationFeature'
-          description: List of features to enable (see features list below)
-          x-docs-force-simple-type: true
-          x-docs-type: Array of string
-        configs:
-          anyOf:
-          - $ref: '#/components/schemas/HMACIntegrationConfigs'
-          - $ref: '#/components/schemas/APIKeyIntegrationConfigs'
-          - $ref: '#/components/schemas/HandledAPIKeyIntegrationConfigs'
-          - $ref: '#/components/schemas/HandledHMACConfigs'
-          - $ref: '#/components/schemas/BasicAuthIntegrationConfigs'
-          - $ref: '#/components/schemas/ShopifyIntegrationConfigs'
-          - $ref: '#/components/schemas/VercelLogDrainsIntegrationConfigs'
-          - type: object
-            properties: {}
-            additionalProperties: false
-          description: Decrypted Key/Value object of the associated configuration for that provider
-          x-docs-force-simple-type: true
-          x-docs-type: object
-        sources:
-          type: array
-          items:
-            type: string
-            description: ID of the source
-          description: List of source IDs the integration is attached to
-        updated_at:
-          type: string
-          format: date-time
-          description: Date the integration was last updated
-        created_at:
-          type: string
-          format: date-time
-          description: Date the integration was created
-      required:
-      - id
-      - team_id
-      - label
-      - provider
-      - features
-      - configs
-      - sources
-      - updated_at
-      - created_at
-      additionalProperties: false
     DeletedIntegration:
       type: object
       properties:
@@ -388,91 +327,6 @@ components:
           type: string
       required:
       - id
-      additionalProperties: false
-    IntegrationPaginatedResult:
-      type: object
-      properties:
-        pagination:
-          $ref: '#/components/schemas/SeekPagination'
-        count:
-          type: integer
-        models:
-          type: array
-          items:
-            $ref: '#/components/schemas/Integration'
-      additionalProperties: false
-    OrderByDirection:
-      anyOf:
-      - enum:
-        - asc
-      - enum:
-        - desc
-      - enum:
-        - ASC
-      - enum:
-        - DESC
-    HMACAlgorithms:
-      type: string
-      enum:
-      - md5
-      - sha1
-      - sha256
-      - sha512
-    HMACIntegrationConfigs:
-      type: object
-      properties:
-        webhook_secret_key:
-          type: string
-        algorithm:
-          $ref: '#/components/schemas/HMACAlgorithms'
-        header_key:
-          type: string
-        encoding:
-          type: string
-          enum:
-          - base64
-          - hex
-      required:
-      - webhook_secret_key
-      - algorithm
-      - header_key
-      - encoding
-      additionalProperties: false
-    IntegrationFeature:
-      type: string
-      enum:
-      - VERIFICATION
-      - HANDSHAKE
-    DetachedIntegrationFromSource:
-      type: object
-      properties: {}
-      additionalProperties: false
-    HandledHMACConfigs:
-      type: object
-      properties:
-        webhook_secret_key:
-          type: string
-      required:
-      - webhook_secret_key
-      additionalProperties: false
-    HandledAPIKeyIntegrationConfigs:
-      type: object
-      properties:
-        api_key:
-          type: string
-      required:
-      - api_key
-      additionalProperties: false
-    BasicAuthIntegrationConfigs:
-      type: object
-      properties:
-        username:
-          type: string
-        password:
-          type: string
-      required:
-      - username
-      - password
       additionalProperties: false
     APIErrorResponse:
       type: object
@@ -498,6 +352,17 @@ components:
       - message
       additionalProperties: false
       description: Error response model
+    BasicAuthIntegrationConfigs:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+      - username
+      - password
+      additionalProperties: false
     AttachedIntegrationToSource:
       type: object
       properties:
@@ -505,6 +370,34 @@ components:
           type: boolean
       required:
       - success
+      additionalProperties: false
+    HandledAPIKeyIntegrationConfigs:
+      type: object
+      properties:
+        api_key:
+          type: string
+      required:
+      - api_key
+      additionalProperties: false
+    HMACIntegrationConfigs:
+      type: object
+      properties:
+        webhook_secret_key:
+          type: string
+        algorithm:
+          $ref: '#/components/schemas/HMACAlgorithms'
+        header_key:
+          type: string
+        encoding:
+          type: string
+          enum:
+          - base64
+          - hex
+      required:
+      - webhook_secret_key
+      - algorithm
+      - header_key
+      - encoding
       additionalProperties: false
     APIKeyIntegrationConfigs:
       type: object
@@ -517,6 +410,38 @@ components:
       - header_key
       - api_key
       additionalProperties: false
+    HandledHMACConfigs:
+      type: object
+      properties:
+        webhook_secret_key:
+          type: string
+      required:
+      - webhook_secret_key
+      additionalProperties: false
+    IntegrationFeature:
+      type: string
+      enum:
+      - VERIFICATION
+      - HANDSHAKE
+    HMACAlgorithms:
+      type: string
+      enum:
+      - md5
+      - sha1
+      - sha256
+      - sha512
+    IntegrationPaginatedResult:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/Integration'
+      additionalProperties: false
     ShopifyIntegrationConfigs:
       type: object
       properties:
@@ -524,6 +449,50 @@ components:
           type: string
       required:
       - webhook_secret_key
+      additionalProperties: false
+    OrderByDirection:
+      anyOf:
+      - enum:
+        - asc
+      - enum:
+        - desc
+      - enum:
+        - ASC
+      - enum:
+        - DESC
+    VercelLogDrainsIntegrationConfigs:
+      type: object
+      properties:
+        webhook_secret_key:
+          type:
+          - string
+          - 'null'
+        vercel_log_drains_secret:
+          type: string
+      required:
+      - vercel_log_drains_secret
+      additionalProperties: false
+    SeekPagination:
+      type: object
+      properties:
+        order_by:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        dir:
+          anyOf:
+          - $ref: '#/components/schemas/OrderByDirection'
+          - type: array
+            items:
+              $ref: '#/components/schemas/OrderByDirection'
+        limit:
+          type: integer
+        prev:
+          type: string
+        next:
+          type: string
       additionalProperties: false
     IntegrationProvider:
       type: string
@@ -662,39 +631,70 @@ components:
       - UBER
       - WECHAT
       - CIRCLE
-    SeekPagination:
+    DetachedIntegrationFromSource:
       type: object
-      properties:
-        order_by:
-          anyOf:
-          - type: string
-          - type: array
-            items:
-              type: string
-        dir:
-          anyOf:
-          - $ref: '#/components/schemas/OrderByDirection'
-          - type: array
-            items:
-              $ref: '#/components/schemas/OrderByDirection'
-        limit:
-          type: integer
-        prev:
-          type: string
-        next:
-          type: string
+      properties: {}
       additionalProperties: false
-    VercelLogDrainsIntegrationConfigs:
+    Integration:
       type: object
       properties:
-        webhook_secret_key:
-          type:
-          - string
-          - 'null'
-        vercel_log_drains_secret:
+        id:
           type: string
+          description: ID of the integration
+        team_id:
+          type: string
+          description: ID of the project
+        label:
+          type: string
+          description: Label of the integration
+        provider:
+          $ref: '#/components/schemas/IntegrationProvider'
+        features:
+          type: array
+          items:
+            $ref: '#/components/schemas/IntegrationFeature'
+          description: List of features to enable (see features list below)
+          x-docs-force-simple-type: true
+          x-docs-type: Array of string
+        configs:
+          anyOf:
+          - $ref: '#/components/schemas/HMACIntegrationConfigs'
+          - $ref: '#/components/schemas/APIKeyIntegrationConfigs'
+          - $ref: '#/components/schemas/HandledAPIKeyIntegrationConfigs'
+          - $ref: '#/components/schemas/HandledHMACConfigs'
+          - $ref: '#/components/schemas/BasicAuthIntegrationConfigs'
+          - $ref: '#/components/schemas/ShopifyIntegrationConfigs'
+          - $ref: '#/components/schemas/VercelLogDrainsIntegrationConfigs'
+          - type: object
+            properties: {}
+            additionalProperties: false
+          description: Decrypted Key/Value object of the associated configuration for that provider
+          x-docs-force-simple-type: true
+          x-docs-type: object
+        sources:
+          type: array
+          items:
+            type: string
+            description: ID of the source
+          description: List of source IDs the integration is attached to
+        updated_at:
+          type: string
+          format: date-time
+          description: Date the integration was last updated
+        created_at:
+          type: string
+          format: date-time
+          description: Date the integration was created
       required:
-      - vercel_log_drains_secret
+      - id
+      - team_id
+      - label
+      - provider
+      - features
+      - configs
+      - sources
+      - updated_at
+      - created_at
       additionalProperties: false
   securitySchemes:
     bearerAuth:
