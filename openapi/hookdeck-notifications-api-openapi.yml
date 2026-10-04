@@ -112,6 +112,23 @@ paths:
         required: true
 components:
   schemas:
+    ToggleWebhookNotifications:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        topics:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/TopicsValue'
+        source_id:
+          type: string
+      required:
+      - enabled
+      - source_id
+      additionalProperties: false
     AddCustomHostname:
       type: object
       properties:
@@ -130,32 +147,6 @@ components:
       - event.successful
       description: Supported topics
       x-docs-type: string
-    DeleteCustomDomainSchema:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The custom hostname ID
-      required:
-      - id
-      additionalProperties: false
-    ToggleWebhookNotifications:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-        topics:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/TopicsValue'
-        source_id:
-          type: string
-      required:
-      - enabled
-      - source_id
-      additionalProperties: false
     ListCustomDomainSchema:
       type: array
       items:
@@ -234,6 +225,15 @@ components:
           created_at:
             type: string
         additionalProperties: false
+    DeleteCustomDomainSchema:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The custom hostname ID
+      required:
+      - id
+      additionalProperties: false
   securitySchemes:
     bearerAuth:
       type: http

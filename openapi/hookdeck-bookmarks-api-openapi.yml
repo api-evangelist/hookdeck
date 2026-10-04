@@ -414,194 +414,37 @@ paths:
         required: true
 components:
   schemas:
-    Operators:
+    SeekPagination:
       type: object
       properties:
-        gt:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        gte:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        le:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        lte:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        any:
-          type: boolean
-        all:
-          type: boolean
-      additionalProperties: false
-    APIErrorResponse:
-      type: object
-      properties:
-        code:
-          type: string
-          description: Error code
-        status:
-          type: number
-          format: float
-          description: Status code
-        message:
-          type: string
-          description: Error description
-        data:
-          type:
-          - object
-          - 'null'
-          properties: {}
-      required:
-      - code
-      - status
-      - message
-      additionalProperties: false
-      description: Error response model
-    ShortEventData:
-      type:
-      - object
-      - 'null'
-      properties:
-        path:
-          type: string
-          description: Request path
-        query:
-          type:
-          - string
-          - 'null'
-          description: Raw query param string
-        parsed_query:
-          anyOf:
-          - type:
-            - string
-            - 'null'
-          - type: object
-            properties: {}
-          description: JSON representation of query params
-        headers:
+        order_by:
           anyOf:
           - type: string
-          - type: object
-            properties: {}
-            additionalProperties:
-              type:
-              - string
-              - 'null'
-          description: JSON representation of the headers
-        body:
-          anyOf:
-          - type: string
-          - type: object
-            properties: {}
           - type: array
-            items: {}
-          description: JSON or string representation of the body
-        is_large_payload:
-          type:
-          - boolean
-          - 'null'
-          description: Whether the payload is considered large payload and not searchable
-      required:
-      - path
-      - query
-      - parsed_query
-      - headers
-      - body
+            items:
+              type: string
+        dir:
+          anyOf:
+          - $ref: '#/components/schemas/OrderByDirection'
+          - type: array
+            items:
+              $ref: '#/components/schemas/OrderByDirection'
+        limit:
+          type: integer
+        prev:
+          type: string
+        next:
+          type: string
       additionalProperties: false
-      description: Request data
-    EventArray:
-      type: array
-      items:
-        $ref: '#/components/schemas/Event'
-    EventStatus:
-      type: string
-      enum:
-      - SCHEDULED
-      - QUEUED
-      - HOLD
-      - SUCCESSFUL
-      - FAILED
-      - CANCELLED
-    RawBody:
+    DeletedBookmarkResponse:
       type: object
       properties:
-        body:
+        id:
           type: string
+          description: Bookmark ID
       required:
-      - body
+      - id
       additionalProperties: false
-    EventData:
-      type:
-      - object
-      - 'null'
-      properties:
-        url:
-          type: string
-        method:
-          type: string
-        path:
-          type:
-          - string
-          - 'null'
-          description: Raw path string
-        query:
-          type:
-          - string
-          - 'null'
-          description: Raw query param string
-        parsed_query:
-          anyOf:
-          - type:
-            - string
-            - 'null'
-          - type: object
-            properties: {}
-          description: JSON representation of query params
-        headers:
-          anyOf:
-          - type: string
-          - type: object
-            properties: {}
-            additionalProperties:
-              type:
-              - string
-              - 'null'
-          description: JSON representation of the headers
-        appended_headers:
-          type: array
-          items:
-            type: string
-          description: List of headers that were added by Hookdeck
-        body:
-          anyOf:
-          - type: string
-          - type: object
-            properties: {}
-          - type: array
-            items: {}
-          description: JSON or string representation of the body
-        is_large_payload:
-          type: boolean
-          description: Whether the payload is considered large payload and not searchable
-      required:
-      - url
-      - method
-      - path
-      - query
-      - parsed_query
-      - headers
-      - body
-      additionalProperties: false
-      description: Event data if included
     Bookmark:
       type: object
       properties:
@@ -650,6 +493,52 @@ components:
       - updated_at
       - created_at
       additionalProperties: false
+    Operators:
+      type: object
+      properties:
+        gt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        gte:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        le:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        lte:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        any:
+          type: boolean
+        all:
+          type: boolean
+      additionalProperties: false
+    RawBody:
+      type: object
+      properties:
+        body:
+          type: string
+      required:
+      - body
+      additionalProperties: false
+    OrderByDirection:
+      anyOf:
+      - enum:
+        - asc
+      - enum:
+        - desc
+      - enum:
+        - ASC
+      - enum:
+        - DESC
     AttemptErrorCodes:
       type: string
       enum:
@@ -687,38 +576,6 @@ components:
       - Z_DATA_ERROR
       - UNKNOWN
       description: Error code of the delivery attempt
-    OrderByDirection:
-      anyOf:
-      - enum:
-        - asc
-      - enum:
-        - desc
-      - enum:
-        - ASC
-      - enum:
-        - DESC
-    SeekPagination:
-      type: object
-      properties:
-        order_by:
-          anyOf:
-          - type: string
-          - type: array
-            items:
-              type: string
-        dir:
-          anyOf:
-          - $ref: '#/components/schemas/OrderByDirection'
-          - type: array
-            items:
-              $ref: '#/components/schemas/OrderByDirection'
-        limit:
-          type: integer
-        prev:
-          type: string
-        next:
-          type: string
-      additionalProperties: false
     Event:
       type: object
       properties:
@@ -805,6 +662,149 @@ components:
       - updated_at
       - created_at
       additionalProperties: false
+    APIErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        status:
+          type: number
+          format: float
+          description: Status code
+        message:
+          type: string
+          description: Error description
+        data:
+          type:
+          - object
+          - 'null'
+          properties: {}
+      required:
+      - code
+      - status
+      - message
+      additionalProperties: false
+      description: Error response model
+    EventArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/Event'
+    EventData:
+      type:
+      - object
+      - 'null'
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        path:
+          type:
+          - string
+          - 'null'
+          description: Raw path string
+        query:
+          type:
+          - string
+          - 'null'
+          description: Raw query param string
+        parsed_query:
+          anyOf:
+          - type:
+            - string
+            - 'null'
+          - type: object
+            properties: {}
+          description: JSON representation of query params
+        headers:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+            additionalProperties:
+              type:
+              - string
+              - 'null'
+          description: JSON representation of the headers
+        appended_headers:
+          type: array
+          items:
+            type: string
+          description: List of headers that were added by Hookdeck
+        body:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+          - type: array
+            items: {}
+          description: JSON or string representation of the body
+        is_large_payload:
+          type: boolean
+          description: Whether the payload is considered large payload and not searchable
+      required:
+      - url
+      - method
+      - path
+      - query
+      - parsed_query
+      - headers
+      - body
+      additionalProperties: false
+      description: Event data if included
+    ShortEventData:
+      type:
+      - object
+      - 'null'
+      properties:
+        path:
+          type: string
+          description: Request path
+        query:
+          type:
+          - string
+          - 'null'
+          description: Raw query param string
+        parsed_query:
+          anyOf:
+          - type:
+            - string
+            - 'null'
+          - type: object
+            properties: {}
+          description: JSON representation of query params
+        headers:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+            additionalProperties:
+              type:
+              - string
+              - 'null'
+          description: JSON representation of the headers
+        body:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+          - type: array
+            items: {}
+          description: JSON or string representation of the body
+        is_large_payload:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the payload is considered large payload and not searchable
+      required:
+      - path
+      - query
+      - parsed_query
+      - headers
+      - body
+      additionalProperties: false
+      description: Request data
     BookmarkPaginatedResult:
       type: object
       properties:
@@ -817,15 +817,15 @@ components:
           items:
             $ref: '#/components/schemas/Bookmark'
       additionalProperties: false
-    DeletedBookmarkResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Bookmark ID
-      required:
-      - id
-      additionalProperties: false
+    EventStatus:
+      type: string
+      enum:
+      - SCHEDULED
+      - QUEUED
+      - HOLD
+      - SUCCESSFUL
+      - FAILED
+      - CANCELLED
   securitySchemes:
     bearerAuth:
       type: http

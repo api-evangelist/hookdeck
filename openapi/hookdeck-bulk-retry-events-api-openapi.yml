@@ -856,104 +856,40 @@ paths:
         required: true
 components:
   schemas:
-    Operators:
+    BatchOperationPaginatedResult:
       type: object
       properties:
-        gt:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        gte:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        le:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        lte:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        any:
-          type: boolean
-        all:
-          type: boolean
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/BatchOperation'
       additionalProperties: false
-    APIErrorResponse:
+    SeekPagination:
       type: object
       properties:
-        code:
+        order_by:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        dir:
+          anyOf:
+          - $ref: '#/components/schemas/OrderByDirection'
+          - type: array
+            items:
+              $ref: '#/components/schemas/OrderByDirection'
+        limit:
+          type: integer
+        prev:
           type: string
-          description: Error code
-        status:
-          type: number
-          format: float
-          description: Status code
-        message:
+        next:
           type: string
-          description: Error description
-        data:
-          type:
-          - object
-          - 'null'
-          properties: {}
-      required:
-      - code
-      - status
-      - message
       additionalProperties: false
-      description: Error response model
-    EventStatus:
-      type: string
-      enum:
-      - SCHEDULED
-      - QUEUED
-      - HOLD
-      - SUCCESSFUL
-      - FAILED
-      - CANCELLED
-    AttemptErrorCodes:
-      type: string
-      enum:
-      - BAD_RESPONSE
-      - CANCELLED
-      - TIMEOUT
-      - NOT_FOUND
-      - CANCELLED_PAST_RETENTION
-      - CONNECTION_REFUSED
-      - CONNECTION_RESET
-      - MISSING_URL
-      - CLI
-      - CLI_UNAVAILABLE
-      - SELF_SIGNED_CERT
-      - ERR_TLS_CERT_ALTNAME_INVALID
-      - ERR_SSL_WRONG_VERSION_NUMBER
-      - NETWORK_ERROR
-      - NETWORK_REQUEST_CANCELED
-      - NETWORK_UNREACHABLE
-      - TOO_MANY_REDIRECTS
-      - INVALID_CHARACTER
-      - INVALID_URL
-      - SSL_ERROR_CA_UNKNOWN
-      - DATA_ARCHIVED
-      - SSL_CERT_EXPIRED
-      - BULK_RETRY_CANCELLED
-      - DNS_LOOKUP_FAILED
-      - HOST_UNREACHABLE
-      - INTERNAL_ERROR
-      - PROTOCOL_ERROR
-      - PAYLOAD_MISSING
-      - UNABLE_TO_GET_ISSUER_CERT
-      - SOCKET_CLOSED
-      - OAUTH2_HANDSHAKE_FAILED
-      - Z_DATA_ERROR
-      - UNKNOWN
-      description: Error code of the delivery attempt
     BatchOperation:
       type: object
       properties:
@@ -1045,6 +981,34 @@ components:
       - updated_at
       - in_progress
       additionalProperties: false
+    Operators:
+      type: object
+      properties:
+        gt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        gte:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        le:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        lte:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        any:
+          type: boolean
+        all:
+          type: boolean
+      additionalProperties: false
     OrderByDirection:
       anyOf:
       - enum:
@@ -1055,40 +1019,76 @@ components:
         - ASC
       - enum:
         - DESC
-    SeekPagination:
+    AttemptErrorCodes:
+      type: string
+      enum:
+      - BAD_RESPONSE
+      - CANCELLED
+      - TIMEOUT
+      - NOT_FOUND
+      - CANCELLED_PAST_RETENTION
+      - CONNECTION_REFUSED
+      - CONNECTION_RESET
+      - MISSING_URL
+      - CLI
+      - CLI_UNAVAILABLE
+      - SELF_SIGNED_CERT
+      - ERR_TLS_CERT_ALTNAME_INVALID
+      - ERR_SSL_WRONG_VERSION_NUMBER
+      - NETWORK_ERROR
+      - NETWORK_REQUEST_CANCELED
+      - NETWORK_UNREACHABLE
+      - TOO_MANY_REDIRECTS
+      - INVALID_CHARACTER
+      - INVALID_URL
+      - SSL_ERROR_CA_UNKNOWN
+      - DATA_ARCHIVED
+      - SSL_CERT_EXPIRED
+      - BULK_RETRY_CANCELLED
+      - DNS_LOOKUP_FAILED
+      - HOST_UNREACHABLE
+      - INTERNAL_ERROR
+      - PROTOCOL_ERROR
+      - PAYLOAD_MISSING
+      - UNABLE_TO_GET_ISSUER_CERT
+      - SOCKET_CLOSED
+      - OAUTH2_HANDSHAKE_FAILED
+      - Z_DATA_ERROR
+      - UNKNOWN
+      description: Error code of the delivery attempt
+    APIErrorResponse:
       type: object
       properties:
-        order_by:
-          anyOf:
-          - type: string
-          - type: array
-            items:
-              type: string
-        dir:
-          anyOf:
-          - $ref: '#/components/schemas/OrderByDirection'
-          - type: array
-            items:
-              $ref: '#/components/schemas/OrderByDirection'
-        limit:
-          type: integer
-        prev:
+        code:
           type: string
-        next:
+          description: Error code
+        status:
+          type: number
+          format: float
+          description: Status code
+        message:
           type: string
+          description: Error description
+        data:
+          type:
+          - object
+          - 'null'
+          properties: {}
+      required:
+      - code
+      - status
+      - message
       additionalProperties: false
-    BatchOperationPaginatedResult:
-      type: object
-      properties:
-        pagination:
-          $ref: '#/components/schemas/SeekPagination'
-        count:
-          type: integer
-        models:
-          type: array
-          items:
-            $ref: '#/components/schemas/BatchOperation'
-      additionalProperties: false
+      description: Error response model
+    EventStatus:
+      type: string
+      enum:
+      - SCHEDULED
+      - QUEUED
+      - HOLD
+      - SUCCESSFUL
+      - FAILED
+      - CANCELLED
   securitySchemes:
     bearerAuth:
       type: http

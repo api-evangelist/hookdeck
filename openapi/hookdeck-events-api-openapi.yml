@@ -471,6 +471,28 @@ paths:
         required: true
 components:
   schemas:
+    SeekPagination:
+      type: object
+      properties:
+        order_by:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        dir:
+          anyOf:
+          - $ref: '#/components/schemas/OrderByDirection'
+          - type: array
+            items:
+              $ref: '#/components/schemas/OrderByDirection'
+        limit:
+          type: integer
+        prev:
+          type: string
+        next:
+          type: string
+      additionalProperties: false
     Operators:
       type: object
       properties:
@@ -499,30 +521,6 @@ components:
         all:
           type: boolean
       additionalProperties: false
-    APIErrorResponse:
-      type: object
-      properties:
-        code:
-          type: string
-          description: Error code
-        status:
-          type: number
-          format: float
-          description: Status code
-        message:
-          type: string
-          description: Error description
-        data:
-          type:
-          - object
-          - 'null'
-          properties: {}
-      required:
-      - code
-      - status
-      - message
-      additionalProperties: false
-      description: Error response model
     RetriedEvent:
       type: object
       properties:
@@ -609,27 +607,6 @@ components:
       - updated_at
       - created_at
       additionalProperties: false
-    EventPaginatedResult:
-      type: object
-      properties:
-        pagination:
-          $ref: '#/components/schemas/SeekPagination'
-        count:
-          type: integer
-        models:
-          type: array
-          items:
-            $ref: '#/components/schemas/Event'
-      additionalProperties: false
-    EventStatus:
-      type: string
-      enum:
-      - SCHEDULED
-      - QUEUED
-      - HOLD
-      - SUCCESSFUL
-      - FAILED
-      - CANCELLED
     RawBody:
       type: object
       properties:
@@ -638,69 +615,16 @@ components:
       required:
       - body
       additionalProperties: false
-    EventData:
-      type:
-      - object
-      - 'null'
-      properties:
-        url:
-          type: string
-        method:
-          type: string
-        path:
-          type:
-          - string
-          - 'null'
-          description: Raw path string
-        query:
-          type:
-          - string
-          - 'null'
-          description: Raw query param string
-        parsed_query:
-          anyOf:
-          - type:
-            - string
-            - 'null'
-          - type: object
-            properties: {}
-          description: JSON representation of query params
-        headers:
-          anyOf:
-          - type: string
-          - type: object
-            properties: {}
-            additionalProperties:
-              type:
-              - string
-              - 'null'
-          description: JSON representation of the headers
-        appended_headers:
-          type: array
-          items:
-            type: string
-          description: List of headers that were added by Hookdeck
-        body:
-          anyOf:
-          - type: string
-          - type: object
-            properties: {}
-          - type: array
-            items: {}
-          description: JSON or string representation of the body
-        is_large_payload:
-          type: boolean
-          description: Whether the payload is considered large payload and not searchable
-      required:
-      - url
-      - method
-      - path
-      - query
-      - parsed_query
-      - headers
-      - body
-      additionalProperties: false
-      description: Event data if included
+    OrderByDirection:
+      anyOf:
+      - enum:
+        - asc
+      - enum:
+        - desc
+      - enum:
+        - ASC
+      - enum:
+        - DESC
     AttemptErrorCodes:
       type: string
       enum:
@@ -738,37 +662,17 @@ components:
       - Z_DATA_ERROR
       - UNKNOWN
       description: Error code of the delivery attempt
-    OrderByDirection:
-      anyOf:
-      - enum:
-        - asc
-      - enum:
-        - desc
-      - enum:
-        - ASC
-      - enum:
-        - DESC
-    SeekPagination:
+    EventPaginatedResult:
       type: object
       properties:
-        order_by:
-          anyOf:
-          - type: string
-          - type: array
-            items:
-              type: string
-        dir:
-          anyOf:
-          - $ref: '#/components/schemas/OrderByDirection'
-          - type: array
-            items:
-              $ref: '#/components/schemas/OrderByDirection'
-        limit:
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
           type: integer
-        prev:
-          type: string
-        next:
-          type: string
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event'
       additionalProperties: false
     Event:
       type: object
@@ -856,6 +760,102 @@ components:
       - updated_at
       - created_at
       additionalProperties: false
+    APIErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        status:
+          type: number
+          format: float
+          description: Status code
+        message:
+          type: string
+          description: Error description
+        data:
+          type:
+          - object
+          - 'null'
+          properties: {}
+      required:
+      - code
+      - status
+      - message
+      additionalProperties: false
+      description: Error response model
+    EventData:
+      type:
+      - object
+      - 'null'
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        path:
+          type:
+          - string
+          - 'null'
+          description: Raw path string
+        query:
+          type:
+          - string
+          - 'null'
+          description: Raw query param string
+        parsed_query:
+          anyOf:
+          - type:
+            - string
+            - 'null'
+          - type: object
+            properties: {}
+          description: JSON representation of query params
+        headers:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+            additionalProperties:
+              type:
+              - string
+              - 'null'
+          description: JSON representation of the headers
+        appended_headers:
+          type: array
+          items:
+            type: string
+          description: List of headers that were added by Hookdeck
+        body:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+          - type: array
+            items: {}
+          description: JSON or string representation of the body
+        is_large_payload:
+          type: boolean
+          description: Whether the payload is considered large payload and not searchable
+      required:
+      - url
+      - method
+      - path
+      - query
+      - parsed_query
+      - headers
+      - body
+      additionalProperties: false
+      description: Event data if included
+    EventStatus:
+      type: string
+      enum:
+      - SCHEDULED
+      - QUEUED
+      - HOLD
+      - SUCCESSFUL
+      - FAILED
+      - CANCELLED
   securitySchemes:
     bearerAuth:
       type: http

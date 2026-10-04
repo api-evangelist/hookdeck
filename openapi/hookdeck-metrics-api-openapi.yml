@@ -763,6 +763,33 @@ paths:
           description: List of dimensions to group by
 components:
   schemas:
+    MetricDataPoint:
+      type: object
+      properties:
+        time_bucket:
+          type:
+          - string
+          - 'null'
+          description: Time bucket for the metric data point
+        dimensions:
+          type: object
+          properties: {}
+          additionalProperties:
+            anyOf:
+            - type: string
+            - type: number
+              format: float
+            - type: boolean
+          description: Key-value pairs of dimension names and their values.
+        metrics:
+          type: object
+          properties: {}
+          additionalProperties:
+            type: number
+            format: float
+          description: Key-value pairs of metric names and their calculated values.
+      additionalProperties: false
+      description: A single metric data point with time bucket, dimensions, and metrics
     MetricsResponse:
       type: object
       properties:
@@ -801,33 +828,6 @@ components:
           description: Query metadata
       additionalProperties: false
       description: Metrics query response with data and metadata
-    MetricDataPoint:
-      type: object
-      properties:
-        time_bucket:
-          type:
-          - string
-          - 'null'
-          description: Time bucket for the metric data point
-        dimensions:
-          type: object
-          properties: {}
-          additionalProperties:
-            anyOf:
-            - type: string
-            - type: number
-              format: float
-            - type: boolean
-          description: Key-value pairs of dimension names and their values.
-        metrics:
-          type: object
-          properties: {}
-          additionalProperties:
-            type: number
-            format: float
-          description: Key-value pairs of metric names and their calculated values.
-      additionalProperties: false
-      description: A single metric data point with time bucket, dimensions, and metrics
   securitySchemes:
     bearerAuth:
       type: http

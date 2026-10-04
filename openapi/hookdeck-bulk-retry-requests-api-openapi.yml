@@ -717,71 +717,40 @@ paths:
         required: true
 components:
   schemas:
-    Operators:
+    BatchOperationPaginatedResult:
       type: object
       properties:
-        gt:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        gte:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        le:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        lte:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        any:
-          type: boolean
-        all:
-          type: boolean
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/BatchOperation'
       additionalProperties: false
-    APIErrorResponse:
+    SeekPagination:
       type: object
       properties:
-        code:
+        order_by:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        dir:
+          anyOf:
+          - $ref: '#/components/schemas/OrderByDirection'
+          - type: array
+            items:
+              $ref: '#/components/schemas/OrderByDirection'
+        limit:
+          type: integer
+        prev:
           type: string
-          description: Error code
-        status:
-          type: number
-          format: float
-          description: Status code
-        message:
+        next:
           type: string
-          description: Error description
-        data:
-          type:
-          - object
-          - 'null'
-          properties: {}
-      required:
-      - code
-      - status
-      - message
       additionalProperties: false
-      description: Error response model
-    RequestRejectionCause:
-      type: string
-      enum:
-      - SOURCE_DISABLED
-      - NO_CONNECTION
-      - VERIFICATION_FAILED
-      - UNSUPPORTED_HTTP_METHOD
-      - UNSUPPORTED_CONTENT_TYPE
-      - UNPARSABLE_JSON
-      - PAYLOAD_TOO_LARGE
-      - INGESTION_FATAL
-      - UNKNOWN
-      x-docs-type: string
     BatchOperation:
       type: object
       properties:
@@ -873,6 +842,34 @@ components:
       - updated_at
       - in_progress
       additionalProperties: false
+    Operators:
+      type: object
+      properties:
+        gt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        gte:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        le:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        lte:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        any:
+          type: boolean
+        all:
+          type: boolean
+      additionalProperties: false
     OrderByDirection:
       anyOf:
       - enum:
@@ -883,40 +880,43 @@ components:
         - ASC
       - enum:
         - DESC
-    SeekPagination:
+    RequestRejectionCause:
+      type: string
+      enum:
+      - SOURCE_DISABLED
+      - NO_CONNECTION
+      - VERIFICATION_FAILED
+      - UNSUPPORTED_HTTP_METHOD
+      - UNSUPPORTED_CONTENT_TYPE
+      - UNPARSABLE_JSON
+      - PAYLOAD_TOO_LARGE
+      - INGESTION_FATAL
+      - UNKNOWN
+      x-docs-type: string
+    APIErrorResponse:
       type: object
       properties:
-        order_by:
-          anyOf:
-          - type: string
-          - type: array
-            items:
-              type: string
-        dir:
-          anyOf:
-          - $ref: '#/components/schemas/OrderByDirection'
-          - type: array
-            items:
-              $ref: '#/components/schemas/OrderByDirection'
-        limit:
-          type: integer
-        prev:
+        code:
           type: string
-        next:
+          description: Error code
+        status:
+          type: number
+          format: float
+          description: Status code
+        message:
           type: string
+          description: Error description
+        data:
+          type:
+          - object
+          - 'null'
+          properties: {}
+      required:
+      - code
+      - status
+      - message
       additionalProperties: false
-    BatchOperationPaginatedResult:
-      type: object
-      properties:
-        pagination:
-          $ref: '#/components/schemas/SeekPagination'
-        count:
-          type: integer
-        models:
-          type: array
-          items:
-            $ref: '#/components/schemas/BatchOperation'
-      additionalProperties: false
+      description: Error response model
   securitySchemes:
     bearerAuth:
       type: http
