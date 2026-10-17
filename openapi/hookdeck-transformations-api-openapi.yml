@@ -631,27 +631,30 @@ paths:
         required: true
 components:
   schemas:
-    TransformationPaginatedResult:
+    APIErrorResponse:
       type: object
       properties:
-        pagination:
-          $ref: '#/components/schemas/SeekPagination'
-        count:
-          type: integer
-        models:
-          type: array
-          items:
-            $ref: '#/components/schemas/Transformation'
+        code:
+          type: string
+          description: Error code
+        status:
+          type: number
+          format: float
+          description: Status code
+        message:
+          type: string
+          description: Error description
+        data:
+          type:
+          - object
+          - 'null'
+          properties: {}
+      required:
+      - code
+      - status
+      - message
       additionalProperties: false
-    TransformationExecutionLogLevel:
-      type: string
-      enum:
-      - debug
-      - info
-      - warn
-      - error
-      - fatal
-      description: The minimum log level to open the issue on
+      description: Error response model
     TransformationExecution:
       type: object
       properties:
@@ -702,123 +705,58 @@ components:
       - updated_at
       - created_at
       additionalProperties: false
-    SeekPagination:
-      type: object
+    ShortEventData:
+      type:
+      - object
+      - 'null'
       properties:
-        order_by:
+        path:
+          type: string
+          description: Request path
+        query:
+          type:
+          - string
+          - 'null'
+          description: Raw query param string
+        parsed_query:
+          anyOf:
+          - type:
+            - string
+            - 'null'
+          - type: object
+            properties: {}
+          description: JSON representation of query params
+        headers:
           anyOf:
           - type: string
-          - type: array
-            items:
-              type: string
-        dir:
+          - type: object
+            properties: {}
+            additionalProperties:
+              type:
+              - string
+              - 'null'
+          description: JSON representation of the headers
+        body:
           anyOf:
-          - $ref: '#/components/schemas/OrderByDirection'
+          - type: string
+          - type: object
+            properties: {}
           - type: array
-            items:
-              $ref: '#/components/schemas/OrderByDirection'
-        limit:
-          type: integer
-        prev:
-          type: string
-        next:
-          type: string
-      additionalProperties: false
-    Operators:
-      type: object
-      properties:
-        gt:
+            items: {}
+          description: JSON or string representation of the body
+        is_large_payload:
           type:
-          - string
+          - boolean
           - 'null'
-          format: date-time
-        gte:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        le:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        lte:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        any:
-          type: boolean
-        all:
-          type: boolean
-      additionalProperties: false
-    Transformation:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the transformation
-        team_id:
-          type: string
-          description: ID of the project
-        name:
-          type: string
-          description: A unique, human-friendly name for the transformation
-        code:
-          type: string
-          description: JavaScript code to be executed
-        encrypted_env:
-          type:
-          - string
-          - 'null'
-          x-docs-hide: true
-        iv:
-          type:
-          - string
-          - 'null'
-          x-docs-hide: true
-        env:
-          type:
-          - object
-          - 'null'
-          properties: {}
-          additionalProperties:
-            type: string
-          description: Key-value environment variables to be passed to the transformation
-          x-docs-force-simple-type: true
-        updated_at:
-          type: string
-          format: date-time
-          description: Date the transformation was last updated
-        created_at:
-          type: string
-          format: date-time
-          description: Date the transformation was created
+          description: Whether the payload is considered large payload and not searchable
       required:
-      - id
-      - team_id
-      - name
-      - code
-      - updated_at
-      - created_at
+      - path
+      - query
+      - parsed_query
+      - headers
+      - body
       additionalProperties: false
-    ConsoleLine:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - error
-          - log
-          - warn
-          - info
-          - debug
-        message:
-          type: string
-      required:
-      - type
-      - message
-      additionalProperties: false
+      description: Request data
     TransformationExecutorOutput:
       type: object
       properties:
@@ -885,40 +823,132 @@ components:
       required:
       - log_level
       additionalProperties: false
-    OrderByDirection:
-      anyOf:
-      - enum:
-        - asc
-      - enum:
-        - desc
-      - enum:
-        - ASC
-      - enum:
-        - DESC
-    APIErrorResponse:
+    TransformationExecutionLogLevel:
+      type: string
+      enum:
+      - debug
+      - info
+      - warn
+      - error
+      - fatal
+      description: The minimum log level to open the issue on
+    Operators:
       type: object
       properties:
-        code:
+        gt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        gte:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        le:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        lte:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        any:
+          type: boolean
+        all:
+          type: boolean
+      additionalProperties: false
+    SeekPagination:
+      type: object
+      properties:
+        order_by:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        dir:
+          anyOf:
+          - $ref: '#/components/schemas/OrderByDirection'
+          - type: array
+            items:
+              $ref: '#/components/schemas/OrderByDirection'
+        limit:
+          type: integer
+        prev:
           type: string
-          description: Error code
-        status:
-          type: number
-          format: float
-          description: Status code
+        next:
+          type: string
+      additionalProperties: false
+    ConsoleLine:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - error
+          - log
+          - warn
+          - info
+          - debug
         message:
           type: string
-          description: Error description
-        data:
+      required:
+      - type
+      - message
+      additionalProperties: false
+    Transformation:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the transformation
+        team_id:
+          type: string
+          description: ID of the project
+        name:
+          type: string
+          description: A unique, human-friendly name for the transformation
+        code:
+          type: string
+          description: JavaScript code to be executed
+        encrypted_env:
+          type:
+          - string
+          - 'null'
+          x-docs-hide: true
+        iv:
+          type:
+          - string
+          - 'null'
+          x-docs-hide: true
+        env:
           type:
           - object
           - 'null'
           properties: {}
+          additionalProperties:
+            type: string
+          description: Key-value environment variables to be passed to the transformation
+          x-docs-force-simple-type: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Date the transformation was last updated
+        created_at:
+          type: string
+          format: date-time
+          description: Date the transformation was created
       required:
+      - id
+      - team_id
+      - name
       - code
-      - status
-      - message
+      - updated_at
+      - created_at
       additionalProperties: false
-      description: Error response model
     TransformationExecutionPaginatedResult:
       type: object
       properties:
@@ -931,58 +961,28 @@ components:
           items:
             $ref: '#/components/schemas/TransformationExecution'
       additionalProperties: false
-    ShortEventData:
-      type:
-      - object
-      - 'null'
+    OrderByDirection:
+      anyOf:
+      - enum:
+        - asc
+      - enum:
+        - desc
+      - enum:
+        - ASC
+      - enum:
+        - DESC
+    TransformationPaginatedResult:
+      type: object
       properties:
-        path:
-          type: string
-          description: Request path
-        query:
-          type:
-          - string
-          - 'null'
-          description: Raw query param string
-        parsed_query:
-          anyOf:
-          - type:
-            - string
-            - 'null'
-          - type: object
-            properties: {}
-          description: JSON representation of query params
-        headers:
-          anyOf:
-          - type: string
-          - type: object
-            properties: {}
-            additionalProperties:
-              type:
-              - string
-              - 'null'
-          description: JSON representation of the headers
-        body:
-          anyOf:
-          - type: string
-          - type: object
-            properties: {}
-          - type: array
-            items: {}
-          description: JSON or string representation of the body
-        is_large_payload:
-          type:
-          - boolean
-          - 'null'
-          description: Whether the payload is considered large payload and not searchable
-      required:
-      - path
-      - query
-      - parsed_query
-      - headers
-      - body
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transformation'
       additionalProperties: false
-      description: Request data
   securitySchemes:
     bearerAuth:
       type: http

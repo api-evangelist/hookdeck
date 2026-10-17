@@ -320,63 +320,6 @@ paths:
         required: true
 components:
   schemas:
-    ShopifyIntegrationConfigs:
-      type: object
-      properties:
-        webhook_secret_key:
-          type: string
-      required:
-      - webhook_secret_key
-      additionalProperties: false
-    HandledHMACConfigs:
-      type: object
-      properties:
-        webhook_secret_key:
-          type: string
-      required:
-      - webhook_secret_key
-      additionalProperties: false
-    APIKeyIntegrationConfigs:
-      type: object
-      properties:
-        header_key:
-          type: string
-        api_key:
-          type: string
-      required:
-      - header_key
-      - api_key
-      additionalProperties: false
-    SeekPagination:
-      type: object
-      properties:
-        order_by:
-          anyOf:
-          - type: string
-          - type: array
-            items:
-              type: string
-        dir:
-          anyOf:
-          - $ref: '#/components/schemas/OrderByDirection'
-          - type: array
-            items:
-              $ref: '#/components/schemas/OrderByDirection'
-        limit:
-          type: integer
-        prev:
-          type: string
-        next:
-          type: string
-      additionalProperties: false
-    HandledAPIKeyIntegrationConfigs:
-      type: object
-      properties:
-        api_key:
-          type: string
-      required:
-      - api_key
-      additionalProperties: false
     VercelLogDrainsIntegrationConfigs:
       type: object
       properties:
@@ -389,13 +332,51 @@ components:
       required:
       - vercel_log_drains_secret
       additionalProperties: false
-    HMACAlgorithms:
-      type: string
-      enum:
-      - md5
-      - sha1
-      - sha256
-      - sha512
+    APIErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        status:
+          type: number
+          format: float
+          description: Status code
+        message:
+          type: string
+          description: Error description
+        data:
+          type:
+          - object
+          - 'null'
+          properties: {}
+      required:
+      - code
+      - status
+      - message
+      additionalProperties: false
+      description: Error response model
+    OrderByDirection:
+      anyOf:
+      - enum:
+        - asc
+      - enum:
+        - desc
+      - enum:
+        - ASC
+      - enum:
+        - DESC
+    BasicAuthIntegrationConfigs:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+      - username
+      - password
+      additionalProperties: false
     Integration:
       type: object
       properties:
@@ -457,36 +438,21 @@ components:
       - updated_at
       - created_at
       additionalProperties: false
-    AttachedIntegrationToSource:
+    HandledHMACConfigs:
       type: object
       properties:
-        success:
-          type: boolean
-      required:
-      - success
-      additionalProperties: false
-    BasicAuthIntegrationConfigs:
-      type: object
-      properties:
-        username:
-          type: string
-        password:
+        webhook_secret_key:
           type: string
       required:
-      - username
-      - password
+      - webhook_secret_key
       additionalProperties: false
-    IntegrationPaginatedResult:
+    HandledAPIKeyIntegrationConfigs:
       type: object
       properties:
-        pagination:
-          $ref: '#/components/schemas/SeekPagination'
-        count:
-          type: integer
-        models:
-          type: array
-          items:
-            $ref: '#/components/schemas/Integration'
+        api_key:
+          type: string
+      required:
+      - api_key
       additionalProperties: false
     IntegrationProvider:
       type: string
@@ -625,16 +591,91 @@ components:
       - UBER
       - WECHAT
       - CIRCLE
-    OrderByDirection:
-      anyOf:
-      - enum:
-        - asc
-      - enum:
-        - desc
-      - enum:
-        - ASC
-      - enum:
-        - DESC
+    APIKeyIntegrationConfigs:
+      type: object
+      properties:
+        header_key:
+          type: string
+        api_key:
+          type: string
+      required:
+      - header_key
+      - api_key
+      additionalProperties: false
+    DeletedIntegration:
+      type: object
+      properties:
+        id:
+          type: string
+      required:
+      - id
+      additionalProperties: false
+    AttachedIntegrationToSource:
+      type: object
+      properties:
+        success:
+          type: boolean
+      required:
+      - success
+      additionalProperties: false
+    SeekPagination:
+      type: object
+      properties:
+        order_by:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        dir:
+          anyOf:
+          - $ref: '#/components/schemas/OrderByDirection'
+          - type: array
+            items:
+              $ref: '#/components/schemas/OrderByDirection'
+        limit:
+          type: integer
+        prev:
+          type: string
+        next:
+          type: string
+      additionalProperties: false
+    DetachedIntegrationFromSource:
+      type: object
+      properties: {}
+      additionalProperties: false
+    IntegrationPaginatedResult:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/Integration'
+      additionalProperties: false
+    HMACAlgorithms:
+      type: string
+      enum:
+      - md5
+      - sha1
+      - sha256
+      - sha512
+    IntegrationFeature:
+      type: string
+      enum:
+      - VERIFICATION
+      - HANDSHAKE
+    ShopifyIntegrationConfigs:
+      type: object
+      properties:
+        webhook_secret_key:
+          type: string
+      required:
+      - webhook_secret_key
+      additionalProperties: false
     HMACIntegrationConfigs:
       type: object
       properties:
@@ -654,47 +695,6 @@ components:
       - algorithm
       - header_key
       - encoding
-      additionalProperties: false
-    APIErrorResponse:
-      type: object
-      properties:
-        code:
-          type: string
-          description: Error code
-        status:
-          type: number
-          format: float
-          description: Status code
-        message:
-          type: string
-          description: Error description
-        data:
-          type:
-          - object
-          - 'null'
-          properties: {}
-      required:
-      - code
-      - status
-      - message
-      additionalProperties: false
-      description: Error response model
-    IntegrationFeature:
-      type: string
-      enum:
-      - VERIFICATION
-      - HANDSHAKE
-    DetachedIntegrationFromSource:
-      type: object
-      properties: {}
-      additionalProperties: false
-    DeletedIntegration:
-      type: object
-      properties:
-        id:
-          type: string
-      required:
-      - id
       additionalProperties: false
   securitySchemes:
     bearerAuth:

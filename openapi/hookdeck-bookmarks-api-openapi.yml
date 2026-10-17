@@ -414,85 +414,166 @@ paths:
         required: true
 components:
   schemas:
-    SeekPagination:
+    RawBody:
       type: object
       properties:
-        order_by:
+        body:
+          type: string
+      required:
+      - body
+      additionalProperties: false
+    APIErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        status:
+          type: number
+          format: float
+          description: Status code
+        message:
+          type: string
+          description: Error description
+        data:
+          type:
+          - object
+          - 'null'
+          properties: {}
+      required:
+      - code
+      - status
+      - message
+      additionalProperties: false
+      description: Error response model
+    EventArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/Event'
+    ShortEventData:
+      type:
+      - object
+      - 'null'
+      properties:
+        path:
+          type: string
+          description: Request path
+        query:
+          type:
+          - string
+          - 'null'
+          description: Raw query param string
+        parsed_query:
+          anyOf:
+          - type:
+            - string
+            - 'null'
+          - type: object
+            properties: {}
+          description: JSON representation of query params
+        headers:
           anyOf:
           - type: string
-          - type: array
-            items:
-              type: string
-        dir:
+          - type: object
+            properties: {}
+            additionalProperties:
+              type:
+              - string
+              - 'null'
+          description: JSON representation of the headers
+        body:
           anyOf:
-          - $ref: '#/components/schemas/OrderByDirection'
+          - type: string
+          - type: object
+            properties: {}
           - type: array
-            items:
-              $ref: '#/components/schemas/OrderByDirection'
-        limit:
-          type: integer
-        prev:
-          type: string
-        next:
-          type: string
-      additionalProperties: false
-    DeletedBookmarkResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Bookmark ID
+            items: {}
+          description: JSON or string representation of the body
+        is_large_payload:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the payload is considered large payload and not searchable
       required:
-      - id
+      - path
+      - query
+      - parsed_query
+      - headers
+      - body
       additionalProperties: false
-    Bookmark:
-      type: object
+      description: Request data
+    EventStatus:
+      type: string
+      enum:
+      - SCHEDULED
+      - QUEUED
+      - HOLD
+      - SUCCESSFUL
+      - FAILED
+      - CANCELLED
+    EventData:
+      type:
+      - object
+      - 'null'
       properties:
-        id:
+        url:
           type: string
-          description: ID of the bookmark
-        team_id:
+        method:
           type: string
-          description: ID of the project
-        webhook_id:
-          type: string
-          description: ID of the associated connection (webhook)
-        event_data_id:
-          type: string
-          description: ID of the bookmarked event data
-        label:
-          type: string
-          description: Descriptive name of the bookmark
-        alias:
+        path:
           type:
           - string
           - 'null'
-          description: Alternate alias for the bookmark
-        data:
-          $ref: '#/components/schemas/ShortEventData'
-        last_used_at:
+          description: Raw path string
+        query:
           type:
           - string
           - 'null'
-          format: date-time
-          description: Date the bookmark was last manually triggered
-        updated_at:
-          type: string
-          format: date-time
-          description: Date the bookmark was last updated
-        created_at:
-          type: string
-          format: date-time
-          description: Date the bookmark was created
+          description: Raw query param string
+        parsed_query:
+          anyOf:
+          - type:
+            - string
+            - 'null'
+          - type: object
+            properties: {}
+          description: JSON representation of query params
+        headers:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+            additionalProperties:
+              type:
+              - string
+              - 'null'
+          description: JSON representation of the headers
+        appended_headers:
+          type: array
+          items:
+            type: string
+          description: List of headers that were added by Hookdeck
+        body:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+          - type: array
+            items: {}
+          description: JSON or string representation of the body
+        is_large_payload:
+          type: boolean
+          description: Whether the payload is considered large payload and not searchable
       required:
-      - id
-      - team_id
-      - webhook_id
-      - event_data_id
-      - label
-      - updated_at
-      - created_at
+      - url
+      - method
+      - path
+      - query
+      - parsed_query
+      - headers
+      - body
       additionalProperties: false
+      description: Event data if included
     Operators:
       type: object
       properties:
@@ -521,61 +602,28 @@ components:
         all:
           type: boolean
       additionalProperties: false
-    RawBody:
+    SeekPagination:
       type: object
       properties:
-        body:
+        order_by:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        dir:
+          anyOf:
+          - $ref: '#/components/schemas/OrderByDirection'
+          - type: array
+            items:
+              $ref: '#/components/schemas/OrderByDirection'
+        limit:
+          type: integer
+        prev:
           type: string
-      required:
-      - body
+        next:
+          type: string
       additionalProperties: false
-    OrderByDirection:
-      anyOf:
-      - enum:
-        - asc
-      - enum:
-        - desc
-      - enum:
-        - ASC
-      - enum:
-        - DESC
-    AttemptErrorCodes:
-      type: string
-      enum:
-      - BAD_RESPONSE
-      - CANCELLED
-      - TIMEOUT
-      - NOT_FOUND
-      - CANCELLED_PAST_RETENTION
-      - CONNECTION_REFUSED
-      - CONNECTION_RESET
-      - MISSING_URL
-      - CLI
-      - CLI_UNAVAILABLE
-      - SELF_SIGNED_CERT
-      - ERR_TLS_CERT_ALTNAME_INVALID
-      - ERR_SSL_WRONG_VERSION_NUMBER
-      - NETWORK_ERROR
-      - NETWORK_REQUEST_CANCELED
-      - NETWORK_UNREACHABLE
-      - TOO_MANY_REDIRECTS
-      - INVALID_CHARACTER
-      - INVALID_URL
-      - SSL_ERROR_CA_UNKNOWN
-      - DATA_ARCHIVED
-      - SSL_CERT_EXPIRED
-      - BULK_RETRY_CANCELLED
-      - DNS_LOOKUP_FAILED
-      - HOST_UNREACHABLE
-      - INTERNAL_ERROR
-      - PROTOCOL_ERROR
-      - PAYLOAD_MISSING
-      - UNABLE_TO_GET_ISSUER_CERT
-      - SOCKET_CLOSED
-      - OAUTH2_HANDSHAKE_FAILED
-      - Z_DATA_ERROR
-      - UNKNOWN
-      description: Error code of the delivery attempt
     Event:
       type: object
       properties:
@@ -662,149 +710,54 @@ components:
       - updated_at
       - created_at
       additionalProperties: false
-    APIErrorResponse:
+    Bookmark:
       type: object
       properties:
-        code:
+        id:
           type: string
-          description: Error code
-        status:
-          type: number
-          format: float
-          description: Status code
-        message:
+          description: ID of the bookmark
+        team_id:
           type: string
-          description: Error description
+          description: ID of the project
+        webhook_id:
+          type: string
+          description: ID of the associated connection (webhook)
+        event_data_id:
+          type: string
+          description: ID of the bookmarked event data
+        label:
+          type: string
+          description: Descriptive name of the bookmark
+        alias:
+          type:
+          - string
+          - 'null'
+          description: Alternate alias for the bookmark
         data:
-          type:
-          - object
-          - 'null'
-          properties: {}
-      required:
-      - code
-      - status
-      - message
-      additionalProperties: false
-      description: Error response model
-    EventArray:
-      type: array
-      items:
-        $ref: '#/components/schemas/Event'
-    EventData:
-      type:
-      - object
-      - 'null'
-      properties:
-        url:
-          type: string
-        method:
-          type: string
-        path:
+          $ref: '#/components/schemas/ShortEventData'
+        last_used_at:
           type:
           - string
           - 'null'
-          description: Raw path string
-        query:
-          type:
-          - string
-          - 'null'
-          description: Raw query param string
-        parsed_query:
-          anyOf:
-          - type:
-            - string
-            - 'null'
-          - type: object
-            properties: {}
-          description: JSON representation of query params
-        headers:
-          anyOf:
-          - type: string
-          - type: object
-            properties: {}
-            additionalProperties:
-              type:
-              - string
-              - 'null'
-          description: JSON representation of the headers
-        appended_headers:
-          type: array
-          items:
-            type: string
-          description: List of headers that were added by Hookdeck
-        body:
-          anyOf:
-          - type: string
-          - type: object
-            properties: {}
-          - type: array
-            items: {}
-          description: JSON or string representation of the body
-        is_large_payload:
-          type: boolean
-          description: Whether the payload is considered large payload and not searchable
-      required:
-      - url
-      - method
-      - path
-      - query
-      - parsed_query
-      - headers
-      - body
-      additionalProperties: false
-      description: Event data if included
-    ShortEventData:
-      type:
-      - object
-      - 'null'
-      properties:
-        path:
+          format: date-time
+          description: Date the bookmark was last manually triggered
+        updated_at:
           type: string
-          description: Request path
-        query:
-          type:
-          - string
-          - 'null'
-          description: Raw query param string
-        parsed_query:
-          anyOf:
-          - type:
-            - string
-            - 'null'
-          - type: object
-            properties: {}
-          description: JSON representation of query params
-        headers:
-          anyOf:
-          - type: string
-          - type: object
-            properties: {}
-            additionalProperties:
-              type:
-              - string
-              - 'null'
-          description: JSON representation of the headers
-        body:
-          anyOf:
-          - type: string
-          - type: object
-            properties: {}
-          - type: array
-            items: {}
-          description: JSON or string representation of the body
-        is_large_payload:
-          type:
-          - boolean
-          - 'null'
-          description: Whether the payload is considered large payload and not searchable
+          format: date-time
+          description: Date the bookmark was last updated
+        created_at:
+          type: string
+          format: date-time
+          description: Date the bookmark was created
       required:
-      - path
-      - query
-      - parsed_query
-      - headers
-      - body
+      - id
+      - team_id
+      - webhook_id
+      - event_data_id
+      - label
+      - updated_at
+      - created_at
       additionalProperties: false
-      description: Request data
     BookmarkPaginatedResult:
       type: object
       properties:
@@ -817,15 +770,62 @@ components:
           items:
             $ref: '#/components/schemas/Bookmark'
       additionalProperties: false
-    EventStatus:
+    AttemptErrorCodes:
       type: string
       enum:
-      - SCHEDULED
-      - QUEUED
-      - HOLD
-      - SUCCESSFUL
-      - FAILED
+      - BAD_RESPONSE
       - CANCELLED
+      - TIMEOUT
+      - NOT_FOUND
+      - CANCELLED_PAST_RETENTION
+      - CONNECTION_REFUSED
+      - CONNECTION_RESET
+      - MISSING_URL
+      - CLI
+      - CLI_UNAVAILABLE
+      - SELF_SIGNED_CERT
+      - ERR_TLS_CERT_ALTNAME_INVALID
+      - ERR_SSL_WRONG_VERSION_NUMBER
+      - NETWORK_ERROR
+      - NETWORK_REQUEST_CANCELED
+      - NETWORK_UNREACHABLE
+      - TOO_MANY_REDIRECTS
+      - INVALID_CHARACTER
+      - INVALID_URL
+      - SSL_ERROR_CA_UNKNOWN
+      - DATA_ARCHIVED
+      - SSL_CERT_EXPIRED
+      - BULK_RETRY_CANCELLED
+      - DNS_LOOKUP_FAILED
+      - HOST_UNREACHABLE
+      - INTERNAL_ERROR
+      - PROTOCOL_ERROR
+      - PAYLOAD_MISSING
+      - UNABLE_TO_GET_ISSUER_CERT
+      - SOCKET_CLOSED
+      - OAUTH2_HANDSHAKE_FAILED
+      - Z_DATA_ERROR
+      - UNKNOWN
+      description: Error code of the delivery attempt
+    OrderByDirection:
+      anyOf:
+      - enum:
+        - asc
+      - enum:
+        - desc
+      - enum:
+        - ASC
+      - enum:
+        - DESC
+    DeletedBookmarkResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Bookmark ID
+      required:
+      - id
+      additionalProperties: false
   securitySchemes:
     bearerAuth:
       type: http
