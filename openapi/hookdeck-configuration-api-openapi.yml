@@ -1,0 +1,342 @@
+openapi: 3.2.0
+info:
+  title: Outpost Configuration API
+  version: 0.0.1
+  description: 'The Outpost API is a REST-based JSON API for managing tenants, destinations, and publishing events.
+
+
+    Outpost runs in two deployment models: **managed** (hosted by Hookdeck) and **self-hosted**. They differ in where the API is served and in which API key authenticates server-side calls. On managed Outpost, use a Hookdeck project API key from your Outpost project. On self-hosted Outpost, use the key set in the `API_KEY` environment variable. A few endpoints exist in one model only and say so in their description.'
+  contact:
+    name: Outpost Support
+    email: support@hookdeck.com
+    url: https://hookdeck.com/docs/outpost
+servers:
+- url: https://api.outpost.hookdeck.com/2025-07-01
+  description: Managed Outpost, hosted by Hookdeck at `api.outpost.hookdeck.com`. The Hookdeck Event Gateway API at `api.hookdeck.com` is a separate API.
+- url: http://localhost:3333/api/v1
+  description: Self-hosted Outpost, at its default local address. A deployed instance serves the same paths under its own host.
+security:
+- AdminApiKey: []
+- TenantJwt: []
+tags:
+- name: Configuration
+  x-outpost-deployment: managed
+  description: The Configuration API is only available on managed Outpost. It allows you to read and update instance-level settings, the same settings available as environment variables in self-hosted deployments.
+paths:
+  /config:
+    get:
+      tags:
+      - Configuration
+      summary: Get Managed Configuration
+      description: 'Returns managed Outpost configuration values.
+
+
+        This endpoint is only available on managed Outpost.
+
+        In self-hosted deployments, configuration is controlled through environment variables instead.'
+      operationId: getManagedConfig
+      x-outpost-deployment: managed
+      responses:
+        '200':
+          description: Managed configuration.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ManagedConfig'
+              example:
+                TOPICS: user.created,user.updated
+                TOPICS_ALLOW_WILDCARDS: 'false'
+                DESTINATIONS_WEBHOOK_MODE: default
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    patch:
+      tags:
+      - Configuration
+      summary: Update Managed Configuration
+      description: 'Updates one or more managed Outpost configuration values. Null values clear the configuration and reverts to Outpost default behavior.
+
+
+        This endpoint is only available on managed Outpost.
+
+        In self-hosted deployments, configuration is controlled through environment variables instead.
+
+
+        Only the supported configuration keys are accepted.'
+      operationId: updateManagedConfig
+      x-outpost-deployment: managed
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ManagedConfig'
+            example:
+              TOPICS: user.created,user.updated
+              TOPICS_ALLOW_WILDCARDS: 'false'
+              DESTINATIONS_WEBHOOK_MODE: default
+      responses:
+        '200':
+          description: Updated managed configuration.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ManagedConfig'
+              example:
+                TOPICS: user.created,user.updated
+                TOPICS_ALLOW_WILDCARDS: 'false'
+                DESTINATIONS_WEBHOOK_MODE: default
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  schemas:
+    APIErrorResponse:
+      type: object
+      description: Standard error response format.
+      properties:
+        status:
+          type: integer
+          description: HTTP status code.
+          example: 422
+        message:
+          type: string
+          description: Human-readable error message.
+          example: validation error
+        data:
+          description: Additional error details. For validation errors, this is an array of human-readable messages.
+          oneOf:
+          - type: array
+            items:
+              type: string
+            description: Array of validation error messages.
+            example:
+            - email is required
+            - password must be at least 6 characters
+          - type: object
+            additionalProperties: true
+            description: Additional contextual data about the error.
+    ManagedConfig:
+      type: object
+      description: 'Configuration values for managed Outpost.
+
+        This API is only available on managed Outpost.
+
+        Self-hosted deployments configure these values using environment variables.
+
+        '
+      properties:
+        ALERT_AUTO_DISABLE_DESTINATION:
+          type: string
+          description: If "true", automatically disables a destination once ALERT_CONSECUTIVE_FAILURE_COUNT is reached. Has no effect when consecutive-failure alerting is disabled.
+        ALERT_CONSECUTIVE_FAILURE_COUNT:
+          type: string
+          description: Consecutive delivery failures before alerting on a destination (and disabling it when ALERT_AUTO_DISABLE_DESTINATION is "true"). Omit for the default of 100; set to an empty string to disable consecutive-failure alerting entirely.
+        ALERT_EXHAUSTED_RETRIES_WINDOW_SECONDS:
+          type: string
+          description: 'Suppression window in seconds for exhausted_retries alerts: the first exhaustion per destination alerts and subsequent ones within the window are suppressed ("0" = no suppression). Omit for the default of 3600; set to an empty string to disable exhausted_retries alerting entirely.'
+        DELIVERY_TIMEOUT_SECONDS:
+          type: string
+        DESTINATIONS_AWS_KINESIS_METADATA_IN_PAYLOAD:
+          type: string
+        DESTINATIONS_INCLUDE_MILLISECOND_TIMESTAMP:
+          type: string
+        DESTINATIONS_PROXY_URL:
+          type: string
+          description: HTTP forward proxy for webhook, RabbitMQ and Kafka destinations, as a single http(s) URL (e.g., "http://user:pass@proxy.example.com:8080"). RabbitMQ and Kafka connections are tunneled with CONNECT, so the proxy must allow CONNECT to the broker ports. Set to an empty string to remove the proxy.
+        DESTINATIONS_WEBHOOK_COMPAT_HEADERS:
+          type: string
+          description: 'Additional headers sent with the compat signature, as comma-separated "name=template" pairs. Available variables: {{.EventID}}, {{.Topic}}, {{.Timestamp}}. Use "\," for a literal comma in a template.'
+        DESTINATIONS_WEBHOOK_COMPAT_SIGNATURE_ALGORITHM:
+          type: string
+          description: Algorithm for the compat signature. Defaults to "hmac-sha256".
+        DESTINATIONS_WEBHOOK_COMPAT_SIGNATURE_CONTENT_TEMPLATE:
+          type: string
+          description: Go template for the content signed by the compat signature. Same variables as DESTINATIONS_WEBHOOK_SIGNATURE_CONTENT_TEMPLATE. Defaults to "{{.Body}}".
+        DESTINATIONS_WEBHOOK_COMPAT_SIGNATURE_ENCODING:
+          type: string
+          description: Encoding for the compat signature ("hex" or "base64"). Defaults to "hex".
+        DESTINATIONS_WEBHOOK_COMPAT_SIGNATURE_HEADER_NAME:
+          type: string
+          description: Complete name of the compat signature header. Setting it sends a second signature, in a previous scheme, alongside the primary one.
+        DESTINATIONS_WEBHOOK_COMPAT_SIGNATURE_HEADER_TEMPLATE:
+          type: string
+          description: Go template for the value of the compat signature header. Same variables as DESTINATIONS_WEBHOOK_SIGNATURE_HEADER_TEMPLATE. Defaults to "v0={{.Signatures | join ","}}".
+        DESTINATIONS_WEBHOOK_COMPAT_SIGNATURE_SECRET_ENCODING:
+          type: string
+          description: 'How the compat signature derives its HMAC key from the destination secret: "raw", "base64" or "hex". Defaults to "raw". A destination whose secret can''t be decoded doesn''t receive the compat signature.'
+        DESTINATIONS_WEBHOOK_COMPAT_SIGNATURE_SECRET_PREFIX:
+          type: string
+          description: Prefix stripped from the destination secret before decoding for the compat signature (e.g., "whsec_").
+        DESTINATIONS_WEBHOOK_EVENT_ID_HEADER_NAME:
+          type: string
+          description: Complete name of the event ID header. Unset uses the default "<prefix>event-id"; an explicit value pins that exact name; an empty string disables the header. Only applies to "default" mode.
+        DESTINATIONS_WEBHOOK_HEADER_PREFIX:
+          type: string
+        DESTINATIONS_WEBHOOK_MODE:
+          type: string
+        DESTINATIONS_WEBHOOK_PROXY_URL:
+          type: string
+          deprecated: true
+          description: 'Deprecated alias of DESTINATIONS_PROXY_URL: reads return the same value and writes set DESTINATIONS_PROXY_URL. A request that changes both keys to different values is rejected.'
+        DESTINATIONS_WEBHOOK_SIGNATURE_ALGORITHM:
+          type: string
+        DESTINATIONS_WEBHOOK_SIGNATURE_CONTENT_TEMPLATE:
+          type: string
+        DESTINATIONS_WEBHOOK_SIGNATURE_ENCODING:
+          type: string
+        DESTINATIONS_WEBHOOK_SIGNATURE_HEADER_NAME:
+          type: string
+          description: Complete name of the signature header. Unset uses the default "<prefix>signature"; an explicit value pins that exact name; an empty string disables the header. Only applies to "default" mode.
+        DESTINATIONS_WEBHOOK_SIGNATURE_HEADER_TEMPLATE:
+          type: string
+        DESTINATIONS_WEBHOOK_SIGNATURE_SECRET_ENCODING:
+          type: string
+          description: 'How the signature derives its HMAC key from the destination secret: "raw" uses the secret as-is, "base64" and "hex" decode it. Defaults to "raw". DESTINATIONS_WEBHOOK_SIGNING_SECRET_TEMPLATE must generate secrets this encoding can decode. Only applies to "default" mode.'
+        DESTINATIONS_WEBHOOK_SIGNATURE_SECRET_PREFIX:
+          type: string
+          description: Prefix stripped from the destination secret before decoding (e.g., "whsec_"). Ignored when DESTINATIONS_WEBHOOK_SIGNATURE_SECRET_ENCODING is "raw". Only applies to "default" mode.
+        DESTINATIONS_WEBHOOK_SIGNING_SECRET_TEMPLATE:
+          type: string
+        DESTINATIONS_WEBHOOK_TIMESTAMP_FORMAT:
+          type: string
+          description: 'Format of the timestamp header: "rfc3339", "unix" (seconds since the epoch) or "iso8601_milli_no_offset" (UTC with milliseconds and no offset, e.g. "2026-10-05T15:02:25.447"). Defaults to "rfc3339". Only applies to "default" mode.'
+        DESTINATIONS_WEBHOOK_TIMESTAMP_HEADER_NAME:
+          type: string
+          description: Complete name of the timestamp header. Unset uses the default "<prefix>timestamp"; an explicit value pins that exact name; an empty string disables the header. Only applies to "default" mode.
+        DESTINATIONS_WEBHOOK_TOPIC_HEADER_NAME:
+          type: string
+          description: Complete name of the topic header. Unset uses the default "<prefix>topic"; an explicit value pins that exact name; an empty string disables the header. Only applies to "default" mode.
+        HTTP_USER_AGENT:
+          type: string
+        IDGEN_ATTEMPT_PREFIX:
+          type: string
+        IDGEN_DESTINATION_PREFIX:
+          type: string
+        IDGEN_EVENT_PREFIX:
+          type: string
+        IDGEN_TYPE:
+          type: string
+        MAX_DESTINATIONS_PER_TENANT:
+          type: string
+        PORTAL_BRAND_COLOR:
+          type: string
+        PORTAL_DISABLE_OUTPOST_BRANDING:
+          type: string
+        PORTAL_FAVICON_URL:
+          type: string
+        PORTAL_FORCE_THEME:
+          type: string
+        PORTAL_LOGO:
+          type: string
+        PORTAL_LOGO_DARK:
+          type: string
+        PORTAL_ORGANIZATION_NAME:
+          type: string
+        PORTAL_REFERER_URL:
+          type: string
+        PORTAL_REFRESH_URL:
+          type: string
+        PORTAL_ENABLE_DESTINATION_FILTER:
+          type: string
+        PORTAL_ENABLE_WEBHOOK_CUSTOM_HEADERS:
+          type: string
+        RETRY_INTERVAL_SECONDS:
+          type: string
+        MAX_RETRY_LIMIT:
+          type: string
+        RETRY_SCHEDULE:
+          type: string
+        OTEL_EXPORTER_OTLP_ENDPOINT:
+          type: string
+        OTEL_EXPORTER_OTLP_HEADERS:
+          type: string
+        OTEL_EXPORTER_OTLP_PROTOCOL:
+          type: string
+        OTEL_EXPORTER_OTLP_TRACES_ENDPOINT:
+          type: string
+        OTEL_EXPORTER_OTLP_METRICS_ENDPOINT:
+          type: string
+        OTEL_EXPORTER_OTLP_LOGS_ENDPOINT:
+          type: string
+        OTEL_SERVICE_NAME:
+          type: string
+        PUBLISH_AWS_SQS_ACCESS_KEY_ID:
+          type: string
+        PUBLISH_AWS_SQS_ENDPOINT:
+          type: string
+        PUBLISH_AWS_SQS_QUEUE:
+          type: string
+        PUBLISH_AWS_SQS_REGION:
+          type: string
+        PUBLISH_AWS_SQS_SECRET_ACCESS_KEY:
+          type: string
+        PUBLISH_AZURE_SERVICEBUS_CONNECTION_STRING:
+          type: string
+        PUBLISH_AZURE_SERVICEBUS_SUBSCRIPTION:
+          type: string
+        PUBLISH_AZURE_SERVICEBUS_TOPIC:
+          type: string
+        PUBLISH_GCP_PUBSUB_PROJECT:
+          type: string
+        PUBLISH_GCP_PUBSUB_SERVICE_ACCOUNT_CREDENTIALS:
+          type: string
+        PUBLISH_GCP_PUBSUB_SUBSCRIPTION:
+          type: string
+        PUBLISH_GCP_PUBSUB_TOPIC:
+          type: string
+        PUBLISH_RABBITMQ_EXCHANGE:
+          type: string
+        PUBLISH_RABBITMQ_QUEUE:
+          type: string
+        PUBLISH_RABBITMQ_SERVER_URL:
+          type: string
+        TOPICS:
+          type: string
+        TOPICS_ALLOW_WILDCARDS:
+          type: string
+      additionalProperties: false
+      example:
+        TOPICS: user.created,user.updated
+        DESTINATIONS_WEBHOOK_MODE: default
+  responses:
+    InternalServerError:
+      description: Unexpected server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+    BadRequest:
+      description: Malformed JSON or invalid request parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+    ValidationError:
+      description: Request body fails validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+    Unauthorized:
+      description: Missing or invalid authentication credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+  securitySchemes:
+    AdminApiKey:
+      type: http
+      scheme: bearer
+      description: "Bearer token for server-side calls. Where it comes from depends on the\ndeployment:\n\n- **Managed:** a Hookdeck **project API key belonging to your\n  Outpost project** (Hookdeck Dashboard → your Outpost project →\n  Settings → Secrets). A key from a different Hookdeck project\n  authenticates but returns `404` on most Outpost routes.\n- **Self-hosted:** the admin API key set in the `API_KEY` environment\n  variable.\n\nThe scheme is named for the self-hosted credential. Managed Outpost has\nno separate admin key to create. The project API key takes its place.\n"
+    TenantJwt:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "Per-tenant JWT token valid for 24 hours.\n\n**JWT Structure:**\nThe token is a standard JWT signed with HS256 algorithm containing the following claims:\n- `iss` (issuer): Always \"outpost\"\n- `sub` (subject): The tenant_id this token is scoped to\n- `iat` (issued at): Unix timestamp when the token was created\n- `exp` (expiration): Unix timestamp when the token expires (24 hours after issuance)\n\n**Example decoded payload:**\n```json\n{\n  \"iss\": \"outpost\",\n  \"sub\": \"tenant_123\",\n  \"iat\": 1704067200,\n  \"exp\": 1704153600\n}\n```\n"

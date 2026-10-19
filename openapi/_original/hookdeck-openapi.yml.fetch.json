@@ -1,0 +1,12 @@
+{
+ "url": "https://raw.githubusercontent.com/hookdeck/outpost/main/docs/apis/openapi.yaml",
+ "final": "https://raw.githubusercontent.com/hookdeck/outpost/main/docs/apis/openapi.yaml",
+ "status": 200,
+ "content_type": "text/plain; charset=utf-8",
+ "bytes": 270263,
+ "sha256": "00b758646b3bb14fb0faed014212570cd7c15904356da428befa46eb0f3d3463",
+ "fetched_at": "2026-10-19",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "re-archived: the provider's current document replaced a stale archive (roadmap#793); the old files are in openapi/_superseded/2026-10-19-stale"
+}

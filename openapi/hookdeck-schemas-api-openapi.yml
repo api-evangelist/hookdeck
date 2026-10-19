@@ -1,0 +1,378 @@
+openapi: 3.2.0
+info:
+  title: Outpost Schemas API
+  version: 0.0.1
+  description: 'The Outpost API is a REST-based JSON API for managing tenants, destinations, and publishing events.
+
+
+    Outpost runs in two deployment models: **managed** (hosted by Hookdeck) and **self-hosted**. They differ in where the API is served and in which API key authenticates server-side calls. On managed Outpost, use a Hookdeck project API key from your Outpost project. On self-hosted Outpost, use the key set in the `API_KEY` environment variable. A few endpoints exist in one model only and say so in their description.'
+  contact:
+    name: Outpost Support
+    email: support@hookdeck.com
+    url: https://hookdeck.com/docs/outpost
+servers:
+- url: https://api.outpost.hookdeck.com/2025-07-01
+  description: Managed Outpost, hosted by Hookdeck at `api.outpost.hookdeck.com`. The Hookdeck Event Gateway API at `api.hookdeck.com` is a separate API.
+- url: http://localhost:3333/api/v1
+  description: Self-hosted Outpost, at its default local address. A deployed instance serves the same paths under its own host.
+security:
+- AdminApiKey: []
+- TenantJwt: []
+tags:
+- name: Schemas
+  description: Destination types describe the available event delivery targets and their configuration schemas. Use these endpoints to render UI forms and list available destination types with their configuration schemas.
+paths:
+  /destination-types:
+    get:
+      tags:
+      - Schemas
+      summary: List Destination Type Schemas
+      description: Returns a list of JSON-based input schemas for each available destination type.
+      operationId: listDestinationTypeSchemas
+      responses:
+        '200':
+          description: A list of destination type schemas.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DestinationTypeSchema'
+              examples:
+                DestinationTypesExample:
+                  value:
+                  - type: webhook
+                    label: Webhook
+                    description: Send event via an HTTP POST request to a URL
+                    icon: <svg />
+                    instructions: Enter the URL...
+                    config_fields:
+                    - key: url
+                      type: text
+                      label: URL
+                      description: The URL to send the webhook to.
+                      pattern: ^https?://.*
+                      required: true
+                    credential_fields:
+                    - key: secret
+                      type: text
+                      label: Secret
+                      description: Optional signing secret.
+                      required: false
+                      sensitive: true
+                  - type: kafka
+                    label: Apache Kafka
+                    description: Send events to Apache Kafka topics for real-time event streaming
+                    icon: <svg />
+                    config_fields:
+                    - key: brokers
+                      type: text
+                      label: Brokers
+                      description: Comma-separated list of Kafka broker addresses.
+                      required: true
+                    - key: topic
+                      type: text
+                      label: Topic
+                      description: The Kafka topic to publish messages to.
+                      required: true
+                    - key: tls
+                      type: checkbox
+                      label: TLS
+                      description: Enable TLS for the connection.
+                      default: 'true'
+                    - key: partition_key_template
+                      type: text
+                      label: Partition Key Template
+                      description: JMESPath template to extract the partition key from the event payload.
+                      required: false
+                    - key: sasl_mechanism
+                      type: select
+                      label: SASL Mechanism
+                      description: SASL authentication mechanism.
+                      required: true
+                      options:
+                      - label: PLAIN
+                        value: plain
+                      - label: SCRAM-SHA-256
+                        value: scram-sha-256
+                      - label: SCRAM-SHA-512
+                        value: scram-sha-512
+                    credential_fields:
+                    - key: username
+                      type: text
+                      label: Username
+                      description: SASL username for authentication.
+                      required: true
+                    - key: password
+                      type: text
+                      label: Password
+                      description: SASL password for authentication.
+                      required: true
+                      sensitive: true
+                  - type: aws_sqs
+                    label: AWS SQS
+                    description: Send event to an AWS SQS queue
+                    icon: <svg />
+                    instructions: Enter Queue URL...
+                    config_fields:
+                    - key: queue_url
+                      type: text
+                      label: Queue URL
+                      description: The URL of the SQS queue.
+                      required: true
+                    - key: endpoint
+                      type: text
+                      label: Endpoint
+                      description: Optional custom AWS endpoint URL.
+                      required: false
+                    credential_fields:
+                    - key: key
+                      type: text
+                      label: Key
+                      description: AWS Access Key ID.
+                      required: true
+                      sensitive: true
+                    - key: secret
+                      type: text
+                      label: Secret
+                      description: AWS Secret Access Key.
+                      required: true
+                      sensitive: true
+                    - key: session
+                      type: text
+                      label: Session
+                      description: Optional AWS Session Token.
+                      required: false
+                      sensitive: true
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /destination-types/{type}:
+    parameters:
+    - name: type
+      in: path
+      required: true
+      schema:
+        type: string
+        enum:
+        - webhook
+        - aws_sqs
+        - rabbitmq
+        - hookdeck
+        - aws_kinesis
+        - azure_servicebus
+        - aws_s3
+        - gcp_pubsub
+        - kafka
+        - cloudflare_queues
+        - aws_eventbridge
+      description: The type of the destination.
+    get:
+      tags:
+      - Schemas
+      summary: Get Destination Type Schema
+      description: Returns the input schema for a specific destination type.
+      operationId: getDestinationTypeSchema
+      responses:
+        '200':
+          description: The schema for the specified destination type.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DestinationTypeSchema'
+              examples:
+                WebhookSchemaExample:
+                  value:
+                    type: webhook
+                    label: Webhook
+                    description: Send event via an HTTP POST request to a URL
+                    icon: <svg />
+                    instructions: Enter the URL...
+                    config_fields:
+                    - key: url
+                      type: text
+                      label: URL
+                      description: The URL to send the webhook to.
+                      pattern: ^https?://.*
+                      required: true
+                    credential_fields:
+                    - key: secret
+                      type: text
+                      label: Secret
+                      description: Optional signing secret.
+                      required: false
+                      sensitive: true
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  schemas:
+    DestinationTypeSchema:
+      type: object
+      properties:
+        type:
+          type: string
+          example: webhook
+        label:
+          type: string
+          example: Webhook
+        description:
+          type: string
+          example: Send event via an HTTP POST request to a URL
+        icon:
+          type: string
+          description: SVG icon string.
+          example: <svg />
+        instructions:
+          type: string
+          description: Markdown instructions.
+          example: Some *markdown*
+        setup_link:
+          type: object
+          description: 'Some destinations may have an OAuth flow or other managed-setup flow that can be triggered with a link. If a `setup_link` is set then the user should be prompted to follow the link to configure the destination.
+
+            See the [building your own UI guide](https://outpost.hookdeck.com/guides/building-your-own-ui.mdx) for recommended UI patterns and wireframes for implementation in your own app.'
+          properties:
+            href:
+              type: string
+              format: url
+              description: The URL to direct the user to for setup.
+              example: https://dashboard.hookdeck.com/connect
+            cta:
+              type: string
+              description: The call-to-action button text to display to the user.
+              example: Generate Hookdeck Token
+          required:
+          - href
+          - cta
+        config_fields:
+          type: array
+          description: Config fields are non-secret values that can be stored and displayed to the user in plain text.
+          items:
+            $ref: '#/components/schemas/DestinationSchemaField'
+        credential_fields:
+          type: array
+          description: Credential fields are secret values that will be AES encrypted and obfuscated to the user. Some credentials may not be obfuscated; the destination type dictates the obfuscation logic.
+          items:
+            $ref: '#/components/schemas/DestinationSchemaField'
+    APIErrorResponse:
+      type: object
+      description: Standard error response format.
+      properties:
+        status:
+          type: integer
+          description: HTTP status code.
+          example: 422
+        message:
+          type: string
+          description: Human-readable error message.
+          example: validation error
+        data:
+          description: Additional error details. For validation errors, this is an array of human-readable messages.
+          oneOf:
+          - type: array
+            items:
+              type: string
+            description: Array of validation error messages.
+            example:
+            - email is required
+            - password must be at least 6 characters
+          - type: object
+            additionalProperties: true
+            description: Additional contextual data about the error.
+    DestinationSchemaField:
+      type: object
+      required:
+      - type
+      - required
+      - key
+      properties:
+        key:
+          type: string
+          description: Property name for this value inside the destination `config` or `credentials` object on create/update (for example `url` for a webhook endpoint URL). This is the key used to store and retrieve the field value in the destination's config or credentials object.
+          example: url
+        type:
+          type: string
+          enum:
+          - text
+          - checkbox
+          - key_value_map
+          - select
+          example: text
+        label:
+          type: string
+          example: URL
+        description:
+          type: string
+          example: The URL to send the event to
+        required:
+          type: boolean
+          example: true
+        sensitive:
+          type: boolean
+          description: Indicates if the field contains sensitive information.
+          example: false
+        default:
+          type: string
+          description: Default value for the field.
+          example: default_value
+        minlength:
+          type: integer
+          description: Minimum length for a text input.
+          example: 0
+        maxlength:
+          type: integer
+          description: Maximum length for a text input.
+          example: 255
+        pattern:
+          type: string
+          description: Regex pattern for validation (compatible with HTML5 pattern attribute).
+          example: ^[a-zA-Z0-9_]+$
+        options:
+          type: array
+          description: Available options for select fields.
+          items:
+            type: object
+            required:
+            - label
+            - value
+            properties:
+              label:
+                type: string
+                example: PLAIN
+              value:
+                type: string
+                example: plain
+  responses:
+    InternalServerError:
+      description: Unexpected server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+    NotFound:
+      description: Requested resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+    Unauthorized:
+      description: Missing or invalid authentication credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+  securitySchemes:
+    AdminApiKey:
+      type: http
+      scheme: bearer
+      description: "Bearer token for server-side calls. Where it comes from depends on the\ndeployment:\n\n- **Managed:** a Hookdeck **project API key belonging to your\n  Outpost project** (Hookdeck Dashboard → your Outpost project →\n  Settings → Secrets). A key from a different Hookdeck project\n  authenticates but returns `404` on most Outpost routes.\n- **Self-hosted:** the admin API key set in the `API_KEY` environment\n  variable.\n\nThe scheme is named for the self-hosted credential. Managed Outpost has\nno separate admin key to create. The project API key takes its place.\n"
+    TenantJwt:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "Per-tenant JWT token valid for 24 hours.\n\n**JWT Structure:**\nThe token is a standard JWT signed with HS256 algorithm containing the following claims:\n- `iss` (issuer): Always \"outpost\"\n- `sub` (subject): The tenant_id this token is scoped to\n- `iat` (issued at): Unix timestamp when the token was created\n- `exp` (expiration): Unix timestamp when the token expires (24 hours after issuance)\n\n**Example decoded payload:**\n```json\n{\n  \"iss\": \"outpost\",\n  \"sub\": \"tenant_123\",\n  \"iat\": 1704067200,\n  \"exp\": 1704153600\n}\n```\n"

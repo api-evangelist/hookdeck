@@ -421,142 +421,28 @@ components:
           $ref: '#/components/schemas/IssueTriggerEmailChannel'
       additionalProperties: false
       description: Notification channels object for the specific channel type
-    APIErrorResponse:
+    SeekPagination:
       type: object
       properties:
-        code:
-          type: string
-          description: Error code
-        status:
-          type: number
-          format: float
-          description: Status code
-        message:
-          type: string
-          description: Error description
-        data:
-          type:
-          - object
-          - 'null'
-          properties: {}
-      required:
-      - code
-      - status
-      - message
-      additionalProperties: false
-      description: Error response model
-    IssueTriggerIntegrationChannel:
-      type: object
-      properties: {}
-      additionalProperties: false
-      description: Integration channel for an issue trigger
-      x-docs-type: object
-    IssueTriggerReference:
-      anyOf:
-      - $ref: '#/components/schemas/IssueTriggerDeliveryConfigs'
-      - $ref: '#/components/schemas/IssueTriggerTransformationConfigs'
-      - $ref: '#/components/schemas/IssueTriggerBackpressureConfigs'
-      - $ref: '#/components/schemas/IssueTriggerRequestConfigs'
-      description: Configuration object for the specific issue type selected
-    IssueTriggerTransformationConfigs:
-      type: object
-      properties:
-        log_level:
-          $ref: '#/components/schemas/TransformationExecutionLogLevel'
-        transformations:
+        order_by:
           anyOf:
           - type: string
           - type: array
             items:
               type: string
-          description: A pattern to match on the transformation name or array of transformation IDs. Use `*` as wildcard.
-          x-docs-force-simple-type: true
-      required:
-      - log_level
-      - transformations
-      additionalProperties: false
-      description: Configurations for a 'Transformation' issue trigger
-    TransformationExecutionLogLevel:
-      type: string
-      enum:
-      - debug
-      - info
-      - warn
-      - error
-      - fatal
-      description: The minimum log level to open the issue on
-    Operators:
-      type: object
-      properties:
-        gt:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        gte:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        le:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        lte:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        any:
-          type: boolean
-        all:
-          type: boolean
-      additionalProperties: false
-    IssueTriggerBackpressureDelay:
-      type: integer
-      minimum: 60000
-      maximum: 86400000
-      description: The minimum delay (backpressure) to open the issue for min of 1 minute (60000) and max of 1 day (86400000)
-      x-docs-type: integer
-    IssueTriggerEmailChannel:
-      type: object
-      properties: {}
-      additionalProperties: false
-      description: Email channel for an issue trigger
-      x-docs-type: object
-    IssueTriggerRequestConfigs:
-      type: object
-      properties:
-        rejection_causes:
+        dir:
           anyOf:
-          - type: string
-            enum:
-            - '*'
+          - $ref: '#/components/schemas/OrderByDirection'
           - type: array
             items:
-              $ref: '#/components/schemas/RequestRejectionCause'
-          description: An array of rejection causes to match on, or '*' to match all rejection causes.
-          x-docs-force-simple-type: true
-        excluded_rejection_causes:
-          type: array
-          items:
-            $ref: '#/components/schemas/RequestRejectionCause'
-          description: Optional array of rejection causes to exclude. When specified, rejection_causes must be '*'. This allows matching all causes EXCEPT the specified ones.
-          x-docs-force-simple-type: true
-        sources:
-          anyOf:
-          - type: string
-          - type: array
-            items:
-              type: string
-          description: A pattern to match on the source name or array of source IDs. Use `*` as wildcard.
-          x-docs-force-simple-type: true
-      required:
-      - rejection_causes
-      - sources
+              $ref: '#/components/schemas/OrderByDirection'
+        limit:
+          type: integer
+        prev:
+          type: string
+        next:
+          type: string
       additionalProperties: false
-      description: Configurations for a 'Request' issue trigger
     IssueTrigger:
       type: object
       properties:
@@ -606,70 +492,21 @@ components:
       - updated_at
       - created_at
       additionalProperties: false
-    IssueTriggerDiscordChannel:
+    IssueTriggerBackpressureDelay:
+      type: integer
+      minimum: 60000
+      maximum: 86400000
+      description: The minimum delay (backpressure) to open the issue for min of 1 minute (60000) and max of 1 day (86400000)
+      x-docs-type: integer
+    IssueTriggerSlackChannel:
       type: object
       properties:
         channel_name:
           type: string
-        channel_id:
-          type: string
-        webhook_url:
-          type: string
       required:
       - channel_name
-      - channel_id
       additionalProperties: false
-      description: Channel for a 'Discord' issue trigger
-    IssueTriggerPaginatedResult:
-      type: object
-      properties:
-        pagination:
-          $ref: '#/components/schemas/SeekPagination'
-        count:
-          type: integer
-        models:
-          type: array
-          items:
-            $ref: '#/components/schemas/IssueTrigger'
-      additionalProperties: false
-    IssueTriggerBackpressureConfigs:
-      type: object
-      properties:
-        delay:
-          $ref: '#/components/schemas/IssueTriggerBackpressureDelay'
-        destinations:
-          anyOf:
-          - type: string
-          - type: array
-            items:
-              type: string
-          description: A pattern to match on the destination name or array of destination IDs. Use `*` as wildcard.
-          x-docs-force-simple-type: true
-      required:
-      - delay
-      - destinations
-      additionalProperties: false
-      description: Configurations for a 'Backpressure' issue trigger
-    IssueTriggerBetterUptimeChannel:
-      type: object
-      properties:
-        escalation_policy_id:
-          type: string
-        escalation_policy_name:
-          type: string
-      required:
-      - escalation_policy_id
-      - escalation_policy_name
-      additionalProperties: false
-      description: Channel for a 'Better Uptime' issue trigger
-    DeletedIssueTriggerResponse:
-      type: object
-      properties:
-        id:
-          type: string
-      required:
-      - id
-      additionalProperties: false
+      description: Channel for a 'Slack' issue trigger
     IssueTriggerDeliveryConfigs:
       type: object
       properties:
@@ -688,15 +525,54 @@ components:
       - connections
       additionalProperties: false
       description: Configurations for a 'delivery' issue trigger
-    IssueTriggerMicrosoftTeamsChannel:
+    IssueTriggerEmailChannel:
+      type: object
+      properties: {}
+      additionalProperties: false
+      description: Email channel for an issue trigger
+      x-docs-type: object
+    DeletedIssueTriggerResponse:
+      type: object
+      properties:
+        id:
+          type: string
+      required:
+      - id
+      additionalProperties: false
+    IssueType:
+      type: string
+      enum:
+      - delivery
+      - transformation
+      - backpressure
+      - request
+      description: Issue type
+    IssueTriggerPaginatedResult:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/IssueTrigger'
+      additionalProperties: false
+    IssueTriggerDiscordChannel:
       type: object
       properties:
         channel_name:
           type: string
+        channel_id:
+          type: string
+        webhook_url:
+          type: string
       required:
       - channel_name
+      - channel_id
       additionalProperties: false
-      description: Channel for a 'Microsoft Teams' issue trigger
+      description: Channel for a 'Discord' issue trigger
     RequestRejectionCause:
       type: string
       enum:
@@ -710,51 +586,80 @@ components:
       - INGESTION_FATAL
       - UNKNOWN
       x-docs-type: string
-    SeekPagination:
+    IssueTriggerReference:
+      anyOf:
+      - $ref: '#/components/schemas/IssueTriggerDeliveryConfigs'
+      - $ref: '#/components/schemas/IssueTriggerTransformationConfigs'
+      - $ref: '#/components/schemas/IssueTriggerBackpressureConfigs'
+      - $ref: '#/components/schemas/IssueTriggerRequestConfigs'
+      description: Configuration object for the specific issue type selected
+    IssueTriggerBackpressureConfigs:
       type: object
       properties:
-        order_by:
+        delay:
+          $ref: '#/components/schemas/IssueTriggerBackpressureDelay'
+        destinations:
           anyOf:
           - type: string
           - type: array
             items:
               type: string
-        dir:
-          anyOf:
-          - $ref: '#/components/schemas/OrderByDirection'
-          - type: array
-            items:
-              $ref: '#/components/schemas/OrderByDirection'
-        limit:
-          type: integer
-        prev:
-          type: string
-        next:
-          type: string
+          description: A pattern to match on the destination name or array of destination IDs. Use `*` as wildcard.
+          x-docs-force-simple-type: true
+      required:
+      - delay
+      - destinations
       additionalProperties: false
-    IssueType:
-      type: string
-      enum:
-      - delivery
-      - transformation
-      - backpressure
-      - request
-      description: Issue type
-    IssueTriggerSlackChannel:
+      description: Configurations for a 'Backpressure' issue trigger
+    Operators:
       type: object
       properties:
-        channel_name:
-          type: string
-      required:
-      - channel_name
+        gt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        gte:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        le:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        lte:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        any:
+          type: boolean
+        all:
+          type: boolean
       additionalProperties: false
-      description: Channel for a 'Slack' issue trigger
-    IssueTriggerStrategy:
+    TransformationExecutionLogLevel:
       type: string
       enum:
-      - first_attempt
-      - final_attempt
-      description: The strategy uses to open the issue
+      - debug
+      - info
+      - warn
+      - error
+      - fatal
+      description: The minimum log level to open the issue on
+    IssueTriggerBetterUptimeChannel:
+      type: object
+      properties:
+        escalation_policy_id:
+          type: string
+        escalation_policy_name:
+          type: string
+      required:
+      - escalation_policy_id
+      - escalation_policy_name
+      additionalProperties: false
+      description: Channel for a 'Better Uptime' issue trigger
     OrderByDirection:
       anyOf:
       - enum:
@@ -765,6 +670,101 @@ components:
         - ASC
       - enum:
         - DESC
+    IssueTriggerTransformationConfigs:
+      type: object
+      properties:
+        log_level:
+          $ref: '#/components/schemas/TransformationExecutionLogLevel'
+        transformations:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+          description: A pattern to match on the transformation name or array of transformation IDs. Use `*` as wildcard.
+          x-docs-force-simple-type: true
+      required:
+      - log_level
+      - transformations
+      additionalProperties: false
+      description: Configurations for a 'Transformation' issue trigger
+    APIErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        status:
+          type: number
+          format: float
+          description: Status code
+        message:
+          type: string
+          description: Error description
+        data:
+          type:
+          - object
+          - 'null'
+          properties: {}
+      required:
+      - code
+      - status
+      - message
+      additionalProperties: false
+      description: Error response model
+    IssueTriggerIntegrationChannel:
+      type: object
+      properties: {}
+      additionalProperties: false
+      description: Integration channel for an issue trigger
+      x-docs-type: object
+    IssueTriggerMicrosoftTeamsChannel:
+      type: object
+      properties:
+        channel_name:
+          type: string
+      required:
+      - channel_name
+      additionalProperties: false
+      description: Channel for a 'Microsoft Teams' issue trigger
+    IssueTriggerRequestConfigs:
+      type: object
+      properties:
+        rejection_causes:
+          anyOf:
+          - type: string
+            enum:
+            - '*'
+          - type: array
+            items:
+              $ref: '#/components/schemas/RequestRejectionCause'
+          description: An array of rejection causes to match on, or '*' to match all rejection causes.
+          x-docs-force-simple-type: true
+        excluded_rejection_causes:
+          type: array
+          items:
+            $ref: '#/components/schemas/RequestRejectionCause'
+          description: Optional array of rejection causes to exclude. When specified, rejection_causes must be '*'. This allows matching all causes EXCEPT the specified ones.
+          x-docs-force-simple-type: true
+        sources:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+          description: A pattern to match on the source name or array of source IDs. Use `*` as wildcard.
+          x-docs-force-simple-type: true
+      required:
+      - rejection_causes
+      - sources
+      additionalProperties: false
+      description: Configurations for a 'Request' issue trigger
+    IssueTriggerStrategy:
+      type: string
+      enum:
+      - first_attempt
+      - final_attempt
+      description: The strategy uses to open the issue
   securitySchemes:
     bearerAuth:
       type: http

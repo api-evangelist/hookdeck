@@ -1,22 +1,721 @@
 openapi: 3.2.0
 info:
-  title: Hookdeck Bookmarks Attempts Destinations API
-  version: 1.0.0
-  description: Save bookmarked events for quick replay and convenient one-click testing during development.
-  contact:
-    name: Hookdeck Support
-    url: https://hookdeck.com/contact-us
-    email: info@hookdeck.com
+  title: Hookdeck Destinations API
+  version: '1.0'
+  description: 'Operations tagged Destinations across 2 of this provider''s published API definitions: hookdeck-openapi.yml, hookdeck-destinations-api-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
+- url: https://api.outpost.hookdeck.com/2025-07-01
+  description: Managed Outpost, hosted by Hookdeck at `api.outpost.hookdeck.com`. The Hookdeck Event Gateway API at `api.hookdeck.com` is a separate API.
+- url: http://localhost:3333/api/v1
+  description: Self-hosted Outpost, at its default local address. A deployed instance serves the same paths under its own host.
 - url: https://api.hookdeck.com/2025-07-01
   description: Production API
-security:
-- bearerAuth: []
-- basicAuth: []
 tags:
 - name: Destinations
-  description: A destination is any endpoint to which your webhooks can be routed.
+  description: 'Destinations are the endpoints where events are sent. Each destination is associated with a tenant and can be configured to receive specific event topics.
+
+
+    The `topics` array can contain either a list of topics or a wildcard `*` implying that all topics are supported. If you do not wish to implement topics for your application, you set all destination topics to `*`.
+
+
+    By default all destination `credentials` are obfuscated and the values cannot be read. This does not apply to the `webhook` type destination secret and each destination can expose their own obfuscation logic.'
 paths:
+  /tenants/{tenant_id}/destinations:
+    description: 'Manage destinations for a specific tenant. Destinations determine where events are sent.
+
+      The structure of `config` and `credentials` depends on the destination `type`.
+
+      '
+    parameters:
+    - name: tenant_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The ID of the tenant. Required when using AdminApiKey authentication.
+    get:
+      tags:
+      - Destinations
+      summary: List Destinations
+      description: Return a list of the destinations for the tenant. The endpoint is not paged.
+      operationId: listTenantDestinations
+      parameters:
+      - name: type
+        in: query
+        required: false
+        schema:
+          oneOf:
+          - $ref: '#/components/schemas/DestinationType'
+          - type: array
+            items:
+              $ref: '#/components/schemas/DestinationType'
+        description: Filter destinations by type(s). Use bracket notation for multiple values (e.g., `type[0]=webhook&type[1]=aws_sqs`).
+      - name: topics
+        in: query
+        required: false
+        schema:
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        description: Filter destinations by supported topic(s). Use bracket notation for multiple values (e.g., `topics[0]=user.created&topics[1]=user.deleted`).
+      responses:
+        '200':
+          description: A list of destinations.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Destination'
+              examples:
+                DestinationsListExample:
+                  value:
+                  - id: des_webhook_123
+                    type: webhook
+                    topics:
+                    - user.created
+                    - order.shipped
+                    disabled_at: null
+                    created_at: '2024-02-15T10:00:00Z'
+                    updated_at: '2024-02-15T10:00:00Z'
+                    config:
+                      url: https://my-service.com/webhook/handler
+                    credentials:
+                      secret: whsec_abc123def456
+                      previous_secret: whsec_prev789xyz012
+                      previous_secret_invalid_at: '2024-02-16T10:00:00Z'
+                  - id: des_sqs_456
+                    type: aws_sqs
+                    topics:
+                    - '*'
+                    disabled_at: '2024-03-01T12:00:00Z'
+                    created_at: '2024-02-20T11:30:00Z'
+                    updated_at: '2024-02-20T11:30:00Z'
+                    config:
+                      queue_url: https://sqs.us-west-2.amazonaws.com/123456789012/my-app-queue
+                      endpoint: https://sqs.us-west-2.amazonaws.com
+                    credentials:
+                      key: AKIAIOSFODNN7EXAMPLE
+                      secret: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+                  - id: des_s3_789
+                    type: aws_s3
+                    topics:
+                    - '*'
+                    disabled_at: null
+                    created_at: '2024-03-20T12:00:00Z'
+                    updated_at: '2024-03-20T12:00:00Z'
+                    config:
+                      bucket: my-bucket
+                      region: us-east-1
+                    credentials:
+                      key: AKIAIOSFODNN7EXAMPLE
+                      secret: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+      - AdminApiKey: []
+      - TenantJwt: []
+    post:
+      tags:
+      - Destinations
+      summary: Create Destination
+      description: Creates a new destination for the tenant. The request body structure depends on the `type`.
+      operationId: createTenantDestination
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DestinationCreate'
+            examples:
+              WebhookCreateExample:
+                summary: Create a webhook destination
+                value:
+                  type: webhook
+                  topics:
+                  - user.created
+                  - order.shipped
+                  config:
+                    url: https://my-service.com/webhook/handler
+      responses:
+        '201':
+          description: Destination created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Destination'
+              examples:
+                WebhookCreatedExample:
+                  summary: Webhook destination created
+                  value:
+                    id: des_webhook_123
+                    type: webhook
+                    topics:
+                    - user.created
+                    - order.shipped
+                    disabled_at: null
+                    created_at: '2024-02-15T10:00:00Z'
+                    updated_at: '2024-02-15T10:00:00Z'
+                    config:
+                      url: https://my-service.com/webhook/handler
+                    credentials:
+                      secret: whsec_abc123def456
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '413':
+          $ref: '#/components/responses/RequestBodyTooLarge'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+      - AdminApiKey: []
+      - TenantJwt: []
+    servers:
+    - url: https://api.outpost.hookdeck.com/2025-07-01
+      description: Managed Outpost, hosted by Hookdeck at `api.outpost.hookdeck.com`. The Hookdeck Event Gateway API at `api.hookdeck.com` is a separate API.
+    - url: http://localhost:3333/api/v1
+      description: Self-hosted Outpost, at its default local address. A deployed instance serves the same paths under its own host.
+  /tenants/{tenant_id}/destinations/{destination_id}:
+    parameters:
+    - name: tenant_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The ID of the tenant. Required when using AdminApiKey authentication.
+    - name: destination_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The ID of the destination.
+    get:
+      tags:
+      - Destinations
+      summary: Get Destination
+      description: Retrieves details for a specific destination.
+      operationId: getTenantDestination
+      responses:
+        '200':
+          description: Destination details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Destination'
+              examples:
+                WebhookGetExample:
+                  value:
+                    id: des_webhook_123
+                    type: webhook
+                    topics:
+                    - user.created
+                    - order.shipped
+                    disabled_at: null
+                    created_at: '2024-02-15T10:00:00Z'
+                    updated_at: '2024-02-15T10:00:00Z'
+                    config:
+                      url: https://my-service.com/webhook/handler
+                    credentials:
+                      secret: whsec_abc123def456
+                      previous_secret: whsec_prev789xyz012
+                      previous_secret_invalid_at: '2024-02-16T10:00:00Z'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+      - AdminApiKey: []
+      - TenantJwt: []
+    patch:
+      tags:
+      - Destinations
+      summary: Update Destination
+      description: Updates the configuration of an existing destination. The request body structure depends on the destination's `type`. Type itself cannot be updated. May return an OAuth redirect URL for certain types.
+      operationId: updateTenantDestination
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DestinationUpdate'
+            examples:
+              WebhookUpdateExample:
+                summary: Update a webhook destination's topics and URL
+                value:
+                  topics:
+                  - user.created
+                  config:
+                    url: https://my-service.com/webhook/new-handler
+      responses:
+        '200':
+          description: Destination updated successfully or OAuth redirect needed.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/Destination'
+              examples:
+                DestinationUpdatedExample:
+                  summary: Webhook destination updated
+                  value:
+                    id: des_webhook_123
+                    type: webhook
+                    topics:
+                    - user.created
+                    disabled_at: null
+                    created_at: '2024-02-15T10:00:00Z'
+                    updated_at: '2024-02-15T10:00:00Z'
+                    config:
+                      url: https://my-service.com/webhook/new-handler
+                    credentials:
+                      secret: whsec_abc123def456
+                      previous_secret: whsec_prev789xyz012
+                      previous_secret_invalid_at: '2024-02-16T10:00:00Z'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '413':
+          $ref: '#/components/responses/RequestBodyTooLarge'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+      - AdminApiKey: []
+      - TenantJwt: []
+    delete:
+      tags:
+      - Destinations
+      summary: Delete Destination
+      description: Deletes a specific destination.
+      operationId: deleteTenantDestination
+      responses:
+        '200':
+          description: Success confirmation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+              examples:
+                SuccessExample:
+                  value:
+                    success: true
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+      - AdminApiKey: []
+      - TenantJwt: []
+    servers:
+    - url: https://api.outpost.hookdeck.com/2025-07-01
+      description: Managed Outpost, hosted by Hookdeck at `api.outpost.hookdeck.com`. The Hookdeck Event Gateway API at `api.hookdeck.com` is a separate API.
+    - url: http://localhost:3333/api/v1
+      description: Self-hosted Outpost, at its default local address. A deployed instance serves the same paths under its own host.
+  /tenants/{tenant_id}/destinations/{destination_id}/enable:
+    parameters:
+    - name: tenant_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The ID of the tenant. Required when using AdminApiKey authentication.
+    - name: destination_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The ID of the destination.
+    put:
+      tags:
+      - Destinations
+      summary: Enable Destination
+      description: Enables a previously disabled destination.
+      operationId: enableTenantDestination
+      responses:
+        '200':
+          description: Destination enabled successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Destination'
+              examples:
+                WebhookEnabledExample:
+                  value:
+                    id: des_webhook_123
+                    type: webhook
+                    topics:
+                    - user.created
+                    - order.shipped
+                    disabled_at: null
+                    created_at: '2024-02-15T10:00:00Z'
+                    updated_at: '2024-02-15T10:00:00Z'
+                    config:
+                      url: https://my-service.com/webhook/handler
+                    credentials:
+                      secret: whsec_abc123def456
+                      previous_secret: whsec_prev789xyz012
+                      previous_secret_invalid_at: '2024-02-16T10:00:00Z'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+      - AdminApiKey: []
+      - TenantJwt: []
+    servers:
+    - url: https://api.outpost.hookdeck.com/2025-07-01
+      description: Managed Outpost, hosted by Hookdeck at `api.outpost.hookdeck.com`. The Hookdeck Event Gateway API at `api.hookdeck.com` is a separate API.
+    - url: http://localhost:3333/api/v1
+      description: Self-hosted Outpost, at its default local address. A deployed instance serves the same paths under its own host.
+  /tenants/{tenant_id}/destinations/{destination_id}/disable:
+    parameters:
+    - name: tenant_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The ID of the tenant. Required when using AdminApiKey authentication.
+    - name: destination_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The ID of the destination.
+    put:
+      tags:
+      - Destinations
+      summary: Disable Destination
+      description: Disables a previously enabled destination.
+      operationId: disableTenantDestination
+      responses:
+        '200':
+          description: Destination disabled successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Destination'
+              examples:
+                WebhookDisabledExample:
+                  value:
+                    id: des_webhook_123
+                    type: webhook
+                    topics:
+                    - user.created
+                    - order.shipped
+                    disabled_at: '2024-04-11T21:00:00Z'
+                    created_at: '2024-02-15T10:00:00Z'
+                    updated_at: '2024-02-15T10:00:00Z'
+                    config:
+                      url: https://my-service.com/webhook/handler
+                    credentials:
+                      secret: whsec_abc123def456
+                      previous_secret: whsec_prev789xyz012
+                      previous_secret_invalid_at: '2024-02-16T10:00:00Z'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+      - AdminApiKey: []
+      - TenantJwt: []
+    servers:
+    - url: https://api.outpost.hookdeck.com/2025-07-01
+      description: Managed Outpost, hosted by Hookdeck at `api.outpost.hookdeck.com`. The Hookdeck Event Gateway API at `api.hookdeck.com` is a separate API.
+    - url: http://localhost:3333/api/v1
+      description: Self-hosted Outpost, at its default local address. A deployed instance serves the same paths under its own host.
+  /tenants/{tenant_id}/destinations/{destination_id}/attempts:
+    parameters:
+    - name: tenant_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The ID of the tenant. Required when using AdminApiKey authentication.
+    - name: destination_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The ID of the destination.
+    get:
+      tags:
+      - Destinations
+      summary: List Destination Attempts
+      description: 'Retrieves a paginated list of attempts scoped to a specific destination.
+
+
+        Returns `404` if the destination does not exist or has been deleted. The attempts of a deleted destination remain available from `GET /attempts?destination_id=`.'
+      operationId: listTenantDestinationAttempts
+      parameters:
+      - name: event_id
+        in: query
+        required: false
+        schema:
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        description: Filter attempts by event ID(s). Use bracket notation for multiple values (e.g., `event_id[0]=e1&event_id[1]=e2`).
+      - name: status
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - success
+          - failed
+        description: Filter attempts by status.
+      - name: topic
+        in: query
+        required: false
+        schema:
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        description: Filter attempts by event topic(s). Use bracket notation for multiple values (e.g., `topic[0]=user.created&topic[1]=user.updated`).
+      - name: time
+        in: query
+        required: false
+        style: deepObject
+        explode: true
+        schema:
+          $ref: '#/components/schemas/Operator'
+        description: Filter attempts by event time range using comparison operators.
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          minimum: 1
+          maximum: 1000
+        description: Number of items per page (1-1000, default 100). A value outside this range, or one that is not an integer, returns a 400.
+      - name: next
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Cursor for the next page of results, from `pagination.next` of a previous response. Mutually exclusive with `prev`. A cursor that cannot be read returns a 400.
+      - name: prev
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Cursor for the previous page of results, from `pagination.prev` of a previous response. Mutually exclusive with `next`. A cursor that cannot be read returns a 400.
+      - name: include
+        in: query
+        required: false
+        schema:
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        description: 'Fields to include in the response. Use bracket notation for multiple values (e.g., `include[0]=event&include[1]=response_data`).
+
+          - `event`: Include event summary (id, topic, time, eligible_for_retry, metadata)
+
+          - `event.data`: Include full event with payload data
+
+          - `response_data`: Include response body and headers
+
+          - `destination`: Include the destination object, without credentials
+
+          '
+      - name: order_by
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - time
+          default: time
+        description: Field to sort by.
+      - name: dir
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: desc
+        description: Sort direction.
+      responses:
+        '200':
+          description: A paginated list of attempts for the destination.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttemptPaginatedResult'
+              examples:
+                DestinationAttemptsListExample:
+                  value:
+                    pagination:
+                      order_by: time
+                      dir: desc
+                      limit: 100
+                      next: MTcwNDA2NzIwMA==
+                      prev: null
+                    models:
+                    - id: atm_123
+                      status: success
+                      time: '2024-01-01T00:00:05Z'
+                      code: '200'
+                      attempt_number: 1
+                      latency_ms: 212
+                      event_id: evt_123
+                      destination_id: des_456
+                    - id: atm_124
+                      status: failed
+                      time: '2024-01-02T10:00:01Z'
+                      code: '503'
+                      attempt_number: 2
+                      latency_ms: 1502
+                      event_id: evt_789
+                      destination_id: des_456
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+      - AdminApiKey: []
+      - TenantJwt: []
+    servers:
+    - url: https://api.outpost.hookdeck.com/2025-07-01
+      description: Managed Outpost, hosted by Hookdeck at `api.outpost.hookdeck.com`. The Hookdeck Event Gateway API at `api.hookdeck.com` is a separate API.
+    - url: http://localhost:3333/api/v1
+      description: Self-hosted Outpost, at its default local address. A deployed instance serves the same paths under its own host.
+  /tenants/{tenant_id}/destinations/{destination_id}/attempts/{attempt_id}:
+    parameters:
+    - name: tenant_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The ID of the tenant. Required when using AdminApiKey authentication.
+    - name: destination_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The ID of the destination.
+    - name: attempt_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The ID of the attempt.
+    get:
+      tags:
+      - Destinations
+      summary: Get Destination Attempt
+      description: 'Retrieves details for a specific attempt scoped to a destination.
+
+
+        Returns `404` if the destination does not exist or has been deleted, or if the destination has no attempt with this ID. An attempt of a deleted destination remains available from `GET /attempts/{attempt_id}`.'
+      operationId: getTenantDestinationAttempt
+      parameters:
+      - name: include
+        in: query
+        required: false
+        schema:
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        description: 'Fields to include in the response. Use bracket notation for multiple values (e.g., `include[0]=event&include[1]=response_data`).
+
+          - `event`: Include event summary
+
+          - `event.data`: Include full event with payload data
+
+          - `response_data`: Include response body and headers
+
+          - `destination`: Include the destination object, without credentials
+
+          '
+      responses:
+        '200':
+          description: Attempt details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attempt'
+              examples:
+                DestinationAttemptExample:
+                  value:
+                    id: atm_123
+                    status: success
+                    time: '2024-01-01T00:00:05Z'
+                    code: '200'
+                    attempt_number: 1
+                    latency_ms: 212
+                    event_id: evt_123
+                    destination_id: des_456
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+      - AdminApiKey: []
+      - TenantJwt: []
+    servers:
+    - url: https://api.outpost.hookdeck.com/2025-07-01
+      description: Managed Outpost, hosted by Hookdeck at `api.outpost.hookdeck.com`. The Hookdeck Event Gateway API at `api.hookdeck.com` is a separate API.
+    - url: http://localhost:3333/api/v1
+      description: Self-hosted Outpost, at its default local address. A deployed instance serves the same paths under its own host.
   /destinations:
     get:
       operationId: getDestinations
@@ -36,13 +735,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIErrorResponse'
+                $ref: '#/components/schemas/APIErrorResponse_2'
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIErrorResponse'
+                $ref: '#/components/schemas/APIErrorResponse_2'
       parameters:
       - in: query
         name: id
@@ -138,6 +837,9 @@ paths:
           type: string
           maxLength: 255
           description: The ID to provide in the query to get the previous set of results
+      security:
+      - bearerAuth: []
+      - basicAuth: []
     post:
       operationId: createDestination
       summary: Create a destination
@@ -150,19 +852,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Destination'
+                $ref: '#/components/schemas/Destination_2'
         '400':
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIErrorResponse'
+                $ref: '#/components/schemas/APIErrorResponse_2'
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIErrorResponse'
+                $ref: '#/components/schemas/APIErrorResponse_2'
       parameters: []
       requestBody:
         required: true
@@ -195,6 +897,9 @@ paths:
               required:
               - name
               additionalProperties: false
+      security:
+      - bearerAuth: []
+      - basicAuth: []
     put:
       operationId: upsertDestination
       summary: Create/Update a destination
@@ -207,19 +912,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Destination'
+                $ref: '#/components/schemas/Destination_2'
         '400':
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIErrorResponse'
+                $ref: '#/components/schemas/APIErrorResponse_2'
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIErrorResponse'
+                $ref: '#/components/schemas/APIErrorResponse_2'
       parameters: []
       requestBody:
         required: true
@@ -252,6 +957,12 @@ paths:
               required:
               - name
               additionalProperties: false
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+    servers:
+    - url: https://api.hookdeck.com/2025-07-01
+      description: Production API
   /destinations/count:
     get:
       operationId: countDestinations
@@ -279,13 +990,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIErrorResponse'
+                $ref: '#/components/schemas/APIErrorResponse_2'
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIErrorResponse'
+                $ref: '#/components/schemas/APIErrorResponse_2'
       parameters:
       - in: query
         name: id
@@ -329,6 +1040,12 @@ paths:
               - 'null'
               format: date-time
           description: Date the destination was disabled
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+    servers:
+    - url: https://api.hookdeck.com/2025-07-01
+      description: Production API
   /destinations/{id}:
     get:
       operationId: getDestination
@@ -342,19 +1059,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Destination'
+                $ref: '#/components/schemas/Destination_2'
         '404':
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIErrorResponse'
+                $ref: '#/components/schemas/APIErrorResponse_2'
         '410':
           description: Gone
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIErrorResponse'
+                $ref: '#/components/schemas/APIErrorResponse_2'
       parameters:
       - in: query
         name: include
@@ -368,6 +1085,9 @@ paths:
           type: string
           description: Destination ID
         required: true
+      security:
+      - bearerAuth: []
+      - basicAuth: []
     put:
       operationId: updateDestination
       summary: Update a destination
@@ -380,25 +1100,25 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Destination'
+                $ref: '#/components/schemas/Destination_2'
         '400':
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIErrorResponse'
+                $ref: '#/components/schemas/APIErrorResponse_2'
         '404':
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIErrorResponse'
+                $ref: '#/components/schemas/APIErrorResponse_2'
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIErrorResponse'
+                $ref: '#/components/schemas/APIErrorResponse_2'
       parameters:
       - in: path
         name: id
@@ -434,6 +1154,9 @@ paths:
                 config:
                   $ref: '#/components/schemas/VerificationConfig'
               additionalProperties: false
+      security:
+      - bearerAuth: []
+      - basicAuth: []
     delete:
       operationId: deleteDestination
       summary: Delete a destination
@@ -459,13 +1182,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIErrorResponse'
+                $ref: '#/components/schemas/APIErrorResponse_2'
       parameters:
       - in: path
         name: id
         schema:
           type: string
         required: true
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+    servers:
+    - url: https://api.hookdeck.com/2025-07-01
+      description: Production API
   /destinations/{id}/disable:
     put:
       operationId: disableDestination
@@ -479,13 +1208,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Destination'
+                $ref: '#/components/schemas/Destination_2'
         '404':
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIErrorResponse'
+                $ref: '#/components/schemas/APIErrorResponse_2'
       parameters:
       - in: path
         name: id
@@ -493,6 +1222,12 @@ paths:
           type: string
           description: Destination ID
         required: true
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+    servers:
+    - url: https://api.hookdeck.com/2025-07-01
+      description: Production API
   /destinations/{id}/archive:
     put:
       operationId: disableDestination_archive
@@ -506,13 +1241,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Destination'
+                $ref: '#/components/schemas/Destination_2'
         '404':
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIErrorResponse'
+                $ref: '#/components/schemas/APIErrorResponse_2'
       parameters:
       - in: path
         name: id
@@ -520,6 +1255,12 @@ paths:
           type: string
           description: Destination ID
         required: true
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+    servers:
+    - url: https://api.hookdeck.com/2025-07-01
+      description: Production API
   /destinations/{id}/enable:
     put:
       operationId: enableDestination
@@ -533,13 +1274,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Destination'
+                $ref: '#/components/schemas/Destination_2'
         '404':
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIErrorResponse'
+                $ref: '#/components/schemas/APIErrorResponse_2'
       parameters:
       - in: path
         name: id
@@ -547,6 +1288,12 @@ paths:
           type: string
           description: Destination ID
         required: true
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+    servers:
+    - url: https://api.hookdeck.com/2025-07-01
+      description: Production API
   /destinations/{id}/unarchive:
     put:
       operationId: enableDestination_unarchive
@@ -560,13 +1307,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Destination'
+                $ref: '#/components/schemas/Destination_2'
         '404':
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIErrorResponse'
+                $ref: '#/components/schemas/APIErrorResponse_2'
       parameters:
       - in: path
         name: id
@@ -574,45 +1321,3319 @@ paths:
           type: string
           description: Destination ID
         required: true
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+    servers:
+    - url: https://api.hookdeck.com/2025-07-01
+      description: Production API
 components:
   schemas:
-    APIErrorResponse:
+    AzureServiceBusConfig:
       type: object
-      properties:
-        code:
-          type: string
-          description: Error code
-        status:
-          type: number
-          format: float
-          description: Status code
-        message:
-          type: string
-          description: Error description
-        data:
-          type:
-          - object
-          - 'null'
-          properties: {}
       required:
-      - code
-      - status
-      - message
-      additionalProperties: false
-      description: Error response model
-    DestinationConfigCLIAuthAWSSignature:
-      type: object
+      - name
       properties:
-        access_key_id:
+        name:
           type: string
-        secret_access_key:
+          description: The name of the Azure Service Bus queue or topic to publish messages to.
+          example: my-queue-or-topic
+    DestinationRabbitMQ:
+      type: object
+      x-docs-type: RabbitMQ
+      required:
+      - id
+      - type
+      - topics
+      - config
+      - credentials
+      - created_at
+      - updated_at
+      - disabled_at
+      properties:
+        id:
           type: string
+          description: Control plane generated ID or user provided ID for the destination.
+          example: des_12345
+        type:
+          type: string
+          description: Type of the destination.
+          enum:
+          - rabbitmq
+          example: rabbitmq
+        topics:
+          $ref: '#/components/schemas/Topics'
+        filter:
+          $ref: '#/components/schemas/Filter'
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: ISO Date when the destination was disabled, or null if enabled.
+          example: null
+        created_at:
+          type: string
+          format: date-time
+          description: ISO Date when the destination was created.
+          example: '2024-01-01T00:00:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          description: ISO Date when the destination was last updated.
+          example: '2024-01-01T00:00:00Z'
+        config:
+          $ref: '#/components/schemas/RabbitMQConfig'
+        credentials:
+          $ref: '#/components/schemas/RabbitMQCredentials'
+        delivery_metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Static key-value pairs merged into event metadata on every attempt.
+          example:
+            app-id: my-app
+            region: us-east-1
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Arbitrary contextual information stored with the destination.
+          example:
+            internal-id: '123'
+            team: platform
+        target:
+          type: string
+          description: A human-readable representation of the destination target (RabbitMQ exchange). Read-only.
+          readOnly: true
+          example: events-exchange
+        target_url:
+          type: string
+          format: url
+          nullable: true
+          description: A URL link to the destination target (not applicable for RabbitMQ exchange). Read-only.
+          readOnly: true
+          example: null
+      example:
+        id: des_rmq_789
+        type: rabbitmq
+        topics:
+        - inventory.updated
+        disabled_at: null
+        created_at: '2024-01-10T09:00:00Z'
+        updated_at: '2024-01-10T09:00:00Z'
+        config:
+          server_url: amqp.cloudamqp.com:5671
+          exchange: events-exchange
+          tls: 'true'
+        credentials:
+          username: app_user
+          password: secure_password_123
+    AWSEventBridgeConfig:
+      type: object
+      required:
+      - region
+      properties:
+        event_bus_name:
+          type: string
+          description: Optional. The name or ARN of the EventBridge event bus. Defaults to the account's default event bus.
+          example: my-event-bus
         region:
           type: string
-        service:
+          description: The AWS region where the event bus is located.
+          example: us-east-1
+        endpoint:
+          type: string
+          format: url
+          description: Optional. Custom AWS endpoint URL (e.g., for LocalStack or VPC endpoints).
+          example: https://events.us-east-1.amazonaws.com
+    AWSEventBridgeCredentialsUpdate:
+      type: object
+      description: Partial AWS EventBridge credentials for PATCH updates (RFC 7396 merge-patch).
+      properties:
+        key:
+          type: string
+          description: AWS Access Key ID.
+        secret:
+          type: string
+          description: AWS Secret Access Key.
+        session:
+          type: string
+          description: Optional AWS Session Token (for temporary credentials).
+    AWSEventBridgeCredentials:
+      type: object
+      required:
+      - key
+      - secret
+      properties:
+        key:
+          type: string
+          description: AWS Access Key ID.
+          example: AKIAIOSFODNN7EXAMPLE
+        secret:
+          type: string
+          description: AWS Secret Access Key.
+          example: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+        session:
+          type: string
+          description: Optional AWS Session Token (for temporary credentials).
+          example: AQoDYXdzEPT//////////wEXAMPLE...
+    DestinationAzureServiceBus:
+      type: object
+      x-docs-type: Azure Service Bus
+      required:
+      - id
+      - type
+      - topics
+      - config
+      - credentials
+      - created_at
+      - disabled_at
+      properties:
+        id:
+          type: string
+          description: Control plane generated ID or user provided ID for the destination.
+          example: des_12345
+        type:
+          type: string
+          description: Type of the destination.
+          enum:
+          - azure_servicebus
+          example: azure_servicebus
+        topics:
+          $ref: '#/components/schemas/Topics'
+        filter:
+          $ref: '#/components/schemas/Filter'
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: ISO Date when the destination was disabled, or null if enabled.
+          example: null
+        created_at:
+          type: string
+          format: date-time
+          description: ISO Date when the destination was created.
+          example: '2024-01-01T00:00:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          description: ISO Date when the destination was last updated.
+          example: '2024-01-01T00:00:00Z'
+        config:
+          $ref: '#/components/schemas/AzureServiceBusConfig'
+        credentials:
+          $ref: '#/components/schemas/AzureServiceBusCredentials'
+        delivery_metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Static key-value pairs merged into event metadata on every attempt.
+          example:
+            app-id: my-app
+            region: us-east-1
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Arbitrary contextual information stored with the destination.
+          example:
+            internal-id: '123'
+            team: platform
+        target:
+          type: string
+          description: A human-readable representation of the destination target (Azure Service Bus queue/topic name). Read-only.
+          readOnly: true
+          example: my-queue-or-topic
+        target_url:
+          type: string
+          format: url
+          nullable: true
+          description: A URL link to the destination target (Azure Portal link to the Service Bus). Read-only.
+          readOnly: true
+          example: https://portal.azure.com/#@tenant-id/resource/subscriptions/subscription-id/resourceGroups/resource-group/providers/Microsoft.ServiceBus/namespaces/namespace-name/queues/queue-name
+      example:
+        id: des_azuresb_123
+        type: azure_servicebus
+        topics:
+        - '*'
+        disabled_at: null
+        created_at: '2024-05-01T10:00:00Z'
+        updated_at: '2024-05-01T10:00:00Z'
+        config:
+          name: my-queue-or-topic
+        credentials:
+          connection_string: Endpoint=sb://namespace.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=abc123
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+    RabbitMQCredentials:
+      type: object
+      required:
+      - username
+      - password
+      properties:
+        username:
+          type: string
+          description: RabbitMQ username.
+          example: guest
+        password:
+          type: string
+          description: RabbitMQ password.
+          example: guest
+    DestinationUpdateWebhook:
+      type: object
+      x-docs-type: Webhook
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - webhook
+          description: Destination type discriminator. Must equal the existing destination's type — type itself cannot be changed via PATCH.
+          example: webhook
+        topics:
+          $ref: '#/components/schemas/Topics'
+        filter:
+          $ref: '#/components/schemas/Filter'
+        config:
+          $ref: '#/components/schemas/WebhookConfigUpdate'
+        credentials:
+          $ref: '#/components/schemas/WebhookCredentialsUpdate'
+        delivery_metadata:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+            - type: 'null'
+          nullable: true
+          description: 'Static key-value pairs merged into event metadata on every attempt. Uses JSON merge-patch semantics (RFC 7396): send keys to add/update, null values to delete keys, null for entire field to clear all. Omit or send {} for no change.'
+          example:
+            app-id: my-app
+            region: us-east-1
+        metadata:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+            - type: 'null'
+          nullable: true
+          description: 'Arbitrary contextual information stored with the destination. Uses JSON merge-patch semantics (RFC 7396): send keys to add/update, null values to delete keys, null for entire field to clear all. Omit or send {} for no change.'
+          example:
+            internal-id: '123'
+            team: platform
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Update the disabled state of the destination. Send a timestamp (must not be in the future) to disable, null to enable, or omit to leave unchanged.
+          example: null
+    DestinationUpdateAWSKinesis:
+      type: object
+      x-docs-type: AWS Kinesis
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - aws_kinesis
+          description: Destination type discriminator. Must equal the existing destination's type — type itself cannot be changed via PATCH.
+          example: aws_kinesis
+        topics:
+          $ref: '#/components/schemas/Topics'
+        filter:
+          $ref: '#/components/schemas/Filter'
+        config:
+          $ref: '#/components/schemas/AWSKinesisConfigUpdate'
+        credentials:
+          $ref: '#/components/schemas/AWSKinesisCredentialsUpdate'
+        delivery_metadata:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+            - type: 'null'
+          nullable: true
+          description: 'Static key-value pairs merged into event metadata on every attempt. Uses JSON merge-patch semantics (RFC 7396): send keys to add/update, null values to delete keys, null for entire field to clear all. Omit or send {} for no change.'
+          example:
+            app-id: my-app
+            region: us-east-1
+        metadata:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+            - type: 'null'
+          nullable: true
+          description: 'Arbitrary contextual information stored with the destination. Uses JSON merge-patch semantics (RFC 7396): send keys to add/update, null values to delete keys, null for entire field to clear all. Omit or send {} for no change.'
+          example:
+            internal-id: '123'
+            team: platform
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Update the disabled state of the destination. Send a timestamp (must not be in the future) to disable, null to enable, or omit to leave unchanged.
+          example: null
+    WebhookCredentialsUpdate:
+      type: object
+      description: Partial Webhook credentials for PATCH updates (RFC 7396 merge-patch).
+      properties:
+        secret:
+          type: string
+          description: New secret (only allowed for admin).
+        previous_secret:
+          type: string
+          description: Previous secret for rotation (only allowed for admin).
+        previous_secret_invalid_at:
+          type: string
+          format: date-time
+          description: Invalidation time for previous secret (only allowed for admin).
+        rotate_secret:
+          type: boolean
+          description: Set to true to rotate the secret. The current secret becomes the previous_secret, and a new secret is generated. `previous_secret_invalid_at` defaults to 24h if not provided.
+    AWSS3CredentialsUpdate:
+      type: object
+      description: Partial AWS S3 credentials for PATCH updates (RFC 7396 merge-patch).
+      properties:
+        key:
+          type: string
+          description: AWS Access Key ID.
+        secret:
+          type: string
+          description: AWS Secret Access Key.
+        session:
+          type: string
+          description: Optional AWS Session Token (for temporary credentials).
+    WebhookConfig:
+      type: object
+      required:
+      - url
+      properties:
+        url:
+          type: string
+          format: url
+          description: The URL to send the webhook events to.
+          example: https://example.com/webhooks/user
+        custom_headers:
+          type: string
+          description: JSON string of custom HTTP headers to include with every webhook request. Header names must be valid HTTP header tokens (alphanumeric, hyphens, underscores). Reserved headers (Content-Type, Host, etc.) cannot be overridden.
+          example: '{"x-api-key":"secret123","x-tenant-id":"customer-456"}'
+    DestinationCreateCloudflareQueues:
+      type: object
+      x-docs-type: Cloudflare Queues
+      required:
+      - type
+      - topics
+      - config
+      - credentials
+      properties:
+        id:
+          type: string
+          description: Optional user-provided ID. An ID will be generated if empty.
+          example: user-provided-id
+        type:
+          type: string
+          description: Type of the destination. Must be 'cloudflare_queues'.
+          enum:
+          - cloudflare_queues
+        topics:
+          $ref: '#/components/schemas/Topics'
+        filter:
+          $ref: '#/components/schemas/Filter'
+        config:
+          $ref: '#/components/schemas/CloudflareQueuesConfig'
+        credentials:
+          $ref: '#/components/schemas/CloudflareQueuesCredentials'
+        delivery_metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Static key-value pairs merged into event metadata on every attempt.
+          example:
+            app-id: my-app
+            region: us-east-1
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Arbitrary contextual information stored with the destination.
+          example:
+            internal-id: '123'
+            team: platform
+        created_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Optional override for the creation timestamp. Intended for importing destinations from another system. Must not be in the future. **Admin (API key) auth only — sending this with JWT auth returns 403.** Defaults to the current time when omitted.
+          example: '2024-02-15T10:00:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Optional override for the last-updated timestamp. Intended for importing destinations. Must not be in the future. **Admin (API key) auth only — sending this with JWT auth returns 403.** Defaults to created_at when omitted.
+          example: '2024-02-15T10:00:00Z'
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: If set, the destination is created in a disabled state with this timestamp. Must not be in the future. Defaults to null (enabled).
+          example: null
+    AWSSQSCredentials:
+      type: object
+      required:
+      - key
+      - secret
+      properties:
+        key:
+          type: string
+          description: AWS Access Key ID.
+          example: AKIAIOSFODNN7EXAMPLE
+        secret:
+          type: string
+          description: AWS Secret Access Key.
+          example: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+        session:
+          type: string
+          description: Optional AWS Session Token (for temporary credentials).
+          example: AQoDYXdzEPT//////////wEXAMPLE...
+    EventFull:
+      type: object
+      description: Full event object with data (returned when include=event.data).
+      properties:
+        id:
+          type: string
+          example: evt_123
+        tenant_id:
+          type: string
+          description: The tenant this event belongs to.
+          example: tnt_123
+        destination_id:
+          type: string
+          description: The destination this event was delivered to.
+          example: des_456
+        topic:
+          type: string
+          example: user.created
+        time:
+          type: string
+          format: date-time
+          description: Time the event was received.
+          example: '2024-01-01T00:00:00Z'
+        eligible_for_retry:
+          type: boolean
+          description: Whether this event can be retried.
+          example: true
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          example:
+            source: crm
+        data:
+          type: object
+          additionalProperties: true
+          description: The event payload data.
+          example:
+            user_id: userid
+            status: active
+    DestinationGCPPubSub:
+      type: object
+      x-docs-type: GCP PubSub
+      required:
+      - id
+      - type
+      - topics
+      - config
+      - credentials
+      - created_at
+      - updated_at
+      - disabled_at
+      properties:
+        id:
+          type: string
+          description: Control plane generated ID or user provided ID for the destination.
+          example: des_12345
+        type:
+          type: string
+          description: Type of the destination.
+          enum:
+          - gcp_pubsub
+          example: gcp_pubsub
+        topics:
+          $ref: '#/components/schemas/Topics'
+        filter:
+          $ref: '#/components/schemas/Filter'
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: ISO Date when the destination was disabled, or null if enabled.
+          example: null
+        created_at:
+          type: string
+          format: date-time
+          description: ISO Date when the destination was created.
+          example: '2024-01-01T00:00:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          description: ISO Date when the destination was last updated.
+          example: '2024-01-01T00:00:00Z'
+        config:
+          $ref: '#/components/schemas/GCPPubSubConfig'
+        credentials:
+          $ref: '#/components/schemas/GCPPubSubCredentials'
+        delivery_metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Static key-value pairs merged into event metadata on every attempt.
+          example:
+            app-id: my-app
+            region: us-east-1
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Arbitrary contextual information stored with the destination.
+          example:
+            internal-id: '123'
+            team: platform
+        target:
+          type: string
+          description: A human-readable representation of the destination target (project/topic). Read-only.
+          readOnly: true
+          example: my-project-123/events-topic
+        target_url:
+          type: string
+          format: url
+          nullable: true
+          description: A URL link to the destination target (GCP Console link to the topic). Read-only.
+          readOnly: true
+          example: https://console.cloud.google.com/cloudpubsub/topic/detail/events-topic?project=my-project-123
+      example:
+        id: des_gcp_pubsub_123
+        type: gcp_pubsub
+        topics:
+        - order.created
+        - order.updated
+        disabled_at: null
+        created_at: '2024-03-10T14:30:00Z'
+        updated_at: '2024-03-10T14:30:00Z'
+        config:
+          project_id: my-project-123
+          topic: events-topic
+        credentials:
+          service_account_json: '{"type":"service_account","project_id":"my-project-123",...}'
+    DestinationCreateHookdeck:
+      type: object
+      x-docs-type: Hookdeck Event Gateway
+      required:
+      - type
+      - topics
+      - credentials
+      properties:
+        id:
+          type: string
+          description: Optional user-provided ID. An ID will be generated if empty.
+          example: user-provided-id
+        type:
+          type: string
+          description: Type of the destination. Must be 'hookdeck'.
+          enum:
+          - hookdeck
+        topics:
+          $ref: '#/components/schemas/Topics'
+        filter:
+          $ref: '#/components/schemas/Filter'
+        config: {}
+        credentials:
+          $ref: '#/components/schemas/HookdeckCredentials'
+        delivery_metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Static key-value pairs merged into event metadata on every attempt.
+          example:
+            app-id: my-app
+            region: us-east-1
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Arbitrary contextual information stored with the destination.
+          example:
+            internal-id: '123'
+            team: platform
+        created_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Optional override for the creation timestamp. Intended for importing destinations from another system. Must not be in the future. **Admin (API key) auth only — sending this with JWT auth returns 403.** Defaults to the current time when omitted.
+          example: '2024-02-15T10:00:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Optional override for the last-updated timestamp. Intended for importing destinations. Must not be in the future. **Admin (API key) auth only — sending this with JWT auth returns 403.** Defaults to created_at when omitted.
+          example: '2024-02-15T10:00:00Z'
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: If set, the destination is created in a disabled state with this timestamp. Must not be in the future. Defaults to null (enabled).
+          example: null
+    DestinationAWSS3:
+      type: object
+      x-docs-type: AWS S3
+      required:
+      - id
+      - type
+      - topics
+      - config
+      - credentials
+      - created_at
+      - updated_at
+      - disabled_at
+      properties:
+        id:
+          type: string
+          description: Control plane generated ID or user provided ID for the destination.
+          example: des_12345
+        type:
+          type: string
+          description: Type of the destination.
+          enum:
+          - aws_s3
+          example: aws_s3
+        topics:
+          $ref: '#/components/schemas/Topics'
+        filter:
+          $ref: '#/components/schemas/Filter'
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: ISO Date when the destination was disabled, or null if enabled.
+          example: null
+        created_at:
+          type: string
+          format: date-time
+          description: ISO Date when the destination was created.
+          example: '2024-01-01T00:00:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          description: ISO Date when the destination was last updated.
+          example: '2024-01-01T00:00:00Z'
+        config:
+          $ref: '#/components/schemas/AWSS3Config'
+        credentials:
+          $ref: '#/components/schemas/AWSS3Credentials'
+        delivery_metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Static key-value pairs merged into event metadata on every attempt.
+          example:
+            app-id: my-app
+            region: us-east-1
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Arbitrary contextual information stored with the destination.
+          example:
+            internal-id: '123'
+            team: platform
+        target:
+          type: string
+          description: A human-readable representation of the destination target (bucket and region). Read-only.
+          readOnly: true
+          example: my-bucket in us-east-1
+        target_url:
+          type: string
+          format: url
+          nullable: true
+          description: A URL link to the destination target (AWS Console link to the bucket). Read-only.
+          readOnly: true
+          example: null
+      example:
+        id: des_s3_789
+        type: aws_s3
+        topics:
+        - '*'
+        disabled_at: null
+        created_at: '2024-03-20T12:00:00Z'
+        updated_at: '2024-03-20T12:00:00Z'
+        config:
+          bucket: my-bucket
+          region: us-east-1
+        credentials:
+          key: AKIAIOSFODNN7EXAMPLE
+          secret: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+    DestinationWebhook:
+      type: object
+      x-docs-type: Webhook
+      required:
+      - id
+      - type
+      - topics
+      - config
+      - credentials
+      - created_at
+      - updated_at
+      - disabled_at
+      properties:
+        id:
+          type: string
+          description: Control plane generated ID or user provided ID for the destination.
+          example: des_12345
+        type:
+          type: string
+          description: Type of the destination.
+          enum:
+          - webhook
+          example: webhook
+        topics:
+          $ref: '#/components/schemas/Topics'
+        filter:
+          $ref: '#/components/schemas/Filter'
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: ISO Date when the destination was disabled, or null if enabled.
+          example: null
+        created_at:
+          type: string
+          format: date-time
+          description: ISO Date when the destination was created.
+          example: '2024-01-01T00:00:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          description: ISO Date when the destination was last updated.
+          example: '2024-01-01T00:00:00Z'
+        config:
+          $ref: '#/components/schemas/WebhookConfig'
+        credentials:
+          $ref: '#/components/schemas/WebhookCredentials'
+        delivery_metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Static key-value pairs merged into event metadata on every attempt.
+          example:
+            app-id: my-app
+            region: us-east-1
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Arbitrary contextual information stored with the destination.
+          example:
+            internal-id: '123'
+            team: platform
+        target:
+          type: string
+          description: A human-readable representation of the destination target (e.g., URL host). Read-only.
+          readOnly: true
+          example: my-service.com
+        target_url:
+          type: string
+          format: url
+          nullable: true
+          description: A URL link to the destination target (the webhook URL). Read-only.
+          readOnly: true
+          example: https://my-service.com/webhook/handler
+      example:
+        id: des_webhook_123
+        type: webhook
+        topics:
+        - user.created
+        - order.shipped
+        disabled_at: null
+        created_at: '2024-02-15T10:00:00Z'
+        updated_at: '2024-02-15T10:00:00Z'
+        config:
+          url: https://my-service.com/webhook/handler
+        credentials:
+          secret: whsec_abc123def456
+          previous_secret: whsec_prev789xyz012
+          previous_secret_invalid_at: '2024-02-16T10:00:00Z'
+    AWSSQSCredentialsUpdate:
+      type: object
+      description: Partial AWS SQS credentials for PATCH updates (RFC 7396 merge-patch).
+      properties:
+        key:
+          type: string
+          description: AWS Access Key ID.
+        secret:
+          type: string
+          description: AWS Secret Access Key.
+        session:
+          type: string
+          description: Optional AWS Session Token (for temporary credentials).
+    CloudflareQueuesCredentials:
+      type: object
+      required:
+      - api_token
+      properties:
+        api_token:
+          type: string
+          description: Cloudflare API Token with the Account > Queues > Edit (Queues Write) permission, scoped to the target account.
+          example: v1.0-1234567890abcdef...
+    AzureServiceBusCredentials:
+      type: object
+      required:
+      - connection_string
+      properties:
+        connection_string:
+          type: string
+          description: The connection string for the Azure Service Bus namespace.
+          example: Endpoint=sb://namespace.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=abc123
+    AWSKinesisConfigUpdate:
+      type: object
+      description: Partial AWS Kinesis config for PATCH updates (RFC 7396 merge-patch).
+      properties:
+        stream_name:
+          type: string
+          description: The name of the AWS Kinesis stream.
+        region:
+          type: string
+          description: The AWS region where the Kinesis stream is located.
+        endpoint:
+          type: string
+          format: url
+          description: Optional. Custom AWS endpoint URL (e.g., for LocalStack or VPC endpoints).
+        partition_key_template:
+          type: string
+          description: Optional. JMESPath template to extract the partition key from the event payload.
+    DestinationAWSKinesis:
+      type: object
+      x-docs-type: AWS Kinesis
+      required:
+      - id
+      - type
+      - topics
+      - config
+      - credentials
+      - created_at
+      - updated_at
+      - disabled_at
+      properties:
+        id:
+          type: string
+          description: Control plane generated ID or user provided ID for the destination.
+          example: des_12345
+        type:
+          type: string
+          description: Type of the destination.
+          enum:
+          - aws_kinesis
+          example: aws_kinesis
+        topics:
+          $ref: '#/components/schemas/Topics'
+        filter:
+          $ref: '#/components/schemas/Filter'
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: ISO Date when the destination was disabled, or null if enabled.
+          example: null
+        created_at:
+          type: string
+          format: date-time
+          description: ISO Date when the destination was created.
+          example: '2024-01-01T00:00:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          description: ISO Date when the destination was last updated.
+          example: '2024-01-01T00:00:00Z'
+        config:
+          $ref: '#/components/schemas/AWSKinesisConfig'
+        credentials:
+          $ref: '#/components/schemas/AWSKinesisCredentials'
+        delivery_metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Static key-value pairs merged into event metadata on every attempt.
+          example:
+            app-id: my-app
+            region: us-east-1
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Arbitrary contextual information stored with the destination.
+          example:
+            internal-id: '123'
+            team: platform
+        target:
+          type: string
+          description: A human-readable representation of the destination target (Kinesis stream name). Read-only.
+          readOnly: true
+          example: production-events
+        target_url:
+          type: string
+          format: url
+          nullable: true
+          description: A URL link to the destination target (AWS Console link to the stream). Read-only.
+          readOnly: true
+          example: https://eu-west-1.console.aws.amazon.com/kinesis/home?region=eu-west-1#/streams/details/production-events/details
+      example:
+        id: des_kns_xyz
+        type: aws_kinesis
+        topics:
+        - user.created
+        - user.updated
+        disabled_at: null
+        created_at: '2024-03-10T15:30:00Z'
+        updated_at: '2024-03-10T15:30:00Z'
+        config:
+          stream_name: production-events
+          region: eu-west-1
+        credentials:
+          key: AKIAIOSFODNN7EXAMPLE
+          secret: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+    DestinationUpdateAzureServiceBus:
+      type: object
+      x-docs-type: Azure Service Bus
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - azure_servicebus
+          description: Destination type discriminator. Must equal the existing destination's type — type itself cannot be changed via PATCH.
+          example: azure_servicebus
+        topics:
+          $ref: '#/components/schemas/Topics'
+        filter:
+          $ref: '#/components/schemas/Filter'
+        config:
+          $ref: '#/components/schemas/AzureServiceBusConfigUpdate'
+        credentials:
+          $ref: '#/components/schemas/AzureServiceBusCredentialsUpdate'
+        delivery_metadata:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+            - type: 'null'
+          nullable: true
+          description: 'Static key-value pairs merged into event metadata on every attempt. Uses JSON merge-patch semantics (RFC 7396): send keys to add/update, null values to delete keys, null for entire field to clear all. Omit or send {} for no change.'
+          example:
+            app-id: my-app
+            region: us-east-1
+        metadata:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+            - type: 'null'
+          nullable: true
+          description: 'Arbitrary contextual information stored with the destination. Uses JSON merge-patch semantics (RFC 7396): send keys to add/update, null values to delete keys, null for entire field to clear all. Omit or send {} for no change.'
+          example:
+            internal-id: '123'
+            team: platform
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Update the disabled state of the destination. Send a timestamp (must not be in the future) to disable, null to enable, or omit to leave unchanged.
+          example: null
+    AWSSQSConfig:
+      type: object
+      required:
+      - queue_url
+      properties:
+        endpoint:
+          type: string
+          format: url
+          description: Optional. Custom AWS endpoint URL (e.g., for LocalStack or specific regions).
+          example: https://sqs.us-east-1.amazonaws.com
+        queue_url:
+          type: string
+          format: url
+          description: The URL of the SQS queue.
+          example: https://sqs.us-east-1.amazonaws.com/123456789012/my-queue
+    AttemptDestination:
+      type: object
+      description: The destination an attempt was sent to, without credentials. Use the destination endpoints to retrieve credentials.
+      required:
+      - id
+      - tenant_id
+      - type
+      - topics
+      - config
+      - created_at
+      - updated_at
+      - disabled_at
+      - target
+      properties:
+        id:
+          type: string
+          description: Control plane generated ID or user provided ID for the destination.
+          example: des_12345
+        tenant_id:
+          type: string
+          description: The tenant the destination belongs to.
+          example: tenant_123
+        type:
+          type: string
+          description: Type of the destination.
+          example: webhook
+        topics:
+          $ref: '#/components/schemas/Topics'
+        filter:
+          $ref: '#/components/schemas/Filter'
+        config:
+          type: object
+          additionalProperties:
+            type: string
+          description: Type-specific destination configuration.
+          example:
+            url: https://my-service.com/webhook/handler
+        delivery_metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Static key-value pairs merged into event metadata on every attempt.
+          example:
+            app-id: my-app
+            region: us-east-1
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Arbitrary contextual information stored with the destination.
+          example:
+            internal-id: '123'
+            team: platform
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: ISO Date when the destination was disabled, or null if enabled.
+          example: null
+        created_at:
+          type: string
+          format: date-time
+          description: ISO Date when the destination was created.
+          example: '2024-01-01T00:00:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          description: ISO Date when the destination was last updated.
+          example: '2024-01-01T00:00:00Z'
+        target:
+          type: string
+          description: A human-readable representation of the destination target (e.g., URL host). Read-only.
+          readOnly: true
+          example: my-service.com
+        target_url:
+          type: string
+          format: url
+          nullable: true
+          description: A URL link to the destination target. Read-only.
+          readOnly: true
+          example: https://my-service.com/webhook/handler
+    KafkaConfigUpdate:
+      type: object
+      description: Partial Kafka config for PATCH updates (RFC 7396 merge-patch).
+      properties:
+        brokers:
+          type: string
+          description: Comma-separated list of Kafka broker addresses.
+        topic:
+          type: string
+          description: The Kafka topic to publish messages to.
+        sasl_mechanism:
+          type: string
+          enum:
+          - plain
+          - scram-sha-256
+          - scram-sha-512
+          description: SASL authentication mechanism.
+        tls:
+          type: string
+          enum:
+          - 'true'
+          - 'false'
+          description: Whether to enable TLS for the connection.
+        partition_key_template:
+          type: string
+          description: Optional JMESPath template to extract the partition key from the event payload.
+    EventSummary:
+      type: object
+      description: Event object without data (returned when include=event).
+      properties:
+        id:
+          type: string
+          example: evt_123
+        tenant_id:
+          type: string
+          description: The tenant this event belongs to.
+          example: tnt_123
+        destination_id:
+          type: string
+          description: The destination this event was delivered to.
+          example: des_456
+        topic:
+          type: string
+          example: user.created
+        time:
+          type: string
+          format: date-time
+          description: Time the event was received.
+          example: '2024-01-01T00:00:00Z'
+        eligible_for_retry:
+          type: boolean
+          description: Whether this event can be retried.
+          example: true
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          example:
+            source: crm
+    AWSSQSConfigUpdate:
+      type: object
+      description: Partial AWS SQS config for PATCH updates (RFC 7396 merge-patch).
+      properties:
+        endpoint:
+          type: string
+          format: url
+          description: Optional. Custom AWS endpoint URL (e.g., for LocalStack or specific regions).
+          example: https://sqs.us-east-1.amazonaws.com
+        queue_url:
+          type: string
+          format: url
+          description: The URL of the SQS queue.
+          example: https://sqs.us-east-1.amazonaws.com/123456789012/my-queue
+    DestinationCreateAWSKinesis:
+      type: object
+      x-docs-type: AWS Kinesis
+      required:
+      - type
+      - topics
+      - config
+      - credentials
+      properties:
+        id:
+          type: string
+          description: Optional user-provided ID. An ID will be generated if empty.
+          example: user-provided-id
+        type:
+          type: string
+          description: Type of the destination. Must be 'aws_kinesis'.
+          enum:
+          - aws_kinesis
+        topics:
+          $ref: '#/components/schemas/Topics'
+        filter:
+          $ref: '#/components/schemas/Filter'
+        config:
+          $ref: '#/components/schemas/AWSKinesisConfig'
+        credentials:
+          $ref: '#/components/schemas/AWSKinesisCredentials'
+        delivery_metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Static key-value pairs merged into event metadata on every attempt.
+          example:
+            app-id: my-app
+            region: us-east-1
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Arbitrary contextual information stored with the destination.
+          example:
+            internal-id: '123'
+            team: platform
+        created_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Optional override for the creation timestamp. Intended for importing destinations from another system. Must not be in the future. **Admin (API key) auth only — sending this with JWT auth returns 403.** Defaults to the current time when omitted.
+          example: '2024-02-15T10:00:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Optional override for the last-updated timestamp. Intended for importing destinations. Must not be in the future. **Admin (API key) auth only — sending this with JWT auth returns 403.** Defaults to created_at when omitted.
+          example: '2024-02-15T10:00:00Z'
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: If set, the destination is created in a disabled state with this timestamp. Must not be in the future. Defaults to null (enabled).
+          example: null
+    DestinationCreateGCPPubSub:
+      type: object
+      x-docs-type: GCP PubSub
+      required:
+      - type
+      - topics
+      - config
+      - credentials
+      properties:
+        id:
+          type: string
+          description: Optional user-provided ID. An ID will be generated if empty.
+          example: user-provided-id
+        type:
+          type: string
+          description: Type of the destination. Must be 'gcp_pubsub'.
+          enum:
+          - gcp_pubsub
+        topics:
+          $ref: '#/components/schemas/Topics'
+        filter:
+          $ref: '#/components/schemas/Filter'
+        config:
+          $ref: '#/components/schemas/GCPPubSubConfig'
+        credentials:
+          $ref: '#/components/schemas/GCPPubSubCredentials'
+        delivery_metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Static key-value pairs merged into event metadata on every attempt.
+          example:
+            app-id: my-app
+            region: us-east-1
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Arbitrary contextual information stored with the destination.
+          example:
+            internal-id: '123'
+            team: platform
+        created_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Optional override for the creation timestamp. Intended for importing destinations from another system. Must not be in the future. **Admin (API key) auth only — sending this with JWT auth returns 403.** Defaults to the current time when omitted.
+          example: '2024-02-15T10:00:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Optional override for the last-updated timestamp. Intended for importing destinations. Must not be in the future. **Admin (API key) auth only — sending this with JWT auth returns 403.** Defaults to created_at when omitted.
+          example: '2024-02-15T10:00:00Z'
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: If set, the destination is created in a disabled state with this timestamp. Must not be in the future. Defaults to null (enabled).
+          example: null
+    GCPPubSubCredentialsUpdate:
+      type: object
+      description: Partial GCP Pub/Sub credentials for PATCH updates (RFC 7396 merge-patch).
+      properties:
+        service_account_json:
+          type: string
+          description: Service account key JSON. The entire JSON key file content as a string.
+    AWSKinesisCredentials:
+      type: object
+      required:
+      - key
+      - secret
+      properties:
+        key:
+          type: string
+          description: AWS Access Key ID.
+          example: AKIAIOSFODNN7EXAMPLE
+        secret:
+          type: string
+          description: AWS Secret Access Key.
+          example: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+        session:
+          type: string
+          description: Optional AWS Session Token (for temporary credentials).
+          example: AQoDYXdzEPT//////////wEXAMPLE...
+    DestinationCreate:
+      oneOf:
+      - $ref: '#/components/schemas/DestinationCreateWebhook'
+      - $ref: '#/components/schemas/DestinationCreateHookdeck'
+      - $ref: '#/components/schemas/DestinationCreateAWSSQS'
+      - $ref: '#/components/schemas/DestinationCreateAWSKinesis'
+      - $ref: '#/components/schemas/DestinationCreateAWSS3'
+      - $ref: '#/components/schemas/DestinationCreateAzureServiceBus'
+      - $ref: '#/components/schemas/DestinationCreateRabbitMQ'
+      - $ref: '#/components/schemas/DestinationCreateGCPPubSub'
+      - $ref: '#/components/schemas/DestinationCreateKafka'
+      - $ref: '#/components/schemas/DestinationCreateCloudflareQueues'
+      - $ref: '#/components/schemas/DestinationCreateAWSEventBridge'
+      discriminator:
+        propertyName: type
+        mapping:
+          webhook: '#/components/schemas/DestinationCreateWebhook'
+          aws_sqs: '#/components/schemas/DestinationCreateAWSSQS'
+          rabbitmq: '#/components/schemas/DestinationCreateRabbitMQ'
+          hookdeck: '#/components/schemas/DestinationCreateHookdeck'
+          aws_kinesis: '#/components/schemas/DestinationCreateAWSKinesis'
+          azure_servicebus: '#/components/schemas/DestinationCreateAzureServiceBus'
+          aws_s3: '#/components/schemas/DestinationCreateAWSS3'
+          gcp_pubsub: '#/components/schemas/DestinationCreateGCPPubSub'
+          kafka: '#/components/schemas/DestinationCreateKafka'
+          cloudflare_queues: '#/components/schemas/DestinationCreateCloudflareQueues'
+          aws_eventbridge: '#/components/schemas/DestinationCreateAWSEventBridge'
+    DestinationCloudflareQueues:
+      type: object
+      x-docs-type: Cloudflare Queues
+      required:
+      - id
+      - type
+      - topics
+      - config
+      - credentials
+      - created_at
+      - updated_at
+      - disabled_at
+      properties:
+        id:
+          type: string
+          description: Control plane generated ID or user provided ID for the destination.
+          example: des_12345
+        type:
+          type: string
+          description: Type of the destination.
+          enum:
+          - cloudflare_queues
+          example: cloudflare_queues
+        topics:
+          $ref: '#/components/schemas/Topics'
+        filter:
+          $ref: '#/components/schemas/Filter'
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: ISO Date when the destination was disabled, or null if enabled.
+          example: null
+        created_at:
+          type: string
+          format: date-time
+          description: ISO Date when the destination was created.
+          example: '2024-01-01T00:00:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          description: ISO Date when the destination was last updated.
+          example: '2024-01-01T00:00:00Z'
+        config:
+          $ref: '#/components/schemas/CloudflareQueuesConfig'
+        credentials:
+          $ref: '#/components/schemas/CloudflareQueuesCredentials'
+        delivery_metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Static key-value pairs merged into event metadata on every attempt.
+          example:
+            app-id: my-app
+            region: us-east-1
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Arbitrary contextual information stored with the destination.
+          example:
+            internal-id: '123'
+            team: platform
+        target:
+          type: string
+          description: A human-readable representation of the destination target (Cloudflare Queue ID). Read-only.
+          readOnly: true
+          example: 9d7d4cf8a3a14d9aaeb50c3e74e2f4b1
+        target_url:
+          type: string
+          format: url
+          nullable: true
+          description: A URL link to the Cloudflare dashboard queues list for the account. Read-only.
+          readOnly: true
+          example: https://dash.cloudflare.com/023e105f4ecef8ad9ca31a8372d0c353/workers/queues
+      example:
+        id: des_cf_queues_123
+        type: cloudflare_queues
+        topics:
+        - '*'
+        disabled_at: null
+        created_at: '2024-03-10T14:30:00Z'
+        updated_at: '2024-03-10T14:30:00Z'
+        config:
+          account_id: 023e105f4ecef8ad9ca31a8372d0c353
+          queue_id: 9d7d4cf8a3a14d9aaeb50c3e74e2f4b1
+        credentials:
+          api_token: v1.0-1234567890abcdef...
+    WebhookCredentials:
+      type: object
+      properties:
+        secret:
+          type: string
+          description: The secret used for signing webhook requests. Auto-generated if omitted on creation by admin. Read-only for tenants unless rotating.
+          example: whsec_abc123
+        previous_secret:
+          type: string
+          description: The previous secret used during rotation. Valid for 24 hours by default. Read-only.
+          example: whsec_xyz789
+        previous_secret_invalid_at:
+          type: string
+          format: date-time
+          description: ISO timestamp when the previous secret becomes invalid. Read-only.
+          example: '2024-01-02T00:00:00Z'
+    DestinationUpdateCloudflareQueues:
+      type: object
+      x-docs-type: Cloudflare Queues
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - cloudflare_queues
+          description: Destination type discriminator. Must equal the existing destination's type — type itself cannot be changed via PATCH.
+          example: cloudflare_queues
+        topics:
+          $ref: '#/components/schemas/Topics'
+        filter:
+          $ref: '#/components/schemas/Filter'
+        config:
+          $ref: '#/components/schemas/CloudflareQueuesConfigUpdate'
+        credentials:
+          $ref: '#/components/schemas/CloudflareQueuesCredentialsUpdate'
+        delivery_metadata:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+            - type: 'null'
+          nullable: true
+          description: 'Static key-value pairs merged into event metadata on every attempt. Uses JSON merge-patch semantics (RFC 7396): send keys to add/update, null values to delete keys, null for entire field to clear all. Omit or send {} for no change.'
+          example:
+            app-id: my-app
+            region: us-east-1
+        metadata:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+            - type: 'null'
+          nullable: true
+          description: 'Arbitrary contextual information stored with the destination. Uses JSON merge-patch semantics (RFC 7396): send keys to add/update, null values to delete keys, null for entire field to clear all. Omit or send {} for no change.'
+          example:
+            internal-id: '123'
+            team: platform
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Update the disabled state of the destination. Send a timestamp (must not be in the future) to disable, null to enable, or omit to leave unchanged.
+          example: null
+    DestinationUpdateKafka:
+      type: object
+      x-docs-type: Apache Kafka
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - kafka
+          description: Destination type discriminator. Must equal the existing destination's type — type itself cannot be changed via PATCH.
+          example: kafka
+        topics:
+          $ref: '#/components/schemas/Topics'
+        filter:
+          $ref: '#/components/schemas/Filter'
+        config:
+          $ref: '#/components/schemas/KafkaConfigUpdate'
+        credentials:
+          $ref: '#/components/schemas/KafkaCredentialsUpdate'
+        delivery_metadata:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+            - type: 'null'
+          nullable: true
+          description: 'Static key-value pairs merged into event metadata on every attempt. Uses JSON merge-patch semantics (RFC 7396): send keys to add/update, null values to delete keys, null for entire field to clear all. Omit or send {} for no change.'
+          example:
+            app-id: my-app
+            region: us-east-1
+        metadata:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+            - type: 'null'
+          nullable: true
+          description: 'Arbitrary contextual information stored with the destination. Uses JSON merge-patch semantics (RFC 7396): send keys to add/update, null values to delete keys, null for entire field to clear all. Omit or send {} for no change.'
+          example:
+            internal-id: '123'
+            team: platform
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Update the disabled state of the destination. Send a timestamp (must not be in the future) to disable, null to enable, or omit to leave unchanged.
+          example: null
+    DestinationUpdateAWSEventBridge:
+      type: object
+      x-docs-type: AWS EventBridge
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - aws_eventbridge
+          description: Destination type discriminator. Must equal the existing destination's type — type itself cannot be changed via PATCH.
+          example: aws_eventbridge
+        topics:
+          $ref: '#/components/schemas/Topics'
+        filter:
+          $ref: '#/components/schemas/Filter'
+        config:
+          $ref: '#/components/schemas/AWSEventBridgeConfigUpdate'
+        credentials:
+          $ref: '#/components/schemas/AWSEventBridgeCredentialsUpdate'
+        delivery_metadata:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+            - type: 'null'
+          nullable: true
+          description: 'Static key-value pairs merged into event metadata on every attempt. Uses JSON merge-patch semantics (RFC 7396): send keys to add/update, null values to delete keys, null for entire field to clear all. Omit or send {} for no change.'
+          example:
+            app-id: my-app
+            region: us-east-1
+        metadata:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+            - type: 'null'
+          nullable: true
+          description: 'Arbitrary contextual information stored with the destination. Uses JSON merge-patch semantics (RFC 7396): send keys to add/update, null values to delete keys, null for entire field to clear all. Omit or send {} for no change.'
+          example:
+            internal-id: '123'
+            team: platform
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Update the disabled state of the destination. Send a timestamp (must not be in the future) to disable, null to enable, or omit to leave unchanged.
+          example: null
+    AWSS3Config:
+      type: object
+      required:
+      - bucket
+      - region
+      properties:
+        bucket:
+          type: string
+          description: The name of your AWS S3 bucket.
+          example: my-bucket
+        region:
+          type: string
+          description: The AWS region where your bucket is located.
+          pattern: ^[a-z]{2}-[a-z]+-[0-9]+$
+          example: us-east-1
+        key_template:
+          type: string
+          description: JMESPath expression for generating S3 object keys. Default is join('', [time.rfc3339_nano, '_', metadata."event-id", '.json']).
+          example: join('/', [time.year, time.month, time.day, metadata."event-id", '.json'])
+        storage_class:
+          type: string
+          description: The storage class for the S3 objects (e.g., STANDARD, INTELLIGENT_TIERING, GLACIER, etc.). Defaults to "STANDARD".
+          example: STANDARD
+    WebhookConfigUpdate:
+      type: object
+      description: Partial Webhook config for PATCH updates (RFC 7396 merge-patch).
+      properties:
+        url:
+          type: string
+          format: url
+          description: The URL to send the webhook events to.
+          example: https://example.com/webhooks/user
+        custom_headers:
+          type: string
+          description: JSON string of custom HTTP headers to include with every webhook request.
+          example: '{"x-api-key":"secret123","x-tenant-id":"customer-456"}'
+    DestinationUpdateGCPPubSub:
+      type: object
+      x-docs-type: GCP PubSub
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - gcp_pubsub
+          description: Destination type discriminator. Must equal the existing destination's type — type itself cannot be changed via PATCH.
+          example: gcp_pubsub
+        topics:
+          $ref: '#/components/schemas/Topics'
+        filter:
+          $ref: '#/components/schemas/Filter'
+        config:
+          $ref: '#/components/schemas/GCPPubSubConfigUpdate'
+        credentials:
+          $ref: '#/components/schemas/GCPPubSubCredentialsUpdate'
+        delivery_metadata:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+            - type: 'null'
+          nullable: true
+          description: 'Static key-value pairs merged into event metadata on every attempt. Uses JSON merge-patch semantics (RFC 7396): send keys to add/update, null values to delete keys, null for entire field to clear all. Omit or send {} for no change.'
+          example:
+            app-id: my-app
+            region: us-east-1
+        metadata:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+            - type: 'null'
+          nullable: true
+          description: 'Arbitrary contextual information stored with the destination. Uses JSON merge-patch semantics (RFC 7396): send keys to add/update, null values to delete keys, null for entire field to clear all. Omit or send {} for no change.'
+          example:
+            internal-id: '123'
+            team: platform
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Update the disabled state of the destination. Send a timestamp (must not be in the future) to disable, null to enable, or omit to leave unchanged.
+          example: null
+    KafkaConfig:
+      type: object
+      required:
+      - brokers
+      - topic
+      - sasl_mechanism
+      properties:
+        brokers:
+          type: string
+          description: Comma-separated list of Kafka broker addresses.
+          example: broker1.example.com:9092,broker2.example.com:9092
+        topic:
+          type: string
+          description: The Kafka topic to publish messages to.
+          example: events
+        sasl_mechanism:
+          type: string
+          enum:
+          - plain
+          - scram-sha-256
+          - scram-sha-512
+          description: SASL authentication mechanism.
+          example: scram-sha-256
+        tls:
+          type: string
+          enum:
+          - 'true'
+          - 'false'
+          description: Whether to enable TLS for the connection.
+          default: 'true'
+          example: 'true'
+        partition_key_template:
+          type: string
+          description: Optional JMESPath template to extract the partition key from the event payload. Defaults to the event ID.
+          example: data.customer_id
+    DestinationCreateAWSEventBridge:
+      type: object
+      x-docs-type: AWS EventBridge
+      required:
+      - type
+      - topics
+      - config
+      - credentials
+      properties:
+        id:
+          type: string
+          description: Optional user-provided ID. An ID will be generated if empty.
+          example: user-provided-id
+        type:
+          type: string
+          description: Type of the destination. Must be 'aws_eventbridge'.
+          enum:
+          - aws_eventbridge
+        topics:
+          $ref: '#/components/schemas/Topics'
+        filter:
+          $ref: '#/components/schemas/Filter'
+        config:
+          $ref: '#/components/schemas/AWSEventBridgeConfig'
+        credentials:
+          $ref: '#/components/schemas/AWSEventBridgeCredentials'
+        delivery_metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Static key-value pairs merged into event metadata on every attempt.
+          example:
+            app-id: my-app
+            region: us-east-1
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Arbitrary contextual information stored with the destination.
+          example:
+            internal-id: '123'
+            team: platform
+        created_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Optional override for the creation timestamp. Intended for importing destinations from another system. Must not be in the future. **Admin (API key) auth only — sending this with JWT auth returns 403.** Defaults to the current time when omitted.
+          example: '2024-02-15T10:00:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Optional override for the last-updated timestamp. Intended for importing destinations. Must not be in the future. **Admin (API key) auth only — sending this with JWT auth returns 403.** Defaults to created_at when omitted.
+          example: '2024-02-15T10:00:00Z'
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: If set, the destination is created in a disabled state with this timestamp. Must not be in the future. Defaults to null (enabled).
+          example: null
+    Attempt:
+      type: object
+      description: An attempt represents a single delivery attempt of an event to a destination.
+      properties:
+        id:
+          type: string
+          description: Unique identifier for this attempt.
+          example: atm_123
+        tenant_id:
+          type: string
+          description: The tenant this attempt belongs to.
+          example: tnt_123
+        status:
+          type: string
+          enum:
+          - success
+          - failed
+          description: The attempt status.
+          example: success
+        time:
+          type: string
+          format: date-time
+          description: Time the attempt was made.
+          example: '2024-01-01T00:00:05Z'
+        code:
+          type: string
+          description: Response status code or error code.
+          example: '200'
+        response_data:
+          type: object
+          nullable: true
+          description: Response data from the attempt. Only included when include=response_data.
+          additionalProperties: true
+          example:
+            status_code: 200
+            body: '{"status":"ok"}'
+            headers:
+              content-type: application/json
+        attempt_number:
+          type: integer
+          description: The attempt number (1 for first attempt, 2+ for retries).
+          example: 1
+        manual:
+          type: boolean
+          description: Whether this attempt was manually triggered (e.g., a retry initiated by a user).
+          example: false
+        latency_ms:
+          type: integer
+          nullable: true
+          description: Time in milliseconds from sending the attempt to receiving the destination's response (or the error), measured around the provider's publish call. Null for attempts that never reached the provider and for attempts recorded before latency was tracked.
+          example: 212
+        event_id:
+          type: string
+          description: The ID of the associated event.
+          example: evt_123
+        destination_id:
+          type: string
+          description: The destination ID this attempt was sent to.
+          example: des_456
+        event:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/EventFull'
+          - $ref: '#/components/schemas/EventSummary'
+          description: The associated event object. Only present when include=event or include=event.data.
+        destination:
+          nullable: true
+          $ref: '#/components/schemas/AttemptDestination'
+          description: The destination object, without credentials. Only present when include=destination.
+    DestinationHookdeck:
+      type: object
+      x-docs-type: Hookdeck Event Gateway
+      required:
+      - id
+      - type
+      - topics
+      - credentials
+      - created_at
+      - disabled_at
+      properties:
+        id:
+          type: string
+          description: Control plane generated ID or user provided ID for the destination.
+          example: des_12345
+        type:
+          type: string
+          description: Type of the destination.
+          enum:
+          - hookdeck
+          example: hookdeck
+        topics:
+          $ref: '#/components/schemas/Topics'
+        filter:
+          $ref: '#/components/schemas/Filter'
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: ISO Date when the destination was disabled, or null if enabled.
+          example: null
+        created_at:
+          type: string
+          format: date-time
+          description: ISO Date when the destination was created.
+          example: '2024-01-01T00:00:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          description: ISO Date when the destination was last updated.
+          example: '2024-01-01T00:00:00Z'
+        config: {}
+        credentials:
+          $ref: '#/components/schemas/HookdeckCredentials'
+        delivery_metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Static key-value pairs merged into event metadata on every attempt.
+          example:
+            app-id: my-app
+            region: us-east-1
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Arbitrary contextual information stored with the destination.
+          example:
+            internal-id: '123'
+            team: platform
+        target:
+          type: string
+          description: A human-readable representation of the destination target (Hookdeck). Read-only.
+          readOnly: true
+          example: Hookdeck
+        target_url:
+          type: string
+          format: url
+          nullable: true
+          description: A URL link to the destination target (e.g., Hookdeck dashboard). Read-only.
+          readOnly: true
+          example: https://dashboard.hookdeck.com/sources/src_xxxyyyzzz
+      example:
+        id: des_hkd_abc
+        type: hookdeck
+        topics:
+        - '*'
+        disabled_at: null
+        created_at: '2024-04-01T10:00:00Z'
+        updated_at: '2024-04-01T10:00:00Z'
+        config: {}
+        credentials:
+          token: hd_token_...
+    RabbitMQCredentialsUpdate:
+      type: object
+      description: Partial RabbitMQ credentials for PATCH updates (RFC 7396 merge-patch).
+      properties:
+        username:
+          type: string
+          description: RabbitMQ username.
+        password:
+          type: string
+          description: RabbitMQ password.
+    CloudflareQueuesConfigUpdate:
+      type: object
+      description: Partial Cloudflare Queues config for PATCH updates (RFC 7396 merge-patch).
+      properties:
+        account_id:
+          type: string
+          description: Cloudflare Account ID (32-character hex string).
+          pattern: ^[0-9a-f]{32}$
+        queue_id:
+          type: string
+          description: Cloudflare Queue ID (32-character hex string, not the queue name).
+          pattern: ^[0-9a-f]{32}$
+    SeekPagination:
+      type: object
+      description: Cursor-based pagination metadata for list responses.
+      properties:
+        order_by:
+          type: string
+          description: The field being sorted on.
+          example: created_at
+        dir:
+          type: string
+          enum:
+          - asc
+          - desc
+          description: Sort direction.
+          example: desc
+        limit:
+          type: integer
+          description: Page size limit.
+          example: 100
+        next:
+          type: string
+          nullable: true
+          description: Cursor for the next page of results. Null if no more results.
+          example: MTcwNDA2NzIwMA==
+        prev:
+          type: string
+          nullable: true
+          description: Cursor for the previous page of results. Null if on first page.
+          example: null
+    KafkaCredentials:
+      type: object
+      required:
+      - username
+      - password
+      properties:
+        username:
+          type: string
+          description: SASL username for authentication.
+          example: outpost
+        password:
+          type: string
+          description: SASL password for authentication.
+          example: secure_password_123
+    DestinationUpdateAWSSQS:
+      type: object
+      x-docs-type: AWS SQS
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - aws_sqs
+          description: Destination type discriminator. Must equal the existing destination's type — type itself cannot be changed via PATCH.
+          example: aws_sqs
+        topics:
+          $ref: '#/components/schemas/Topics'
+        filter:
+          $ref: '#/components/schemas/Filter'
+        config:
+          $ref: '#/components/schemas/AWSSQSConfigUpdate'
+        credentials:
+          $ref: '#/components/schemas/AWSSQSCredentialsUpdate'
+        delivery_metadata:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+            - type: 'null'
+          nullable: true
+          description: 'Static key-value pairs merged into event metadata on every attempt. Uses JSON merge-patch semantics (RFC 7396): send keys to add/update, null values to delete keys, null for entire field to clear all. Omit or send {} for no change.'
+          example:
+            app-id: my-app
+            region: us-east-1
+        metadata:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+            - type: 'null'
+          nullable: true
+          description: 'Arbitrary contextual information stored with the destination. Uses JSON merge-patch semantics (RFC 7396): send keys to add/update, null values to delete keys, null for entire field to clear all. Omit or send {} for no change.'
+          example:
+            internal-id: '123'
+            team: platform
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Update the disabled state of the destination. Send a timestamp (must not be in the future) to disable, null to enable, or omit to leave unchanged.
+          example: null
+    Destination:
+      oneOf:
+      - $ref: '#/components/schemas/DestinationWebhook'
+      - $ref: '#/components/schemas/DestinationHookdeck'
+      - $ref: '#/components/schemas/DestinationAWSSQS'
+      - $ref: '#/components/schemas/DestinationAWSKinesis'
+      - $ref: '#/components/schemas/DestinationAWSS3'
+      - $ref: '#/components/schemas/DestinationRabbitMQ'
+      - $ref: '#/components/schemas/DestinationAzureServiceBus'
+      - $ref: '#/components/schemas/DestinationGCPPubSub'
+      - $ref: '#/components/schemas/DestinationKafka'
+      - $ref: '#/components/schemas/DestinationCloudflareQueues'
+      - $ref: '#/components/schemas/DestinationAWSEventBridge'
+      discriminator:
+        propertyName: type
+        mapping:
+          webhook: '#/components/schemas/DestinationWebhook'
+          aws_sqs: '#/components/schemas/DestinationAWSSQS'
+          rabbitmq: '#/components/schemas/DestinationRabbitMQ'
+          hookdeck: '#/components/schemas/DestinationHookdeck'
+          aws_kinesis: '#/components/schemas/DestinationAWSKinesis'
+          azure_servicebus: '#/components/schemas/DestinationAzureServiceBus'
+          aws_s3: '#/components/schemas/DestinationAWSS3'
+          gcp_pubsub: '#/components/schemas/DestinationGCPPubSub'
+          kafka: '#/components/schemas/DestinationKafka'
+          cloudflare_queues: '#/components/schemas/DestinationCloudflareQueues'
+          aws_eventbridge: '#/components/schemas/DestinationAWSEventBridge'
+    DestinationType:
+      type: string
+      enum:
+      - webhook
+      - aws_sqs
+      - rabbitmq
+      - hookdeck
+      - aws_kinesis
+      - azure_servicebus
+      - aws_s3
+      - gcp_pubsub
+      - kafka
+      - cloudflare_queues
+      - aws_eventbridge
+      description: Type of destination.
+      example: webhook
+    DestinationAWSSQS:
+      type: object
+      x-docs-type: AWS SQS
+      required:
+      - id
+      - type
+      - topics
+      - config
+      - credentials
+      - created_at
+      - updated_at
+      - disabled_at
+      properties:
+        id:
+          type: string
+          description: Control plane generated ID or user provided ID for the destination.
+          example: des_12345
+        type:
+          type: string
+          description: Type of the destination.
+          enum:
+          - aws_sqs
+          example: aws_sqs
+        topics:
+          $ref: '#/components/schemas/Topics'
+        filter:
+          $ref: '#/components/schemas/Filter'
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: ISO Date when the destination was disabled, or null if enabled.
+          example: null
+        created_at:
+          type: string
+          format: date-time
+          description: ISO Date when the destination was created.
+          example: '2024-01-01T00:00:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          description: ISO Date when the destination was last updated.
+          example: '2024-01-01T00:00:00Z'
+        config:
+          $ref: '#/components/schemas/AWSSQSConfig'
+        credentials:
+          $ref: '#/components/schemas/AWSSQSCredentials'
+        delivery_metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Static key-value pairs merged into event metadata on every attempt.
+          example:
+            app-id: my-app
+            region: us-east-1
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Arbitrary contextual information stored with the destination.
+          example:
+            internal-id: '123'
+            team: platform
+        target:
+          type: string
+          description: A human-readable representation of the destination target (SQS queue name). Read-only.
+          readOnly: true
+          example: my-app-queue
+        target_url:
+          type: string
+          format: url
+          nullable: true
+          description: A URL link to the destination target (AWS Console link to the queue). Read-only.
+          readOnly: true
+          example: https://us-west-2.console.aws.amazon.com/sqs/v2/home?region=us-west-2#/queues/https%3A%2F%2Fsqs.us-west-2.amazonaws.com%2F123456789012%2Fmy-app-queue
+      example:
+        id: des_sqs_456
+        type: aws_sqs
+        topics:
+        - '*'
+        disabled_at: '2024-03-01T12:00:00Z'
+        created_at: '2024-02-20T11:30:00Z'
+        updated_at: '2024-02-20T11:30:00Z'
+        config:
+          queue_url: https://sqs.us-west-2.amazonaws.com/123456789012/my-app-queue
+          endpoint: https://sqs.us-west-2.amazonaws.com
+        credentials:
+          key: AKIAIOSFODNN7EXAMPLE
+          secret: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+    GCPPubSubConfigUpdate:
+      type: object
+      description: Partial GCP Pub/Sub config for PATCH updates (RFC 7396 merge-patch).
+      properties:
+        project_id:
+          type: string
+          description: The GCP project ID.
+        topic:
+          type: string
+          description: The Pub/Sub topic name.
+        endpoint:
+          type: string
+          description: Optional. Custom endpoint URL (e.g., localhost:8085 for emulator).
+    AWSS3Credentials:
+      type: object
+      required:
+      - key
+      - secret
+      properties:
+        key:
+          type: string
+          description: AWS Access Key ID.
+          example: AKIAIOSFODNN7EXAMPLE
+        secret:
+          type: string
+          description: AWS Secret Access Key.
+          example: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+        session:
+          type: string
+          description: Optional AWS Session Token (for temporary credentials).
+          example: AQoDYXdzEPT//////////wEXAMPLE...
+    DestinationUpdateRabbitMQ:
+      type: object
+      x-docs-type: RabbitMQ
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - rabbitmq
+          description: Destination type discriminator. Must equal the existing destination's type — type itself cannot be changed via PATCH.
+          example: rabbitmq
+        topics:
+          $ref: '#/components/schemas/Topics'
+        filter:
+          $ref: '#/components/schemas/Filter'
+        config:
+          $ref: '#/components/schemas/RabbitMQConfigUpdate'
+        credentials:
+          $ref: '#/components/schemas/RabbitMQCredentialsUpdate'
+        delivery_metadata:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+            - type: 'null'
+          nullable: true
+          description: 'Static key-value pairs merged into event metadata on every attempt. Uses JSON merge-patch semantics (RFC 7396): send keys to add/update, null values to delete keys, null for entire field to clear all. Omit or send {} for no change.'
+          example:
+            app-id: my-app
+            region: us-east-1
+        metadata:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+            - type: 'null'
+          nullable: true
+          description: 'Arbitrary contextual information stored with the destination. Uses JSON merge-patch semantics (RFC 7396): send keys to add/update, null values to delete keys, null for entire field to clear all. Omit or send {} for no change.'
+          example:
+            internal-id: '123'
+            team: platform
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Update the disabled state of the destination. Send a timestamp (must not be in the future) to disable, null to enable, or omit to leave unchanged.
+          example: null
+    CloudflareQueuesCredentialsUpdate:
+      type: object
+      description: Partial Cloudflare Queues credentials for PATCH updates (RFC 7396 merge-patch).
+      properties:
+        api_token:
+          type: string
+          description: Cloudflare API Token with the Account > Queues > Edit (Queues Write) permission, scoped to the target account.
+    AWSKinesisConfig:
+      type: object
+      required:
+      - stream_name
+      - region
+      properties:
+        stream_name:
+          type: string
+          description: The name of the AWS Kinesis stream.
+          example: my-data-stream
+        region:
+          type: string
+          description: The AWS region where the Kinesis stream is located.
+          example: us-east-1
+        endpoint:
+          type: string
+          format: url
+          description: Optional. Custom AWS endpoint URL (e.g., for LocalStack or VPC endpoints).
+          example: https://kinesis.us-east-1.amazonaws.com
+        partition_key_template:
+          type: string
+          description: Optional. JMESPath template to extract the partition key from the event payload (e.g., `metadata."event-id"`). Defaults to event ID.
+          example: data."user_id"
+    Filter:
+      type: object
+      nullable: true
+      additionalProperties: true
+      description: 'Optional JSON schema filter for event matching. Events must match this filter to be delivered to this destination.
+
+        Supports operators: $eq, $neq, $gt, $gte, $lt, $lte, $in, $nin, $startsWith, $endsWith, $exist, $or, $and, $not.
+
+        If null or empty, all events matching the topic filter will be delivered.
+
+        Uses full-replacement semantics on update: send a new object to replace, null or `{}` to clear, omit for no change.
+
+        '
+      example:
+        data:
+          amount:
+            $gte: 100
+          customer:
+            tier: premium
+    APIErrorResponse:
+      type: object
+      description: Standard error response format.
+      properties:
+        status:
+          type: integer
+          description: HTTP status code.
+          example: 422
+        message:
+          type: string
+          description: Human-readable error message.
+          example: validation error
+        data:
+          description: Additional error details. For validation errors, this is an array of human-readable messages.
+          oneOf:
+          - type: array
+            items:
+              type: string
+            description: Array of validation error messages.
+            example:
+            - email is required
+            - password must be at least 6 characters
+          - type: object
+            additionalProperties: true
+            description: Additional contextual data about the error.
+    RabbitMQConfig:
+      type: object
+      required:
+      - server_url
+      - exchange
+      properties:
+        server_url:
+          type: string
+          description: RabbitMQ server address (host:port).
+          example: localhost:5672
+        exchange:
+          type: string
+          description: The exchange to publish messages to.
+          example: my-exchange
+        tls:
+          type: string
+          enum:
+          - 'true'
+          - 'false'
+          description: Whether to use TLS connection (amqps). Defaults to "false".
+          example: 'false'
+    DestinationCreateAzureServiceBus:
+      type: object
+      x-docs-type: Azure Service Bus
+      required:
+      - type
+      - topics
+      - config
+      - credentials
+      properties:
+        id:
+          type: string
+          description: Optional user-provided ID. An ID will be generated if empty.
+          example: user-provided-id
+        type:
+          type: string
+          description: Type of the destination. Must be 'azure_servicebus'.
+          enum:
+          - azure_servicebus
+        topics:
+          $ref: '#/components/schemas/Topics'
+        filter:
+          $ref: '#/components/schemas/Filter'
+        config:
+          $ref: '#/components/schemas/AzureServiceBusConfig'
+        credentials:
+          $ref: '#/components/schemas/AzureServiceBusCredentials'
+        delivery_metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Static key-value pairs merged into event metadata on every attempt.
+          example:
+            app-id: my-app
+            region: us-east-1
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Arbitrary contextual information stored with the destination.
+          example:
+            internal-id: '123'
+            team: platform
+        created_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Optional override for the creation timestamp. Intended for importing destinations from another system. Must not be in the future. **Admin (API key) auth only — sending this with JWT auth returns 403.** Defaults to the current time when omitted.
+          example: '2024-02-15T10:00:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Optional override for the last-updated timestamp. Intended for importing destinations. Must not be in the future. **Admin (API key) auth only — sending this with JWT auth returns 403.** Defaults to created_at when omitted.
+          example: '2024-02-15T10:00:00Z'
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: If set, the destination is created in a disabled state with this timestamp. Must not be in the future. Defaults to null (enabled).
+          example: null
+    CloudflareQueuesConfig:
+      type: object
+      required:
+      - account_id
+      - queue_id
+      properties:
+        account_id:
+          type: string
+          description: Cloudflare Account ID (32-character hex string).
+          pattern: ^[0-9a-f]{32}$
+          example: 023e105f4ecef8ad9ca31a8372d0c353
+        queue_id:
+          type: string
+          description: Cloudflare Queue ID (32-character hex string, not the queue name).
+          pattern: ^[0-9a-f]{32}$
+          example: 9d7d4cf8a3a14d9aaeb50c3e74e2f4b1
+    GCPPubSubConfig:
+      type: object
+      required:
+      - project_id
+      - topic
+      properties:
+        project_id:
+          type: string
+          description: The GCP project ID.
+          example: my-project-123
+        topic:
+          type: string
+          description: The Pub/Sub topic name.
+          example: events-topic
+        endpoint:
+          type: string
+          description: Optional. Custom endpoint URL (e.g., localhost:8085 for emulator).
+          example: pubsub.googleapis.com:443
+    AzureServiceBusConfigUpdate:
+      type: object
+      description: Partial Azure Service Bus config for PATCH updates (RFC 7396 merge-patch).
+      properties:
+        name:
+          type: string
+          description: The name of the Azure Service Bus queue or topic to publish messages to.
+    AWSKinesisCredentialsUpdate:
+      type: object
+      description: Partial AWS Kinesis credentials for PATCH updates (RFC 7396 merge-patch).
+      properties:
+        key:
+          type: string
+          description: AWS Access Key ID.
+        secret:
+          type: string
+          description: AWS Secret Access Key.
+        session:
+          type: string
+          description: Optional AWS Session Token (for temporary credentials).
+    HookdeckCredentials:
+      type: object
+      required:
+      - token
+      properties:
+        token:
+          type: string
+          description: Hookdeck authentication token.
+          example: hd_token_...
+    DestinationCreateAWSSQS:
+      type: object
+      x-docs-type: AWS SQS
+      required:
+      - type
+      - topics
+      - config
+      - credentials
+      properties:
+        id:
+          type: string
+          description: Optional user-provided ID. An ID will be generated if empty.
+          example: user-provided-id
+        type:
+          type: string
+          description: Type of the destination. Must be 'aws_sqs'.
+          enum:
+          - aws_sqs
+        topics:
+          $ref: '#/components/schemas/Topics'
+        filter:
+          $ref: '#/components/schemas/Filter'
+        config:
+          $ref: '#/components/schemas/AWSSQSConfig'
+        credentials:
+          $ref: '#/components/schemas/AWSSQSCredentials'
+        delivery_metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Static key-value pairs merged into event metadata on every attempt.
+          example:
+            app-id: my-app
+            region: us-east-1
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Arbitrary contextual information stored with the destination.
+          example:
+            internal-id: '123'
+            team: platform
+        created_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Optional override for the creation timestamp. Intended for importing destinations from another system. Must not be in the future. **Admin (API key) auth only — sending this with JWT auth returns 403.** Defaults to the current time when omitted.
+          example: '2024-02-15T10:00:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Optional override for the last-updated timestamp. Intended for importing destinations. Must not be in the future. **Admin (API key) auth only — sending this with JWT auth returns 403.** Defaults to created_at when omitted.
+          example: '2024-02-15T10:00:00Z'
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: If set, the destination is created in a disabled state with this timestamp. Must not be in the future. Defaults to null (enabled).
+          example: null
+    AWSS3ConfigUpdate:
+      type: object
+      description: Partial AWS S3 config for PATCH updates (RFC 7396 merge-patch).
+      properties:
+        bucket:
+          type: string
+          description: The name of your AWS S3 bucket.
+        region:
+          type: string
+          pattern: ^[a-z]{2}-[a-z]+-[0-9]+$
+          description: The AWS region where your bucket is located.
+        key_template:
+          type: string
+          description: JMESPath expression for generating S3 object keys.
+        storage_class:
+          type: string
+          description: The storage class for the S3 objects.
+    KafkaCredentialsUpdate:
+      type: object
+      description: Partial Kafka credentials for PATCH updates (RFC 7396 merge-patch).
+      properties:
+        username:
+          type: string
+          description: SASL username for authentication.
+        password:
+          type: string
+          description: SASL password for authentication.
+    Topics:
+      oneOf:
+      - type: string
+        enum:
+        - '*'
+      - type: array
+        items:
+          type: string
+      description: '"*" or an array of enabled topics. Topic strings can include "*" as a wildcard matching any run of characters. When available topics are configured, wildcard patterns must match at least one available topic.'
+      example: '*'
+    DestinationCreateWebhook:
+      type: object
+      x-docs-type: Webhook
+      required:
+      - type
+      - topics
+      - config
+      properties:
+        id:
+          type: string
+          description: Optional user-provided ID. An ID will be generated if empty.
+          example: user-provided-id
+        type:
+          type: string
+          description: Type of the destination. Must be 'webhook'.
+          enum:
+          - webhook
+        topics:
+          $ref: '#/components/schemas/Topics'
+        filter:
+          $ref: '#/components/schemas/Filter'
+        config:
+          $ref: '#/components/schemas/WebhookConfig'
+        credentials:
+          $ref: '#/components/schemas/WebhookCredentials'
+        delivery_metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Static key-value pairs merged into event metadata on every attempt.
+          example:
+            app-id: my-app
+            region: us-east-1
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Arbitrary contextual information stored with the destination.
+          example:
+            internal-id: '123'
+            team: platform
+        created_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Optional override for the creation timestamp. Intended for importing destinations from another system. Must not be in the future. **Admin (API key) auth only — sending this with JWT auth returns 403.** Defaults to the current time when omitted.
+          example: '2024-02-15T10:00:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Optional override for the last-updated timestamp. Intended for importing destinations. Must not be in the future. **Admin (API key) auth only — sending this with JWT auth returns 403.** Defaults to created_at when omitted.
+          example: '2024-02-15T10:00:00Z'
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: If set, the destination is created in a disabled state with this timestamp. Must not be in the future. Defaults to null (enabled).
+          example: null
+    AWSEventBridgeConfigUpdate:
+      type: object
+      description: Partial AWS EventBridge config for PATCH updates (RFC 7396 merge-patch).
+      properties:
+        event_bus_name:
+          type: string
+          description: Optional. The name or ARN of the EventBridge event bus. Defaults to the account's default event bus.
+        region:
+          type: string
+          description: The AWS region where the event bus is located.
+        endpoint:
+          type: string
+          format: url
+          description: Optional. Custom AWS endpoint URL (e.g., for LocalStack or VPC endpoints).
+    DestinationKafka:
+      type: object
+      x-docs-type: Apache Kafka
+      required:
+      - id
+      - type
+      - topics
+      - config
+      - credentials
+      - created_at
+      - updated_at
+      - disabled_at
+      properties:
+        id:
+          type: string
+          description: Control plane generated ID or user provided ID for the destination.
+          example: des_12345
+        type:
+          type: string
+          description: Type of the destination.
+          enum:
+          - kafka
+          example: kafka
+        topics:
+          $ref: '#/components/schemas/Topics'
+        filter:
+          $ref: '#/components/schemas/Filter'
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: ISO Date when the destination was disabled, or null if enabled.
+          example: null
+        created_at:
+          type: string
+          format: date-time
+          description: ISO Date when the destination was created.
+          example: '2024-01-01T00:00:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          description: ISO Date when the destination was last updated.
+          example: '2024-01-01T00:00:00Z'
+        config:
+          $ref: '#/components/schemas/KafkaConfig'
+        credentials:
+          $ref: '#/components/schemas/KafkaCredentials'
+        delivery_metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Static key-value pairs merged into event metadata on every attempt.
+          example:
+            app-id: my-app
+            region: us-east-1
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Arbitrary contextual information stored with the destination.
+          example:
+            internal-id: '123'
+            team: platform
+        target:
+          type: string
+          description: A human-readable representation of the destination target (broker and topic). Read-only.
+          readOnly: true
+          example: broker1.example.com:9092 / events
+        target_url:
+          type: string
+          format: url
+          nullable: true
+          description: A URL link to the destination target. Read-only.
+          readOnly: true
+          example: null
+      example:
+        id: des_kafka_123
+        type: kafka
+        topics:
+        - order.created
+        - order.updated
+        disabled_at: null
+        created_at: '2024-03-10T14:30:00Z'
+        updated_at: '2024-03-10T14:30:00Z'
+        config:
+          brokers: broker1.example.com:9092,broker2.example.com:9092
+          topic: events
+          sasl_mechanism: scram-sha-256
+          tls: 'true'
+        credentials:
+          username: outpost
+          password: secure_password_123
+    AzureServiceBusCredentialsUpdate:
+      type: object
+      description: Partial Azure Service Bus credentials for PATCH updates (RFC 7396 merge-patch).
+      properties:
+        connection_string:
+          type: string
+          description: The connection string for the Azure Service Bus namespace.
+    DestinationCreateKafka:
+      type: object
+      x-docs-type: Apache Kafka
+      required:
+      - type
+      - topics
+      - config
+      - credentials
+      properties:
+        id:
+          type: string
+          description: Optional user-provided ID. An ID will be generated if empty.
+          example: user-provided-id
+        type:
+          type: string
+          description: Type of the destination. Must be 'kafka'.
+          enum:
+          - kafka
+        topics:
+          $ref: '#/components/schemas/Topics'
+        filter:
+          $ref: '#/components/schemas/Filter'
+        config:
+          $ref: '#/components/schemas/KafkaConfig'
+        credentials:
+          $ref: '#/components/schemas/KafkaCredentials'
+        delivery_metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Static key-value pairs merged into event metadata on every attempt.
+          example:
+            app-id: my-app
+            region: us-east-1
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Arbitrary contextual information stored with the destination.
+          example:
+            internal-id: '123'
+            team: platform
+        created_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Optional override for the creation timestamp. Intended for importing destinations from another system. Must not be in the future. **Admin (API key) auth only — sending this with JWT auth returns 403.** Defaults to the current time when omitted.
+          example: '2024-02-15T10:00:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Optional override for the last-updated timestamp. Intended for importing destinations. Must not be in the future. **Admin (API key) auth only — sending this with JWT auth returns 403.** Defaults to created_at when omitted.
+          example: '2024-02-15T10:00:00Z'
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: If set, the destination is created in a disabled state with this timestamp. Must not be in the future. Defaults to null (enabled).
+          example: null
+    AttemptPaginatedResult:
+      type: object
+      description: Paginated list of attempts.
+      properties:
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attempt'
+          description: Array of attempt objects.
+    HookdeckCredentialsUpdate:
+      type: object
+      description: Partial Hookdeck credentials for PATCH updates (RFC 7396 merge-patch).
+      properties:
+        token:
+          type: string
+          description: Hookdeck authentication token.
+    RabbitMQConfigUpdate:
+      type: object
+      description: Partial RabbitMQ config for PATCH updates (RFC 7396 merge-patch).
+      properties:
+        server_url:
+          type: string
+          description: RabbitMQ server address (host:port).
+        exchange:
+          type: string
+          description: The exchange to publish messages to.
+        tls:
+          type: string
+          enum:
+          - 'true'
+          - 'false'
+          description: Whether to use TLS connection (amqps).
+    DestinationAWSEventBridge:
+      type: object
+      x-docs-type: AWS EventBridge
+      required:
+      - id
+      - type
+      - topics
+      - config
+      - credentials
+      - created_at
+      - updated_at
+      - disabled_at
+      properties:
+        id:
+          type: string
+          description: Control plane generated ID or user provided ID for the destination.
+          example: des_12345
+        type:
+          type: string
+          description: Type of the destination.
+          enum:
+          - aws_eventbridge
+          example: aws_eventbridge
+        topics:
+          $ref: '#/components/schemas/Topics'
+        filter:
+          $ref: '#/components/schemas/Filter'
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: ISO Date when the destination was disabled, or null if enabled.
+          example: null
+        created_at:
+          type: string
+          format: date-time
+          description: ISO Date when the destination was created.
+          example: '2024-01-01T00:00:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          description: ISO Date when the destination was last updated.
+          example: '2024-01-01T00:00:00Z'
+        config:
+          $ref: '#/components/schemas/AWSEventBridgeConfig'
+        credentials:
+          $ref: '#/components/schemas/AWSEventBridgeCredentials'
+        delivery_metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Static key-value pairs merged into event metadata on every attempt.
+          example:
+            app-id: my-app
+            region: us-east-1
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Arbitrary contextual information stored with the destination.
+          example:
+            internal-id: '123'
+            team: platform
+        target:
+          type: string
+          description: A human-readable representation of the destination target (event bus name and region, or the event bus ARN). Read-only.
+          readOnly: true
+          example: my-event-bus in us-east-1
+        target_url:
+          type: string
+          format: url
+          nullable: true
+          description: A URL link to the destination target (AWS Console link to the event bus). Null when the event bus is given as an ARN. Read-only.
+          readOnly: true
+          example: https://us-east-1.console.aws.amazon.com/events/home?region=us-east-1#/eventbus/my-event-bus
+      example:
+        id: des_evb_123
+        type: aws_eventbridge
+        topics:
+        - '*'
+        disabled_at: null
+        created_at: '2024-03-10T14:30:00Z'
+        updated_at: '2024-03-10T14:30:00Z'
+        config:
+          event_bus_name: my-event-bus
+          region: us-east-1
+        credentials:
+          key: AKIAIOSFODNN7EXAMPLE
+          secret: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+    DestinationCreateRabbitMQ:
+      type: object
+      x-docs-type: RabbitMQ
+      required:
+      - type
+      - topics
+      - config
+      - credentials
+      properties:
+        id:
+          type: string
+          description: Optional user-provided ID. An ID will be generated if empty.
+          example: user-provided-id
+        type:
+          type: string
+          description: Type of the destination. Must be 'rabbitmq'.
+          enum:
+          - rabbitmq
+        topics:
+          $ref: '#/components/schemas/Topics'
+        filter:
+          $ref: '#/components/schemas/Filter'
+        config:
+          $ref: '#/components/schemas/RabbitMQConfig'
+        credentials:
+          $ref: '#/components/schemas/RabbitMQCredentials'
+        delivery_metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Static key-value pairs merged into event metadata on every attempt.
+          example:
+            app-id: my-app
+            region: us-east-1
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Arbitrary contextual information stored with the destination.
+          example:
+            internal-id: '123'
+            team: platform
+        created_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Optional override for the creation timestamp. Intended for importing destinations from another system. Must not be in the future. **Admin (API key) auth only — sending this with JWT auth returns 403.** Defaults to the current time when omitted.
+          example: '2024-02-15T10:00:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Optional override for the last-updated timestamp. Intended for importing destinations. Must not be in the future. **Admin (API key) auth only — sending this with JWT auth returns 403.** Defaults to created_at when omitted.
+          example: '2024-02-15T10:00:00Z'
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: If set, the destination is created in a disabled state with this timestamp. Must not be in the future. Defaults to null (enabled).
+          example: null
+    DestinationUpdateHookdeck:
+      type: object
+      x-docs-type: Hookdeck Event Gateway
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - hookdeck
+          description: Destination type discriminator. Must equal the existing destination's type — type itself cannot be changed via PATCH.
+          example: hookdeck
+        topics:
+          $ref: '#/components/schemas/Topics'
+        filter:
+          $ref: '#/components/schemas/Filter'
+        credentials:
+          $ref: '#/components/schemas/HookdeckCredentialsUpdate'
+        delivery_metadata:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+            - type: 'null'
+          nullable: true
+          description: 'Static key-value pairs merged into event metadata on every attempt. Uses JSON merge-patch semantics (RFC 7396): send keys to add/update, null values to delete keys, null for entire field to clear all. Omit or send {} for no change.'
+          example:
+            app-id: my-app
+            region: us-east-1
+        metadata:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+            - type: 'null'
+          nullable: true
+          description: 'Arbitrary contextual information stored with the destination. Uses JSON merge-patch semantics (RFC 7396): send keys to add/update, null values to delete keys, null for entire field to clear all. Omit or send {} for no change.'
+          example:
+            internal-id: '123'
+            team: platform
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Update the disabled state of the destination. Send a timestamp (must not be in the future) to disable, null to enable, or omit to leave unchanged.
+          example: null
+    DestinationCreateAWSS3:
+      type: object
+      x-docs-type: AWS S3
+      required:
+      - type
+      - topics
+      - config
+      - credentials
+      properties:
+        id:
+          type: string
+          description: Optional user-provided ID. An ID will be generated if empty.
+          example: user-provided-id
+        type:
+          type: string
+          description: Type of the destination. Must be 'aws_s3'.
+          enum:
+          - aws_s3
+        topics:
+          $ref: '#/components/schemas/Topics'
+        filter:
+          $ref: '#/components/schemas/Filter'
+        config:
+          $ref: '#/components/schemas/AWSS3Config'
+        credentials:
+          $ref: '#/components/schemas/AWSS3Credentials'
+        delivery_metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Static key-value pairs merged into event metadata on every attempt.
+          example:
+            app-id: my-app
+            region: us-east-1
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Arbitrary contextual information stored with the destination.
+          example:
+            internal-id: '123'
+            team: platform
+        created_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Optional override for the creation timestamp. Intended for importing destinations from another system. Must not be in the future. **Admin (API key) auth only — sending this with JWT auth returns 403.** Defaults to the current time when omitted.
+          example: '2024-02-15T10:00:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Optional override for the last-updated timestamp. Intended for importing destinations. Must not be in the future. **Admin (API key) auth only — sending this with JWT auth returns 403.** Defaults to created_at when omitted.
+          example: '2024-02-15T10:00:00Z'
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: If set, the destination is created in a disabled state with this timestamp. Must not be in the future. Defaults to null (enabled).
+          example: null
+    GCPPubSubCredentials:
+      type: object
+      required:
+      - service_account_json
+      properties:
+        service_account_json:
+          type: string
+          description: Service account key JSON. The entire JSON key file content as a string.
+          example: '{"type":"service_account","project_id":"my-project","private_key_id":"key123","private_key":"-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n","client_email":"my-service@my-project.iam.gserviceaccount.com"}'
+    DestinationUpdateAWSS3:
+      type: object
+      x-docs-type: AWS S3
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - aws_s3
+          description: Destination type discriminator. Must equal the existing destination's type — type itself cannot be changed via PATCH.
+          example: aws_s3
+        topics:
+          $ref: '#/components/schemas/Topics'
+        filter:
+          $ref: '#/components/schemas/Filter'
+        config:
+          $ref: '#/components/schemas/AWSS3ConfigUpdate'
+        credentials:
+          $ref: '#/components/schemas/AWSS3CredentialsUpdate'
+        delivery_metadata:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+            - type: 'null'
+          nullable: true
+          description: 'Static key-value pairs merged into event metadata on every attempt. Uses JSON merge-patch semantics (RFC 7396): send keys to add/update, null values to delete keys, null for entire field to clear all. Omit or send {} for no change.'
+          example:
+            app-id: my-app
+            region: us-east-1
+        metadata:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+            - type: 'null'
+          nullable: true
+          description: 'Arbitrary contextual information stored with the destination. Uses JSON merge-patch semantics (RFC 7396): send keys to add/update, null values to delete keys, null for entire field to clear all. Omit or send {} for no change.'
+          example:
+            internal-id: '123'
+            team: platform
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Update the disabled state of the destination. Send a timestamp (must not be in the future) to disable, null to enable, or omit to leave unchanged.
+          example: null
+    Operator:
+      type: object
+      description: Comparison operators for filtering by date-time values (RFC3339 or YYYY-MM-DD format).
+      properties:
+        gte:
+          type: string
+          format: date-time
+          description: Filter with value >= the specified date-time.
+        lte:
+          type: string
+          format: date-time
+          description: Filter with value <= the specified date-time.
+        gt:
+          type: string
+          format: date-time
+          description: Filter with value > the specified date-time.
+        lt:
+          type: string
+          format: date-time
+          description: Filter with value < the specified date-time.
+    DestinationUpdate:
+      oneOf:
+      - $ref: '#/components/schemas/DestinationUpdateWebhook'
+      - $ref: '#/components/schemas/DestinationUpdateHookdeck'
+      - $ref: '#/components/schemas/DestinationUpdateAWSSQS'
+      - $ref: '#/components/schemas/DestinationUpdateAWSKinesis'
+      - $ref: '#/components/schemas/DestinationUpdateAWSS3'
+      - $ref: '#/components/schemas/DestinationUpdateAzureServiceBus'
+      - $ref: '#/components/schemas/DestinationUpdateGCPPubSub'
+      - $ref: '#/components/schemas/DestinationUpdateRabbitMQ'
+      - $ref: '#/components/schemas/DestinationUpdateKafka'
+      - $ref: '#/components/schemas/DestinationUpdateCloudflareQueues'
+      - $ref: '#/components/schemas/DestinationUpdateAWSEventBridge'
+      discriminator:
+        propertyName: type
+        mapping:
+          webhook: '#/components/schemas/DestinationUpdateWebhook'
+          aws_sqs: '#/components/schemas/DestinationUpdateAWSSQS'
+          rabbitmq: '#/components/schemas/DestinationUpdateRabbitMQ'
+          hookdeck: '#/components/schemas/DestinationUpdateHookdeck'
+          aws_kinesis: '#/components/schemas/DestinationUpdateAWSKinesis'
+          azure_servicebus: '#/components/schemas/DestinationUpdateAzureServiceBus'
+          aws_s3: '#/components/schemas/DestinationUpdateAWSS3'
+          gcp_pubsub: '#/components/schemas/DestinationUpdateGCPPubSub'
+          kafka: '#/components/schemas/DestinationUpdateKafka'
+          cloudflare_queues: '#/components/schemas/DestinationUpdateCloudflareQueues'
+          aws_eventbridge: '#/components/schemas/DestinationUpdateAWSEventBridge'
+    DestinationConfigCLIAuthBearerToken:
+      type: object
+      properties:
+        token:
           type: string
       additionalProperties: false
-      x-docs-type: AWS_SIGNATURE
+      x-docs-type: BEARER_TOKEN
+    DestinationConfigMockAPIAuthGCPServiceAccount:
+      type: object
+      properties:
+        service_account_key:
+          type: string
+        scope:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      x-docs-type: GCP_SERVICE_ACCOUNT
+    SeekPagination_2:
+      type: object
+      properties:
+        order_by:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        dir:
+          anyOf:
+          - $ref: '#/components/schemas/OrderByDirection'
+          - type: array
+            items:
+              $ref: '#/components/schemas/OrderByDirection'
+        limit:
+          type: integer
+        prev:
+          type: string
+        next:
+          type: string
+      additionalProperties: false
+    DestinationConfigHTTPAuthCustomSHA256HMACSignature:
+      type: object
+      properties:
+        key:
+          type: string
+        signing_secret:
+          type: string
+      additionalProperties: false
+      x-docs-type: CUSTOM_SIGNATURE
     DestinationConfigHTTPAuth:
       type: object
       properties: {}
@@ -628,46 +4649,117 @@ components:
       - $ref: '#/components/schemas/DestinationConfigHTTPAuthAWSSignature'
       - $ref: '#/components/schemas/DestinationConfigHTTPAuthGCPServiceAccount'
       - $ref: '#/components/schemas/DestinationConfigHTTPAuthEmpty'
-    DestinationConfigMockAPIAuthEmpty:
-      x-docs-hide: true
-      x-docs-nullable: true
-    DestinationConfigCLIAuthCustomSHA256HMACSignature:
+    DestinationConfigHTTPAuthBearerToken:
+      type: object
+      properties:
+        token:
+          type: string
+      additionalProperties: false
+      x-docs-type: BEARER_TOKEN
+    DestinationConfigCLIAuthOAuth2ClientCredentials:
+      type: object
+      properties:
+        auth_server:
+          type: string
+        client_id:
+          type: string
+        client_secret:
+          type: string
+        scope:
+          type: string
+        authentication_type:
+          type: string
+          enum:
+          - basic
+          - bearer
+          - x-www-form-urlencoded
+      additionalProperties: false
+      x-docs-type: OAUTH2_CLIENT_CREDENTIALS
+    DestinationConfigCLIAuthAWSSignature:
+      type: object
+      properties:
+        access_key_id:
+          type: string
+        secret_access_key:
+          type: string
+        region:
+          type: string
+        service:
+          type: string
+      additionalProperties: false
+      x-docs-type: AWS_SIGNATURE
+    DestinationConfigCLIAuthHookdeckSignatureDefault:
+      type: object
+      properties: {}
+      additionalProperties: false
+      x-docs-type: HOOKDECK_SIGNATURE
+    DestinationConfigCLIAuth:
+      type: object
+      properties: {}
+      additionalProperties: false
+      oneOf:
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthHookdeckSignatureDefault'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthCustomSHA256HMACSignature'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthBasicAuth'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthAPIKey'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthBearerToken'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthOAuth2ClientCredentials'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthOAuth2AuthorizationCode'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthAWSSignature'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthGCPServiceAccount'
+      - $ref: '#/components/schemas/DestinationConfigCLIAuthEmpty'
+    DestinationConfigCLIAuthAPIKey:
       type: object
       properties:
         key:
           type: string
-        signing_secret:
+        api_key:
           type: string
+        to:
+          type: string
+          enum:
+          - header
+          - query
       additionalProperties: false
-      x-docs-type: CUSTOM_SIGNATURE
-    Operators:
+      x-docs-type: API_KEY
+    DestinationConfigCLIAuthGCPServiceAccount:
       type: object
       properties:
-        gt:
+        service_account_key:
+          type: string
+        scope:
           type:
           - string
           - 'null'
-          format: date-time
-        gte:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        le:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        lte:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        any:
-          type: boolean
-        all:
-          type: boolean
       additionalProperties: false
+      x-docs-type: GCP_SERVICE_ACCOUNT
+    VerificationConfig:
+      type: object
+      properties: {}
+      additionalProperties: false
+      oneOf:
+      - $ref: '#/components/schemas/DestinationTypeConfigHTTP'
+        x-required: true
+      - $ref: '#/components/schemas/DestinationTypeConfigCLI'
+        x-required: true
+      - $ref: '#/components/schemas/DestinationTypeConfigMOCK_API'
+      description: The type configs for the specified type
+      default: {}
+    DestinationConfigMockAPIAuth:
+      type: object
+      properties: {}
+      additionalProperties: false
+      oneOf:
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthHookdeckSignatureDefault'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthCustomSHA256HMACSignature'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthBasicAuth'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthAPIKey'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthBearerToken'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthOAuth2ClientCredentials'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthOAuth2AuthorizationCode'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthAWSSignature'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthGCPServiceAccount'
+      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthEmpty'
     DestinationConfigMockAPIAuthOAuth2AuthorizationCode:
       type: object
       properties:
@@ -683,16 +4775,26 @@ components:
           type: string
       additionalProperties: false
       x-docs-type: OAUTH2_AUTHORIZATION_CODE
-    DestinationConfigHTTPAuthBasicAuth:
+    DestinationConfigMockAPIAuthOAuth2ClientCredentials:
       type: object
       properties:
-        username:
+        auth_server:
           type: string
-        password:
+        client_id:
           type: string
+        client_secret:
+          type: string
+        scope:
+          type: string
+        authentication_type:
+          type: string
+          enum:
+          - basic
+          - bearer
+          - x-www-form-urlencoded
       additionalProperties: false
-      x-docs-type: BASIC_AUTH
-    Destination:
+      x-docs-type: OAUTH2_CLIENT_CREDENTIALS
+    Destination_2:
       type: object
       properties:
         id:
@@ -742,90 +4844,22 @@ components:
       - created_at
       additionalProperties: false
       description: Associated [Destination](#destination-object) object
-    DestinationConfigCLIAuthHookdeckSignatureDefault:
-      type: object
-      properties: {}
-      additionalProperties: false
-      x-docs-type: HOOKDECK_SIGNATURE
-    DestinationConfigCLIAuth:
-      type: object
-      properties: {}
-      additionalProperties: false
-      oneOf:
-      - $ref: '#/components/schemas/DestinationConfigCLIAuthHookdeckSignatureDefault'
-      - $ref: '#/components/schemas/DestinationConfigCLIAuthCustomSHA256HMACSignature'
-      - $ref: '#/components/schemas/DestinationConfigCLIAuthBasicAuth'
-      - $ref: '#/components/schemas/DestinationConfigCLIAuthAPIKey'
-      - $ref: '#/components/schemas/DestinationConfigCLIAuthBearerToken'
-      - $ref: '#/components/schemas/DestinationConfigCLIAuthOAuth2ClientCredentials'
-      - $ref: '#/components/schemas/DestinationConfigCLIAuthOAuth2AuthorizationCode'
-      - $ref: '#/components/schemas/DestinationConfigCLIAuthAWSSignature'
-      - $ref: '#/components/schemas/DestinationConfigCLIAuthGCPServiceAccount'
-      - $ref: '#/components/schemas/DestinationConfigCLIAuthEmpty'
-    DestinationPaginatedResult:
+    DestinationConfigMockAPIAuthAWSSignature:
       type: object
       properties:
-        pagination:
-          $ref: '#/components/schemas/SeekPagination'
-        count:
-          type: integer
-        models:
-          type: array
-          items:
-            $ref: '#/components/schemas/Destination'
-      additionalProperties: false
-    DestinationConfig:
-      type: object
-      properties: {}
-      additionalProperties: false
-      oneOf:
-      - $ref: '#/components/schemas/DestinationTypeConfigHTTP'
-      - $ref: '#/components/schemas/DestinationTypeConfigCLI'
-      - $ref: '#/components/schemas/DestinationTypeConfigMOCK_API'
-      description: Configuration object for the destination type
-      default: {}
-    DestinationConfigHTTPAuthOAuth2AuthorizationCode:
-      type: object
-      properties:
-        auth_server:
+        access_key_id:
           type: string
-        client_id:
+        secret_access_key:
           type: string
-        client_secret:
+        region:
           type: string
-        refresh_token:
-          type: string
-        scope:
+        service:
           type: string
       additionalProperties: false
-      x-docs-type: OAUTH2_AUTHORIZATION_CODE
-    DestinationConfigHTTPAuthGCPServiceAccount:
-      type: object
-      properties:
-        service_account_key:
-          type: string
-        scope:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
-      x-docs-type: GCP_SERVICE_ACCOUNT
-    DestinationConfigHTTPAuthBearerToken:
-      type: object
-      properties:
-        token:
-          type: string
-      additionalProperties: false
-      x-docs-type: BEARER_TOKEN
-    DestinationConfigMockAPIAuthCustomSHA256HMACSignature:
-      type: object
-      properties:
-        key:
-          type: string
-        signing_secret:
-          type: string
-      additionalProperties: false
-      x-docs-type: CUSTOM_SIGNATURE
+      x-docs-type: AWS_SIGNATURE
+    DestinationConfigHTTPAuthEmpty:
+      x-docs-hide: true
+      x-docs-nullable: true
     DestinationConfigHTTPAuthOAuth2ClientCredentials:
       type: object
       properties:
@@ -845,9 +4879,6 @@ components:
           - x-www-form-urlencoded
       additionalProperties: false
       x-docs-type: OAUTH2_CLIENT_CREDENTIALS
-    DestinationConfigCLIAuthEmpty:
-      x-docs-hide: true
-      x-docs-nullable: true
     DestinationConfigCLIAuthOAuth2AuthorizationCode:
       type: object
       properties:
@@ -863,7 +4894,19 @@ components:
           type: string
       additionalProperties: false
       x-docs-type: OAUTH2_AUTHORIZATION_CODE
-    DestinationConfigMockAPIAuthAPIKey:
+    DestinationConfigMockAPIAuthBasicAuth:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      additionalProperties: false
+      x-docs-type: BASIC_AUTH
+    DestinationConfigCLIAuthEmpty:
+      x-docs-hide: true
+      x-docs-nullable: true
+    DestinationConfigHTTPAuthAPIKey:
       type: object
       properties:
         key:
@@ -877,147 +4920,6 @@ components:
           - query
       additionalProperties: false
       x-docs-type: API_KEY
-    DestinationConfigHTTPAuthHookdeckSignatureDefault:
-      type: object
-      properties: {}
-      additionalProperties: false
-      x-docs-type: HOOKDECK_SIGNATURE
-    DestinationConfigMockAPIAuth:
-      type: object
-      properties: {}
-      additionalProperties: false
-      oneOf:
-      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthHookdeckSignatureDefault'
-      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthCustomSHA256HMACSignature'
-      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthBasicAuth'
-      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthAPIKey'
-      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthBearerToken'
-      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthOAuth2ClientCredentials'
-      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthOAuth2AuthorizationCode'
-      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthAWSSignature'
-      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthGCPServiceAccount'
-      - $ref: '#/components/schemas/DestinationConfigMockAPIAuthEmpty'
-    DestinationTypeConfigCLI:
-      type: object
-      properties:
-        path:
-          type: string
-          description: Path for the CLI destination
-        path_forwarding_disabled:
-          type: boolean
-        http_method:
-          type:
-          - string
-          - 'null'
-          enum:
-          - GET
-          - POST
-          - PUT
-          - PATCH
-          - DELETE
-        auth_type:
-          type:
-          - string
-          - 'null'
-          enum:
-          - HOOKDECK_SIGNATURE
-          - CUSTOM_SIGNATURE
-          - BASIC_AUTH
-          - API_KEY
-          - BEARER_TOKEN
-          - OAUTH2_CLIENT_CREDENTIALS
-          - OAUTH2_AUTHORIZATION_CODE
-          - AWS_SIGNATURE
-          - GCP_SERVICE_ACCOUNT
-        auth:
-          $ref: '#/components/schemas/DestinationConfigCLIAuth'
-      required:
-      - path
-      additionalProperties: false
-      description: The type config for CLI. Requires type to be `CLI`.
-      x-docs-type: CLI
-    DestinationConfigMockAPIAuthBearerToken:
-      type: object
-      properties:
-        token:
-          type: string
-      additionalProperties: false
-      x-docs-type: BEARER_TOKEN
-    DestinationConfigCLIAuthBearerToken:
-      type: object
-      properties:
-        token:
-          type: string
-      additionalProperties: false
-      x-docs-type: BEARER_TOKEN
-    DestinationConfigMockAPIAuthAWSSignature:
-      type: object
-      properties:
-        access_key_id:
-          type: string
-        secret_access_key:
-          type: string
-        region:
-          type: string
-        service:
-          type: string
-      additionalProperties: false
-      x-docs-type: AWS_SIGNATURE
-    DestinationConfigMockAPIAuthHookdeckSignatureDefault:
-      type: object
-      properties: {}
-      additionalProperties: false
-      x-docs-type: HOOKDECK_SIGNATURE
-    DestinationConfigCLIAuthGCPServiceAccount:
-      type: object
-      properties:
-        service_account_key:
-          type: string
-        scope:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
-      x-docs-type: GCP_SERVICE_ACCOUNT
-    DestinationConfigMockAPIAuthBasicAuth:
-      type: object
-      properties:
-        username:
-          type: string
-        password:
-          type: string
-      additionalProperties: false
-      x-docs-type: BASIC_AUTH
-    DestinationConfigMockAPIAuthGCPServiceAccount:
-      type: object
-      properties:
-        service_account_key:
-          type: string
-        scope:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
-      x-docs-type: GCP_SERVICE_ACCOUNT
-    DestinationConfigCLIAuthBasicAuth:
-      type: object
-      properties:
-        username:
-          type: string
-        password:
-          type: string
-      additionalProperties: false
-      x-docs-type: BASIC_AUTH
-    OrderByDirection:
-      anyOf:
-      - enum:
-        - asc
-      - enum:
-        - desc
-      - enum:
-        - ASC
-      - enum:
-        - DESC
     DestinationTypeConfigMOCK_API:
       type: object
       properties:
@@ -1066,6 +4968,238 @@ components:
       additionalProperties: false
       description: The type config for MOCK_API. Requires type to be `MOCK_API`.
       x-docs-type: MOCK_API
+    DestinationConfigMockAPIAuthEmpty:
+      x-docs-hide: true
+      x-docs-nullable: true
+    DestinationConfigMockAPIAuthCustomSHA256HMACSignature:
+      type: object
+      properties:
+        key:
+          type: string
+        signing_secret:
+          type: string
+      additionalProperties: false
+      x-docs-type: CUSTOM_SIGNATURE
+    DestinationConfigMockAPIAuthHookdeckSignatureDefault:
+      type: object
+      properties: {}
+      additionalProperties: false
+      x-docs-type: HOOKDECK_SIGNATURE
+    Operators:
+      type: object
+      properties:
+        gt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        gte:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        le:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        lte:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        any:
+          type: boolean
+        all:
+          type: boolean
+      additionalProperties: false
+    DestinationConfigHTTPAuthBasicAuth:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      additionalProperties: false
+      x-docs-type: BASIC_AUTH
+    DestinationConfigCLIAuthCustomSHA256HMACSignature:
+      type: object
+      properties:
+        key:
+          type: string
+        signing_secret:
+          type: string
+      additionalProperties: false
+      x-docs-type: CUSTOM_SIGNATURE
+    DestinationConfigMockAPIAuthBearerToken:
+      type: object
+      properties:
+        token:
+          type: string
+      additionalProperties: false
+      x-docs-type: BEARER_TOKEN
+    DestinationConfigHTTPAuthAWSSignature:
+      type: object
+      properties:
+        access_key_id:
+          type: string
+        secret_access_key:
+          type: string
+        region:
+          type: string
+        service:
+          type: string
+      additionalProperties: false
+      x-docs-type: AWS_SIGNATURE
+    OrderByDirection:
+      anyOf:
+      - enum:
+        - asc
+      - enum:
+        - desc
+      - enum:
+        - ASC
+      - enum:
+        - DESC
+    DestinationTypeConfigCLI:
+      type: object
+      properties:
+        path:
+          type: string
+          description: Path for the CLI destination
+        path_forwarding_disabled:
+          type: boolean
+        http_method:
+          type:
+          - string
+          - 'null'
+          enum:
+          - GET
+          - POST
+          - PUT
+          - PATCH
+          - DELETE
+        auth_type:
+          type:
+          - string
+          - 'null'
+          enum:
+          - HOOKDECK_SIGNATURE
+          - CUSTOM_SIGNATURE
+          - BASIC_AUTH
+          - API_KEY
+          - BEARER_TOKEN
+          - OAUTH2_CLIENT_CREDENTIALS
+          - OAUTH2_AUTHORIZATION_CODE
+          - AWS_SIGNATURE
+          - GCP_SERVICE_ACCOUNT
+        auth:
+          $ref: '#/components/schemas/DestinationConfigCLIAuth'
+      required:
+      - path
+      additionalProperties: false
+      description: The type config for CLI. Requires type to be `CLI`.
+      x-docs-type: CLI
+    DestinationConfigHTTPAuthOAuth2AuthorizationCode:
+      type: object
+      properties:
+        auth_server:
+          type: string
+        client_id:
+          type: string
+        client_secret:
+          type: string
+        refresh_token:
+          type: string
+        scope:
+          type: string
+      additionalProperties: false
+      x-docs-type: OAUTH2_AUTHORIZATION_CODE
+    APIErrorResponse_2:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        status:
+          type: number
+          format: float
+          description: Status code
+        message:
+          type: string
+          description: Error description
+        data:
+          type:
+          - object
+          - 'null'
+          properties: {}
+      required:
+      - code
+      - status
+      - message
+      additionalProperties: false
+      description: Error response model
+    DestinationPaginatedResult:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/SeekPagination_2'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/Destination_2'
+      additionalProperties: false
+    DestinationConfig:
+      type: object
+      properties: {}
+      additionalProperties: false
+      oneOf:
+      - $ref: '#/components/schemas/DestinationTypeConfigHTTP'
+      - $ref: '#/components/schemas/DestinationTypeConfigCLI'
+      - $ref: '#/components/schemas/DestinationTypeConfigMOCK_API'
+      description: Configuration object for the destination type
+      default: {}
+    DestinationConfigMockAPIAuthAPIKey:
+      type: object
+      properties:
+        key:
+          type: string
+        api_key:
+          type: string
+        to:
+          type: string
+          enum:
+          - header
+          - query
+      additionalProperties: false
+      x-docs-type: API_KEY
+    DestinationConfigHTTPAuthGCPServiceAccount:
+      type: object
+      properties:
+        service_account_key:
+          type: string
+        scope:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      x-docs-type: GCP_SERVICE_ACCOUNT
+    DestinationConfigHTTPAuthHookdeckSignatureDefault:
+      type: object
+      properties: {}
+      additionalProperties: false
+      x-docs-type: HOOKDECK_SIGNATURE
+    DestinationConfigCLIAuthBasicAuth:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      additionalProperties: false
+      x-docs-type: BASIC_AUTH
     DestinationTypeConfigHTTP:
       type: object
       properties:
@@ -1119,135 +5253,65 @@ components:
       additionalProperties: false
       description: The type config for HTTP. Requires type to be `HTTP`.
       x-docs-type: HTTP
-    DestinationConfigHTTPAuthEmpty:
-      x-docs-hide: true
-      x-docs-nullable: true
-    DestinationConfigHTTPAuthAPIKey:
-      type: object
-      properties:
-        key:
-          type: string
-        api_key:
-          type: string
-        to:
-          type: string
-          enum:
-          - header
-          - query
-      additionalProperties: false
-      x-docs-type: API_KEY
-    DestinationConfigCLIAuthAPIKey:
-      type: object
-      properties:
-        key:
-          type: string
-        api_key:
-          type: string
-        to:
-          type: string
-          enum:
-          - header
-          - query
-      additionalProperties: false
-      x-docs-type: API_KEY
-    DestinationConfigCLIAuthOAuth2ClientCredentials:
-      type: object
-      properties:
-        auth_server:
-          type: string
-        client_id:
-          type: string
-        client_secret:
-          type: string
-        scope:
-          type: string
-        authentication_type:
-          type: string
-          enum:
-          - basic
-          - bearer
-          - x-www-form-urlencoded
-      additionalProperties: false
-      x-docs-type: OAUTH2_CLIENT_CREDENTIALS
-    SeekPagination:
-      type: object
-      properties:
-        order_by:
-          anyOf:
-          - type: string
-          - type: array
-            items:
-              type: string
-        dir:
-          anyOf:
-          - $ref: '#/components/schemas/OrderByDirection'
-          - type: array
-            items:
-              $ref: '#/components/schemas/OrderByDirection'
-        limit:
-          type: integer
-        prev:
-          type: string
-        next:
-          type: string
-      additionalProperties: false
-    DestinationConfigMockAPIAuthOAuth2ClientCredentials:
-      type: object
-      properties:
-        auth_server:
-          type: string
-        client_id:
-          type: string
-        client_secret:
-          type: string
-        scope:
-          type: string
-        authentication_type:
-          type: string
-          enum:
-          - basic
-          - bearer
-          - x-www-form-urlencoded
-      additionalProperties: false
-      x-docs-type: OAUTH2_CLIENT_CREDENTIALS
-    DestinationConfigHTTPAuthCustomSHA256HMACSignature:
-      type: object
-      properties:
-        key:
-          type: string
-        signing_secret:
-          type: string
-      additionalProperties: false
-      x-docs-type: CUSTOM_SIGNATURE
-    VerificationConfig:
-      type: object
-      properties: {}
-      additionalProperties: false
-      oneOf:
-      - $ref: '#/components/schemas/DestinationTypeConfigHTTP'
-        x-required: true
-      - $ref: '#/components/schemas/DestinationTypeConfigCLI'
-        x-required: true
-      - $ref: '#/components/schemas/DestinationTypeConfigMOCK_API'
-      description: The type configs for the specified type
-      default: {}
-    DestinationConfigHTTPAuthAWSSignature:
-      type: object
-      properties:
-        access_key_id:
-          type: string
-        secret_access_key:
-          type: string
-        region:
-          type: string
-        service:
-          type: string
-      additionalProperties: false
-      x-docs-type: AWS_SIGNATURE
+  responses:
+    Forbidden:
+      description: The credentials are valid but not allowed to perform the request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+    BadRequest:
+      description: Malformed JSON or invalid request parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+    Unauthorized:
+      description: Missing or invalid authentication credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+    RequestBodyTooLarge:
+      description: Request body is larger than 1 MiB.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+    ValidationError:
+      description: Request body fails validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+    NotFound:
+      description: Requested resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+    InternalServerError:
+      description: Unexpected server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
   securitySchemes:
+    AdminApiKey:
+      type: http
+      scheme: bearer
+      description: "Bearer token for server-side calls. Where it comes from depends on the\ndeployment:\n\n- **Managed:** a Hookdeck **project API key belonging to your\n  Outpost project** (Hookdeck Dashboard → your Outpost project →\n  Settings → Secrets). A key from a different Hookdeck project\n  authenticates but returns `404` on most Outpost routes.\n- **Self-hosted:** the admin API key set in the `API_KEY` environment\n  variable.\n\nThe scheme is named for the self-hosted credential. Managed Outpost has\nno separate admin key to create. The project API key takes its place.\n"
+    TenantJwt:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "Per-tenant JWT token valid for 24 hours.\n\n**JWT Structure:**\nThe token is a standard JWT signed with HS256 algorithm containing the following claims:\n- `iss` (issuer): Always \"outpost\"\n- `sub` (subject): The tenant_id this token is scoped to\n- `iat` (issued at): Unix timestamp when the token was created\n- `exp` (expiration): Unix timestamp when the token expires (24 hours after issuance)\n\n**Example decoded payload:**\n```json\n{\n  \"iss\": \"outpost\",\n  \"sub\": \"tenant_123\",\n  \"iat\": 1704067200,\n  \"exp\": 1704153600\n}\n```\n"
     bearerAuth:
       type: http
       scheme: bearer
     basicAuth:
       type: http
       scheme: basic
+x-refined-from:
+- hookdeck-openapi.yml
+- hookdeck-destinations-api-openapi.yml

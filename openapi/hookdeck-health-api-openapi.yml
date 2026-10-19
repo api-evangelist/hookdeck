@@ -1,0 +1,190 @@
+openapi: 3.2.0
+info:
+  title: Outpost Health API
+  version: 0.0.1
+  description: 'The Outpost API is a REST-based JSON API for managing tenants, destinations, and publishing events.
+
+
+    Outpost runs in two deployment models: **managed** (hosted by Hookdeck) and **self-hosted**. They differ in where the API is served and in which API key authenticates server-side calls. On managed Outpost, use a Hookdeck project API key from your Outpost project. On self-hosted Outpost, use the key set in the `API_KEY` environment variable. A few endpoints exist in one model only and say so in their description.'
+  contact:
+    name: Outpost Support
+    email: support@hookdeck.com
+    url: https://hookdeck.com/docs/outpost
+servers:
+- url: https://api.outpost.hookdeck.com/2025-07-01
+  description: Managed Outpost, hosted by Hookdeck at `api.outpost.hookdeck.com`. The Hookdeck Event Gateway API at `api.hookdeck.com` is a separate API.
+- url: http://localhost:3333/api/v1
+  description: Self-hosted Outpost, at its default local address. A deployed instance serves the same paths under its own host.
+security:
+- AdminApiKey: []
+- TenantJwt: []
+tags:
+- name: Health
+  x-outpost-deployment: self-hosted
+  description: This endpoint is only available for **self-hosted** Outpost deployments. Managed Outpost health is monitored by Hookdeck.
+paths:
+  /healthz:
+    get:
+      tags:
+      - Health
+      summary: Health Check
+      description: 'Health check endpoint that reports the status of all workers.
+
+
+        > This endpoint is only available for **self-hosted** Outpost deployments. Managed Outpost health is monitored by Hookdeck.
+
+
+        Worker status is one of:
+
+        - `healthy`: running.
+
+        - `degraded`: failing and being restarted, within its restart budget. The service keeps serving. Only reported for workers listed in `SUPERVISOR_RESTART_WORKERS`.
+
+        - `failed`: failed, or failing past its restart budget. With restarts enabled, Outpost keeps restarting it, and it returns to `healthy` once it recovers.
+
+
+        Returns HTTP 200 when no worker has failed (the overall status is `degraded` if any worker is degraded), or HTTP 503 if any worker has failed.
+
+
+        Note: Error details are not exposed for security reasons. Check application logs for detailed error information.'
+      operationId: healthCheck
+      x-outpost-deployment: self-hosted
+      security: []
+      responses:
+        '200':
+          description: Service is healthy or degraded - no worker has failed.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - status
+                - timestamp
+                - workers
+                properties:
+                  status:
+                    type: string
+                    enum:
+                    - healthy
+                    - degraded
+                    example: healthy
+                  timestamp:
+                    type: string
+                    format: date-time
+                    description: When this health check was performed
+                    example: '2025-11-11T10:30:00Z'
+                  workers:
+                    type: object
+                    additionalProperties:
+                      type: object
+                      required:
+                      - status
+                      properties:
+                        status:
+                          type: string
+                          enum:
+                          - healthy
+                          - degraded
+                          example: healthy
+                        since:
+                          type: string
+                          format: date-time
+                          description: Start of the worker's current failure episode. Present when the status is `degraded` or `failed`.
+                          example: '2025-11-11T10:29:45Z'
+                        reason:
+                          type: string
+                          enum:
+                          - startup_failed
+                          - recovery_failed
+                          description: 'Present when the status is `degraded` or `failed`.
+
+                            `startup_failed`: the worker has not been healthy since the process started (usually configuration or a dependency that is not up yet).
+
+                            `recovery_failed`: the worker was healthy and then failed (e.g. a broker restart or failover).
+
+                            '
+                          example: recovery_failed
+              example:
+                status: degraded
+                timestamp: '2025-11-11T10:30:00Z'
+                workers:
+                  http-server:
+                    status: healthy
+                  publishmq-consumer:
+                    status: degraded
+                    since: '2025-11-11T10:29:45Z'
+                    reason: recovery_failed
+        '503':
+          description: Service is unhealthy - one or more workers have failed.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - status
+                - timestamp
+                - workers
+                properties:
+                  status:
+                    type: string
+                    enum:
+                    - failed
+                    example: failed
+                  timestamp:
+                    type: string
+                    format: date-time
+                    description: When this health check was performed
+                    example: '2025-11-11T10:30:15Z'
+                  workers:
+                    type: object
+                    additionalProperties:
+                      type: object
+                      required:
+                      - status
+                      properties:
+                        status:
+                          type: string
+                          enum:
+                          - healthy
+                          - degraded
+                          - failed
+                          example: failed
+                        since:
+                          type: string
+                          format: date-time
+                          description: Start of the worker's current failure episode. Present when the status is `degraded` or `failed`.
+                          example: '2025-11-11T10:29:45Z'
+                        reason:
+                          type: string
+                          enum:
+                          - startup_failed
+                          - recovery_failed
+                          description: 'Present when the status is `degraded` or `failed`.
+
+                            `startup_failed`: the worker has not been healthy since the process started (usually configuration or a dependency that is not up yet).
+
+                            `recovery_failed`: the worker was healthy and then failed (e.g. a broker restart or failover).
+
+                            '
+                          example: recovery_failed
+              example:
+                status: failed
+                timestamp: '2025-11-11T10:30:15Z'
+                workers:
+                  http-server:
+                    status: healthy
+                  publishmq-consumer:
+                    status: failed
+                    since: '2025-11-11T10:29:44Z'
+                    reason: startup_failed
+components:
+  securitySchemes:
+    AdminApiKey:
+      type: http
+      scheme: bearer
+      description: "Bearer token for server-side calls. Where it comes from depends on the\ndeployment:\n\n- **Managed:** a Hookdeck **project API key belonging to your\n  Outpost project** (Hookdeck Dashboard → your Outpost project →\n  Settings → Secrets). A key from a different Hookdeck project\n  authenticates but returns `404` on most Outpost routes.\n- **Self-hosted:** the admin API key set in the `API_KEY` environment\n  variable.\n\nThe scheme is named for the self-hosted credential. Managed Outpost has\nno separate admin key to create. The project API key takes its place.\n"
+    TenantJwt:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "Per-tenant JWT token valid for 24 hours.\n\n**JWT Structure:**\nThe token is a standard JWT signed with HS256 algorithm containing the following claims:\n- `iss` (issuer): Always \"outpost\"\n- `sub` (subject): The tenant_id this token is scoped to\n- `iat` (issued at): Unix timestamp when the token was created\n- `exp` (expiration): Unix timestamp when the token expires (24 hours after issuance)\n\n**Example decoded payload:**\n```json\n{\n  \"iss\": \"outpost\",\n  \"sub\": \"tenant_123\",\n  \"iat\": 1704067200,\n  \"exp\": 1704153600\n}\n```\n"

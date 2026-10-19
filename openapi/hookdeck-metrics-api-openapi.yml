@@ -1,22 +1,457 @@
 openapi: 3.2.0
 info:
-  title: Hookdeck Bookmarks Attempts Metrics API
-  version: 1.0.0
-  description: Save bookmarked events for quick replay and convenient one-click testing during development.
-  contact:
-    name: Hookdeck Support
-    url: https://hookdeck.com/contact-us
-    email: info@hookdeck.com
+  title: Hookdeck Metrics API
+  version: '1.0'
+  description: 'Operations tagged Metrics across 2 of this provider''s published API definitions: hookdeck-openapi.yml, hookdeck-metrics-api-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
+- url: https://api.outpost.hookdeck.com/2025-07-01
+  description: Managed Outpost, hosted by Hookdeck at `api.outpost.hookdeck.com`. The Hookdeck Event Gateway API at `api.hookdeck.com` is a separate API.
+- url: http://localhost:3333/api/v1
+  description: Self-hosted Outpost, at its default local address. A deployed instance serves the same paths under its own host.
 - url: https://api.hookdeck.com/2025-07-01
   description: Production API
-security:
-- bearerAuth: []
-- basicAuth: []
 tags:
 - name: Metrics
-  description: Query aggregated metrics for events, requests, and attempts with time-based grouping and filtering.
+  description: Aggregated metrics for events and delivery attempts. Supports time bucketing, dimensional grouping, and filtering.
 paths:
+  /metrics/events:
+    get:
+      tags:
+      - Metrics
+      summary: Get Event Metrics
+      description: 'Returns aggregated event publish metrics. Supports time bucketing via granularity,
+
+        dimensional grouping, and filtering.
+
+
+        **Measures:** `count`, `rate`
+
+
+        **Dimensions:** `tenant_id` (admin-only), `topic`, `destination_id`
+
+
+        **Filters:** `tenant_id` (admin-only), `topic`, `destination_id`'
+      operationId: getEventMetrics
+      parameters:
+      - name: time
+        in: query
+        required: true
+        style: deepObject
+        explode: true
+        schema:
+          type: object
+          required:
+          - start
+          - end
+          properties:
+            start:
+              type: string
+              format: date-time
+              description: Start of the time range (inclusive). ISO 8601 timestamp.
+              example: '2026-03-02T00:00:00Z'
+            end:
+              type: string
+              format: date-time
+              description: End of the time range (exclusive). ISO 8601 timestamp.
+              example: '2026-03-03T00:00:00Z'
+        description: Time range for the metrics query.
+      - name: granularity
+        in: query
+        required: false
+        schema:
+          type: string
+        description: 'Time bucketing granularity. Pattern: `<number><unit>`.
+
+          Units: `s` (1-60), `m` (1-60), `h` (1-24), `d` (1-31), `w` (1-4), `M` (1-12).
+
+          When omitted, returns a single aggregate row per dimension combination.
+
+          '
+        example: 1h
+      - name: measures
+        in: query
+        required: true
+        schema:
+          oneOf:
+          - type: string
+            enum:
+            - count
+            - rate
+          - type: array
+            items:
+              type: string
+              enum:
+              - count
+              - rate
+        description: Measures to compute. At least one required. `rate` is events/second throughput. Use bracket notation for multiple values (e.g., `measures[0]=count`).
+        example:
+        - count
+      - name: dimensions
+        in: query
+        required: false
+        schema:
+          oneOf:
+          - type: string
+            enum:
+            - tenant_id
+            - topic
+            - destination_id
+          - type: array
+            items:
+              type: string
+              enum:
+              - tenant_id
+              - topic
+              - destination_id
+        description: Dimensions to group results by. Use bracket notation for multiple values (e.g., `dimensions[0]=topic&dimensions[1]=destination_id`).
+      - name: filters[topic]
+        in: query
+        required: false
+        schema:
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        description: Filter by topic name(s). Use bracket notation for multiple values (e.g., `filters[topic][0]=user.created&filters[topic][1]=user.updated`).
+      - name: filters[destination_id]
+        in: query
+        required: false
+        schema:
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        description: Filter by destination ID(s). Use bracket notation for multiple values (e.g., `filters[destination_id][0]=d1&filters[destination_id][1]=d2`).
+      - name: filters[tenant_id]
+        in: query
+        required: false
+        schema:
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        description: Filter by tenant ID(s). Admin-only — rejected with 403 for JWT callers. Use bracket notation for multiple values (e.g., `filters[tenant_id][0]=t1&filters[tenant_id][1]=t2`).
+      responses:
+        '200':
+          description: Aggregated event metrics.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsResponse'
+              examples:
+                HourlyEventCount:
+                  value:
+                    data:
+                    - time_bucket: '2026-03-02T14:00:00Z'
+                      dimensions:
+                        topic: user.created
+                      metrics:
+                        count: 1423
+                    - time_bucket: '2026-03-02T15:00:00Z'
+                      dimensions:
+                        topic: user.created
+                      metrics:
+                        count: 1891
+                    metadata:
+                      granularity: 1h
+                      query_time_ms: 42
+                      row_count: 2
+                      row_limit: 100000
+                      truncated: false
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: JWT caller attempted to use admin-only dimension or filter (tenant_id).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+      - AdminApiKey: []
+      - TenantJwt: []
+    servers:
+    - url: https://api.outpost.hookdeck.com/2025-07-01
+      description: Managed Outpost, hosted by Hookdeck at `api.outpost.hookdeck.com`. The Hookdeck Event Gateway API at `api.hookdeck.com` is a separate API.
+    - url: http://localhost:3333/api/v1
+      description: Self-hosted Outpost, at its default local address. A deployed instance serves the same paths under its own host.
+  /metrics/attempts:
+    get:
+      tags:
+      - Metrics
+      summary: Get Attempt Metrics
+      description: 'Returns aggregated delivery attempt metrics. Supports time bucketing via granularity,
+
+        dimensional grouping, and filtering.
+
+
+        **Measures:** `count`, `successful_count`, `failed_count`, `error_rate`,
+
+        `first_attempt_count`, `retry_count`, `manual_retry_count`, `avg_attempt_number`,
+
+        `rate`, `successful_rate`, `failed_rate`, `avg_latency`, `p50_latency`, `p95_latency`, `p99_latency`
+
+
+        Latency measures are in milliseconds and computed over attempts that recorded a
+
+        latency (see `latency_ms` on the attempt object). They are `null` for a bucket
+
+        with no such attempts, rather than `0`.
+
+
+        **Dimensions:** `tenant_id` (admin-only), `destination_id`, `destination_type`, `topic`, `status`, `code`, `manual`, `attempt_number`
+
+
+        **Filters:** `tenant_id` (admin-only), `destination_id`, `destination_type`, `topic`, `status`, `code`, `manual`, `attempt_number`'
+      operationId: getAttemptMetrics
+      parameters:
+      - name: time
+        in: query
+        required: true
+        style: deepObject
+        explode: true
+        schema:
+          type: object
+          required:
+          - start
+          - end
+          properties:
+            start:
+              type: string
+              format: date-time
+              description: Start of the time range (inclusive). ISO 8601 timestamp.
+              example: '2026-03-02T00:00:00Z'
+            end:
+              type: string
+              format: date-time
+              description: End of the time range (exclusive). ISO 8601 timestamp.
+              example: '2026-03-03T00:00:00Z'
+        description: Time range for the metrics query.
+      - name: granularity
+        in: query
+        required: false
+        schema:
+          type: string
+        description: 'Time bucketing granularity. Pattern: `<number><unit>`.
+
+          Units: `s` (1-60), `m` (1-60), `h` (1-24), `d` (1-31), `w` (1-4), `M` (1-12).
+
+          When omitted, returns a single aggregate row per dimension combination.
+
+          '
+        example: 1h
+      - name: measures
+        in: query
+        required: true
+        schema:
+          oneOf:
+          - type: string
+            enum:
+            - count
+            - successful_count
+            - failed_count
+            - error_rate
+            - first_attempt_count
+            - retry_count
+            - manual_retry_count
+            - avg_attempt_number
+            - rate
+            - successful_rate
+            - failed_rate
+            - avg_latency
+            - p50_latency
+            - p95_latency
+            - p99_latency
+          - type: array
+            items:
+              type: string
+              enum:
+              - count
+              - successful_count
+              - failed_count
+              - error_rate
+              - first_attempt_count
+              - retry_count
+              - manual_retry_count
+              - avg_attempt_number
+              - rate
+              - successful_rate
+              - failed_rate
+              - avg_latency
+              - p50_latency
+              - p95_latency
+              - p99_latency
+        description: Measures to compute. At least one required. Rate measures (`rate`, `successful_rate`, `failed_rate`) are throughput in events/second. Latency measures (`avg_latency`, `p50_latency`, `p95_latency`, `p99_latency`) are destination response times in milliseconds, `null` when no attempt in the bucket recorded a latency. Use bracket notation for multiple values (e.g., `measures[0]=count&measures[1]=error_rate`).
+        example:
+        - count
+        - error_rate
+        - p95_latency
+      - name: dimensions
+        in: query
+        required: false
+        schema:
+          oneOf:
+          - type: string
+            enum:
+            - tenant_id
+            - destination_id
+            - destination_type
+            - topic
+            - status
+            - code
+            - manual
+            - attempt_number
+          - type: array
+            items:
+              type: string
+              enum:
+              - tenant_id
+              - destination_id
+              - destination_type
+              - topic
+              - status
+              - code
+              - manual
+              - attempt_number
+        description: Dimensions to group results by. Use bracket notation for multiple values (e.g., `dimensions[0]=status&dimensions[1]=destination_id`).
+      - name: filters[destination_id]
+        in: query
+        required: false
+        schema:
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        description: Filter by destination ID(s). Use bracket notation for multiple values (e.g., `filters[destination_id][0]=d1&filters[destination_id][1]=d2`).
+      - name: filters[destination_type]
+        in: query
+        required: false
+        schema:
+          oneOf:
+          - $ref: '#/components/schemas/DestinationType'
+          - type: array
+            items:
+              $ref: '#/components/schemas/DestinationType'
+        description: Filter by destination type(s). Use bracket notation for multiple values (e.g., `filters[destination_type][0]=webhook&filters[destination_type][1]=aws_sqs`).
+      - name: filters[topic]
+        in: query
+        required: false
+        schema:
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        description: Filter by topic name(s). Use bracket notation for multiple values (e.g., `filters[topic][0]=user.created&filters[topic][1]=user.updated`).
+      - name: filters[status]
+        in: query
+        required: false
+        schema:
+          oneOf:
+          - type: string
+            enum:
+            - success
+            - failed
+          - type: array
+            items:
+              type: string
+              enum:
+              - success
+              - failed
+        description: Filter by attempt status(es). Use bracket notation for multiple values (e.g., `filters[status][0]=success&filters[status][1]=failed`).
+      - name: filters[code]
+        in: query
+        required: false
+        schema:
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        description: Filter by HTTP status code(s). Use bracket notation for multiple values (e.g., `filters[code][0]=200&filters[code][1]=500`).
+      - name: filters[manual]
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - 'true'
+          - 'false'
+        description: Filter by manual retry flag.
+      - name: filters[attempt_number]
+        in: query
+        required: false
+        schema:
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        description: Filter by attempt number(s). Use bracket notation for multiple values (e.g., `filters[attempt_number][0]=1&filters[attempt_number][1]=2`).
+      - name: filters[tenant_id]
+        in: query
+        required: false
+        schema:
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        description: Filter by tenant ID(s). Admin-only — rejected with 403 for JWT callers. Use bracket notation for multiple values (e.g., `filters[tenant_id][0]=t1&filters[tenant_id][1]=t2`).
+      responses:
+        '200':
+          description: Aggregated attempt metrics.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsResponse'
+              examples:
+                DailyAttemptCounts:
+                  value:
+                    data:
+                    - time_bucket: '2026-03-02T00:00:00Z'
+                      dimensions:
+                        destination_id: dest_abc
+                      metrics:
+                        count: 1423
+                        successful_count: 1393
+                        failed_count: 30
+                        error_rate: 0.0211
+                        avg_latency: 212.4
+                        p95_latency: 810
+                    metadata:
+                      granularity: 1d
+                      query_time_ms: 38
+                      row_count: 1
+                      row_limit: 100000
+                      truncated: false
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: JWT caller attempted to use admin-only dimension or filter (tenant_id).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+      - AdminApiKey: []
+      - TenantJwt: []
+    servers:
+    - url: https://api.outpost.hookdeck.com/2025-07-01
+      description: Managed Outpost, hosted by Hookdeck at `api.outpost.hookdeck.com`. The Hookdeck Event Gateway API at `api.hookdeck.com` is a separate API.
+    - url: http://localhost:3333/api/v1
+      description: Self-hosted Outpost, at its default local address. A deployed instance serves the same paths under its own host.
   /metrics/requests:
     get:
       operationId: queryRequestMetrics
@@ -30,7 +465,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MetricsResponse'
+                $ref: '#/components/schemas/MetricsResponse_2'
       parameters:
       - in: query
         name: date_range
@@ -173,277 +608,12 @@ paths:
             - events_count
             - ignored_count
           description: Dimensions to group by
-  /metrics/events:
-    get:
-      operationId: queryEventMetrics
-      summary: Query event metrics
-      description: Query aggregated event metrics with time-based grouping and filtering
-      tags:
-      - Metrics
-      responses:
-        '200':
-          description: Event metrics results
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MetricsResponse'
-      parameters:
-      - in: query
-        name: date_range
-        schema:
-          type: object
-          properties:
-            start:
-              type: string
-              format: date-time
-              description: Start of the time range in ISO 8601 format
-            end:
-              type: string
-              format: date-time
-              description: End of the time range in ISO 8601 format
-          required:
-          - start
-          - end
-          additionalProperties: false
-      - in: query
-        name: granularity
-        schema:
-          type:
-          - string
-          - 'null'
-          pattern: ^(\d+)(s|m|h|d|w|M)$
-          description: 'Time bucket granularity. Format: <number><unit> where unit is s (seconds 1-60), m (minutes 1-60), h (hours 1-24), d (days 1-31), w (weeks 1-4), M (months 1-12). Examples: 1s, 5m, 1h, 1d'
-      - in: query
-        name: filters
-        schema:
-          type: object
-          properties:
-            source_id:
-              anyOf:
-              - type: string
-              - type: array
-                items:
-                  type: string
-                minItems: 1
-              description: Filter by source ID (single value or array)
-            webhook_id:
-              anyOf:
-              - type: string
-              - type: array
-                items:
-                  type: string
-                minItems: 1
-              description: Filter by webhook/connection ID (single value or array)
-            destination_id:
-              anyOf:
-              - type: string
-              - type: array
-                items:
-                  type: string
-                minItems: 1
-              description: Filter by destination ID (single value or array)
-            status:
-              anyOf:
-              - type: string
-                enum:
-                - SUCCESSFUL
-                - FAILED
-                - QUEUED
-                - CANCELLED
-                - HOLD
-                - SCHEDULED
-              - type: array
-                items:
-                  type: string
-                  enum:
-                  - SUCCESSFUL
-                  - FAILED
-                  - QUEUED
-                  - CANCELLED
-                  - HOLD
-                  - SCHEDULED
-                minItems: 1
-              description: Filter by event status (single value or array)
-            error_code:
-              type: string
-              description: Filter by error code
-            issue_ids:
-              type: array
-              items:
-                type: string
-              description: Filter by issue IDs (array contains match)
-            bulk_retry_ids:
-              type: array
-              items:
-                type: string
-              description: Filter by bulk retry operation IDs (array contains match)
-            event_data_id:
-              type: string
-              description: Filter by event data ID
-            cli_id:
-              type: string
-              description: Filter by CLI ID
-            cli_user_id:
-              type: string
-              description: Filter by CLI user ID
-            attempts:
-              type: integer
-              minimum: 0
-              description: Filter by number of attempts
-            response_status:
-              type: integer
-              minimum: 100
-              maximum: 599
-              description: Filter by HTTP response status code
-          additionalProperties: false
-      - in: query
-        name: measures
-        schema:
-          type: array
-          items:
-            type: string
-            enum:
-            - count
-            - successful_count
-            - failed_count
-            - scheduled_count
-            - paused_count
-            - error_rate
-            - avg_attempts
-            - scheduled_retry_count
-          minItems: 1
-          description: Metrics to calculate
-      - in: query
-        name: dimensions
-        schema:
-          type: array
-          items:
-            type: string
-            enum:
-            - status
-            - source_id
-            - webhook_id
-            - destination_id
-            - error_code
-            - event_data_id
-            - cli_id
-            - cli_user_id
-            - attempts
-            - response_status
-          description: Dimensions to group by
-  /metrics/attempts:
-    get:
-      operationId: queryAttemptMetrics
-      summary: Query attempt metrics
-      description: Query aggregated attempt metrics with time-based grouping and filtering
-      tags:
-      - Metrics
-      responses:
-        '200':
-          description: Attempt metrics results
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MetricsResponse'
-      parameters:
-      - in: query
-        name: date_range
-        schema:
-          type: object
-          properties:
-            start:
-              type: string
-              format: date-time
-              description: Start of the time range in ISO 8601 format
-            end:
-              type: string
-              format: date-time
-              description: End of the time range in ISO 8601 format
-          required:
-          - start
-          - end
-          additionalProperties: false
-      - in: query
-        name: granularity
-        schema:
-          type:
-          - string
-          - 'null'
-          pattern: ^(\d+)(s|m|h|d|w|M)$
-          description: 'Time bucket granularity. Format: <number><unit> where unit is s (seconds 1-60), m (minutes 1-60), h (hours 1-24), d (days 1-31), w (weeks 1-4), M (months 1-12). Examples: 1s, 5m, 1h, 1d'
-      - in: query
-        name: filters
-        schema:
-          type: object
-          properties:
-            destination_id:
-              anyOf:
-              - type: string
-              - type: array
-                items:
-                  type: string
-                minItems: 1
-              description: Filter by destination ID (single value or array)
-            event_id:
-              type: string
-              description: Filter by event ID
-            status:
-              anyOf:
-              - type: string
-                enum:
-                - SUCCESSFUL
-                - FAILED
-              - type: array
-                items:
-                  type: string
-                  enum:
-                  - SUCCESSFUL
-                  - FAILED
-                minItems: 1
-              description: Filter by attempt status (single value or array)
-            error_code:
-              type: string
-              description: Filter by error code
-            bulk_retry_id:
-              type: string
-              description: Filter by bulk retry ID
-            trigger:
-              type: string
-              description: Filter by trigger type
-          additionalProperties: false
-      - in: query
-        name: measures
-        schema:
-          type: array
-          items:
-            type: string
-            enum:
-            - count
-            - successful_count
-            - failed_count
-            - delivered_count
-            - error_rate
-            - response_latency_avg
-            - response_latency_max
-            - response_latency_p95
-            - response_latency_p99
-            - delivery_latency_avg
-          minItems: 1
-          description: Metrics to calculate
-      - in: query
-        name: dimensions
-        schema:
-          type: array
-          items:
-            type: string
-            enum:
-            - destination_id
-            - event_id
-            - status
-            - error_code
-            - bulk_retry_id
-            - trigger
-          description: Dimensions to group by
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+    servers:
+    - url: https://api.hookdeck.com/2025-07-01
+      description: Production API
   /metrics/events-by-issue:
     get:
       operationId: queryEventsByIssueMetrics
@@ -457,7 +627,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MetricsResponse'
+                $ref: '#/components/schemas/MetricsResponse_2'
       parameters:
       - in: query
         name: date_range
@@ -531,6 +701,12 @@ paths:
             - destination_id
             - webhook_id
           description: Dimensions to group by
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+    servers:
+    - url: https://api.hookdeck.com/2025-07-01
+      description: Production API
   /metrics/queue-depth:
     get:
       operationId: queryQueueDepthMetrics
@@ -544,7 +720,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MetricsResponse'
+                $ref: '#/components/schemas/MetricsResponse_2'
       parameters:
       - in: query
         name: date_range
@@ -600,6 +776,12 @@ paths:
             enum:
             - destination_id
           description: Dimensions to group by
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+    servers:
+    - url: https://api.hookdeck.com/2025-07-01
+      description: Production API
   /metrics/transformations:
     get:
       operationId: queryTransformationMetrics
@@ -613,7 +795,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MetricsResponse'
+                $ref: '#/components/schemas/MetricsResponse_2'
       parameters:
       - in: query
         name: date_range
@@ -693,6 +875,12 @@ paths:
             - log_level
             - issue_id
           description: Dimensions to group by
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+    servers:
+    - url: https://api.hookdeck.com/2025-07-01
+      description: Production API
   /metrics/events-pending-timeseries:
     get:
       operationId: queryEventsPendingTimeseriesMetrics
@@ -706,7 +894,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MetricsResponse'
+                $ref: '#/components/schemas/MetricsResponse_2'
       parameters:
       - in: query
         name: date_range
@@ -761,36 +949,112 @@ paths:
             enum:
             - destination_id
           description: List of dimensions to group by
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+    servers:
+    - url: https://api.hookdeck.com/2025-07-01
+      description: Production API
 components:
   schemas:
-    MetricDataPoint:
+    MetricsMetadata:
+      type: object
+      properties:
+        granularity:
+          type: string
+          description: The granularity used for time bucketing. Absent when none was specified.
+          example: 1h
+        query_time_ms:
+          type: integer
+          description: Query execution time in milliseconds.
+          example: 42
+        row_count:
+          type: integer
+          description: Number of data points returned.
+          example: 2
+        row_limit:
+          type: integer
+          description: Maximum number of rows the query will return.
+          example: 100000
+        truncated:
+          type: boolean
+          description: Whether the results were truncated due to hitting the row limit.
+          example: false
+    APIErrorResponse:
+      type: object
+      description: Standard error response format.
+      properties:
+        status:
+          type: integer
+          description: HTTP status code.
+          example: 422
+        message:
+          type: string
+          description: Human-readable error message.
+          example: validation error
+        data:
+          description: Additional error details. For validation errors, this is an array of human-readable messages.
+          oneOf:
+          - type: array
+            items:
+              type: string
+            description: Array of validation error messages.
+            example:
+            - email is required
+            - password must be at least 6 characters
+          - type: object
+            additionalProperties: true
+            description: Additional contextual data about the error.
+    MetricsDataPoint:
       type: object
       properties:
         time_bucket:
-          type:
-          - string
-          - 'null'
-          description: Time bucket for the metric data point
+          type: string
+          format: date-time
+          description: Start of the time bucket. Absent when no granularity is specified.
+          example: '2026-03-02T14:00:00Z'
         dimensions:
           type: object
-          properties: {}
           additionalProperties:
-            anyOf:
-            - type: string
-            - type: number
-              format: float
-            - type: boolean
-          description: Key-value pairs of dimension names and their values.
+            type: string
+          description: Dimension values for this data point. Empty object when no dimensions are requested.
+          example:
+            destination_id: dest_abc
+            topic: user.created
         metrics:
           type: object
-          properties: {}
-          additionalProperties:
-            type: number
-            format: float
-          description: Key-value pairs of metric names and their calculated values.
-      additionalProperties: false
-      description: A single metric data point with time bucket, dimensions, and metrics
+          additionalProperties: {}
+          description: Requested measure values for this data point.
+          example:
+            count: 1423
+            error_rate: 0.02
+    DestinationType:
+      type: string
+      enum:
+      - webhook
+      - aws_sqs
+      - rabbitmq
+      - hookdeck
+      - aws_kinesis
+      - azure_servicebus
+      - aws_s3
+      - gcp_pubsub
+      - kafka
+      - cloudflare_queues
+      - aws_eventbridge
+      description: Type of destination.
+      example: webhook
     MetricsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetricsDataPoint'
+          description: Array of aggregated data points.
+        metadata:
+          $ref: '#/components/schemas/MetricsMetadata'
+    MetricsResponse_2:
       type: object
       properties:
         data:
@@ -828,10 +1092,68 @@ components:
           description: Query metadata
       additionalProperties: false
       description: Metrics query response with data and metadata
+    MetricDataPoint:
+      type: object
+      properties:
+        time_bucket:
+          type:
+          - string
+          - 'null'
+          description: Time bucket for the metric data point
+        dimensions:
+          type: object
+          properties: {}
+          additionalProperties:
+            anyOf:
+            - type: string
+            - type: number
+              format: float
+            - type: boolean
+          description: Key-value pairs of dimension names and their values.
+        metrics:
+          type: object
+          properties: {}
+          additionalProperties:
+            type: number
+            format: float
+          description: Key-value pairs of metric names and their calculated values.
+      additionalProperties: false
+      description: A single metric data point with time bucket, dimensions, and metrics
+  responses:
+    InternalServerError:
+      description: Unexpected server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+    BadRequest:
+      description: Malformed JSON or invalid request parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+    Unauthorized:
+      description: Missing or invalid authentication credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
   securitySchemes:
+    AdminApiKey:
+      type: http
+      scheme: bearer
+      description: "Bearer token for server-side calls. Where it comes from depends on the\ndeployment:\n\n- **Managed:** a Hookdeck **project API key belonging to your\n  Outpost project** (Hookdeck Dashboard → your Outpost project →\n  Settings → Secrets). A key from a different Hookdeck project\n  authenticates but returns `404` on most Outpost routes.\n- **Self-hosted:** the admin API key set in the `API_KEY` environment\n  variable.\n\nThe scheme is named for the self-hosted credential. Managed Outpost has\nno separate admin key to create. The project API key takes its place.\n"
+    TenantJwt:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "Per-tenant JWT token valid for 24 hours.\n\n**JWT Structure:**\nThe token is a standard JWT signed with HS256 algorithm containing the following claims:\n- `iss` (issuer): Always \"outpost\"\n- `sub` (subject): The tenant_id this token is scoped to\n- `iat` (issued at): Unix timestamp when the token was created\n- `exp` (expiration): Unix timestamp when the token expires (24 hours after issuance)\n\n**Example decoded payload:**\n```json\n{\n  \"iss\": \"outpost\",\n  \"sub\": \"tenant_123\",\n  \"iat\": 1704067200,\n  \"exp\": 1704153600\n}\n```\n"
     bearerAuth:
       type: http
       scheme: bearer
     basicAuth:
       type: http
       scheme: basic
+x-refined-from:
+- hookdeck-openapi.yml
+- hookdeck-metrics-api-openapi.yml

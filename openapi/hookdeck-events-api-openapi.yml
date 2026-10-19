@@ -1,330 +1,248 @@
 openapi: 3.2.0
 info:
-  title: Hookdeck Bookmarks Attempts Events API
-  version: 1.0.0
-  description: Save bookmarked events for quick replay and convenient one-click testing during development.
-  contact:
-    name: Hookdeck Support
-    url: https://hookdeck.com/contact-us
-    email: info@hookdeck.com
+  title: Hookdeck Events API
+  version: '1.0'
+  description: 'Operations tagged Events across 2 of this provider''s published API definitions: hookdeck-openapi.yml, hookdeck-events-api-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
+- url: https://api.outpost.hookdeck.com/2025-07-01
+  description: Managed Outpost, hosted by Hookdeck at `api.outpost.hookdeck.com`. The Hookdeck Event Gateway API at `api.hookdeck.com` is a separate API.
+- url: http://localhost:3333/api/v1
+  description: Self-hosted Outpost, at its default local address. A deployed instance serves the same paths under its own host.
 - url: https://api.hookdeck.com/2025-07-01
   description: Production API
-security:
-- bearerAuth: []
-- basicAuth: []
 tags:
 - name: Events
-  description: An event is any request that Hookdeck receives from a source.
+  description: An event represents a payload published to Outpost. Events are matched against all destinations whose topic subscriptions match the event topic, then delivered.
 paths:
   /events:
     get:
-      operationId: getEvents
-      summary: Retrieve events
-      description: This endpoint lists events, or a subset of events.
       tags:
       - Events
-      responses:
-        '200':
-          description: List of events
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EventPaginatedResult'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/APIErrorResponse'
-        '422':
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/APIErrorResponse'
+      summary: List Events
+      description: 'Retrieves a list of events.
+
+
+        When authenticated with a Tenant JWT, returns only events belonging to that tenant.
+
+        When authenticated with Admin API Key, returns events across all tenants. Use `tenant_id` query parameter to filter by tenant.'
+      operationId: listEvents
+      security:
+      - AdminApiKey: []
+      - TenantJwt: []
       parameters:
-      - in: query
-        name: id
+      - name: id
+        in: query
+        required: false
         schema:
-          anyOf:
+          oneOf:
           - type: string
-            maxLength: 255
-            description: Event ID
           - type: array
             items:
               type: string
-              maxLength: 255
-              description: Event ID
-          description: Filter by event IDs
-      - in: query
-        name: status
+        description: Filter events by ID(s). Use bracket notation for multiple values (e.g., `id[0]=abc&id[1]=def`).
+      - name: tenant_id
+        in: query
+        required: false
         schema:
-          anyOf:
-          - $ref: '#/components/schemas/EventStatus'
-          - type: array
-            items:
-              $ref: '#/components/schemas/EventStatus'
-          description: Lifecyle status of the event
-      - in: query
-        name: webhook_id
-        schema:
-          anyOf:
+          oneOf:
           - type: string
-            maxLength: 255
-            description: Connection (webhook) ID
           - type: array
             items:
               type: string
-              maxLength: 255
-              description: Connection (webhook) ID
-          description: Filter by connection (webhook) IDs
-      - in: query
-        name: destination_id
+        description: 'Filter events by tenant ID(s). Use bracket notation for multiple values (e.g., `tenant_id[0]=t1&tenant_id[1]=t2`).
+
+          When authenticated with a Tenant JWT, this parameter is ignored and the JWT''s tenant is used.
+
+          If not provided with API key auth, returns events from all tenants.
+
+          '
+      - name: destination_id
+        in: query
+        required: false
         schema:
-          anyOf:
+          oneOf:
           - type: string
-            maxLength: 255
-            description: Destination ID
           - type: array
             items:
               type: string
-              maxLength: 255
-              description: Destination ID
-          description: Filter by destination IDs
-      - in: query
-        name: source_id
+        description: Filter events by matched destination ID(s). Returns events that were routed to the specified destination(s). Use bracket notation for multiple values (e.g., `destination_id[0]=d1&destination_id[1]=d2`).
+      - name: topic
+        in: query
+        required: false
         schema:
-          anyOf:
+          oneOf:
           - type: string
-            maxLength: 255
-            description: Source ID
           - type: array
             items:
               type: string
-              maxLength: 255
-              description: Source ID
-          description: Filter by source IDs
-      - in: query
-        name: attempts
+        description: Filter events by topic(s). Use bracket notation for multiple values (e.g., `topic[0]=user.created&topic[1]=user.updated`).
+      - name: time
+        in: query
+        required: false
+        style: deepObject
+        explode: true
         schema:
-          anyOf:
-          - type: integer
-            minimum: 0
-          - $ref: '#/components/schemas/Operators'
-          description: Filter by number of attempts
-      - in: query
-        name: response_status
+          $ref: '#/components/schemas/Operator'
+        description: Filter events by time range using comparison operators.
+      - name: limit
+        in: query
+        required: false
         schema:
-          anyOf:
-          - type: integer
-            minimum: 200
-            maximum: 600
-          - $ref: '#/components/schemas/Operators'
-          - type: array
-            items:
-              type: integer
-              minimum: 200
-              maximum: 600
-          description: Filter by HTTP response status code
-      - in: query
-        name: successful_at
-        schema:
-          anyOf:
-          - type: string
-            format: date-time
-          - $ref: '#/components/schemas/Operators'
-          description: Filter by `successful_at` date using a date operator
-      - in: query
-        name: created_at
-        schema:
-          anyOf:
-          - type: string
-            format: date-time
-          - $ref: '#/components/schemas/Operators'
-          description: Filter by `created_at` date using a date operator
-      - in: query
-        name: error_code
-        schema:
-          anyOf:
-          - $ref: '#/components/schemas/AttemptErrorCodes'
-          - type: array
-            items:
-              $ref: '#/components/schemas/AttemptErrorCodes'
-          description: Filter by error code code
-      - in: query
-        name: cli_id
-        schema:
-          anyOf:
-          - type: string
-          - type: object
-            properties:
-              any:
-                type: boolean
-              all:
-                type: boolean
-            additionalProperties: false
-          - type: array
-            items:
-              type: string
-          description: Filter by CLI IDs. `?[any]=true` operator for any CLI.
-      - in: query
-        name: last_attempt_at
-        schema:
-          anyOf:
-          - type: string
-            format: date-time
-          - $ref: '#/components/schemas/Operators'
-          description: Filter by `last_attempt_at` date using a date operator
-      - in: query
-        name: next_attempt_at
-        schema:
-          anyOf:
-          - type: string
-            format: date-time
-          - $ref: '#/components/schemas/Operators'
-          description: Filter by `next_attempt_at` date using a date operator
-      - in: query
-        name: search_term
+          type: integer
+          default: 100
+          minimum: 1
+          maximum: 1000
+        description: Number of items per page (1-1000, default 100). A value outside this range, or one that is not an integer, returns a 400.
+      - name: next
+        in: query
+        required: false
         schema:
           type: string
-          minLength: 3
-          description: URL Encoded string of the value to match partially to the body, headers, parsed_query or path
-      - in: query
-        name: headers
-        schema:
-          anyOf:
-          - type: string
-          - type: object
-            properties: {}
-            additionalProperties: false
-          description: URL Encoded string of the JSON to match to the data headers
-          x-docs-force-simple-type: true
-          x-docs-type: JSON
-      - in: query
-        name: body
-        schema:
-          anyOf:
-          - type: string
-          - type: object
-            properties: {}
-            additionalProperties: false
-          description: URL Encoded string of the JSON to match to the data body
-          x-docs-force-simple-type: true
-          x-docs-type: JSON
-      - in: query
-        name: parsed_query
-        schema:
-          anyOf:
-          - type: string
-          - type: object
-            properties: {}
-            additionalProperties: false
-          description: URL Encoded string of the JSON to match to the parsed query (JSON representation of the query)
-          x-docs-force-simple-type: true
-          x-docs-type: JSON
-      - in: query
-        name: path
+        description: Cursor for the next page of results, from `pagination.next` of a previous response. Mutually exclusive with `prev`. A cursor that cannot be read returns a 400.
+      - name: prev
+        in: query
+        required: false
         schema:
           type: string
-          description: URL Encoded string of the value to match partially to the path
-      - in: query
-        name: cli_user_id
-        schema:
-          anyOf:
-          - type: string
-          - type: array
-            items:
-              type: string
-          x-docs-hide: true
-      - in: query
-        name: issue_id
-        schema:
-          anyOf:
-          - type: string
-            maxLength: 255
-          - type: array
-            items:
-              type: string
-              maxLength: 255
-          x-docs-hide: true
-      - in: query
-        name: event_data_id
-        schema:
-          anyOf:
-          - type: string
-            maxLength: 255
-          - type: array
-            items:
-              type: string
-              maxLength: 255
-          x-docs-hide: true
-      - in: query
-        name: bulk_retry_id
-        schema:
-          anyOf:
-          - type: string
-            maxLength: 255
-          - type: array
-            items:
-              type: string
-              maxLength: 255
-          x-docs-hide: true
-      - in: query
-        name: include
+        description: Cursor for the previous page of results, from `pagination.prev` of a previous response. Mutually exclusive with `next`. A cursor that cannot be read returns a 400.
+      - name: order_by
+        in: query
+        required: false
         schema:
           type: string
           enum:
-          - data
-          description: Include the data object in the event model
-          x-docs-hide: true
-      - in: query
-        name: progressive
-        schema:
-          type: string
-          enum:
-          - 'true'
-          - 'false'
-          description: Enable progressive loading for partial results
-          x-docs-hide: true
-      - in: query
-        name: order_by
-        schema:
-          type: string
-          maxLength: 255
-          enum:
-          - created_at
-          description: Sort key
-      - in: query
-        name: dir
+          - time
+          default: time
+        description: Field to sort by.
+      - name: dir
+        in: query
+        required: false
         schema:
           type: string
           enum:
           - asc
           - desc
-          description: Sort direction
-      - in: query
-        name: limit
-        schema:
-          type: integer
-          minimum: 0
-          maximum: 255
-          description: Result set size
-      - in: query
-        name: next
+          default: desc
+        description: Sort direction.
+      responses:
+        '200':
+          description: A paginated list of events.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventPaginatedResult'
+              examples:
+                AdminEventsListExample:
+                  value:
+                    pagination:
+                      order_by: time
+                      dir: desc
+                      limit: 100
+                      next: MTcwNDA2NzIwMA==
+                      prev: null
+                    models:
+                    - id: evt_123
+                      topic: user.created
+                      matched_destination_ids:
+                      - des_456
+                      time: '2024-01-01T00:00:00Z'
+                      eligible_for_retry: false
+                      metadata:
+                        source: crm
+                      data:
+                        user_id: userid
+                        status: active
+                    - id: evt_789
+                      topic: order.shipped
+                      matched_destination_ids:
+                      - des_456
+                      - des_789
+                      time: '2024-01-02T10:00:00Z'
+                      eligible_for_retry: true
+                      metadata:
+                        source: oms
+                      data:
+                        order_id: orderid
+                        tracking: 1Z...
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    servers:
+    - url: https://api.outpost.hookdeck.com/2025-07-01
+      description: Managed Outpost, hosted by Hookdeck at `api.outpost.hookdeck.com`. The Hookdeck Event Gateway API at `api.hookdeck.com` is a separate API.
+    - url: http://localhost:3333/api/v1
+      description: Self-hosted Outpost, at its default local address. A deployed instance serves the same paths under its own host.
+  /events/{event_id}:
+    parameters:
+    - name: event_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The ID of the event.
+    get:
+      tags:
+      - Events
+      summary: Get Event
+      description: 'Retrieves details for a specific event.
+
+
+        When authenticated with a Tenant JWT, only events belonging to that tenant can be accessed.
+
+        When authenticated with Admin API Key, events from any tenant can be accessed.'
+      operationId: getEvent
+      parameters:
+      - name: tenant_id
+        in: query
+        required: false
         schema:
           type: string
-          maxLength: 255
-          description: The ID to provide in the query to get the next set of results
-      - in: query
-        name: prev
-        schema:
-          type: string
-          maxLength: 255
-          description: The ID to provide in the query to get the previous set of results
+        description: Filter by tenant ID. Returns 404 if the event does not belong to the specified tenant. Ignored when using Tenant JWT authentication.
+      responses:
+        '200':
+          description: Event details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+              examples:
+                EventExample:
+                  value:
+                    id: evt_123
+                    topic: user.created
+                    matched_destination_ids:
+                    - des_456
+                    time: '2024-01-01T00:00:00Z'
+                    eligible_for_retry: false
+                    metadata:
+                      source: crm
+                    data:
+                      user_id: userid
+                      status: active
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+      - AdminApiKey: []
+      - TenantJwt: []
+    servers:
+    - url: https://api.outpost.hookdeck.com/2025-07-01
+      description: Managed Outpost, hosted by Hookdeck at `api.outpost.hookdeck.com`. The Hookdeck Event Gateway API at `api.hookdeck.com` is a separate API.
+    - url: http://localhost:3333/api/v1
+      description: Self-hosted Outpost, at its default local address. A deployed instance serves the same paths under its own host.
   /events/{id}:
     get:
-      operationId: getEvent
+      operationId: getEventsById
       summary: Retrieve an event
       description: This endpoint retrieves a specific event. The response contains the `data` object with the properties `body` and `headers`, representing the original data for that request.
       tags:
@@ -335,13 +253,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Event'
+                $ref: '#/components/schemas/Event_2'
         '404':
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIErrorResponse'
+                $ref: '#/components/schemas/APIErrorResponse_2'
       parameters:
       - in: path
         name: id
@@ -349,6 +267,14 @@ paths:
           type: string
           description: Event ID
         required: true
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+      x-operation-id-source: normalized
+      x-operation-id-original: getEvent
+    servers:
+    - url: https://api.hookdeck.com/2025-07-01
+      description: Production API
   /events/{id}/raw_body:
     get:
       operationId: getEventRawBody
@@ -368,7 +294,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIErrorResponse'
+                $ref: '#/components/schemas/APIErrorResponse_2'
       parameters:
       - in: path
         name: id
@@ -376,6 +302,12 @@ paths:
           type: string
           description: Event ID
         required: true
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+    servers:
+    - url: https://api.hookdeck.com/2025-07-01
+      description: Production API
   /events/{id}/retry:
     post:
       operationId: retryEvent
@@ -395,7 +327,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIErrorResponse'
+                $ref: '#/components/schemas/APIErrorResponse_2'
       parameters:
       - in: path
         name: id
@@ -403,6 +335,12 @@ paths:
           type: string
           description: Event ID
         required: true
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+    servers:
+    - url: https://api.hookdeck.com/2025-07-01
+      description: Production API
   /events/{id}/cancel:
     put:
       operationId: cancelEvent
@@ -416,19 +354,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Event'
+                $ref: '#/components/schemas/Event_2'
         '404':
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIErrorResponse'
+                $ref: '#/components/schemas/APIErrorResponse_2'
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIErrorResponse'
+                $ref: '#/components/schemas/APIErrorResponse_2'
       parameters:
       - in: path
         name: id
@@ -436,6 +374,12 @@ paths:
           type: string
           description: Event ID
         required: true
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+    servers:
+    - url: https://api.hookdeck.com/2025-07-01
+      description: Production API
   /events/{id}/mute:
     put:
       operationId: cancelEvent_mute
@@ -449,19 +393,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Event'
+                $ref: '#/components/schemas/Event_2'
         '404':
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIErrorResponse'
+                $ref: '#/components/schemas/APIErrorResponse_2'
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIErrorResponse'
+                $ref: '#/components/schemas/APIErrorResponse_2'
       parameters:
       - in: path
         name: id
@@ -469,8 +413,144 @@ paths:
           type: string
           description: Event ID
         required: true
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+    servers:
+    - url: https://api.hookdeck.com/2025-07-01
+      description: Production API
 components:
   schemas:
+    APIErrorResponse:
+      type: object
+      description: Standard error response format.
+      properties:
+        status:
+          type: integer
+          description: HTTP status code.
+          example: 422
+        message:
+          type: string
+          description: Human-readable error message.
+          example: validation error
+        data:
+          description: Additional error details. For validation errors, this is an array of human-readable messages.
+          oneOf:
+          - type: array
+            items:
+              type: string
+            description: Array of validation error messages.
+            example:
+            - email is required
+            - password must be at least 6 characters
+          - type: object
+            additionalProperties: true
+            description: Additional contextual data about the error.
+    SeekPagination:
+      type: object
+      description: Cursor-based pagination metadata for list responses.
+      properties:
+        order_by:
+          type: string
+          description: The field being sorted on.
+          example: created_at
+        dir:
+          type: string
+          enum:
+          - asc
+          - desc
+          description: Sort direction.
+          example: desc
+        limit:
+          type: integer
+          description: Page size limit.
+          example: 100
+        next:
+          type: string
+          nullable: true
+          description: Cursor for the next page of results. Null if no more results.
+          example: MTcwNDA2NzIwMA==
+        prev:
+          type: string
+          nullable: true
+          description: Cursor for the previous page of results. Null if on first page.
+          example: null
+    Event:
+      type: object
+      properties:
+        id:
+          type: string
+          example: evt_123
+        tenant_id:
+          type: string
+          description: The tenant this event belongs to.
+          example: tnt_123
+        matched_destination_ids:
+          type: array
+          items:
+            type: string
+          description: The destination IDs that this event was routed to based on topic and filter matching.
+          example:
+          - des_456
+          - des_789
+        topic:
+          type: string
+          example: user.created
+        time:
+          type: string
+          format: date-time
+          description: Time the event was received/processed.
+          example: '2024-01-01T00:00:00Z'
+        eligible_for_retry:
+          type: boolean
+          description: Whether this event can be retried.
+          example: true
+        metadata:
+          type: object
+          nullable: true
+          description: Key-value string pairs of metadata associated with the event.
+          additionalProperties:
+            type: string
+          example:
+            source: crm
+        data:
+          type: object
+          description: Freeform JSON data of the event.
+          additionalProperties: true
+          example:
+            user_id: userid
+            status: active
+    Operator:
+      type: object
+      description: Comparison operators for filtering by date-time values (RFC3339 or YYYY-MM-DD format).
+      properties:
+        gte:
+          type: string
+          format: date-time
+          description: Filter with value >= the specified date-time.
+        lte:
+          type: string
+          format: date-time
+          description: Filter with value <= the specified date-time.
+        gt:
+          type: string
+          format: date-time
+          description: Filter with value > the specified date-time.
+        lt:
+          type: string
+          format: date-time
+          description: Filter with value < the specified date-time.
+    EventPaginatedResult:
+      type: object
+      description: Paginated list of events.
+      properties:
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event'
+          description: Array of event objects.
     RawBody:
       type: object
       properties:
@@ -479,39 +559,6 @@ components:
       required:
       - body
       additionalProperties: false
-    APIErrorResponse:
-      type: object
-      properties:
-        code:
-          type: string
-          description: Error code
-        status:
-          type: number
-          format: float
-          description: Status code
-        message:
-          type: string
-          description: Error description
-        data:
-          type:
-          - object
-          - 'null'
-          properties: {}
-      required:
-      - code
-      - status
-      - message
-      additionalProperties: false
-      description: Error response model
-    EventStatus:
-      type: string
-      enum:
-      - SCHEDULED
-      - QUEUED
-      - HOLD
-      - SUCCESSFUL
-      - FAILED
-      - CANCELLED
     EventData:
       type:
       - object
@@ -575,155 +622,31 @@ components:
       - body
       additionalProperties: false
       description: Event data if included
-    EventPaginatedResult:
+    APIErrorResponse_2:
       type: object
       properties:
-        pagination:
-          $ref: '#/components/schemas/SeekPagination'
-        count:
-          type: integer
-        models:
-          type: array
-          items:
-            $ref: '#/components/schemas/Event'
-      additionalProperties: false
-    Operators:
-      type: object
-      properties:
-        gt:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        gte:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        le:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        lte:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        any:
-          type: boolean
-        all:
-          type: boolean
-      additionalProperties: false
-    SeekPagination:
-      type: object
-      properties:
-        order_by:
-          anyOf:
-          - type: string
-          - type: array
-            items:
-              type: string
-        dir:
-          anyOf:
-          - $ref: '#/components/schemas/OrderByDirection'
-          - type: array
-            items:
-              $ref: '#/components/schemas/OrderByDirection'
-        limit:
-          type: integer
-        prev:
+        code:
           type: string
-        next:
-          type: string
-      additionalProperties: false
-    RetriedEvent:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the event
-        team_id:
-          type: string
-          description: ID of the project
-        webhook_id:
-          type: string
-          description: ID of the associated connection (webhook)
-        source_id:
-          type: string
-          description: ID of the associated source
-        destination_id:
-          type: string
-          description: ID of the associated destination
-        event_data_id:
-          type: string
-          description: ID of the event data
-        request_id:
-          type: string
-          description: ID of the request that created the event
-        attempts:
-          type: integer
-          description: Number of delivery attempts made
-        last_attempt_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Date of the most recently attempted retry
-        next_attempt_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Date of the next scheduled retry
-        response_status:
-          type:
-          - integer
-          - 'null'
-          description: Event status
-        error_code:
-          $ref: '#/components/schemas/AttemptErrorCodes'
+          description: Error code
         status:
-          $ref: '#/components/schemas/EventStatus'
-        successful_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Date of the latest successful attempt
-        cli_id:
-          type:
-          - string
-          - 'null'
-          description: ID of the CLI the event is sent to
-        updated_at:
+          type: number
+          format: float
+          description: Status code
+        message:
           type: string
-          format: date-time
-          description: Date the event was last updated
-        created_at:
-          type: string
-          format: date-time
-          description: Date the event was created
+          description: Error description
         data:
-          $ref: '#/components/schemas/EventData'
+          type:
+          - object
+          - 'null'
+          properties: {}
       required:
-      - id
-      - team_id
-      - webhook_id
-      - source_id
-      - destination_id
-      - event_data_id
-      - request_id
-      - attempts
-      - last_attempt_at
-      - next_attempt_at
+      - code
       - status
-      - successful_at
-      - cli_id
-      - updated_at
-      - created_at
+      - message
       additionalProperties: false
-    Event:
+      description: Error response model
+    Event_2:
       type: object
       properties:
         id:
@@ -846,20 +769,154 @@ components:
       - Z_DATA_ERROR
       - UNKNOWN
       description: Error code of the delivery attempt
-    OrderByDirection:
-      anyOf:
-      - enum:
-        - asc
-      - enum:
-        - desc
-      - enum:
-        - ASC
-      - enum:
-        - DESC
+    EventStatus:
+      type: string
+      enum:
+      - SCHEDULED
+      - QUEUED
+      - HOLD
+      - SUCCESSFUL
+      - FAILED
+      - CANCELLED
+    RetriedEvent:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the event
+        team_id:
+          type: string
+          description: ID of the project
+        webhook_id:
+          type: string
+          description: ID of the associated connection (webhook)
+        source_id:
+          type: string
+          description: ID of the associated source
+        destination_id:
+          type: string
+          description: ID of the associated destination
+        event_data_id:
+          type: string
+          description: ID of the event data
+        request_id:
+          type: string
+          description: ID of the request that created the event
+        attempts:
+          type: integer
+          description: Number of delivery attempts made
+        last_attempt_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date of the most recently attempted retry
+        next_attempt_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date of the next scheduled retry
+        response_status:
+          type:
+          - integer
+          - 'null'
+          description: Event status
+        error_code:
+          $ref: '#/components/schemas/AttemptErrorCodes'
+        status:
+          $ref: '#/components/schemas/EventStatus'
+        successful_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date of the latest successful attempt
+        cli_id:
+          type:
+          - string
+          - 'null'
+          description: ID of the CLI the event is sent to
+        updated_at:
+          type: string
+          format: date-time
+          description: Date the event was last updated
+        created_at:
+          type: string
+          format: date-time
+          description: Date the event was created
+        data:
+          $ref: '#/components/schemas/EventData'
+      required:
+      - id
+      - team_id
+      - webhook_id
+      - source_id
+      - destination_id
+      - event_data_id
+      - request_id
+      - attempts
+      - last_attempt_at
+      - next_attempt_at
+      - status
+      - successful_at
+      - cli_id
+      - updated_at
+      - created_at
+      additionalProperties: false
+  responses:
+    InternalServerError:
+      description: Unexpected server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+    BadRequest:
+      description: Malformed JSON or invalid request parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+    ValidationError:
+      description: Request body fails validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+    NotFound:
+      description: Requested resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+    Unauthorized:
+      description: Missing or invalid authentication credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+    Forbidden:
+      description: The credentials are valid but not allowed to perform the request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
   securitySchemes:
+    AdminApiKey:
+      type: http
+      scheme: bearer
+      description: "Bearer token for server-side calls. Where it comes from depends on the\ndeployment:\n\n- **Managed:** a Hookdeck **project API key belonging to your\n  Outpost project** (Hookdeck Dashboard → your Outpost project →\n  Settings → Secrets). A key from a different Hookdeck project\n  authenticates but returns `404` on most Outpost routes.\n- **Self-hosted:** the admin API key set in the `API_KEY` environment\n  variable.\n\nThe scheme is named for the self-hosted credential. Managed Outpost has\nno separate admin key to create. The project API key takes its place.\n"
+    TenantJwt:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "Per-tenant JWT token valid for 24 hours.\n\n**JWT Structure:**\nThe token is a standard JWT signed with HS256 algorithm containing the following claims:\n- `iss` (issuer): Always \"outpost\"\n- `sub` (subject): The tenant_id this token is scoped to\n- `iat` (issued at): Unix timestamp when the token was created\n- `exp` (expiration): Unix timestamp when the token expires (24 hours after issuance)\n\n**Example decoded payload:**\n```json\n{\n  \"iss\": \"outpost\",\n  \"sub\": \"tenant_123\",\n  \"iat\": 1704067200,\n  \"exp\": 1704153600\n}\n```\n"
     bearerAuth:
       type: http
       scheme: bearer
     basicAuth:
       type: http
       scheme: basic
+x-refined-from:
+- hookdeck-openapi.yml
+- hookdeck-events-api-openapi.yml

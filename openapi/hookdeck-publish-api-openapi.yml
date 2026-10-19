@@ -1,0 +1,197 @@
+openapi: 3.2.0
+info:
+  title: Outpost Publish API
+  version: 0.0.1
+  description: 'The Outpost API is a REST-based JSON API for managing tenants, destinations, and publishing events.
+
+
+    Outpost runs in two deployment models: **managed** (hosted by Hookdeck) and **self-hosted**. They differ in where the API is served and in which API key authenticates server-side calls. On managed Outpost, use a Hookdeck project API key from your Outpost project. On self-hosted Outpost, use the key set in the `API_KEY` environment variable. A few endpoints exist in one model only and say so in their description.'
+  contact:
+    name: Outpost Support
+    email: support@hookdeck.com
+    url: https://hookdeck.com/docs/outpost
+servers:
+- url: https://api.outpost.hookdeck.com/2025-07-01
+  description: Managed Outpost, hosted by Hookdeck at `api.outpost.hookdeck.com`. The Hookdeck Event Gateway API at `api.hookdeck.com` is a separate API.
+- url: http://localhost:3333/api/v1
+  description: Self-hosted Outpost, at its default local address. A deployed instance serves the same paths under its own host.
+security:
+- AdminApiKey: []
+- TenantJwt: []
+tags:
+- name: Publish
+  description: Use the Publish endpoint to send events into Outpost. Events are matched against all destinations whose topic subscriptions and filters match the event. Requires Admin API Key.
+paths:
+  /publish:
+    post:
+      tags:
+      - Publish
+      summary: Publish Event
+      description: Publishes an event to the specified topic, potentially routed to a specific destination. Requires Admin API Key.
+      operationId: publishEvent
+      security:
+      - AdminApiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublishRequest'
+            example:
+              id: evt_abc123xyz789
+              tenant_id: tenant_123
+              topic: user.created
+              eligible_for_retry: true
+              metadata:
+                source: crm
+              data:
+                user_id: userid
+                status: active
+      responses:
+        '202':
+          description: Event accepted for publishing. Returns the event ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublishResponse'
+              example:
+                id: evt_abc123xyz789
+                duplicate: false
+                destination_ids:
+                - des_webhook_123
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          description: Conflict. Another request with the same event `id` is in progress or has just failed. Retry the request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+        '422':
+          description: The event topic was either required or was invalid.
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  schemas:
+    APIErrorResponse:
+      type: object
+      description: Standard error response format.
+      properties:
+        status:
+          type: integer
+          description: HTTP status code.
+          example: 422
+        message:
+          type: string
+          description: Human-readable error message.
+          example: validation error
+        data:
+          description: Additional error details. For validation errors, this is an array of human-readable messages.
+          oneOf:
+          - type: array
+            items:
+              type: string
+            description: Array of validation error messages.
+            example:
+            - email is required
+            - password must be at least 6 characters
+          - type: object
+            additionalProperties: true
+            description: Additional contextual data about the error.
+    PublishResponse:
+      type: object
+      required:
+      - id
+      - duplicate
+      - destination_ids
+      properties:
+        id:
+          type: string
+          description: The ID of the event that was accepted for publishing. This will be the ID provided in the request's `id` field if present, otherwise it's a server-generated ID.
+          example: evt_abc123xyz789
+        duplicate:
+          type: boolean
+          description: Whether this event was already processed (idempotency hit). If true, the event was not queued again.
+          example: false
+        destination_ids:
+          type: array
+          items:
+            type: string
+          description: The IDs of destinations that matched this event. Empty array if no destinations matched.
+          example:
+          - des_456
+          - des_789
+    PublishRequest:
+      type: object
+      required:
+      - data
+      properties:
+        id:
+          type: string
+          description: Optional. A unique identifier for the event. If not provided, a ID will be generated.
+          example: evt_custom_123
+        tenant_id:
+          type: string
+          description: The ID of the tenant to publish for.
+          example: <TENANT_ID>
+        destination_id:
+          type: string
+          description: Optional. Route event to a specific destination.
+          example: <DESTINATION_ID>
+        topic:
+          type: string
+          description: Topic name for the event. Required if Outpost has been configured with topics.
+          example: topic.name
+        eligible_for_retry:
+          type: boolean
+          description: Should event delivery be retried on failure.
+        time:
+          type: string
+          format: date-time
+          description: Optional. Custom timestamp for the event. If not provided, defaults to the current time.
+          example: '2024-01-15T10:30:00Z'
+        metadata:
+          type: object
+          description: Any key-value string pairs for metadata.
+          additionalProperties:
+            type: string
+          example:
+            source: crm
+        data:
+          type: object
+          description: Any JSON payload for the event data.
+          additionalProperties: true
+          example:
+            user_id: userid
+            status: active
+  responses:
+    InternalServerError:
+      description: Unexpected server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+    Unauthorized:
+      description: Missing or invalid authentication credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+    Forbidden:
+      description: The credentials are valid but not allowed to perform the request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+  securitySchemes:
+    AdminApiKey:
+      type: http
+      scheme: bearer
+      description: "Bearer token for server-side calls. Where it comes from depends on the\ndeployment:\n\n- **Managed:** a Hookdeck **project API key belonging to your\n  Outpost project** (Hookdeck Dashboard → your Outpost project →\n  Settings → Secrets). A key from a different Hookdeck project\n  authenticates but returns `404` on most Outpost routes.\n- **Self-hosted:** the admin API key set in the `API_KEY` environment\n  variable.\n\nThe scheme is named for the self-hosted credential. Managed Outpost has\nno separate admin key to create. The project API key takes its place.\n"
+    TenantJwt:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "Per-tenant JWT token valid for 24 hours.\n\n**JWT Structure:**\nThe token is a standard JWT signed with HS256 algorithm containing the following claims:\n- `iss` (issuer): Always \"outpost\"\n- `sub` (subject): The tenant_id this token is scoped to\n- `iat` (issued at): Unix timestamp when the token was created\n- `exp` (expiration): Unix timestamp when the token expires (24 hours after issuance)\n\n**Example decoded payload:**\n```json\n{\n  \"iss\": \"outpost\",\n  \"sub\": \"tenant_123\",\n  \"iat\": 1704067200,\n  \"exp\": 1704153600\n}\n```\n"

@@ -1,0 +1,168 @@
+openapi: 3.2.0
+info:
+  title: Outpost Retry API
+  version: 0.0.1
+  description: 'The Outpost API is a REST-based JSON API for managing tenants, destinations, and publishing events.
+
+
+    Outpost runs in two deployment models: **managed** (hosted by Hookdeck) and **self-hosted**. They differ in where the API is served and in which API key authenticates server-side calls. On managed Outpost, use a Hookdeck project API key from your Outpost project. On self-hosted Outpost, use the key set in the `API_KEY` environment variable. A few endpoints exist in one model only and say so in their description.'
+  contact:
+    name: Outpost Support
+    email: support@hookdeck.com
+    url: https://hookdeck.com/docs/outpost
+servers:
+- url: https://api.outpost.hookdeck.com/2025-07-01
+  description: Managed Outpost, hosted by Hookdeck at `api.outpost.hookdeck.com`. The Hookdeck Event Gateway API at `api.hookdeck.com` is a separate API.
+- url: http://localhost:3333/api/v1
+  description: Self-hosted Outpost, at its default local address. A deployed instance serves the same paths under its own host.
+security:
+- AdminApiKey: []
+- TenantJwt: []
+tags:
+- name: Retry
+  description: Triggers a retry for delivering an event to a destination. The event must exist, and the destination must be enabled, match the event's topic and filter, and already have a delivery attempt for the event.
+paths:
+  /retry:
+    post:
+      tags:
+      - Retry
+      summary: Retry Event Delivery
+      description: 'Triggers a retry for delivering an event to a destination. The event must exist, and the destination must be enabled, match the event''s topic and filter, and already have a delivery attempt for the event. A retry never sends an event to a destination that has no earlier attempt for it.
+
+
+        Returns 404 `event not found` if the event does not exist, or belongs to another tenant when authenticated with a Tenant JWT. Returns 404 `destination not found` if the destination does not exist for the event''s tenant or has been deleted.
+
+
+        When authenticated with a Tenant JWT, only events belonging to that tenant can be retried.
+
+        When authenticated with Admin API Key, events from any tenant can be retried.'
+      operationId: retryEvent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RetryRequest'
+            example:
+              event_id: evt_abc123xyz789
+              destination_id: des_webhook_123
+      responses:
+        '202':
+          description: Retry accepted for processing.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+              examples:
+                RetryAccepted:
+                  value:
+                    success: true
+        '400':
+          description: 'Bad request. This can happen when:
+
+            - The destination is disabled
+
+            - The destination does not match the event''s topic or filter
+
+            - The event has no delivery attempt for the destination
+
+            '
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '413':
+          $ref: '#/components/responses/RequestBodyTooLarge'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  schemas:
+    APIErrorResponse:
+      type: object
+      description: Standard error response format.
+      properties:
+        status:
+          type: integer
+          description: HTTP status code.
+          example: 422
+        message:
+          type: string
+          description: Human-readable error message.
+          example: validation error
+        data:
+          description: Additional error details. For validation errors, this is an array of human-readable messages.
+          oneOf:
+          - type: array
+            items:
+              type: string
+            description: Array of validation error messages.
+            example:
+            - email is required
+            - password must be at least 6 characters
+          - type: object
+            additionalProperties: true
+            description: Additional contextual data about the error.
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+    RetryRequest:
+      type: object
+      description: Request body for retrying event delivery to a destination.
+      required:
+      - event_id
+      - destination_id
+      properties:
+        event_id:
+          type: string
+          description: The ID of the event to retry.
+          example: evt_123
+        destination_id:
+          type: string
+          description: The ID of the destination to deliver to.
+          example: des_456
+  responses:
+    InternalServerError:
+      description: Unexpected server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+    RequestBodyTooLarge:
+      description: Request body is larger than 1 MiB.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+    ValidationError:
+      description: Request body fails validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+    NotFound:
+      description: Requested resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+    Unauthorized:
+      description: Missing or invalid authentication credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+  securitySchemes:
+    AdminApiKey:
+      type: http
+      scheme: bearer
+      description: "Bearer token for server-side calls. Where it comes from depends on the\ndeployment:\n\n- **Managed:** a Hookdeck **project API key belonging to your\n  Outpost project** (Hookdeck Dashboard → your Outpost project →\n  Settings → Secrets). A key from a different Hookdeck project\n  authenticates but returns `404` on most Outpost routes.\n- **Self-hosted:** the admin API key set in the `API_KEY` environment\n  variable.\n\nThe scheme is named for the self-hosted credential. Managed Outpost has\nno separate admin key to create. The project API key takes its place.\n"
+    TenantJwt:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "Per-tenant JWT token valid for 24 hours.\n\n**JWT Structure:**\nThe token is a standard JWT signed with HS256 algorithm containing the following claims:\n- `iss` (issuer): Always \"outpost\"\n- `sub` (subject): The tenant_id this token is scoped to\n- `iat` (issued at): Unix timestamp when the token was created\n- `exp` (expiration): Unix timestamp when the token expires (24 hours after issuance)\n\n**Example decoded payload:**\n```json\n{\n  \"iss\": \"outpost\",\n  \"sub\": \"tenant_123\",\n  \"iat\": 1704067200,\n  \"exp\": 1704153600\n}\n```\n"

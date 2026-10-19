@@ -1,0 +1,532 @@
+openapi: 3.2.0
+info:
+  title: Outpost Tenants API
+  version: 0.0.1
+  description: 'The Outpost API is a REST-based JSON API for managing tenants, destinations, and publishing events.
+
+
+    Outpost runs in two deployment models: **managed** (hosted by Hookdeck) and **self-hosted**. They differ in where the API is served and in which API key authenticates server-side calls. On managed Outpost, use a Hookdeck project API key from your Outpost project. On self-hosted Outpost, use the key set in the `API_KEY` environment variable. A few endpoints exist in one model only and say so in their description.'
+  contact:
+    name: Outpost Support
+    email: support@hookdeck.com
+    url: https://hookdeck.com/docs/outpost
+servers:
+- url: https://api.outpost.hookdeck.com/2025-07-01
+  description: Managed Outpost, hosted by Hookdeck at `api.outpost.hookdeck.com`. The Hookdeck Event Gateway API at `api.hookdeck.com` is a separate API.
+- url: http://localhost:3333/api/v1
+  description: Self-hosted Outpost, at its default local address. A deployed instance serves the same paths under its own host.
+security:
+- AdminApiKey: []
+- TenantJwt: []
+tags:
+- name: Tenants
+  description: 'The API segments resources per `tenant`. A tenant represents a user/team/organization in your product. The provided value determines the tenant''s ID, which can be any string representation.
+
+
+    If your system is not multi-tenant, create a single tenant with a hard-code tenant ID upon initialization. If your system has a single tenant but multiple environments, create a tenant per environment, like `live` and `test`.'
+paths:
+  /tenants:
+    get:
+      tags:
+      - Tenants
+      summary: List Tenants
+      description: 'List all tenants with cursor-based pagination.
+
+
+        > When self-hosting this endpoint requires Redis with RediSearch module (e.g., `redis/redis-stack-server`).
+
+        If RediSearch is not available, this endpoint returns `501 Not Implemented`.
+
+
+        When authenticated with a Tenant JWT, returns only the authenticated tenant.'
+      operationId: listTenants
+      security:
+      - AdminApiKey: []
+      - TenantJwt: []
+      parameters:
+      - name: id
+        in: query
+        required: false
+        schema:
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        description: Filter tenants by ID(s). Use bracket notation for multiple values (e.g., `id[0]=t1&id[1]=t2` or `id[]=t1&id[]=t2`).
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 20
+        description: Number of tenants to return per page (1-100, default 20).
+      - name: dir
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: desc
+        description: Sort direction.
+      - name: next
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Cursor for the next page of results. Mutually exclusive with `prev`.
+      - name: prev
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Cursor for the previous page of results. Mutually exclusive with `next`.
+      responses:
+        '200':
+          description: List of tenants.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantPaginatedResult'
+              example:
+                pagination:
+                  order_by: created_at
+                  dir: desc
+                  limit: 20
+                  next: MTcwNDA2NzIwMA==
+                  prev: null
+                count: 2
+                models:
+                - id: tenant_123
+                  metadata:
+                    plan: pro
+                  created_at: '2024-01-15T10:30:00Z'
+                  updated_at: '2024-01-15T10:30:00Z'
+                - id: tenant_456
+                  metadata: null
+                  created_at: '2024-01-14T09:00:00Z'
+                  updated_at: '2024-01-14T09:00:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '501':
+          description: List Tenants feature is not available. Requires Redis with RediSearch module.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: list tenant not supported
+  /tenants/{tenant_id}:
+    parameters:
+    - name: tenant_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The ID of the tenant. Required when using AdminApiKey authentication.
+    put:
+      tags:
+      - Tenants
+      summary: Create or Update Tenant
+      description: Idempotently creates or updates a tenant. Required before associating destinations.
+      operationId: upsertTenant
+      requestBody:
+        description: Optional tenant metadata
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TenantUpsert'
+            example:
+              metadata:
+                name: Acme Inc.
+      responses:
+        '200':
+          description: Tenant updated details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tenant'
+              example:
+                id: tenant_123
+                destinations_count: 5
+                topics:
+                - user.created
+                - user.deleted
+                metadata:
+                  name: Acme Inc.
+                created_at: '2024-01-01T00:00:00Z'
+                updated_at: '2024-01-15T10:30:00Z'
+        '201':
+          description: Tenant created details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tenant'
+              example:
+                id: tenant_123
+                destinations_count: 0
+                topics: []
+                metadata:
+                  name: Acme Inc.
+                created_at: '2024-01-15T10:30:00Z'
+                updated_at: '2024-01-15T10:30:00Z'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '413':
+          $ref: '#/components/responses/RequestBodyTooLarge'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    get:
+      tags:
+      - Tenants
+      summary: Get Tenant
+      description: Retrieves details for a specific tenant.
+      operationId: getTenant
+      responses:
+        '200':
+          description: Tenant details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tenant'
+              example:
+                id: tenant_123
+                destinations_count: 5
+                topics:
+                - user.created
+                - user.deleted
+                metadata:
+                  name: Acme Inc.
+                created_at: '2024-01-01T00:00:00Z'
+                updated_at: '2024-01-15T10:30:00Z'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+      - Tenants
+      summary: Delete Tenant
+      description: Deletes the tenant and all associated destinations.
+      operationId: deleteTenant
+      responses:
+        '200':
+          description: Success confirmation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+              examples:
+                SuccessExample:
+                  value:
+                    success: true
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /tenants/{tenant_id}/portal:
+    parameters:
+    - name: tenant_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The ID of the tenant. Required when using AdminApiKey authentication.
+    get:
+      tags:
+      - Tenants
+      summary: Get Portal Redirect URL
+      description: Returns a redirect URL containing a JWT to authenticate the user with the portal. Requires Admin API Key.
+      operationId: getTenantPortalUrl
+      security:
+      - AdminApiKey: []
+      parameters:
+      - name: theme
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - light
+          - dark
+        description: Optional theme preference for the portal.
+      responses:
+        '200':
+          description: Portal redirect URL.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortalRedirect'
+              examples:
+                PortalRedirectExample:
+                  value:
+                    redirect_url: https://webhooks.acme.com/?token=JWT_TOKEN&tenant_id=tenant_123
+                    tenant_id: tenant_123
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /tenants/{tenant_id}/token:
+    parameters:
+    - name: tenant_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The ID of the tenant. Required when using AdminApiKey authentication.
+    get:
+      tags:
+      - Tenants
+      summary: Get Tenant JWT Token
+      description: Returns a JWT token scoped to the tenant for safe browser API calls. Requires Admin API Key.
+      operationId: getTenantToken
+      security:
+      - AdminApiKey: []
+      responses:
+        '200':
+          description: Tenant JWT token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantToken'
+              examples:
+                TenantTokenExample:
+                  value:
+                    token: SOME_JWT_TOKEN
+                    tenant_id: tenant_123
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  schemas:
+    APIErrorResponse:
+      type: object
+      description: Standard error response format.
+      properties:
+        status:
+          type: integer
+          description: HTTP status code.
+          example: 422
+        message:
+          type: string
+          description: Human-readable error message.
+          example: validation error
+        data:
+          description: Additional error details. For validation errors, this is an array of human-readable messages.
+          oneOf:
+          - type: array
+            items:
+              type: string
+            description: Array of validation error messages.
+            example:
+            - email is required
+            - password must be at least 6 characters
+          - type: object
+            additionalProperties: true
+            description: Additional contextual data about the error.
+    SeekPagination:
+      type: object
+      description: Cursor-based pagination metadata for list responses.
+      properties:
+        order_by:
+          type: string
+          description: The field being sorted on.
+          example: created_at
+        dir:
+          type: string
+          enum:
+          - asc
+          - desc
+          description: Sort direction.
+          example: desc
+        limit:
+          type: integer
+          description: Page size limit.
+          example: 100
+        next:
+          type: string
+          nullable: true
+          description: Cursor for the next page of results. Null if no more results.
+          example: MTcwNDA2NzIwMA==
+        prev:
+          type: string
+          nullable: true
+          description: Cursor for the previous page of results. Null if on first page.
+          example: null
+    TenantUpsert:
+      type: object
+      properties:
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Optional key/value metadata to store with the tenant.
+    Tenant:
+      type: object
+      properties:
+        id:
+          type: string
+          description: User-defined system ID for the tenant.
+          example: '123'
+        destinations_count:
+          type: integer
+          description: Number of destinations associated with the tenant.
+          example: 5
+        topics:
+          type: array
+          items:
+            type: string
+          description: List of subscribed topics across all destinations for this tenant.
+          example:
+          - user.created
+          - user.deleted
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Arbitrary key-value pairs for storing contextual information about the tenant.
+          example:
+            name: Acme Inc.
+        created_at:
+          type: string
+          format: date-time
+          description: ISO Date when the tenant was created.
+          example: '2024-01-01T00:00:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          description: ISO Date when the tenant was last updated.
+          example: '2024-01-01T00:00:00Z'
+    PortalRedirect:
+      type: object
+      properties:
+        redirect_url:
+          type: string
+          format: url
+          description: Redirect URL containing a JWT to authenticate the user with the portal.
+          example: https://webhooks.acme.com/?token=JWT_TOKEN&tenant_id=tenant_123
+        tenant_id:
+          type: string
+          description: The ID of the tenant associated with this portal session.
+          example: tenant_123
+    TenantToken:
+      type: object
+      properties:
+        token:
+          type: string
+          description: JWT token scoped to the tenant for safe browser API calls.
+          example: SOME_JWT_TOKEN
+        tenant_id:
+          type: string
+          description: The ID of the tenant this token is scoped to.
+          example: tenant_123
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+    TenantPaginatedResult:
+      type: object
+      description: Paginated list of tenants.
+      properties:
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tenant'
+          description: Array of tenant objects.
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+          description: Total count of all tenants.
+          example: 42
+  responses:
+    RequestBodyTooLarge:
+      description: Request body is larger than 1 MiB.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+    InternalServerError:
+      description: Unexpected server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+    BadRequest:
+      description: Malformed JSON or invalid request parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+    NotFound:
+      description: Requested resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+    Unauthorized:
+      description: Missing or invalid authentication credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+    ValidationError:
+      description: Request body fails validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+    Forbidden:
+      description: The credentials are valid but not allowed to perform the request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIErrorResponse'
+  securitySchemes:
+    AdminApiKey:
+      type: http
+      scheme: bearer
+      description: "Bearer token for server-side calls. Where it comes from depends on the\ndeployment:\n\n- **Managed:** a Hookdeck **project API key belonging to your\n  Outpost project** (Hookdeck Dashboard → your Outpost project →\n  Settings → Secrets). A key from a different Hookdeck project\n  authenticates but returns `404` on most Outpost routes.\n- **Self-hosted:** the admin API key set in the `API_KEY` environment\n  variable.\n\nThe scheme is named for the self-hosted credential. Managed Outpost has\nno separate admin key to create. The project API key takes its place.\n"
+    TenantJwt:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "Per-tenant JWT token valid for 24 hours.\n\n**JWT Structure:**\nThe token is a standard JWT signed with HS256 algorithm containing the following claims:\n- `iss` (issuer): Always \"outpost\"\n- `sub` (subject): The tenant_id this token is scoped to\n- `iat` (issued at): Unix timestamp when the token was created\n- `exp` (expiration): Unix timestamp when the token expires (24 hours after issuance)\n\n**Example decoded payload:**\n```json\n{\n  \"iss\": \"outpost\",\n  \"sub\": \"tenant_123\",\n  \"iat\": 1704067200,\n  \"exp\": 1704153600\n}\n```\n"

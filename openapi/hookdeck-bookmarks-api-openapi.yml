@@ -422,95 +422,6 @@ components:
       required:
       - body
       additionalProperties: false
-    APIErrorResponse:
-      type: object
-      properties:
-        code:
-          type: string
-          description: Error code
-        status:
-          type: number
-          format: float
-          description: Status code
-        message:
-          type: string
-          description: Error description
-        data:
-          type:
-          - object
-          - 'null'
-          properties: {}
-      required:
-      - code
-      - status
-      - message
-      additionalProperties: false
-      description: Error response model
-    EventArray:
-      type: array
-      items:
-        $ref: '#/components/schemas/Event'
-    ShortEventData:
-      type:
-      - object
-      - 'null'
-      properties:
-        path:
-          type: string
-          description: Request path
-        query:
-          type:
-          - string
-          - 'null'
-          description: Raw query param string
-        parsed_query:
-          anyOf:
-          - type:
-            - string
-            - 'null'
-          - type: object
-            properties: {}
-          description: JSON representation of query params
-        headers:
-          anyOf:
-          - type: string
-          - type: object
-            properties: {}
-            additionalProperties:
-              type:
-              - string
-              - 'null'
-          description: JSON representation of the headers
-        body:
-          anyOf:
-          - type: string
-          - type: object
-            properties: {}
-          - type: array
-            items: {}
-          description: JSON or string representation of the body
-        is_large_payload:
-          type:
-          - boolean
-          - 'null'
-          description: Whether the payload is considered large payload and not searchable
-      required:
-      - path
-      - query
-      - parsed_query
-      - headers
-      - body
-      additionalProperties: false
-      description: Request data
-    EventStatus:
-      type: string
-      enum:
-      - SCHEDULED
-      - QUEUED
-      - HOLD
-      - SUCCESSFUL
-      - FAILED
-      - CANCELLED
     EventData:
       type:
       - object
@@ -574,6 +485,61 @@ components:
       - body
       additionalProperties: false
       description: Event data if included
+    APIErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        status:
+          type: number
+          format: float
+          description: Status code
+        message:
+          type: string
+          description: Error description
+        data:
+          type:
+          - object
+          - 'null'
+          properties: {}
+      required:
+      - code
+      - status
+      - message
+      additionalProperties: false
+      description: Error response model
+    SeekPagination:
+      type: object
+      properties:
+        order_by:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        dir:
+          anyOf:
+          - $ref: '#/components/schemas/OrderByDirection'
+          - type: array
+            items:
+              $ref: '#/components/schemas/OrderByDirection'
+        limit:
+          type: integer
+        prev:
+          type: string
+        next:
+          type: string
+      additionalProperties: false
+    DeletedBookmarkResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Bookmark ID
+      required:
+      - id
+      additionalProperties: false
     Operators:
       type: object
       properties:
@@ -601,28 +567,6 @@ components:
           type: boolean
         all:
           type: boolean
-      additionalProperties: false
-    SeekPagination:
-      type: object
-      properties:
-        order_by:
-          anyOf:
-          - type: string
-          - type: array
-            items:
-              type: string
-        dir:
-          anyOf:
-          - $ref: '#/components/schemas/OrderByDirection'
-          - type: array
-            items:
-              $ref: '#/components/schemas/OrderByDirection'
-        limit:
-          type: integer
-        prev:
-          type: string
-        next:
-          type: string
       additionalProperties: false
     Event:
       type: object
@@ -758,18 +702,58 @@ components:
       - updated_at
       - created_at
       additionalProperties: false
-    BookmarkPaginatedResult:
-      type: object
+    ShortEventData:
+      type:
+      - object
+      - 'null'
       properties:
-        pagination:
-          $ref: '#/components/schemas/SeekPagination'
-        count:
-          type: integer
-        models:
-          type: array
-          items:
-            $ref: '#/components/schemas/Bookmark'
+        path:
+          type: string
+          description: Request path
+        query:
+          type:
+          - string
+          - 'null'
+          description: Raw query param string
+        parsed_query:
+          anyOf:
+          - type:
+            - string
+            - 'null'
+          - type: object
+            properties: {}
+          description: JSON representation of query params
+        headers:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+            additionalProperties:
+              type:
+              - string
+              - 'null'
+          description: JSON representation of the headers
+        body:
+          anyOf:
+          - type: string
+          - type: object
+            properties: {}
+          - type: array
+            items: {}
+          description: JSON or string representation of the body
+        is_large_payload:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the payload is considered large payload and not searchable
+      required:
+      - path
+      - query
+      - parsed_query
+      - headers
+      - body
       additionalProperties: false
+      description: Request data
     AttemptErrorCodes:
       type: string
       enum:
@@ -807,6 +791,19 @@ components:
       - Z_DATA_ERROR
       - UNKNOWN
       description: Error code of the delivery attempt
+    EventStatus:
+      type: string
+      enum:
+      - SCHEDULED
+      - QUEUED
+      - HOLD
+      - SUCCESSFUL
+      - FAILED
+      - CANCELLED
+    EventArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/Event'
     OrderByDirection:
       anyOf:
       - enum:
@@ -817,14 +814,17 @@ components:
         - ASC
       - enum:
         - DESC
-    DeletedBookmarkResponse:
+    BookmarkPaginatedResult:
       type: object
       properties:
-        id:
-          type: string
-          description: Bookmark ID
-      required:
-      - id
+        pagination:
+          $ref: '#/components/schemas/SeekPagination'
+        count:
+          type: integer
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/Bookmark'
       additionalProperties: false
   securitySchemes:
     bearerAuth:

@@ -321,58 +321,6 @@ apis:
     url: openapi/hookdeck-attempts-api-openapi.yml
   - type: Documentation
     url: https://hookdeck.com/docs/bulk-retries
-- aid: hookdeck:hookdeck-bulk-cancel-events-api
-  name: Hookdeck Bulk cancel events API
-  description: Bulk cancel operations allow you to cancel multiple pending events at once.
-  humanURL: https://hookdeck.com/docs/api
-  baseURL: https://api.hookdeck.com/2025-07-01
-  tags:
-  - Bulk cancel events
-  properties:
-  - type: OpenAPI
-    url: openapi/hookdeck-bulk-cancel-events-api-openapi.yml
-  - type: Documentation
-    url: https://hookdeck.com/docs/bulk-retries
-- aid: hookdeck:hookdeck-bulk-retry-events-api
-  name: Hookdeck Bulk retry events API
-  description: >-
-    Bulk retry operations allow you to retry many events at once. A bulk retry is first estimated, then
-    created, then processed asynchronously.
-  humanURL: https://hookdeck.com/docs/api
-  baseURL: https://api.hookdeck.com/2025-07-01
-  tags:
-  - Bulk retry events
-  properties:
-  - type: OpenAPI
-    url: openapi/hookdeck-bulk-retry-events-api-openapi.yml
-  - type: Documentation
-    url: https://hookdeck.com/docs/bulk-retries
-- aid: hookdeck:hookdeck-bulk-retry-ignored-events-api
-  name: Hookdeck Bulk retry ignored events API
-  description: >-
-    Bulk retry ignored events allow you to retry many events that were previously ignored (for instance
-    due to filter rules) at once.
-  humanURL: https://hookdeck.com/docs/api
-  baseURL: https://api.hookdeck.com/2025-07-01
-  tags:
-  - Bulk retry ignored events
-  properties:
-  - type: OpenAPI
-    url: openapi/hookdeck-bulk-retry-ignored-events-api-openapi.yml
-  - type: Documentation
-    url: https://hookdeck.com/docs/bulk-retries
-- aid: hookdeck:hookdeck-bulk-retry-requests-api
-  name: Hookdeck Bulk retry requests API
-  description: Bulk retry requests allow you to re-ingest many previously received requests at once.
-  humanURL: https://hookdeck.com/docs/api
-  baseURL: https://api.hookdeck.com/2025-07-01
-  tags:
-  - Bulk retry requests
-  properties:
-  - type: OpenAPI
-    url: openapi/hookdeck-bulk-retry-requests-api-openapi.yml
-  - type: Documentation
-    url: https://hookdeck.com/docs/bulk-retries
 - aid: hookdeck:hookdeck-issue-triggers-api
   name: Hookdeck Issue Triggers API
   description: Issue Triggers lets you setup rules that trigger issues when certain conditions are met.
@@ -383,6 +331,164 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/hookdeck-issue-triggers-api-openapi.yml
+  - type: Documentation
+    url: https://hookdeck.com/docs/bulk-retries
+- aid: hookdeck:hookdeck-configuration-api
+  name: Hookdeck Configuration API
+  description: >-
+    The Configuration API is only available on managed Outpost. It allows you to read and update instance-level
+    settings, the same settings available as environment variables in self-hosted deployments.
+  humanURL: https://hookdeck.com/docs/api
+  baseURL: https://api.hookdeck.com/2025-07-01
+  tags:
+  - Configuration
+  properties:
+  - type: OpenAPI
+    url: openapi/hookdeck-configuration-api-openapi.yml
+  - type: Documentation
+    url: https://hookdeck.com/docs/bulk-retries
+- aid: hookdeck:hookdeck-health-api
+  name: Hookdeck Health API
+  description: >-
+    This endpoint is only available for **self-hosted** Outpost deployments. Managed Outpost health is
+    monitored by Hookdeck.
+  humanURL: https://hookdeck.com/docs/api
+  baseURL: https://api.hookdeck.com/2025-07-01
+  tags:
+  - Health
+  properties:
+  - type: OpenAPI
+    url: openapi/hookdeck-health-api-openapi.yml
+  - type: Documentation
+    url: https://hookdeck.com/docs/bulk-retries
+- aid: hookdeck:hookdeck-operator-events-api
+  name: Hookdeck Operator Events API
+  description: >-
+    Operator events are Outpost's own lifecycle and alerting stream: delivery failures, destinations being
+    auto-disabled, retry exhaustion and tenant subscription changes. They are about the deployment, not
+    about a tenant's traffic, so they are delivered to **operator event destinations** rather than to
+    tenant destinations. An operator event destination is deployment-wide, is not owned by any tenant
+    you create, and has the same shape as a tenant destination: any destination type listed by `GET /operator-events/destination-types`,
+    with that type's `config` and `credentials`.
+
+
+    The Operator Events API is only available on managed Outpost, and requires the Admin API Key. Self-hosted
+    deployments configure the same thing through environment variables and a single sink. See the [Operator
+    Events](https://hookdeck.com/docs/outpost/features/operator-events) feature page.
+
+
+    **Available topics**
+
+
+    | Topic | Trigger |
+
+    |-------|---------|
+
+    | `alert.destination.consecutive_failure` | Consecutive failure count reaches 50%, 70%, 90%, or 100%
+    of `ALERT_CONSECUTIVE_FAILURE_COUNT` |
+
+    | `alert.destination.disabled` | Destination auto-disabled at the 100% failure threshold |
+
+    | `alert.attempt.exhausted_retries` | Delivery exhausts all retry attempts |
+
+    | `attempt.success` | Every successful delivery attempt |
+
+    | `attempt.failed` | Every failed delivery attempt, including retries |
+
+    | `tenant.subscription.updated` | A destination was created, updated or deleted and the tenant's topics
+    or destination count changed |
+
+
+    A destination may subscribe to every topic with `["*"]`, but `attempt.success` and `attempt.failed`
+    fire once per delivery attempt and will dominate volume. Prefer an explicit topic list.
+
+
+    **Topics are derived from these destinations.** The union of every enabled operator event destination's
+    `topics` is what the deployment subscribes to, which is why `PATCH /config` rejects `OPERATOR_EVENTS_TOPICS`
+    with a 422: change the destinations and the configuration follows.
+  humanURL: https://hookdeck.com/docs/api
+  baseURL: https://api.hookdeck.com/2025-07-01
+  tags:
+  - Operator Events
+  properties:
+  - type: OpenAPI
+    url: openapi/hookdeck-operator-events-api-openapi.yml
+  - type: Documentation
+    url: https://hookdeck.com/docs/bulk-retries
+- aid: hookdeck:hookdeck-publish-api
+  name: Hookdeck Publish API
+  description: >-
+    Use the Publish endpoint to send events into Outpost. Events are matched against all destinations
+    whose topic subscriptions and filters match the event. Requires Admin API Key.
+  humanURL: https://hookdeck.com/docs/api
+  baseURL: https://api.hookdeck.com/2025-07-01
+  tags:
+  - Publish
+  properties:
+  - type: OpenAPI
+    url: openapi/hookdeck-publish-api-openapi.yml
+  - type: Documentation
+    url: https://hookdeck.com/docs/bulk-retries
+- aid: hookdeck:hookdeck-retry-api
+  name: Hookdeck Retry API
+  description: >-
+    Triggers a retry for delivering an event to a destination. The event must exist, and the destination
+    must be enabled, match the event's topic and filter, and already have a delivery attempt for the event.
+  humanURL: https://hookdeck.com/docs/api
+  baseURL: https://api.hookdeck.com/2025-07-01
+  tags:
+  - Retry
+  properties:
+  - type: OpenAPI
+    url: openapi/hookdeck-retry-api-openapi.yml
+  - type: Documentation
+    url: https://hookdeck.com/docs/bulk-retries
+- aid: hookdeck:hookdeck-schemas-api
+  name: Hookdeck Schemas API
+  description: >-
+    Destination types describe the available event delivery targets and their configuration schemas. Use
+    these endpoints to render UI forms and list available destination types with their configuration schemas.
+  humanURL: https://hookdeck.com/docs/api
+  baseURL: https://api.hookdeck.com/2025-07-01
+  tags:
+  - Schemas
+  properties:
+  - type: OpenAPI
+    url: openapi/hookdeck-schemas-api-openapi.yml
+  - type: Documentation
+    url: https://hookdeck.com/docs/bulk-retries
+- aid: hookdeck:hookdeck-tenants-api
+  name: Hookdeck Tenants API
+  description: >-
+    The API segments resources per `tenant`. A tenant represents a user/team/organization in your product.
+    The provided value determines the tenant's ID, which can be any string representation.
+
+
+    If your system is not multi-tenant, create a single tenant with a hard-code tenant ID upon initialization.
+    If your system has a single tenant but multiple environments, create a tenant per environment, like
+    `live` and `test`.
+  humanURL: https://hookdeck.com/docs/api
+  baseURL: https://api.hookdeck.com/2025-07-01
+  tags:
+  - Tenants
+  properties:
+  - type: OpenAPI
+    url: openapi/hookdeck-tenants-api-openapi.yml
+  - type: Documentation
+    url: https://hookdeck.com/docs/bulk-retries
+- aid: hookdeck:hookdeck-topics-api
+  name: Hookdeck Topics API
+  description: >-
+    Returns the list of topics configured for this Outpost deployment. Tenants subscribe their destinations
+    to topics from this list. Topics are defined via your configuration file and not a specific Create
+    Topic API.
+  humanURL: https://hookdeck.com/docs/api
+  baseURL: https://api.hookdeck.com/2025-07-01
+  tags:
+  - Topics
+  properties:
+  - type: OpenAPI
+    url: openapi/hookdeck-topics-api-openapi.yml
   - type: Documentation
     url: https://hookdeck.com/docs/bulk-retries
 common:
