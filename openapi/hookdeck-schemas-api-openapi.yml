@@ -376,3 +376,9 @@ components:
       scheme: bearer
       bearerFormat: JWT
       description: "Per-tenant JWT token valid for 24 hours.\n\n**JWT Structure:**\nThe token is a standard JWT signed with HS256 algorithm containing the following claims:\n- `iss` (issuer): Always \"outpost\"\n- `sub` (subject): The tenant_id this token is scoped to\n- `iat` (issued at): Unix timestamp when the token was created\n- `exp` (expiration): Unix timestamp when the token expires (24 hours after issuance)\n\n**Example decoded payload:**\n```json\n{\n  \"iss\": \"outpost\",\n  \"sub\": \"tenant_123\",\n  \"iat\": 1704067200,\n  \"exp\": 1704153600\n}\n```\n"
+x-provenance:
+  method: harvested
+  publisher: Hookdeck
+  source: https://raw.githubusercontent.com/hookdeck/outpost/main/docs/apis/openapi.yaml
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
