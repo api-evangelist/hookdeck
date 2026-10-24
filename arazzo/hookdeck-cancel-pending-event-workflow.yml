@@ -75,7 +75,7 @@ workflows:
   - stepId: readEvent
     description: >-
       Retrieve the queued event to confirm its status before cancelling it.
-    operationId: getEvent
+    operationId: getEventsById
     parameters:
     - name: id
       in: path

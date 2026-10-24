@@ -13,47 +13,47 @@ artifacts:
     method: unknown
     evidence: no authorship recorded
   arazzo/hookdeck-attach-integration-to-source-workflow.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: Arazzo whose sourceDescriptions are our split specs (../openapi/)
   arazzo/hookdeck-author-transformation-workflow.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: Arazzo whose sourceDescriptions are our split specs (../openapi/)
   arazzo/hookdeck-bookmark-and-replay-event-workflow.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: Arazzo whose sourceDescriptions are our split specs (../openapi/)
   arazzo/hookdeck-bulk-retry-failed-events-workflow.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: Arazzo whose sourceDescriptions are our split specs (../openapi/)
   arazzo/hookdeck-cancel-pending-event-workflow.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: Arazzo whose sourceDescriptions are our split specs (../openapi/)
   arazzo/hookdeck-decommission-source-workflow.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: Arazzo whose sourceDescriptions are our split specs (../openapi/)
   arazzo/hookdeck-inline-connection-workflow.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: Arazzo whose sourceDescriptions are our split specs (../openapi/)
   arazzo/hookdeck-investigate-event-attempts-workflow.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: Arazzo whose sourceDescriptions are our split specs (../openapi/)
   arazzo/hookdeck-pause-resume-connection-workflow.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: Arazzo whose sourceDescriptions are our split specs (../openapi/)
   arazzo/hookdeck-provision-connection-workflow.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: Arazzo whose sourceDescriptions are our split specs (../openapi/)
   arazzo/hookdeck-replay-request-workflow.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: Arazzo whose sourceDescriptions are our split specs (../openapi/)
   arazzo/hookdeck-retry-failed-event-workflow.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: Arazzo whose sourceDescriptions are our split specs (../openapi/)
   arazzo/hookdeck-update-transformation-workflow.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: Arazzo whose sourceDescriptions are our split specs (../openapi/)
   arazzo/hookdeck-upsert-connection-workflow.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: Arazzo whose sourceDescriptions are our split specs (../openapi/)
   authentication/hookdeck-authentication.yml:
     method: derived
     evidence: declared in the artifact
@@ -73,11 +73,11 @@ artifacts:
     method: derived
     evidence: openapi/hookdeck-bookmarks-api
   collections/hookdeck-bulk-cancel-events-api.opencollection.json:
-    method: derived
-    evidence: openapi/hookdeck-bulk-cancel-events-api
+    method: unknown
+    evidence: no authorship recorded
   collections/hookdeck-bulk-cancel-events-api.postman_collection.json:
-    method: derived
-    evidence: openapi/hookdeck-bulk-cancel-events-api
+    method: unknown
+    evidence: no authorship recorded
   collections/hookdeck-bulk-operations-api.opencollection.json:
     method: unknown
     evidence: no authorship recorded
@@ -85,23 +85,23 @@ artifacts:
     method: unknown
     evidence: no authorship recorded
   collections/hookdeck-bulk-retry-events-api.opencollection.json:
-    method: derived
-    evidence: openapi/hookdeck-bulk-retry-events-api
+    method: unknown
+    evidence: no authorship recorded
   collections/hookdeck-bulk-retry-events-api.postman_collection.json:
-    method: derived
-    evidence: openapi/hookdeck-bulk-retry-events-api
+    method: unknown
+    evidence: no authorship recorded
   collections/hookdeck-bulk-retry-ignored-events-api.opencollection.json:
-    method: derived
-    evidence: openapi/hookdeck-bulk-retry-ignored-events-api
+    method: unknown
+    evidence: no authorship recorded
   collections/hookdeck-bulk-retry-ignored-events-api.postman_collection.json:
-    method: derived
-    evidence: openapi/hookdeck-bulk-retry-ignored-events-api
+    method: unknown
+    evidence: no authorship recorded
   collections/hookdeck-bulk-retry-requests-api.opencollection.json:
-    method: derived
-    evidence: openapi/hookdeck-bulk-retry-requests-api
+    method: unknown
+    evidence: no authorship recorded
   collections/hookdeck-bulk-retry-requests-api.postman_collection.json:
-    method: derived
-    evidence: openapi/hookdeck-bulk-retry-requests-api
+    method: unknown
+    evidence: no authorship recorded
   collections/hookdeck-connections-api.opencollection.json:
     method: derived
     evidence: openapi/hookdeck-connections-api
@@ -175,8 +175,8 @@ artifacts:
     method: unknown
     evidence: no authorship recorded
   integrations/_index.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: generated
+    evidence: carries an API Evangelist house phrase
   integrations/hookdeck-anthropic.yaml:
     method: unknown
     evidence: no authorship recorded
@@ -187,6 +187,9 @@ artifacts:
     method: unknown
     evidence: no authorship recorded
   integrations/hookdeck-github.yaml:
+    method: unknown
+    evidence: no authorship recorded
+  integrations/hookdeck-integration-edges.yml:
     method: unknown
     evidence: no authorship recorded
   integrations/hookdeck-kafka.yaml:
@@ -240,127 +243,7 @@ artifacts:
   json-schema/hookdeck-transformation-schema.json:
     method: unknown
     evidence: no authorship recorded
-  kin/checks-2026-09-24T161608.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-25T125852.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-25T133943.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-25T143147.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-25T154045.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-26T215308.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T094438.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T103455.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T123021.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T132314.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T140727.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-28T221322.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-29T213958.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-29T230545.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-30T203505.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-30T220315.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-31T223420.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-01T063623.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-01T210448.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-01T222808.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-02T211804.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-02T224043.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-03T161828.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-03T174231.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-04T062714.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-04T212454.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-04T224856.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T055819.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T072335.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T144739.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T195450.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T211839.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-06T011047.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-06T211804.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-06T224210.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-07T200636.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-07T213054.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-08T214843.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-08T232836.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-10T204815.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-10T222408.yml:
+  kin/checks-2026-10-11T110117.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-09-12T062655.yml:
@@ -444,26 +327,32 @@ artifacts:
   kin/score-2026-09-24T161608.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
-  openapi/_original/hookdeck-bulk-operations-api-openapi.yml:
+  kin/score-2026-09-25T210408.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-25T232841.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-03T000835.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-03T024842.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-11T110117.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  openapi/_original/hookdeck-openapi.yml:
     method: harvested
-    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
-      to the provider's source is unverified
+    evidence: byte-identical to https://raw.githubusercontent.com/hookdeck/outpost/main/docs/apis/openapi.yaml
+      (sha256 00b758646b3b, fetched 2026-10-19)
   openapi/hookdeck-attempts-api-openapi.yml:
     method: unknown
     evidence: no authorship recorded
   openapi/hookdeck-bookmarks-api-openapi.yml:
     method: unknown
     evidence: no authorship recorded
-  openapi/hookdeck-bulk-cancel-events-api-openapi.yml:
-    method: derived
-    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
-  openapi/hookdeck-bulk-retry-events-api-openapi.yml:
-    method: derived
-    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
-  openapi/hookdeck-bulk-retry-ignored-events-api-openapi.yml:
-    method: derived
-    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
-  openapi/hookdeck-bulk-retry-requests-api-openapi.yml:
+  openapi/hookdeck-configuration-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/hookdeck-connections-api-openapi.yml:
@@ -475,6 +364,9 @@ artifacts:
   openapi/hookdeck-events-api-openapi.yml:
     method: unknown
     evidence: no authorship recorded
+  openapi/hookdeck-health-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/hookdeck-integrations-api-openapi.yml:
     method: unknown
     evidence: no authorship recorded
@@ -490,12 +382,30 @@ artifacts:
   openapi/hookdeck-notifications-api-openapi.yml:
     method: unknown
     evidence: no authorship recorded
+  openapi/hookdeck-operator-events-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/hookdeck-publish-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/hookdeck-requests-api-openapi.yml:
     method: unknown
     evidence: no authorship recorded
+  openapi/hookdeck-retry-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/hookdeck-schemas-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/hookdeck-sources-api-openapi.yml:
     method: unknown
     evidence: no authorship recorded
+  openapi/hookdeck-tenants-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/hookdeck-topics-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/hookdeck-transformations-api-openapi.yml:
     method: unknown
     evidence: no authorship recorded

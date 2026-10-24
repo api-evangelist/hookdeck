@@ -48,7 +48,7 @@ workflows:
     description: >-
       Retrieve the event to confirm it exists and capture its connection and
       attempt count.
-    operationId: getEvent
+    operationId: getEventsById
     parameters:
     - name: id
       in: path
@@ -88,7 +88,7 @@ workflows:
     description: >-
       Retrieve the most recent attempt to inspect the destination response body
       and status.
-    operationId: getAttempt
+    operationId: getAttemptsById
     parameters:
     - name: id
       in: path

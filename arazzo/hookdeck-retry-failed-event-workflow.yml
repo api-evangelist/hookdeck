@@ -79,7 +79,7 @@ workflows:
     description: >-
       Retrieve the failed event to capture its connection, destination, and
       current attempt count before retrying.
-    operationId: getEvent
+    operationId: getEventsById
     parameters:
     - name: id
       in: path
