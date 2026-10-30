@@ -1,4 +1,4 @@
-# Hookdeck (hookdeck)
+# Hookdeck
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,331 +66,242 @@
 
 Hookdeck is a Toronto-based webhook and event-infrastructure platform. The Hookdeck Event Gateway sits between webhook senders and your services to receive, verify, queue, retry, transform, filter, route, and observe events reliably at scale. Hookdeck exposes a fully versioned REST Admin API, a CLI for local development, language SDKs (TypeScript, Go, Python, .NET), a Terraform provider, and the open-source Outpost project for self-hostable outbound webhook delivery.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/hookdeck/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/hookdeck/refs/heads/main/apis.yml)
+**Areas:** Webhook · Event Gateways · Gateways · Event · Event Infrastructure · Event-Driven · Messaging · Queues · Retries · Transformation · Observability
+
+## Hookdeck on APIs.io
+
+Everything profiled for Hookdeck is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/hookdeck/](https://apis.io/providers/hookdeck/)** — or go straight to one of the APIs or properties below.
+
+### APIs (17)
+
+- [Hookdeck Connections API](https://apis.io/apis/hookdeck/hookdeck-connections-api/) — Create, update, list, archive, pause, and unpause connections. A connection routes events from a Source to a Destination and may carry rules (retry, alert,…
+- [Hookdeck Sources API](https://apis.io/apis/hookdeck/hookdeck-sources-api/) — Manage sources — the upstream endpoints (webhook senders or push channels) that ingest events into Hookdeck. Sources support platform-specific verification…
+- [Hookdeck Destinations API](https://apis.io/apis/hookdeck/hookdeck-destinations-api/) — Manage destinations — the downstream targets (HTTP endpoints, AWS SQS, Azure Service Bus, GCP Pub/Sub, Kafka, RabbitMQ, MongoDB, and more) where Hookdeck…
+- [Hookdeck Events API](https://apis.io/apis/hookdeck/hookdeck-events-api/) — List, retrieve, retry, mute, and inspect events and their delivery attempts. An event is any request Hookdeck received from a source; an attempt is each…
+- [Hookdeck Requests API](https://apis.io/apis/hookdeck/hookdeck-requests-api/) — List and inspect raw requests received by Hookdeck. A request precedes events and is what gets accepted at the gateway boundary before verification,…
+- [Hookdeck Transformations API](https://apis.io/apis/hookdeck/hookdeck-transformations-api/) — Manage transformations — sandboxed JavaScript executed against events to mutate headers, body, path, or query string before delivery. Also includes a…
+- [Hookdeck Bookmarks API](https://apis.io/apis/hookdeck/hookdeck-bookmarks-api/) — Save bookmarked events for quick replay and one-click testing during development. Bookmarks let your team capture canonical event payloads and trigger them…
+- [Hookdeck Issues API](https://apis.io/apis/hookdeck/hookdeck-issues-api/) — Track issues that occur on events, requests, and backpressure, and manage the triggers (rules) that open and route issues to Slack, Email, Microsoft Teams,…
+- [Hookdeck Metrics API](https://apis.io/apis/hookdeck/hookdeck-metrics-api/) — Query aggregated metrics for events, requests, and attempts — success counts, failure counts, response time, throughput, and SLA bands grouped by source,…
+- [Hookdeck Integrations API](https://apis.io/apis/hookdeck/hookdeck-integrations-api/) — Configure platform integrations that adapt Hookdeck behavior for specific source platforms — including signature verification, header normalization, allowed…
+- [Hookdeck Notifications API](https://apis.io/apis/hookdeck/hookdeck-notifications-api/) — Manage how your team is notified when issues occur — channel routing, mute windows, per-team subscriptions, and the templates rendered to Slack, Email,…
+- [Hookdeck Attempts API](https://apis.io/apis/hookdeck/hookdeck-attempts-api/) — An attempt is any request that Hookdeck makes on behalf of an event.
+- [Hookdeck Bulk cancel events API](https://apis.io/apis/hookdeck/hookdeck-bulk-cancel-events-api/) — Bulk cancel operations allow you to cancel multiple pending events at once.
+- [Hookdeck Bulk retry events API](https://apis.io/apis/hookdeck/hookdeck-bulk-retry-events-api/) — Bulk retry operations allow you to retry many events at once. A bulk retry is first estimated, then created, then processed asynchronously.
+- [Hookdeck Bulk retry ignored events API](https://apis.io/apis/hookdeck/hookdeck-bulk-retry-ignored-events-api/) — Bulk retry ignored events allow you to retry many events that were previously ignored (for instance due to filter rules) at once.
+- [Hookdeck Bulk retry requests API](https://apis.io/apis/hookdeck/hookdeck-bulk-retry-requests-api/) — Bulk retry requests allow you to re-ingest many previously received requests at once.
+- [Hookdeck Issue Triggers API](https://apis.io/apis/hookdeck/hookdeck-issue-triggers-api/) — Issue Triggers lets you setup rules that trigger issues when certain conditions are met.
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### Arazzo workflows (14)
+
+Multi-step workflows that chain operations into a business task.
+
+- [Hookdeck Attach an Integration to a New Source](https://apis.io/arazzos/hookdeck/hookdeck-attach-integration-to-source-workflow/)
+- [Hookdeck Author and Verify a Transformation](https://apis.io/arazzos/hookdeck/hookdeck-author-transformation-workflow/)
+- [Hookdeck Bookmark and Replay an Event](https://apis.io/arazzos/hookdeck/hookdeck-bookmark-and-replay-event-workflow/)
+- [Hookdeck Bulk Retry Failed Events](https://apis.io/arazzos/hookdeck/hookdeck-bulk-retry-failed-events-workflow/)
+- [Hookdeck Cancel a Pending Event](https://apis.io/arazzos/hookdeck/hookdeck-cancel-pending-event-workflow/)
+- [Hookdeck Decommission a Source](https://apis.io/arazzos/hookdeck/hookdeck-decommission-source-workflow/)
+- [Hookdeck Create an Inline Connection](https://apis.io/arazzos/hookdeck/hookdeck-inline-connection-workflow/)
+- [Hookdeck Investigate Event Delivery Attempts](https://apis.io/arazzos/hookdeck/hookdeck-investigate-event-attempts-workflow/)
+- [Hookdeck Pause and Resume a Connection](https://apis.io/arazzos/hookdeck/hookdeck-pause-resume-connection-workflow/)
+- [Hookdeck Provision a Connection](https://apis.io/arazzos/hookdeck/hookdeck-provision-connection-workflow/)
+- [Hookdeck Replay an Inbound Request](https://apis.io/arazzos/hookdeck/hookdeck-replay-request-workflow/)
+- [Hookdeck Retry a Failed Event](https://apis.io/arazzos/hookdeck/hookdeck-retry-failed-event-workflow/)
+- [Hookdeck Test Then Update a Transformation](https://apis.io/arazzos/hookdeck/hookdeck-update-transformation-workflow/)
+- [Hookdeck Upsert a Connection by Name](https://apis.io/arazzos/hookdeck/hookdeck-upsert-connection-workflow/)
+
+#### Agent skills (39)
+
+Agent skills built on the API.
+
+- [chargebee-webhooks](https://apis.io/agent-skills/hookdeck/chargebee-webhooks/)
+- [claude-managed-agents-webhooks](https://apis.io/agent-skills/hookdeck/claude-managed-agents-webhooks/)
+- [clerk-webhooks](https://apis.io/agent-skills/hookdeck/clerk-webhooks/)
+- [cursor-webhooks](https://apis.io/agent-skills/hookdeck/cursor-webhooks/)
+- [deepgram-webhooks](https://apis.io/agent-skills/hookdeck/deepgram-webhooks/)
+- [discord-webhooks](https://apis.io/agent-skills/hookdeck/discord-webhooks/)
+- [elevenlabs-webhooks](https://apis.io/agent-skills/hookdeck/elevenlabs-webhooks/)
+- [fusionauth-webhooks](https://apis.io/agent-skills/hookdeck/fusionauth-webhooks/)
+- [gemini-webhooks](https://apis.io/agent-skills/hookdeck/gemini-webhooks/)
+- [github-webhooks](https://apis.io/agent-skills/hookdeck/github-webhooks/)
+- [gitlab-webhooks](https://apis.io/agent-skills/hookdeck/gitlab-webhooks/)
+- [hookdeck-event-gateway](https://apis.io/agent-skills/hookdeck/hookdeck-event-gateway/)
+- [hookdeck-event-gateway-webhooks](https://apis.io/agent-skills/hookdeck/hookdeck-event-gateway-webhooks/)
+- [hubspot-webhooks](https://apis.io/agent-skills/hookdeck/hubspot-webhooks/)
+- [huggingface-webhooks](https://apis.io/agent-skills/hookdeck/huggingface-webhooks/)
+- [intercom-webhooks](https://apis.io/agent-skills/hookdeck/intercom-webhooks/)
+- [knock-webhooks](https://apis.io/agent-skills/hookdeck/knock-webhooks/)
+- [linear-webhooks](https://apis.io/agent-skills/hookdeck/linear-webhooks/)
+- [mailgun-webhooks](https://apis.io/agent-skills/hookdeck/mailgun-webhooks/)
+- [notion-webhooks](https://apis.io/agent-skills/hookdeck/notion-webhooks/)
+- [openai-webhooks](https://apis.io/agent-skills/hookdeck/openai-webhooks/)
+- [openclaw-webhooks](https://apis.io/agent-skills/hookdeck/openclaw-webhooks/)
+- [orb-webhooks](https://apis.io/agent-skills/hookdeck/orb-webhooks/)
+- [outpost](https://apis.io/agent-skills/hookdeck/outpost/)
+- [paddle-webhooks](https://apis.io/agent-skills/hookdeck/paddle-webhooks/)
+- …and 14 more published on APIs.io
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Hookdeck Agentic Access](https://apis.io/agentic-access/hookdeck/hookdeck-agentic-access/)
+
+#### JSON Schema (8)
+
+The data models the API reads and writes.
+
+- [Hookdeck EventAttempt](https://apis.io/schemas/hookdeck/hookdeck-attempt/)
+- [Hookdeck Connection](https://apis.io/schemas/hookdeck/hookdeck-connection/)
+- [Hookdeck Destination](https://apis.io/schemas/hookdeck/hookdeck-destination/)
+- [Hookdeck Event](https://apis.io/schemas/hookdeck/hookdeck-event/)
+- [Hookdeck Issue](https://apis.io/schemas/hookdeck/hookdeck-issue/)
+- [Hookdeck Request](https://apis.io/schemas/hookdeck/hookdeck-request/)
+- [Hookdeck Source](https://apis.io/schemas/hookdeck/hookdeck-source/)
+- [Hookdeck Transformation](https://apis.io/schemas/hookdeck/hookdeck-transformation/)
+
+#### JSON-LD (1)
+
+Linked-data contexts for the provider's vocabulary.
 
-## Scope
+- [Hookdeck Context](https://apis.io/jsonld/hookdeck/hookdeck-context/)
 
-- **Type:** Index
-- **Position:** Consumer
-- **Access:** 3rd-Party
+#### Collections (30)
 
-## Tags
+Postman and Open Collection request collections.
 
-- Webhooks
-- Event Gateways
-- Gateways
-- Events
-- Event Infrastructure
-- Event-Driven
-- Messaging
-- Queues
-- Retries
-- Transformations
-- Observability
+- [Hookdeck Bookmarks Attempts API](https://apis.io/collections/hookdeck/open-hookdeck-attempts-api/)
+- [Hookdeck Attempts Bookmarks API](https://apis.io/collections/hookdeck/open-hookdeck-bookmarks-api/)
+- [Hookdeck Bookmarks Attempts Bulk cancel events API](https://apis.io/collections/hookdeck/open-hookdeck-bulk-cancel-events-api/)
+- [Hookdeck Bulk Operations API](https://apis.io/collections/hookdeck/open-hookdeck-bulk-operations-api/)
+- [Hookdeck Bookmarks Attempts Bulk retry events API](https://apis.io/collections/hookdeck/open-hookdeck-bulk-retry-events-api/)
+- [Hookdeck Bookmarks Attempts Bulk retry ignored events API](https://apis.io/collections/hookdeck/open-hookdeck-bulk-retry-ignored-events-api/)
+- [Hookdeck Bookmarks Attempts Bulk retry requests API](https://apis.io/collections/hookdeck/open-hookdeck-bulk-retry-requests-api/)
+- [Hookdeck Bookmarks Attempts Connections API](https://apis.io/collections/hookdeck/open-hookdeck-connections-api/)
+- [Hookdeck Bookmarks Attempts Destinations API](https://apis.io/collections/hookdeck/open-hookdeck-destinations-api/)
+- [Hookdeck Bookmarks Attempts Events API](https://apis.io/collections/hookdeck/open-hookdeck-events-api/)
+- [Hookdeck Bookmarks Attempts Integrations API](https://apis.io/collections/hookdeck/open-hookdeck-integrations-api/)
+- [Hookdeck Bookmarks Attempts Issue Triggers API](https://apis.io/collections/hookdeck/open-hookdeck-issue-triggers-api/)
+- [Hookdeck Bookmarks Attempts Issues API](https://apis.io/collections/hookdeck/open-hookdeck-issues-api/)
+- [Hookdeck Bookmarks Attempts Metrics API](https://apis.io/collections/hookdeck/open-hookdeck-metrics-api/)
+- [Hookdeck Bookmarks Attempts Notifications API](https://apis.io/collections/hookdeck/open-hookdeck-notifications-api/)
+- [Hookdeck Bookmarks Attempts Requests API](https://apis.io/collections/hookdeck/open-hookdeck-requests-api/)
+- [Hookdeck Bookmarks Attempts Sources API](https://apis.io/collections/hookdeck/open-hookdeck-sources-api/)
+- [Hookdeck Bookmarks Attempts Transformations API](https://apis.io/collections/hookdeck/open-hookdeck-transformations-api/)
+- [Hookdeck Bookmarks API](https://apis.io/collections/hookdeck/postman-hookdeck-bookmarks-api/)
+- [Hookdeck Bulk Operations API](https://apis.io/collections/hookdeck/postman-hookdeck-bulk-operations-api/)
+- [Hookdeck Connections API](https://apis.io/collections/hookdeck/postman-hookdeck-connections-api/)
+- [Hookdeck Destinations API](https://apis.io/collections/hookdeck/postman-hookdeck-destinations-api/)
+- [Hookdeck Events API](https://apis.io/collections/hookdeck/postman-hookdeck-events-api/)
+- [Hookdeck Integrations API](https://apis.io/collections/hookdeck/postman-hookdeck-integrations-api/)
+- [Hookdeck Issues API](https://apis.io/collections/hookdeck/postman-hookdeck-issues-api/)
+- …and 5 more published on APIs.io
 
-## Timestamps
+#### Governance rules (1)
 
-- **Created:** 2025-08-19
-- **Modified:** 2026-05-25
+Spectral rulesets for the provider's contracts.
 
-## APIs
+- [Hookdeck — jsonschema rules](https://apis.io/rules/hookdeck/hookdeck-jsonschema-spectral-rules/)
 
-### Hookdeck Connections API
+#### Security (2)
 
-Create, update, list, archive, pause, and unpause connections. A connection routes events from a Source to a Destination and may carry rules (retry, alert, transform, filter, delay) that determine how the gateway processes events along that path.
+Authentication, trust centre, and vulnerability disclosure.
 
-- **Human URL:** [https://hookdeck.com/docs/api](https://hookdeck.com/docs/api)
-- **Base URL:** `https://api.hookdeck.com/2025-07-01`
+- [Hookdeck Authentication](https://apis.io/security/hookdeck/hookdeck-authentication/)
+- [Hookdeck Domain Security](https://apis.io/security/hookdeck/hookdeck-domain-security/)
 
-#### Tags
+#### Plans and pricing (2)
 
-- Webhooks
-- Event Gateways
-- Connections
+Published plans, tiers and prices.
 
-#### Properties
+- [Hookdeck Plans Pricing](https://apis.io/plans/hookdeck/hookdeck-plans-pricing/)
+- [Hookdeck Price Estimates](https://apis.io/plans/hookdeck/hookdeck-price-estimates/)
 
-- [Documentation](https://hookdeck.com/docs/api)
-- [OpenAPI](openapi/hookdeck-connections-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/hookdeck-connections-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/hookdeck-connections-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [JSON Schema](json-schema/hookdeck-connection-schema.json) — [JSON Schema](https://json-schema.org/specification)
+#### Rate limits (1)
 
-### Hookdeck Sources API
+Published request limits.
 
-Manage sources — the upstream endpoints (webhook senders or push channels) that ingest events into Hookdeck. Sources support platform-specific verification (Stripe, GitHub, Twilio, Shopify, and many more), allowed HTTP methods, allowed content types, allowed IPs, and a configurable custom response returned to the caller.
+- [Hookdeck Rate Limits](https://apis.io/rate-limits/hookdeck/hookdeck-rate-limits/)
 
-- **Human URL:** [https://hookdeck.com/docs/sources](https://hookdeck.com/docs/sources)
-- **Base URL:** `https://api.hookdeck.com/2025-07-01`
+#### FinOps (1)
 
-#### Tags
+What the API costs to run, by operation.
 
-- Webhooks
-- Sources
-- Event Gateways
+- [Hookdeck Finops](https://apis.io/finops/hookdeck/hookdeck-finops/)
 
-#### Properties
+## Where to find this API
 
-- [Documentation](https://hookdeck.com/docs/sources)
-- [OpenAPI](openapi/hookdeck-sources-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/hookdeck-sources-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/hookdeck-sources-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [JSON Schema](json-schema/hookdeck-source-schema.json) — [JSON Schema](https://json-schema.org/specification)
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-### Hookdeck Destinations API
-
-Manage destinations — the downstream targets (HTTP endpoints, AWS SQS, Azure Service Bus, GCP Pub/Sub, Kafka, RabbitMQ, MongoDB, and more) where Hookdeck delivers events. Supports configurable auth methods, rate limiting, path forwarding, archival, and pause/disable controls.
-
-- **Human URL:** [https://hookdeck.com/docs/destinations](https://hookdeck.com/docs/destinations)
-- **Base URL:** `https://api.hookdeck.com/2025-07-01`
-
-#### Tags
-
-- Webhooks
-- Destinations
-- Event Gateways
-
-#### Properties
-
-- [Documentation](https://hookdeck.com/docs/destinations)
-- [OpenAPI](openapi/hookdeck-destinations-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/hookdeck-destinations-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/hookdeck-destinations-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [JSON Schema](json-schema/hookdeck-destination-schema.json) — [JSON Schema](https://json-schema.org/specification)
-
-### Hookdeck Events API
-
-List, retrieve, retry, mute, and inspect events and their delivery attempts. An event is any request Hookdeck received from a source; an attempt is each delivery try against a destination, including status, response body, response time, and error code.
-
-- **Human URL:** [https://hookdeck.com/docs/events](https://hookdeck.com/docs/events)
-- **Base URL:** `https://api.hookdeck.com/2025-07-01`
-
-#### Tags
-
-- Webhooks
-- Events
-- Attempts
-- Event Gateways
-
-#### Properties
-
-- [Documentation](https://hookdeck.com/docs/events)
-- [OpenAPI](openapi/hookdeck-events-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/hookdeck-events-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/hookdeck-events-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [JSON Schema](json-schema/hookdeck-event-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/hookdeck-attempt-schema.json) — [JSON Schema](https://json-schema.org/specification)
-
-### Hookdeck Requests API
-
-List and inspect raw requests received by Hookdeck. A request precedes events and is what gets accepted at the gateway boundary before verification, fan-out, transformation, and routing produce one or more downstream events.
-
-- **Human URL:** [https://hookdeck.com/docs/requests](https://hookdeck.com/docs/requests)
-- **Base URL:** `https://api.hookdeck.com/2025-07-01`
-
-#### Tags
-
-- Webhooks
-- Requests
-- Event Gateways
-
-#### Properties
-
-- [Documentation](https://hookdeck.com/docs/requests)
-- [OpenAPI](openapi/hookdeck-requests-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/hookdeck-requests-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/hookdeck-requests-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [JSON Schema](json-schema/hookdeck-request-schema.json) — [JSON Schema](https://json-schema.org/specification)
-
-### Hookdeck Transformations API
-
-Manage transformations — sandboxed JavaScript executed against events to mutate headers, body, path, or query string before delivery. Also includes a sandboxed run endpoint for testing transformation code against sample event payloads.
-
-- **Human URL:** [https://hookdeck.com/docs/transformations](https://hookdeck.com/docs/transformations)
-- **Base URL:** `https://api.hookdeck.com/2025-07-01`
-
-#### Tags
-
-- Transformations
-- Webhooks
-- Event Gateways
-
-#### Properties
-
-- [Documentation](https://hookdeck.com/docs/transformations)
-- [OpenAPI](openapi/hookdeck-transformations-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/hookdeck-transformations-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/hookdeck-transformations-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [JSON Schema](json-schema/hookdeck-transformation-schema.json) — [JSON Schema](https://json-schema.org/specification)
-
-### Hookdeck Bookmarks API
-
-Save bookmarked events for quick replay and one-click testing during development. Bookmarks let your team capture canonical event payloads and trigger them on demand into any destination.
-
-- **Human URL:** [https://hookdeck.com/docs/bookmarks](https://hookdeck.com/docs/bookmarks)
-- **Base URL:** `https://api.hookdeck.com/2025-07-01`
-
-#### Tags
-
-- Bookmarks
-- Webhooks
-- Event Gateways
-
-#### Properties
-
-- [Documentation](https://hookdeck.com/docs/bookmarks)
-- [OpenAPI](openapi/hookdeck-bookmarks-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/hookdeck-bookmarks-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/hookdeck-bookmarks-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Hookdeck Bulk Operations API
-
-Plan, schedule, and cancel bulk operations that retry or cancel many events, requests, or ignored events at once. Each bulk operation reports per-batch counts, total scope, and live progress, and can be cancelled mid-run.
-
-- **Human URL:** [https://hookdeck.com/docs/bulk-retries](https://hookdeck.com/docs/bulk-retries)
-- **Base URL:** `https://api.hookdeck.com/2025-07-01`
-
-#### Tags
-
-- Bulk Operations
-- Webhooks
-- Event Gateways
-
-#### Properties
-
-- [Documentation](https://hookdeck.com/docs/bulk-retries)
-- [OpenAPI](openapi/hookdeck-bulk-operations-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/hookdeck-bulk-operations-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/hookdeck-bulk-operations-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Hookdeck Issues API
-
-Track issues that occur on events, requests, and backpressure, and manage the triggers (rules) that open and route issues to Slack, Email, Microsoft Teams, Discord, BetterUptime, and other channels.
-
-- **Human URL:** [https://hookdeck.com/docs/issues](https://hookdeck.com/docs/issues)
-- **Base URL:** `https://api.hookdeck.com/2025-07-01`
-
-#### Tags
-
-- Issues
-- Issue Triggers
-- Observability
-
-#### Properties
-
-- [Documentation](https://hookdeck.com/docs/issues)
-- [OpenAPI](openapi/hookdeck-issues-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/hookdeck-issues-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/hookdeck-issues-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [JSON Schema](json-schema/hookdeck-issue-schema.json) — [JSON Schema](https://json-schema.org/specification)
-
-### Hookdeck Metrics API
-
-Query aggregated metrics for events, requests, and attempts — success counts, failure counts, response time, throughput, and SLA bands grouped by source, destination, or connection. Backs the dashboard analytics and downstream observability bridges.
-
-- **Human URL:** [https://hookdeck.com/docs/metrics](https://hookdeck.com/docs/metrics)
-- **Base URL:** `https://api.hookdeck.com/2025-07-01`
-
-#### Tags
-
-- Metrics
-- Observability
-- Event Gateways
-
-#### Properties
-
-- [Documentation](https://hookdeck.com/docs/metrics)
-- [OpenAPI](openapi/hookdeck-metrics-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/hookdeck-metrics-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/hookdeck-metrics-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Hookdeck Integrations API
-
-Configure platform integrations that adapt Hookdeck behavior for specific source platforms — including signature verification, header normalization, allowed event types, and platform-aware retries (e.g., Stripe, GitHub, Twilio, Shopify, Linear).
-
-- **Human URL:** [https://hookdeck.com/docs/integrations](https://hookdeck.com/docs/integrations)
-- **Base URL:** `https://api.hookdeck.com/2025-07-01`
-
-#### Tags
-
-- Integrations
-- Webhooks
-- Event Gateways
-
-#### Properties
-
-- [Documentation](https://hookdeck.com/docs/integrations)
-- [OpenAPI](openapi/hookdeck-integrations-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/hookdeck-integrations-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/hookdeck-integrations-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Hookdeck Notifications API
-
-Manage how your team is notified when issues occur — channel routing, mute windows, per-team subscriptions, and the templates rendered to Slack, Email, Microsoft Teams, and Discord.
-
-- **Human URL:** [https://hookdeck.com/docs/notifications](https://hookdeck.com/docs/notifications)
-- **Base URL:** `https://api.hookdeck.com/2025-07-01`
-
-#### Tags
-
-- Notifications
-- Observability
-
-#### Properties
-
-- [Documentation](https://hookdeck.com/docs/notifications)
-- [OpenAPI](openapi/hookdeck-notifications-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/hookdeck-notifications-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/hookdeck-notifications-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-## Common Properties
-
-- [Arazzo Workflows](arazzo/) — [Arazzo Specification](https://spec.openapis.org/arazzo/latest.html)
+- [Website](https://www.hookdeck.com/)
 - [Documentation](https://hookdeck.com/docs)
-- [API Reference](https://hookdeck.com/docs/api)
-- [OpenAPI](https://api.hookdeck.com/2025-07-01/openapi) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Getting Started](https://hookdeck.com/docs/hookdeck-basics)
-- [Authentication](https://hookdeck.com/docs/authentication)
+- [Getting started](https://hookdeck.com/docs/hookdeck-basics)
+- [API reference](https://hookdeck.com/docs/api)
 - [Pricing](https://hookdeck.com/pricing)
-- [Plans](plans/hookdeck-plans-pricing.yml)
-- [Rate Limits](rate-limits/hookdeck-rate-limits.yml)
-- [Fin Ops](finops/hookdeck-finops.yml)
-- [JSON-LD](json-ld/hookdeck-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
-- [Blog](https://hookdeck.com/blog)
-- [C L I](https://hookdeck.com/docs/cli)
-- [C L I](https://github.com/hookdeck/hookdeck-cli)
-- [SDK](https://github.com/hookdeck/hookdeck-typescript-sdk)
-- [SDK](https://github.com/hookdeck/hookdeck-go-sdk)
-- [SDK](https://github.com/hookdeck/hookdeck-python-sdk)
-- [SDK](https://github.com/hookdeck/hookdeck-dotnet-sdk)
-- [SDK](https://www.npmjs.com/package/@hookdeck/sdk)
-- [Terraform Provider](https://registry.terraform.io/providers/hookdeck/hookdeck/latest/docs)
-- [GitHub Organization](https://github.com/hookdeck)
-- [GitHub Repository](https://github.com/hookdeck/hookdeck-api-schema)
-- [GitHub Repository](https://github.com/hookdeck/outpost)
-- [Open Source](https://hookdeck.com/outpost)
-- [Agent Skill](https://github.com/hookdeck/webhook-skills)
-- [Quickstart](https://hookdeck.com/docs/use-cases/receive-webhooks/quickstart)
-- [Documentation](https://hookdeck.com/docs/use-cases/send-webhooks)
-- [Documentation](https://hookdeck.com/event-gateway)
-- [Documentation](https://hookdeck.com/outpost)
 - [Changelog](https://hookdeck.com/changelog)
-- [Status Page](https://status.hookdeck.com/)
-- [Sign Up](https://dashboard.hookdeck.com/signup)
-- [Login](https://dashboard.hookdeck.com/signin)
-- [Contact](https://hookdeck.com/contact)
-- [About](https://hookdeck.com/company)
-- [Customers](https://hookdeck.com/customers)
-- [Careers](https://hookdeck.com/careers)
-- [Terms of Service](https://hookdeck.com/terms)
-- [Privacy Policy](https://hookdeck.com/privacy)
+- [Blog](https://hookdeck.com/blog)
 - [Security](https://trust.hookdeck.com)
-- [Data Processing Addendum](https://hookdeck.com/dpa)
-- [X (Twitter)](https://x.com/Hookdeck)
-- [LinkedIn](https://www.linkedin.com/company/hookdeck)
-- [Slack](https://join.slack.com/t/hookdeckdevelopers/shared_invite/zt-yw7hlyzp-EQuO3QvdiBlH9Tz2KZg5MQ)
+- [Terms of service](https://hookdeck.com/terms)
+- [Privacy policy](https://hookdeck.com/privacy)
+- [GitHub](https://github.com/hookdeck)
+- [Status](https://status.hookdeck.com/)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 59.4** — strong · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 68.4 |
+| Contract governance | 9.8 |
+| Operational transparency | 31.6 |
+| Developer ergonomics | 79.0 |
+| Access clarity | 69.7 |
+
+**Agent readiness 31.2** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | unknown |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | — |
+
+**Regulatory alignment 24.5** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/hookdeck/](https://apis.io/providers/hookdeck/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Hookdeck: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/hookdeck/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
